@@ -15,7 +15,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./datasource"), exports); // ✅ CLI / tooling
-__exportStar(require("./database.module"), exports); // ✅ NestJS integration
 __exportStar(require("./tables"), exports); // ✅ shared entities
 __exportStar(require("./cache"), exports);
 __exportStar(require("./types"), exports);
