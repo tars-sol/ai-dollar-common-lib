@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc Register (RegisterRequest) returns (AuthResponse);
+  rpc Login (LoginRequest) returns (AuthResponse);
+  rpc SsoLogin (SsoLoginRequest) returns (AuthResponse);
+  rpc WalletNonce (WalletNonceRequest) returns (WalletNonceResponse);
+  rpc WalletLogin (WalletLoginRequest) returns (AuthResponse);
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message SsoLoginRequest {
+  string idToken = 1;
+  string provider = 2;
+}
+
+message WalletNonceRequest {
+  string wallet = 1;
+}
+
+message WalletNonceResponse {
+  string walletNonce = 1;
+}
+
+message WalletLoginRequest {
+  string walletAddress = 1;
+  string signature = 2;
+  string nonce = 3;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string role = 4;
+  string walletAddress = 5;
+}
+
+message AuthResponse {
+  string token = 1;
+  User user = 2;
+}

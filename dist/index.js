@@ -38,5 +38,6 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.utils = void 0;
 __exportStar(require("./database"), exports);
+__exportStar(require("./grpc"), exports);
 exports.utils = __importStar(require("./utils"));
 //# sourceMappingURL=index.js.map
