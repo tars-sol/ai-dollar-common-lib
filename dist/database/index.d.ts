@@ -1,7 +1,5 @@
-import 'reflect-metadata';
-import { DataSource } from 'typeorm';
-import '../config';
-export declare const Database: DataSource;
+export * from './datasource';
+export * from './database.module';
 export * from './tables';
 export * from './cache';
 export * from './types';

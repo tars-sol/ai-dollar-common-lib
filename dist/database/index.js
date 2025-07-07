@@ -14,36 +14,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Database = void 0;
-require("reflect-metadata");
-const typeorm_1 = require("typeorm");
-require("../config");
-const host = process.env.DATABASE_HOST ?? 'localhost';
-const port = parseInt(process.env.DATABASE_PORT ?? '5432', 10);
-const username = process.env.DATABASE_USERNAME ?? 'root';
-const password = process.env.DATABASE_PASSWORD;
-const database = process.env.DATABASE_NAME;
-const schema = process.env.DATABASE_SCHEMA;
-exports.Database = new typeorm_1.DataSource({
-    type: 'postgres',
-    host,
-    port,
-    username,
-    password,
-    database,
-    schema,
-    synchronize: false,
-    migrationsRun: true,
-    logging: false,
-    entities: [
-        __dirname + '/tables/**.entity.{js,ts}',
-        __dirname + '/cache/**.entity.{js,ts}',
-        __dirname + '/types/**.view.{js,ts}',
-    ],
-    migrations: [__dirname + '/migrations/*-*.{js,ts}'],
-    subscribers: [],
-});
-__exportStar(require("./tables"), exports);
+__exportStar(require("./datasource"), exports); // ✅ CLI / tooling
+__exportStar(require("./database.module"), exports); // ✅ NestJS integration
+__exportStar(require("./tables"), exports); // ✅ shared entities
 __exportStar(require("./cache"), exports);
 __exportStar(require("./types"), exports);
 //# sourceMappingURL=index.js.map
