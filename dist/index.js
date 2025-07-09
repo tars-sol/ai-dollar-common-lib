@@ -39,5 +39,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.utils = void 0;
 __exportStar(require("./database"), exports);
 __exportStar(require("./grpc"), exports);
+__exportStar(require("./rabbitmq"), exports);
 exports.utils = __importStar(require("./utils"));
 //# sourceMappingURL=index.js.map
