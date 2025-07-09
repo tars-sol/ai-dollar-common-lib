@@ -9,9 +9,10 @@
   ],
   "type": "commonjs",
   "scripts": {
-    "prepare": "husky install",
     "format": "prettier --write .",
-    "build": "rm -rf ./dist && tsc",
+    "build:proto": "sh scripts/compile-protos.sh",
+    "build": "npm run build:proto && rm -rf ./dist && tsc",
+    "prepare": "npm run build:proto && husky install",
     "lint": "eslint --fix .",
     "typeorm": "ts-node ./node_modules/.bin/typeorm",
     "migration:generate": "npm run typeorm -- migration:generate -d src/database src/database/migrations/$npm_config_name",
@@ -49,6 +50,7 @@
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
+    "ts-proto": "^2.7.5",
     "typescript": "^5.8.3"
   }
 }

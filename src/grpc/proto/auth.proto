@@ -40,7 +40,7 @@ message WalletLoginRequest {
   string nonce = 3;
 }
 
-message User {
+message UserRequest {
   string id = 1;
   string email = 2;
   string name = 3;
@@ -50,5 +50,5 @@ message User {
 
 message AuthResponse {
   string token = 1;
-  User user = 2;
+  UserRequest user = 2;
 }
