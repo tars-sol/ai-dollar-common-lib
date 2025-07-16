@@ -27,8 +27,6 @@ export interface WalletLoginRequest {
 export interface UserRequest {
     id: string;
     email: string;
-    name: string;
-    role: string;
     walletAddress: string;
 }
 export interface AuthResponse {
