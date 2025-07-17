@@ -414,7 +414,7 @@ exports.WalletLoginRequest = {
     },
 };
 function createBaseUserRequest() {
-    return { id: "", email: "", name: "", role: "", walletAddress: "" };
+    return { id: "", email: "", walletAddress: "" };
 }
 exports.UserRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -424,14 +424,8 @@ exports.UserRequest = {
         if (message.email !== "") {
             writer.uint32(18).string(message.email);
         }
-        if (message.name !== "") {
-            writer.uint32(26).string(message.name);
-        }
-        if (message.role !== "") {
-            writer.uint32(34).string(message.role);
-        }
         if (message.walletAddress !== "") {
-            writer.uint32(42).string(message.walletAddress);
+            writer.uint32(26).string(message.walletAddress);
         }
         return writer;
     },
@@ -460,20 +454,6 @@ exports.UserRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.name = reader.string();
-                    continue;
-                }
-                case 4: {
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.role = reader.string();
-                    continue;
-                }
-                case 5: {
-                    if (tag !== 42) {
-                        break;
-                    }
                     message.walletAddress = reader.string();
                     continue;
                 }
@@ -489,8 +469,6 @@ exports.UserRequest = {
         return {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
             email: isSet(object.email) ? globalThis.String(object.email) : "",
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
-            role: isSet(object.role) ? globalThis.String(object.role) : "",
             walletAddress: isSet(object.walletAddress) ? globalThis.String(object.walletAddress) : "",
         };
     },
@@ -501,12 +479,6 @@ exports.UserRequest = {
         }
         if (message.email !== "") {
             obj.email = message.email;
-        }
-        if (message.name !== "") {
-            obj.name = message.name;
-        }
-        if (message.role !== "") {
-            obj.role = message.role;
         }
         if (message.walletAddress !== "") {
             obj.walletAddress = message.walletAddress;
@@ -520,8 +492,6 @@ exports.UserRequest = {
         const message = createBaseUserRequest();
         message.id = object.id ?? "";
         message.email = object.email ?? "";
-        message.name = object.name ?? "";
-        message.role = object.role ?? "";
         message.walletAddress = object.walletAddress ?? "";
         return message;
     },

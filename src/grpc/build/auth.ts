@@ -42,8 +42,6 @@ export interface WalletLoginRequest {
 export interface UserRequest {
   id: string;
   email: string;
-  name: string;
-  role: string;
   walletAddress: string;
 }
 
@@ -505,7 +503,7 @@ export const WalletLoginRequest: MessageFns<WalletLoginRequest> = {
 };
 
 function createBaseUserRequest(): UserRequest {
-  return { id: "", email: "", name: "", role: "", walletAddress: "" };
+  return { id: "", email: "", walletAddress: "" };
 }
 
 export const UserRequest: MessageFns<UserRequest> = {
@@ -516,14 +514,8 @@ export const UserRequest: MessageFns<UserRequest> = {
     if (message.email !== "") {
       writer.uint32(18).string(message.email);
     }
-    if (message.name !== "") {
-      writer.uint32(26).string(message.name);
-    }
-    if (message.role !== "") {
-      writer.uint32(34).string(message.role);
-    }
     if (message.walletAddress !== "") {
-      writer.uint32(42).string(message.walletAddress);
+      writer.uint32(26).string(message.walletAddress);
     }
     return writer;
   },
@@ -556,22 +548,6 @@ export const UserRequest: MessageFns<UserRequest> = {
             break;
           }
 
-          message.name = reader.string();
-          continue;
-        }
-        case 4: {
-          if (tag !== 34) {
-            break;
-          }
-
-          message.role = reader.string();
-          continue;
-        }
-        case 5: {
-          if (tag !== 42) {
-            break;
-          }
-
           message.walletAddress = reader.string();
           continue;
         }
@@ -588,8 +564,6 @@ export const UserRequest: MessageFns<UserRequest> = {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      role: isSet(object.role) ? globalThis.String(object.role) : "",
       walletAddress: isSet(object.walletAddress) ? globalThis.String(object.walletAddress) : "",
     };
   },
@@ -601,12 +575,6 @@ export const UserRequest: MessageFns<UserRequest> = {
     }
     if (message.email !== "") {
       obj.email = message.email;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    if (message.role !== "") {
-      obj.role = message.role;
     }
     if (message.walletAddress !== "") {
       obj.walletAddress = message.walletAddress;
@@ -621,8 +589,6 @@ export const UserRequest: MessageFns<UserRequest> = {
     const message = createBaseUserRequest();
     message.id = object.id ?? "";
     message.email = object.email ?? "";
-    message.name = object.name ?? "";
-    message.role = object.role ?? "";
     message.walletAddress = object.walletAddress ?? "";
     return message;
   },

@@ -43,9 +43,7 @@ message WalletLoginRequest {
 message UserRequest {
   string id = 1;
   string email = 2;
-  string name = 3;
-  string role = 4;
-  string walletAddress = 5;
+  string walletAddress = 3;
 }
 
 message AuthResponse {

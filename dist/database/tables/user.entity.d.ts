@@ -2,10 +2,10 @@ export declare class User {
     id: string;
     email: string;
     password: string;
-    name: string;
     walletAddress: string;
     walletNonce: string;
-    role: string;
+    isBanned: boolean;
+    isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
