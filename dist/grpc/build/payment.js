@@ -78,11 +78,11 @@ exports.CreatePaymentIntentRequest = {
     },
 };
 function createBasePaymentIntentResponse() {
-    return { clientSecretKey: "" };
+    return { clientSecretKey: undefined };
 }
 exports.PaymentIntentResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.clientSecretKey !== "") {
+        if (message.clientSecretKey !== undefined) {
             writer.uint32(10).string(message.clientSecretKey);
         }
         return writer;
@@ -110,11 +110,11 @@ exports.PaymentIntentResponse = {
         return message;
     },
     fromJSON(object) {
-        return { clientSecretKey: isSet(object.clientSecretKey) ? globalThis.String(object.clientSecretKey) : "" };
+        return { clientSecretKey: isSet(object.clientSecretKey) ? globalThis.String(object.clientSecretKey) : undefined };
     },
     toJSON(message) {
         const obj = {};
-        if (message.clientSecretKey !== "") {
+        if (message.clientSecretKey !== undefined) {
             obj.clientSecretKey = message.clientSecretKey;
         }
         return obj;
@@ -124,7 +124,7 @@ exports.PaymentIntentResponse = {
     },
     fromPartial(object) {
         const message = createBasePaymentIntentResponse();
-        message.clientSecretKey = object.clientSecretKey ?? "";
+        message.clientSecretKey = object.clientSecretKey ?? undefined;
         return message;
     },
 };

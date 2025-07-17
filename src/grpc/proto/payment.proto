@@ -13,5 +13,5 @@ message CreatePaymentIntentRequest {
 }
 
 message PaymentIntentResponse {
-  string clientSecretKey = 1;
+  optional string clientSecretKey = 1;
 }

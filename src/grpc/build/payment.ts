@@ -15,7 +15,7 @@ export interface CreatePaymentIntentRequest {
 }
 
 export interface PaymentIntentResponse {
-  clientSecretKey: string;
+  clientSecretKey?: string | undefined;
 }
 
 function createBaseCreatePaymentIntentRequest(): CreatePaymentIntentRequest {
@@ -95,12 +95,12 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
 };
 
 function createBasePaymentIntentResponse(): PaymentIntentResponse {
-  return { clientSecretKey: "" };
+  return { clientSecretKey: undefined };
 }
 
 export const PaymentIntentResponse: MessageFns<PaymentIntentResponse> = {
   encode(message: PaymentIntentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.clientSecretKey !== "") {
+    if (message.clientSecretKey !== undefined) {
       writer.uint32(10).string(message.clientSecretKey);
     }
     return writer;
@@ -131,12 +131,12 @@ export const PaymentIntentResponse: MessageFns<PaymentIntentResponse> = {
   },
 
   fromJSON(object: any): PaymentIntentResponse {
-    return { clientSecretKey: isSet(object.clientSecretKey) ? globalThis.String(object.clientSecretKey) : "" };
+    return { clientSecretKey: isSet(object.clientSecretKey) ? globalThis.String(object.clientSecretKey) : undefined };
   },
 
   toJSON(message: PaymentIntentResponse): unknown {
     const obj: any = {};
-    if (message.clientSecretKey !== "") {
+    if (message.clientSecretKey !== undefined) {
       obj.clientSecretKey = message.clientSecretKey;
     }
     return obj;
@@ -147,7 +147,7 @@ export const PaymentIntentResponse: MessageFns<PaymentIntentResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<PaymentIntentResponse>, I>>(object: I): PaymentIntentResponse {
     const message = createBasePaymentIntentResponse();
-    message.clientSecretKey = object.clientSecretKey ?? "";
+    message.clientSecretKey = object.clientSecretKey ?? undefined;
     return message;
   },
 };

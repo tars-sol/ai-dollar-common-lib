@@ -7,7 +7,7 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz#63430d04bd8c5e74f8d7d049338f1cd9d4f02069"
   integrity sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==
 
-"@bufbuild/protobuf@^2.0.0":
+"@bufbuild/protobuf@^2.0.0", "@bufbuild/protobuf@^2.6.0":
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-2.6.0.tgz#82f10cbd2eff47b1e9196967749b26f916b808e8"
   integrity sha512-6cuonJVNOIL7lTj5zgo/Rc2bKAo4/GvN+rKCrUj7GdEHRzCk8zKOfFwUsL9nAVk5rSIsRmlgcpLzTRysopEeeg==

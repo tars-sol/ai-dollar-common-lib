@@ -5,7 +5,7 @@ export interface CreatePaymentIntentRequest {
     currency: string;
 }
 export interface PaymentIntentResponse {
-    clientSecretKey: string;
+    clientSecretKey?: string | undefined;
 }
 export declare const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest>;
 export declare const PaymentIntentResponse: MessageFns<PaymentIntentResponse>;
