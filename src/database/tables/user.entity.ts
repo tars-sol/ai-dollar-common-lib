@@ -12,14 +12,14 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Index({ unique: true })
+  @Index({ unique: true, where: 'email IS NOT NULL' })
   @Column({ type: 'varchar', nullable: true })
   email: string;
 
   @Column({ type: 'varchar', nullable: true })
   password: string;
 
-  @Index({ unique: true })
+  @Index({ unique: true, where: 'walletAddress IS NOT NULL' })
   @Column({ type: 'varchar', nullable: true })
   walletAddress: string;
 

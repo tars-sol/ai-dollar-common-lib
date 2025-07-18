@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: auth.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.protobufPackage = void 0;
+exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.LinkWalletRequest = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "auth";
@@ -407,6 +407,104 @@ exports.WalletLoginRequest = {
     },
     fromPartial(object) {
         const message = createBaseWalletLoginRequest();
+        message.walletAddress = object.walletAddress ?? "";
+        message.signature = object.signature ?? "";
+        message.nonce = object.nonce ?? "";
+        return message;
+    },
+};
+function createBaseLinkWalletRequest() {
+    return { userId: "", walletAddress: "", signature: "", nonce: "" };
+}
+exports.LinkWalletRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.walletAddress !== "") {
+            writer.uint32(18).string(message.walletAddress);
+        }
+        if (message.signature !== "") {
+            writer.uint32(26).string(message.signature);
+        }
+        if (message.nonce !== "") {
+            writer.uint32(34).string(message.nonce);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLinkWalletRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.walletAddress = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.signature = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.nonce = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            walletAddress: isSet(object.walletAddress) ? globalThis.String(object.walletAddress) : "",
+            signature: isSet(object.signature) ? globalThis.String(object.signature) : "",
+            nonce: isSet(object.nonce) ? globalThis.String(object.nonce) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.walletAddress !== "") {
+            obj.walletAddress = message.walletAddress;
+        }
+        if (message.signature !== "") {
+            obj.signature = message.signature;
+        }
+        if (message.nonce !== "") {
+            obj.nonce = message.nonce;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LinkWalletRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLinkWalletRequest();
+        message.userId = object.userId ?? "";
         message.walletAddress = object.walletAddress ?? "";
         message.signature = object.signature ?? "";
         message.nonce = object.nonce ?? "";

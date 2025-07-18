@@ -39,6 +39,13 @@ export interface WalletLoginRequest {
   nonce: string;
 }
 
+export interface LinkWalletRequest {
+  userId: string;
+  walletAddress: string;
+  signature: string;
+  nonce: string;
+}
+
 export interface UserRequest {
   id: string;
   email: string;
@@ -495,6 +502,114 @@ export const WalletLoginRequest: MessageFns<WalletLoginRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<WalletLoginRequest>, I>>(object: I): WalletLoginRequest {
     const message = createBaseWalletLoginRequest();
+    message.walletAddress = object.walletAddress ?? "";
+    message.signature = object.signature ?? "";
+    message.nonce = object.nonce ?? "";
+    return message;
+  },
+};
+
+function createBaseLinkWalletRequest(): LinkWalletRequest {
+  return { userId: "", walletAddress: "", signature: "", nonce: "" };
+}
+
+export const LinkWalletRequest: MessageFns<LinkWalletRequest> = {
+  encode(message: LinkWalletRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.walletAddress !== "") {
+      writer.uint32(18).string(message.walletAddress);
+    }
+    if (message.signature !== "") {
+      writer.uint32(26).string(message.signature);
+    }
+    if (message.nonce !== "") {
+      writer.uint32(34).string(message.nonce);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LinkWalletRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLinkWalletRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.walletAddress = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.signature = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.nonce = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LinkWalletRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      walletAddress: isSet(object.walletAddress) ? globalThis.String(object.walletAddress) : "",
+      signature: isSet(object.signature) ? globalThis.String(object.signature) : "",
+      nonce: isSet(object.nonce) ? globalThis.String(object.nonce) : "",
+    };
+  },
+
+  toJSON(message: LinkWalletRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.walletAddress !== "") {
+      obj.walletAddress = message.walletAddress;
+    }
+    if (message.signature !== "") {
+      obj.signature = message.signature;
+    }
+    if (message.nonce !== "") {
+      obj.nonce = message.nonce;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LinkWalletRequest>, I>>(base?: I): LinkWalletRequest {
+    return LinkWalletRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LinkWalletRequest>, I>>(object: I): LinkWalletRequest {
+    const message = createBaseLinkWalletRequest();
+    message.userId = object.userId ?? "";
     message.walletAddress = object.walletAddress ?? "";
     message.signature = object.signature ?? "";
     message.nonce = object.nonce ?? "";

@@ -19,7 +19,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Index)({ unique: true }),
+    (0, typeorm_1.Index)({ unique: true, where: 'email IS NOT NULL' }),
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
@@ -28,7 +28,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Index)({ unique: true }),
+    (0, typeorm_1.Index)({ unique: true, where: 'walletAddress IS NOT NULL' }),
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "walletAddress", void 0);

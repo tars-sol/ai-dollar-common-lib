@@ -24,6 +24,12 @@ export interface WalletLoginRequest {
     signature: string;
     nonce: string;
 }
+export interface LinkWalletRequest {
+    userId: string;
+    walletAddress: string;
+    signature: string;
+    nonce: string;
+}
 export interface UserRequest {
     id: string;
     email: string;
@@ -39,6 +45,7 @@ export declare const SsoLoginRequest: MessageFns<SsoLoginRequest>;
 export declare const WalletNonceRequest: MessageFns<WalletNonceRequest>;
 export declare const WalletNonceResponse: MessageFns<WalletNonceResponse>;
 export declare const WalletLoginRequest: MessageFns<WalletLoginRequest>;
+export declare const LinkWalletRequest: MessageFns<LinkWalletRequest>;
 export declare const UserRequest: MessageFns<UserRequest>;
 export declare const AuthResponse: MessageFns<AuthResponse>;
 export interface AuthService {
