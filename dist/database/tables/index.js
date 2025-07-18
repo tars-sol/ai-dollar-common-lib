@@ -18,4 +18,5 @@ __exportStar(require("./user.entity"), exports);
 __exportStar(require("./payment.entity"), exports);
 __exportStar(require("./profile.entity"), exports);
 __exportStar(require("./user_follows.entity"), exports);
+__exportStar(require("./brand.entity"), exports);
 //# sourceMappingURL=index.js.map

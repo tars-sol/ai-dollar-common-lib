@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package brand;
+
+message BrandResponse {
+  string id = 1;
+  string name = 2;
+  string logoUrl = 3;
+  string description = 4;
+  string websiteUrl = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
+}
+
+message CreateBrandRequest {
+  string name = 1;
+  optional string logoUrl = 2;
+  optional string description = 3;
+  optional string websiteUrl = 4;
+}
+
+message UpdateBrandRequest {
+  string id = 1;
+  optional string name = 2;
+  optional string logoUrl = 3;
+  optional string description = 4;
+  optional string websiteUrl = 5;
+}
+
+service BrandService {
+  rpc Create (CreateBrandRequest) returns (BrandResponse);
+  rpc Update (UpdateBrandRequest) returns (BrandResponse);
+}

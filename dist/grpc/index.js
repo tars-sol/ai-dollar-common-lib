@@ -36,10 +36,11 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileProto = exports.PaymentProto = exports.AuthProto = void 0;
+exports.BrandProto = exports.ProfileProto = exports.PaymentProto = exports.AuthProto = void 0;
 __exportStar(require("./constant"), exports);
 //generated files
 exports.AuthProto = __importStar(require("./build/auth"));
 exports.PaymentProto = __importStar(require("./build/payment"));
 exports.ProfileProto = __importStar(require("./build/profile"));
+exports.BrandProto = __importStar(require("./build/brand"));
 //# sourceMappingURL=index.js.map
