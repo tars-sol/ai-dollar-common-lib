@@ -7,36 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
-export const protobufPackage = "user";
-
-export interface CreateProfileRequest {
-  userId: string;
-  username: string;
-  name: string;
-  avatarUrl: string;
-  bio: string;
-  websiteUrl: string;
-  twitter: string;
-  github: string;
-  youtube: string;
-  linkedin: string;
-}
-
-export interface UpdateProfileRequest {
-  userId: string;
-  name: string;
-  avatarUrl: string;
-  bio: string;
-  websiteUrl: string;
-  twitter: string;
-  github: string;
-  youtube: string;
-  linkedin: string;
-}
-
-export interface GetProfileByUsernameRequest {
-  username: string;
-}
+export const protobufPackage = "profile";
 
 export interface ProfileResponse {
   id: string;
@@ -55,476 +26,31 @@ export interface ProfileResponse {
   updatedAt: string;
 }
 
-function createBaseCreateProfileRequest(): CreateProfileRequest {
-  return {
-    userId: "",
-    username: "",
-    name: "",
-    avatarUrl: "",
-    bio: "",
-    websiteUrl: "",
-    twitter: "",
-    github: "",
-    youtube: "",
-    linkedin: "",
-  };
+export interface CreateProfileRequest {
+  userId: string;
+  username: string;
+  name?: string | undefined;
+  avatarUrl?: string | undefined;
+  bio?: string | undefined;
+  websiteUrl?: string | undefined;
+  twitter?: string | undefined;
+  github?: string | undefined;
+  youtube?: string | undefined;
+  linkedin?: string | undefined;
 }
 
-export const CreateProfileRequest: MessageFns<CreateProfileRequest> = {
-  encode(message: CreateProfileRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    if (message.username !== "") {
-      writer.uint32(18).string(message.username);
-    }
-    if (message.name !== "") {
-      writer.uint32(26).string(message.name);
-    }
-    if (message.avatarUrl !== "") {
-      writer.uint32(34).string(message.avatarUrl);
-    }
-    if (message.bio !== "") {
-      writer.uint32(42).string(message.bio);
-    }
-    if (message.websiteUrl !== "") {
-      writer.uint32(50).string(message.websiteUrl);
-    }
-    if (message.twitter !== "") {
-      writer.uint32(58).string(message.twitter);
-    }
-    if (message.github !== "") {
-      writer.uint32(66).string(message.github);
-    }
-    if (message.youtube !== "") {
-      writer.uint32(74).string(message.youtube);
-    }
-    if (message.linkedin !== "") {
-      writer.uint32(82).string(message.linkedin);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): CreateProfileRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreateProfileRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.userId = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.username = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
-        case 4: {
-          if (tag !== 34) {
-            break;
-          }
-
-          message.avatarUrl = reader.string();
-          continue;
-        }
-        case 5: {
-          if (tag !== 42) {
-            break;
-          }
-
-          message.bio = reader.string();
-          continue;
-        }
-        case 6: {
-          if (tag !== 50) {
-            break;
-          }
-
-          message.websiteUrl = reader.string();
-          continue;
-        }
-        case 7: {
-          if (tag !== 58) {
-            break;
-          }
-
-          message.twitter = reader.string();
-          continue;
-        }
-        case 8: {
-          if (tag !== 66) {
-            break;
-          }
-
-          message.github = reader.string();
-          continue;
-        }
-        case 9: {
-          if (tag !== 74) {
-            break;
-          }
-
-          message.youtube = reader.string();
-          continue;
-        }
-        case 10: {
-          if (tag !== 82) {
-            break;
-          }
-
-          message.linkedin = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): CreateProfileRequest {
-    return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      username: isSet(object.username) ? globalThis.String(object.username) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
-      bio: isSet(object.bio) ? globalThis.String(object.bio) : "",
-      websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : "",
-      twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
-      github: isSet(object.github) ? globalThis.String(object.github) : "",
-      youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : "",
-      linkedin: isSet(object.linkedin) ? globalThis.String(object.linkedin) : "",
-    };
-  },
-
-  toJSON(message: CreateProfileRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
-    if (message.username !== "") {
-      obj.username = message.username;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    if (message.avatarUrl !== "") {
-      obj.avatarUrl = message.avatarUrl;
-    }
-    if (message.bio !== "") {
-      obj.bio = message.bio;
-    }
-    if (message.websiteUrl !== "") {
-      obj.websiteUrl = message.websiteUrl;
-    }
-    if (message.twitter !== "") {
-      obj.twitter = message.twitter;
-    }
-    if (message.github !== "") {
-      obj.github = message.github;
-    }
-    if (message.youtube !== "") {
-      obj.youtube = message.youtube;
-    }
-    if (message.linkedin !== "") {
-      obj.linkedin = message.linkedin;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<CreateProfileRequest>, I>>(base?: I): CreateProfileRequest {
-    return CreateProfileRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<CreateProfileRequest>, I>>(object: I): CreateProfileRequest {
-    const message = createBaseCreateProfileRequest();
-    message.userId = object.userId ?? "";
-    message.username = object.username ?? "";
-    message.name = object.name ?? "";
-    message.avatarUrl = object.avatarUrl ?? "";
-    message.bio = object.bio ?? "";
-    message.websiteUrl = object.websiteUrl ?? "";
-    message.twitter = object.twitter ?? "";
-    message.github = object.github ?? "";
-    message.youtube = object.youtube ?? "";
-    message.linkedin = object.linkedin ?? "";
-    return message;
-  },
-};
-
-function createBaseUpdateProfileRequest(): UpdateProfileRequest {
-  return {
-    userId: "",
-    name: "",
-    avatarUrl: "",
-    bio: "",
-    websiteUrl: "",
-    twitter: "",
-    github: "",
-    youtube: "",
-    linkedin: "",
-  };
+export interface UpdateProfileRequest {
+  userId: string;
+  username?: string | undefined;
+  name?: string | undefined;
+  avatarUrl?: string | undefined;
+  bio?: string | undefined;
+  websiteUrl?: string | undefined;
+  twitter?: string | undefined;
+  github?: string | undefined;
+  youtube?: string | undefined;
+  linkedin?: string | undefined;
 }
-
-export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
-  encode(message: UpdateProfileRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.avatarUrl !== "") {
-      writer.uint32(26).string(message.avatarUrl);
-    }
-    if (message.bio !== "") {
-      writer.uint32(34).string(message.bio);
-    }
-    if (message.websiteUrl !== "") {
-      writer.uint32(42).string(message.websiteUrl);
-    }
-    if (message.twitter !== "") {
-      writer.uint32(50).string(message.twitter);
-    }
-    if (message.github !== "") {
-      writer.uint32(58).string(message.github);
-    }
-    if (message.youtube !== "") {
-      writer.uint32(66).string(message.youtube);
-    }
-    if (message.linkedin !== "") {
-      writer.uint32(74).string(message.linkedin);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): UpdateProfileRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdateProfileRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.userId = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.avatarUrl = reader.string();
-          continue;
-        }
-        case 4: {
-          if (tag !== 34) {
-            break;
-          }
-
-          message.bio = reader.string();
-          continue;
-        }
-        case 5: {
-          if (tag !== 42) {
-            break;
-          }
-
-          message.websiteUrl = reader.string();
-          continue;
-        }
-        case 6: {
-          if (tag !== 50) {
-            break;
-          }
-
-          message.twitter = reader.string();
-          continue;
-        }
-        case 7: {
-          if (tag !== 58) {
-            break;
-          }
-
-          message.github = reader.string();
-          continue;
-        }
-        case 8: {
-          if (tag !== 66) {
-            break;
-          }
-
-          message.youtube = reader.string();
-          continue;
-        }
-        case 9: {
-          if (tag !== 74) {
-            break;
-          }
-
-          message.linkedin = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): UpdateProfileRequest {
-    return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-      name: isSet(object.name) ? globalThis.String(object.name) : "",
-      avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
-      bio: isSet(object.bio) ? globalThis.String(object.bio) : "",
-      websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : "",
-      twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
-      github: isSet(object.github) ? globalThis.String(object.github) : "",
-      youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : "",
-      linkedin: isSet(object.linkedin) ? globalThis.String(object.linkedin) : "",
-    };
-  },
-
-  toJSON(message: UpdateProfileRequest): unknown {
-    const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
-    }
-    if (message.name !== "") {
-      obj.name = message.name;
-    }
-    if (message.avatarUrl !== "") {
-      obj.avatarUrl = message.avatarUrl;
-    }
-    if (message.bio !== "") {
-      obj.bio = message.bio;
-    }
-    if (message.websiteUrl !== "") {
-      obj.websiteUrl = message.websiteUrl;
-    }
-    if (message.twitter !== "") {
-      obj.twitter = message.twitter;
-    }
-    if (message.github !== "") {
-      obj.github = message.github;
-    }
-    if (message.youtube !== "") {
-      obj.youtube = message.youtube;
-    }
-    if (message.linkedin !== "") {
-      obj.linkedin = message.linkedin;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<UpdateProfileRequest>, I>>(base?: I): UpdateProfileRequest {
-    return UpdateProfileRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<UpdateProfileRequest>, I>>(object: I): UpdateProfileRequest {
-    const message = createBaseUpdateProfileRequest();
-    message.userId = object.userId ?? "";
-    message.name = object.name ?? "";
-    message.avatarUrl = object.avatarUrl ?? "";
-    message.bio = object.bio ?? "";
-    message.websiteUrl = object.websiteUrl ?? "";
-    message.twitter = object.twitter ?? "";
-    message.github = object.github ?? "";
-    message.youtube = object.youtube ?? "";
-    message.linkedin = object.linkedin ?? "";
-    return message;
-  },
-};
-
-function createBaseGetProfileByUsernameRequest(): GetProfileByUsernameRequest {
-  return { username: "" };
-}
-
-export const GetProfileByUsernameRequest: MessageFns<GetProfileByUsernameRequest> = {
-  encode(message: GetProfileByUsernameRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.username !== "") {
-      writer.uint32(10).string(message.username);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetProfileByUsernameRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetProfileByUsernameRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.username = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetProfileByUsernameRequest {
-    return { username: isSet(object.username) ? globalThis.String(object.username) : "" };
-  },
-
-  toJSON(message: GetProfileByUsernameRequest): unknown {
-    const obj: any = {};
-    if (message.username !== "") {
-      obj.username = message.username;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetProfileByUsernameRequest>, I>>(base?: I): GetProfileByUsernameRequest {
-    return GetProfileByUsernameRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetProfileByUsernameRequest>, I>>(object: I): GetProfileByUsernameRequest {
-    const message = createBaseGetProfileByUsernameRequest();
-    message.username = object.username ?? "";
-    return message;
-  },
-};
 
 function createBaseProfileResponse(): ProfileResponse {
   return {
@@ -809,38 +335,460 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
   },
 };
 
-export interface ProfileService {
-  CreateProfile(request: CreateProfileRequest): Promise<ProfileResponse>;
-  UpdateProfile(request: UpdateProfileRequest): Promise<ProfileResponse>;
-  GetProfileByUsername(request: GetProfileByUsernameRequest): Promise<ProfileResponse>;
+function createBaseCreateProfileRequest(): CreateProfileRequest {
+  return {
+    userId: "",
+    username: "",
+    name: undefined,
+    avatarUrl: undefined,
+    bio: undefined,
+    websiteUrl: undefined,
+    twitter: undefined,
+    github: undefined,
+    youtube: undefined,
+    linkedin: undefined,
+  };
 }
 
-export const ProfileServiceServiceName = "user.ProfileService";
+export const CreateProfileRequest: MessageFns<CreateProfileRequest> = {
+  encode(message: CreateProfileRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.name !== undefined) {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.avatarUrl !== undefined) {
+      writer.uint32(34).string(message.avatarUrl);
+    }
+    if (message.bio !== undefined) {
+      writer.uint32(42).string(message.bio);
+    }
+    if (message.websiteUrl !== undefined) {
+      writer.uint32(50).string(message.websiteUrl);
+    }
+    if (message.twitter !== undefined) {
+      writer.uint32(58).string(message.twitter);
+    }
+    if (message.github !== undefined) {
+      writer.uint32(66).string(message.github);
+    }
+    if (message.youtube !== undefined) {
+      writer.uint32(74).string(message.youtube);
+    }
+    if (message.linkedin !== undefined) {
+      writer.uint32(82).string(message.linkedin);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateProfileRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateProfileRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.avatarUrl = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.bio = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.websiteUrl = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.twitter = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.github = reader.string();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.youtube = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.linkedin = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateProfileRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : undefined,
+      bio: isSet(object.bio) ? globalThis.String(object.bio) : undefined,
+      websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
+      twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
+      github: isSet(object.github) ? globalThis.String(object.github) : undefined,
+      youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : undefined,
+      linkedin: isSet(object.linkedin) ? globalThis.String(object.linkedin) : undefined,
+    };
+  },
+
+  toJSON(message: CreateProfileRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.avatarUrl !== undefined) {
+      obj.avatarUrl = message.avatarUrl;
+    }
+    if (message.bio !== undefined) {
+      obj.bio = message.bio;
+    }
+    if (message.websiteUrl !== undefined) {
+      obj.websiteUrl = message.websiteUrl;
+    }
+    if (message.twitter !== undefined) {
+      obj.twitter = message.twitter;
+    }
+    if (message.github !== undefined) {
+      obj.github = message.github;
+    }
+    if (message.youtube !== undefined) {
+      obj.youtube = message.youtube;
+    }
+    if (message.linkedin !== undefined) {
+      obj.linkedin = message.linkedin;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateProfileRequest>, I>>(base?: I): CreateProfileRequest {
+    return CreateProfileRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateProfileRequest>, I>>(object: I): CreateProfileRequest {
+    const message = createBaseCreateProfileRequest();
+    message.userId = object.userId ?? "";
+    message.username = object.username ?? "";
+    message.name = object.name ?? undefined;
+    message.avatarUrl = object.avatarUrl ?? undefined;
+    message.bio = object.bio ?? undefined;
+    message.websiteUrl = object.websiteUrl ?? undefined;
+    message.twitter = object.twitter ?? undefined;
+    message.github = object.github ?? undefined;
+    message.youtube = object.youtube ?? undefined;
+    message.linkedin = object.linkedin ?? undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateProfileRequest(): UpdateProfileRequest {
+  return {
+    userId: "",
+    username: undefined,
+    name: undefined,
+    avatarUrl: undefined,
+    bio: undefined,
+    websiteUrl: undefined,
+    twitter: undefined,
+    github: undefined,
+    youtube: undefined,
+    linkedin: undefined,
+  };
+}
+
+export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
+  encode(message: UpdateProfileRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.username !== undefined) {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.name !== undefined) {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.avatarUrl !== undefined) {
+      writer.uint32(34).string(message.avatarUrl);
+    }
+    if (message.bio !== undefined) {
+      writer.uint32(42).string(message.bio);
+    }
+    if (message.websiteUrl !== undefined) {
+      writer.uint32(50).string(message.websiteUrl);
+    }
+    if (message.twitter !== undefined) {
+      writer.uint32(58).string(message.twitter);
+    }
+    if (message.github !== undefined) {
+      writer.uint32(66).string(message.github);
+    }
+    if (message.youtube !== undefined) {
+      writer.uint32(74).string(message.youtube);
+    }
+    if (message.linkedin !== undefined) {
+      writer.uint32(82).string(message.linkedin);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateProfileRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateProfileRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.avatarUrl = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.bio = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.websiteUrl = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.twitter = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.github = reader.string();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.youtube = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.linkedin = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateProfileRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : undefined,
+      bio: isSet(object.bio) ? globalThis.String(object.bio) : undefined,
+      websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
+      twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
+      github: isSet(object.github) ? globalThis.String(object.github) : undefined,
+      youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : undefined,
+      linkedin: isSet(object.linkedin) ? globalThis.String(object.linkedin) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateProfileRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.username !== undefined) {
+      obj.username = message.username;
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.avatarUrl !== undefined) {
+      obj.avatarUrl = message.avatarUrl;
+    }
+    if (message.bio !== undefined) {
+      obj.bio = message.bio;
+    }
+    if (message.websiteUrl !== undefined) {
+      obj.websiteUrl = message.websiteUrl;
+    }
+    if (message.twitter !== undefined) {
+      obj.twitter = message.twitter;
+    }
+    if (message.github !== undefined) {
+      obj.github = message.github;
+    }
+    if (message.youtube !== undefined) {
+      obj.youtube = message.youtube;
+    }
+    if (message.linkedin !== undefined) {
+      obj.linkedin = message.linkedin;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateProfileRequest>, I>>(base?: I): UpdateProfileRequest {
+    return UpdateProfileRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateProfileRequest>, I>>(object: I): UpdateProfileRequest {
+    const message = createBaseUpdateProfileRequest();
+    message.userId = object.userId ?? "";
+    message.username = object.username ?? undefined;
+    message.name = object.name ?? undefined;
+    message.avatarUrl = object.avatarUrl ?? undefined;
+    message.bio = object.bio ?? undefined;
+    message.websiteUrl = object.websiteUrl ?? undefined;
+    message.twitter = object.twitter ?? undefined;
+    message.github = object.github ?? undefined;
+    message.youtube = object.youtube ?? undefined;
+    message.linkedin = object.linkedin ?? undefined;
+    return message;
+  },
+};
+
+export interface ProfileService {
+  Create(request: CreateProfileRequest): Promise<ProfileResponse>;
+  Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
+}
+
+export const ProfileServiceServiceName = "profile.ProfileService";
 export class ProfileServiceClientImpl implements ProfileService {
   private readonly rpc: Rpc;
   private readonly service: string;
   constructor(rpc: Rpc, opts?: { service?: string }) {
     this.service = opts?.service || ProfileServiceServiceName;
     this.rpc = rpc;
-    this.CreateProfile = this.CreateProfile.bind(this);
-    this.UpdateProfile = this.UpdateProfile.bind(this);
-    this.GetProfileByUsername = this.GetProfileByUsername.bind(this);
+    this.Create = this.Create.bind(this);
+    this.Update = this.Update.bind(this);
   }
-  CreateProfile(request: CreateProfileRequest): Promise<ProfileResponse> {
+  Create(request: CreateProfileRequest): Promise<ProfileResponse> {
     const data = CreateProfileRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "CreateProfile", data);
+    const promise = this.rpc.request(this.service, "Create", data);
     return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
   }
 
-  UpdateProfile(request: UpdateProfileRequest): Promise<ProfileResponse> {
+  Update(request: UpdateProfileRequest): Promise<ProfileResponse> {
     const data = UpdateProfileRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "UpdateProfile", data);
-    return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
-  }
-
-  GetProfileByUsername(request: GetProfileByUsernameRequest): Promise<ProfileResponse> {
-    const data = GetProfileByUsernameRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "GetProfileByUsername", data);
+    const promise = this.rpc.request(this.service, "Update", data);
     return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
   }
 }

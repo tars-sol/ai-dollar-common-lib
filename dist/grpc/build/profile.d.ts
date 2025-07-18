@@ -1,31 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-export declare const protobufPackage = "user";
-export interface CreateProfileRequest {
-    userId: string;
-    username: string;
-    name: string;
-    avatarUrl: string;
-    bio: string;
-    websiteUrl: string;
-    twitter: string;
-    github: string;
-    youtube: string;
-    linkedin: string;
-}
-export interface UpdateProfileRequest {
-    userId: string;
-    name: string;
-    avatarUrl: string;
-    bio: string;
-    websiteUrl: string;
-    twitter: string;
-    github: string;
-    youtube: string;
-    linkedin: string;
-}
-export interface GetProfileByUsernameRequest {
-    username: string;
-}
+export declare const protobufPackage = "profile";
 export interface ProfileResponse {
     id: string;
     userId: string;
@@ -42,25 +16,46 @@ export interface ProfileResponse {
     createdAt: string;
     updatedAt: string;
 }
+export interface CreateProfileRequest {
+    userId: string;
+    username: string;
+    name?: string | undefined;
+    avatarUrl?: string | undefined;
+    bio?: string | undefined;
+    websiteUrl?: string | undefined;
+    twitter?: string | undefined;
+    github?: string | undefined;
+    youtube?: string | undefined;
+    linkedin?: string | undefined;
+}
+export interface UpdateProfileRequest {
+    userId: string;
+    username?: string | undefined;
+    name?: string | undefined;
+    avatarUrl?: string | undefined;
+    bio?: string | undefined;
+    websiteUrl?: string | undefined;
+    twitter?: string | undefined;
+    github?: string | undefined;
+    youtube?: string | undefined;
+    linkedin?: string | undefined;
+}
+export declare const ProfileResponse: MessageFns<ProfileResponse>;
 export declare const CreateProfileRequest: MessageFns<CreateProfileRequest>;
 export declare const UpdateProfileRequest: MessageFns<UpdateProfileRequest>;
-export declare const GetProfileByUsernameRequest: MessageFns<GetProfileByUsernameRequest>;
-export declare const ProfileResponse: MessageFns<ProfileResponse>;
 export interface ProfileService {
-    CreateProfile(request: CreateProfileRequest): Promise<ProfileResponse>;
-    UpdateProfile(request: UpdateProfileRequest): Promise<ProfileResponse>;
-    GetProfileByUsername(request: GetProfileByUsernameRequest): Promise<ProfileResponse>;
+    Create(request: CreateProfileRequest): Promise<ProfileResponse>;
+    Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
 }
-export declare const ProfileServiceServiceName = "user.ProfileService";
+export declare const ProfileServiceServiceName = "profile.ProfileService";
 export declare class ProfileServiceClientImpl implements ProfileService {
     private readonly rpc;
     private readonly service;
     constructor(rpc: Rpc, opts?: {
         service?: string;
     });
-    CreateProfile(request: CreateProfileRequest): Promise<ProfileResponse>;
-    UpdateProfile(request: UpdateProfileRequest): Promise<ProfileResponse>;
-    GetProfileByUsername(request: GetProfileByUsernameRequest): Promise<ProfileResponse>;
+    Create(request: CreateProfileRequest): Promise<ProfileResponse>;
+    Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

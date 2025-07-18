@@ -1,40 +1,10 @@
 syntax = "proto3";
 
-package user;
+package profile;
 
 service ProfileService {
-  rpc CreateProfile (CreateProfileRequest) returns (ProfileResponse);
-  rpc UpdateProfile (UpdateProfileRequest) returns (ProfileResponse);
-  rpc GetProfileByUsername (GetProfileByUsernameRequest) returns (ProfileResponse);
-}
-
-message CreateProfileRequest {
-  string userId = 1;
-  string username = 2;
-  string name = 3;
-  string avatarUrl = 4;
-  string bio = 5;
-  string websiteUrl = 6;
-  string twitter = 7;
-  string github = 8;
-  string youtube = 9;
-  string linkedin = 10;
-}
-
-message UpdateProfileRequest {
-  string userId = 1;
-  string name = 2;
-  string avatarUrl = 3;
-  string bio = 4;
-  string websiteUrl = 5;
-  string twitter = 6;
-  string github = 7;
-  string youtube = 8;
-  string linkedin = 9;
-}
-
-message GetProfileByUsernameRequest {
-  string username = 1;
+  rpc Create (CreateProfileRequest) returns (ProfileResponse);
+  rpc Update (UpdateProfileRequest) returns (ProfileResponse);
 }
 
 message ProfileResponse {
@@ -52,4 +22,30 @@ message ProfileResponse {
   bool isVerified = 12;
   string createdAt = 13;
   string updatedAt = 14;
+}
+
+message CreateProfileRequest {
+  string userId = 1;
+  string username = 2;
+  optional string name = 3;
+  optional string avatarUrl = 4;
+  optional string bio = 5;
+  optional string websiteUrl = 6;
+  optional string twitter = 7;
+  optional string github = 8;
+  optional string youtube = 9;
+  optional string linkedin = 10;
+}
+
+message UpdateProfileRequest {
+  string userId = 1;
+  optional string username = 2;
+  optional string name = 3;
+  optional string avatarUrl = 4;
+  optional string bio = 5;
+  optional string websiteUrl = 6;
+  optional string twitter = 7;
+  optional string github = 8;
+  optional string youtube = 9;
+  optional string linkedin = 10;
 }
