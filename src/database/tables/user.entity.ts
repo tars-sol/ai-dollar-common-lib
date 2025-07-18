@@ -19,7 +19,7 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   password: string;
 
-  @Index({ unique: true, where: 'walletAddress IS NOT NULL' })
+  @Index({ unique: true, where: '"walletAddress" IS NOT NULL' })
   @Column({ type: 'varchar', nullable: true })
   walletAddress: string;
 
