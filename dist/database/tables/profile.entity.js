@@ -25,6 +25,11 @@ __decorate([
     __metadata("design:type", user_entity_1.User)
 ], Profile.prototype, "user", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Index)({ unique: true }),
+    __metadata("design:type", String)
+], Profile.prototype, "userId", void 0);
+__decorate([
     (0, typeorm_1.Index)({ unique: true }),
     (0, typeorm_1.Column)({ type: 'varchar', length: 32 }),
     __metadata("design:type", String)

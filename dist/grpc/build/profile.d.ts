@@ -40,12 +40,17 @@ export interface UpdateProfileRequest {
     youtube?: string | undefined;
     linkedin?: string | undefined;
 }
+export interface GetProfileByUserIdRequest {
+    userId: string;
+}
 export declare const ProfileResponse: MessageFns<ProfileResponse>;
 export declare const CreateProfileRequest: MessageFns<CreateProfileRequest>;
 export declare const UpdateProfileRequest: MessageFns<UpdateProfileRequest>;
+export declare const GetProfileByUserIdRequest: MessageFns<GetProfileByUserIdRequest>;
 export interface ProfileService {
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
+    GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
 }
 export declare const ProfileServiceServiceName = "profile.ProfileService";
 export declare class ProfileServiceClientImpl implements ProfileService {
@@ -56,6 +61,7 @@ export declare class ProfileServiceClientImpl implements ProfileService {
     });
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
+    GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

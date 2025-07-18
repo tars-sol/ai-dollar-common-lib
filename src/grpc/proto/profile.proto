@@ -5,6 +5,7 @@ package profile;
 service ProfileService {
   rpc Create (CreateProfileRequest) returns (ProfileResponse);
   rpc Update (UpdateProfileRequest) returns (ProfileResponse);
+  rpc GetByUserId (GetProfileByUserIdRequest) returns (ProfileResponse);
 }
 
 message ProfileResponse {
@@ -48,4 +49,8 @@ message UpdateProfileRequest {
   optional string github = 8;
   optional string youtube = 9;
   optional string linkedin = 10;
+}
+
+message GetProfileByUserIdRequest {
+  string userId = 1;
 }

@@ -19,6 +19,10 @@ export class Profile {
     @JoinColumn()
     user: User;
 
+    @Column()
+    @Index({ unique: true })
+    userId: string;
+
     @Index({ unique: true })
     @Column({ type: 'varchar', length: 32 })
     username: string;

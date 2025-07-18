@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: profile.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.protobufPackage = void 0;
+exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.GetProfileByUserIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "profile";
@@ -670,6 +670,57 @@ exports.UpdateProfileRequest = {
         return message;
     },
 };
+function createBaseGetProfileByUserIdRequest() {
+    return { userId: "" };
+}
+exports.GetProfileByUserIdRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetProfileByUserIdRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetProfileByUserIdRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetProfileByUserIdRequest();
+        message.userId = object.userId ?? "";
+        return message;
+    },
+};
 exports.ProfileServiceServiceName = "profile.ProfileService";
 class ProfileServiceClientImpl {
     constructor(rpc, opts) {
@@ -677,6 +728,7 @@ class ProfileServiceClientImpl {
         this.rpc = rpc;
         this.Create = this.Create.bind(this);
         this.Update = this.Update.bind(this);
+        this.GetByUserId = this.GetByUserId.bind(this);
     }
     Create(request) {
         const data = exports.CreateProfileRequest.encode(request).finish();
@@ -686,6 +738,11 @@ class ProfileServiceClientImpl {
     Update(request) {
         const data = exports.UpdateProfileRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "Update", data);
+        return promise.then((data) => exports.ProfileResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetByUserId(request) {
+        const data = exports.GetProfileByUserIdRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetByUserId", data);
         return promise.then((data) => exports.ProfileResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

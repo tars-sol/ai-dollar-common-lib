@@ -2,6 +2,7 @@ import { User } from './user.entity';
 export declare class Profile {
     id: string;
     user: User;
+    userId: string;
     username: string;
     name: string;
     avatarUrl: string;
