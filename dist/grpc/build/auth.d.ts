@@ -54,6 +54,7 @@ export interface AuthService {
     SsoLogin(request: SsoLoginRequest): Promise<AuthResponse>;
     WalletNonce(request: WalletNonceRequest): Promise<WalletNonceResponse>;
     WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
+    LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
 }
 export declare const AuthServiceServiceName = "auth.AuthService";
 export declare class AuthServiceClientImpl implements AuthService {
@@ -67,6 +68,7 @@ export declare class AuthServiceClientImpl implements AuthService {
     SsoLogin(request: SsoLoginRequest): Promise<AuthResponse>;
     WalletNonce(request: WalletNonceRequest): Promise<WalletNonceResponse>;
     WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
+    LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

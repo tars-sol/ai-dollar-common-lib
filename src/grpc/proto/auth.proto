@@ -8,6 +8,7 @@ service AuthService {
   rpc SsoLogin (SsoLoginRequest) returns (AuthResponse);
   rpc WalletNonce (WalletNonceRequest) returns (WalletNonceResponse);
   rpc WalletLogin (WalletLoginRequest) returns (AuthResponse);
+  rpc LinkWallet (LinkWalletRequest) returns (AuthResponse);
 }
 
 message RegisterRequest {

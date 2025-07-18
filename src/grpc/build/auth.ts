@@ -793,6 +793,7 @@ export interface AuthService {
   SsoLogin(request: SsoLoginRequest): Promise<AuthResponse>;
   WalletNonce(request: WalletNonceRequest): Promise<WalletNonceResponse>;
   WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
+  LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
 }
 
 export const AuthServiceServiceName = "auth.AuthService";
@@ -807,6 +808,7 @@ export class AuthServiceClientImpl implements AuthService {
     this.SsoLogin = this.SsoLogin.bind(this);
     this.WalletNonce = this.WalletNonce.bind(this);
     this.WalletLogin = this.WalletLogin.bind(this);
+    this.LinkWallet = this.LinkWallet.bind(this);
   }
   Register(request: RegisterRequest): Promise<AuthResponse> {
     const data = RegisterRequest.encode(request).finish();
@@ -835,6 +837,12 @@ export class AuthServiceClientImpl implements AuthService {
   WalletLogin(request: WalletLoginRequest): Promise<AuthResponse> {
     const data = WalletLoginRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "WalletLogin", data);
+    return promise.then((data) => AuthResponse.decode(new BinaryReader(data)));
+  }
+
+  LinkWallet(request: LinkWalletRequest): Promise<AuthResponse> {
+    const data = LinkWalletRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "LinkWallet", data);
     return promise.then((data) => AuthResponse.decode(new BinaryReader(data)));
   }
 }

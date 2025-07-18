@@ -674,6 +674,7 @@ class AuthServiceClientImpl {
         this.SsoLogin = this.SsoLogin.bind(this);
         this.WalletNonce = this.WalletNonce.bind(this);
         this.WalletLogin = this.WalletLogin.bind(this);
+        this.LinkWallet = this.LinkWallet.bind(this);
     }
     Register(request) {
         const data = exports.RegisterRequest.encode(request).finish();
@@ -698,6 +699,11 @@ class AuthServiceClientImpl {
     WalletLogin(request) {
         const data = exports.WalletLoginRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "WalletLogin", data);
+        return promise.then((data) => exports.AuthResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    LinkWallet(request) {
+        const data = exports.LinkWalletRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "LinkWallet", data);
         return promise.then((data) => exports.AuthResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
