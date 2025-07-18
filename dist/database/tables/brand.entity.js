@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Brand = void 0;
 const typeorm_1 = require("typeorm");
+const user_entity_1 = require("./user.entity");
 let Brand = class Brand {
 };
 exports.Brand = Brand;
@@ -19,19 +20,29 @@ __decorate([
     __metadata("design:type", String)
 ], Brand.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, typeorm_1.OneToOne)(() => user_entity_1.User, { eager: true, onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", user_entity_1.User)
+], Brand.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.Index)({ unique: true }),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Brand.prototype, "userId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 64 }),
     __metadata("design:type", String)
 ], Brand.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", String)
-], Brand.prototype, "logoUrl", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
 ], Brand.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", String)
+], Brand.prototype, "logoUrl", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
 ], Brand.prototype, "websiteUrl", void 0);
 __decorate([

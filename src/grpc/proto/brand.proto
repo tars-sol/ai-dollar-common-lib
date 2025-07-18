@@ -2,32 +2,38 @@ syntax = "proto3";
 
 package brand;
 
-message BrandResponse {
-  string id = 1;
-  string name = 2;
-  string logoUrl = 3;
-  string description = 4;
-  string websiteUrl = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
-}
-
-message CreateBrandRequest {
-  string name = 1;
-  optional string logoUrl = 2;
-  optional string description = 3;
-  optional string websiteUrl = 4;
-}
-
-message UpdateBrandRequest {
-  string id = 1;
-  optional string name = 2;
-  optional string logoUrl = 3;
-  optional string description = 4;
-  optional string websiteUrl = 5;
-}
-
+// gRPC Brand Service
 service BrandService {
   rpc Create (CreateBrandRequest) returns (BrandResponse);
   rpc Update (UpdateBrandRequest) returns (BrandResponse);
+}
+
+// Response shape (same for both create and update)
+message BrandResponse {
+  string id = 1;
+  string userId = 2;
+  string name = 3;
+  string description = 4;
+  string logoUrl = 5;
+  string websiteUrl = 6;
+  string createdAt = 7;
+  string updatedAt = 8;
+}
+
+// Request for creating a brand (userId comes from JWT in server)
+message CreateBrandRequest {
+  string userId = 1;
+  string name = 2;
+  optional string description = 3;
+  optional string logoUrl = 4;
+  optional string websiteUrl = 5;
+}
+
+// Request for updating a brand
+message UpdateBrandRequest {
+  string userId = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional string logoUrl = 4;
+  optional string websiteUrl = 5;
 }

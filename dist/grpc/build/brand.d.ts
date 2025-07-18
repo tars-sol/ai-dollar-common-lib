@@ -1,30 +1,36 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "brand";
+/** Response shape (same for both create and update) */
 export interface BrandResponse {
     id: string;
+    userId: string;
     name: string;
-    logoUrl: string;
     description: string;
+    logoUrl: string;
     websiteUrl: string;
     createdAt: string;
     updatedAt: string;
 }
+/** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {
+    userId: string;
     name: string;
-    logoUrl?: string | undefined;
     description?: string | undefined;
+    logoUrl?: string | undefined;
     websiteUrl?: string | undefined;
 }
+/** Request for updating a brand */
 export interface UpdateBrandRequest {
-    id: string;
+    userId: string;
     name?: string | undefined;
-    logoUrl?: string | undefined;
     description?: string | undefined;
+    logoUrl?: string | undefined;
     websiteUrl?: string | undefined;
 }
 export declare const BrandResponse: MessageFns<BrandResponse>;
 export declare const CreateBrandRequest: MessageFns<CreateBrandRequest>;
 export declare const UpdateBrandRequest: MessageFns<UpdateBrandRequest>;
+/** gRPC Brand Service */
 export interface BrandService {
     Create(request: CreateBrandRequest): Promise<BrandResponse>;
     Update(request: UpdateBrandRequest): Promise<BrandResponse>;
