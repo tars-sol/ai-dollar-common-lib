@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: auth.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.LinkWalletRequest = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.protobufPackage = void 0;
+exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "auth";
@@ -511,6 +511,57 @@ exports.LinkWalletRequest = {
         return message;
     },
 };
+function createBaseRefreshTokenRequest() {
+    return { refreshToken: "" };
+}
+exports.RefreshTokenRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.refreshToken !== "") {
+            writer.uint32(10).string(message.refreshToken);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseRefreshTokenRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.refreshToken = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.refreshToken !== "") {
+            obj.refreshToken = message.refreshToken;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.RefreshTokenRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseRefreshTokenRequest();
+        message.refreshToken = object.refreshToken ?? "";
+        return message;
+    },
+};
 function createBaseUserRequest() {
     return { id: "", email: "", walletAddress: "" };
 }
@@ -595,15 +646,18 @@ exports.UserRequest = {
     },
 };
 function createBaseAuthResponse() {
-    return { token: "", user: undefined };
+    return { token: "", refreshToken: "", user: undefined };
 }
 exports.AuthResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.token !== "") {
             writer.uint32(10).string(message.token);
         }
+        if (message.refreshToken !== "") {
+            writer.uint32(18).string(message.refreshToken);
+        }
         if (message.user !== undefined) {
-            exports.UserRequest.encode(message.user, writer.uint32(18).fork()).join();
+            exports.UserRequest.encode(message.user, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -625,6 +679,13 @@ exports.AuthResponse = {
                     if (tag !== 18) {
                         break;
                     }
+                    message.refreshToken = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
                     message.user = exports.UserRequest.decode(reader, reader.uint32());
                     continue;
                 }
@@ -639,6 +700,7 @@ exports.AuthResponse = {
     fromJSON(object) {
         return {
             token: isSet(object.token) ? globalThis.String(object.token) : "",
+            refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : "",
             user: isSet(object.user) ? exports.UserRequest.fromJSON(object.user) : undefined,
         };
     },
@@ -646,6 +708,9 @@ exports.AuthResponse = {
         const obj = {};
         if (message.token !== "") {
             obj.token = message.token;
+        }
+        if (message.refreshToken !== "") {
+            obj.refreshToken = message.refreshToken;
         }
         if (message.user !== undefined) {
             obj.user = exports.UserRequest.toJSON(message.user);
@@ -658,6 +723,7 @@ exports.AuthResponse = {
     fromPartial(object) {
         const message = createBaseAuthResponse();
         message.token = object.token ?? "";
+        message.refreshToken = object.refreshToken ?? "";
         message.user = (object.user !== undefined && object.user !== null)
             ? exports.UserRequest.fromPartial(object.user)
             : undefined;
@@ -675,6 +741,7 @@ class AuthServiceClientImpl {
         this.WalletNonce = this.WalletNonce.bind(this);
         this.WalletLogin = this.WalletLogin.bind(this);
         this.LinkWallet = this.LinkWallet.bind(this);
+        this.RefreshToken = this.RefreshToken.bind(this);
     }
     Register(request) {
         const data = exports.RegisterRequest.encode(request).finish();
@@ -704,6 +771,11 @@ class AuthServiceClientImpl {
     LinkWallet(request) {
         const data = exports.LinkWalletRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "LinkWallet", data);
+        return promise.then((data) => exports.AuthResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    RefreshToken(request) {
+        const data = exports.RefreshTokenRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "RefreshToken", data);
         return promise.then((data) => exports.AuthResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

@@ -46,6 +46,10 @@ export interface LinkWalletRequest {
   nonce: string;
 }
 
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
 export interface UserRequest {
   id: string;
   email: string;
@@ -54,6 +58,7 @@ export interface UserRequest {
 
 export interface AuthResponse {
   token: string;
+  refreshToken: string;
   user: UserRequest | undefined;
 }
 
@@ -617,6 +622,64 @@ export const LinkWalletRequest: MessageFns<LinkWalletRequest> = {
   },
 };
 
+function createBaseRefreshTokenRequest(): RefreshTokenRequest {
+  return { refreshToken: "" };
+}
+
+export const RefreshTokenRequest: MessageFns<RefreshTokenRequest> = {
+  encode(message: RefreshTokenRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.refreshToken !== "") {
+      writer.uint32(10).string(message.refreshToken);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RefreshTokenRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRefreshTokenRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.refreshToken = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RefreshTokenRequest {
+    return { refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : "" };
+  },
+
+  toJSON(message: RefreshTokenRequest): unknown {
+    const obj: any = {};
+    if (message.refreshToken !== "") {
+      obj.refreshToken = message.refreshToken;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RefreshTokenRequest>, I>>(base?: I): RefreshTokenRequest {
+    return RefreshTokenRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RefreshTokenRequest>, I>>(object: I): RefreshTokenRequest {
+    const message = createBaseRefreshTokenRequest();
+    message.refreshToken = object.refreshToken ?? "";
+    return message;
+  },
+};
+
 function createBaseUserRequest(): UserRequest {
   return { id: "", email: "", walletAddress: "" };
 }
@@ -710,7 +773,7 @@ export const UserRequest: MessageFns<UserRequest> = {
 };
 
 function createBaseAuthResponse(): AuthResponse {
-  return { token: "", user: undefined };
+  return { token: "", refreshToken: "", user: undefined };
 }
 
 export const AuthResponse: MessageFns<AuthResponse> = {
@@ -718,8 +781,11 @@ export const AuthResponse: MessageFns<AuthResponse> = {
     if (message.token !== "") {
       writer.uint32(10).string(message.token);
     }
+    if (message.refreshToken !== "") {
+      writer.uint32(18).string(message.refreshToken);
+    }
     if (message.user !== undefined) {
-      UserRequest.encode(message.user, writer.uint32(18).fork()).join();
+      UserRequest.encode(message.user, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -744,6 +810,14 @@ export const AuthResponse: MessageFns<AuthResponse> = {
             break;
           }
 
+          message.refreshToken = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
           message.user = UserRequest.decode(reader, reader.uint32());
           continue;
         }
@@ -759,6 +833,7 @@ export const AuthResponse: MessageFns<AuthResponse> = {
   fromJSON(object: any): AuthResponse {
     return {
       token: isSet(object.token) ? globalThis.String(object.token) : "",
+      refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : "",
       user: isSet(object.user) ? UserRequest.fromJSON(object.user) : undefined,
     };
   },
@@ -767,6 +842,9 @@ export const AuthResponse: MessageFns<AuthResponse> = {
     const obj: any = {};
     if (message.token !== "") {
       obj.token = message.token;
+    }
+    if (message.refreshToken !== "") {
+      obj.refreshToken = message.refreshToken;
     }
     if (message.user !== undefined) {
       obj.user = UserRequest.toJSON(message.user);
@@ -780,6 +858,7 @@ export const AuthResponse: MessageFns<AuthResponse> = {
   fromPartial<I extends Exact<DeepPartial<AuthResponse>, I>>(object: I): AuthResponse {
     const message = createBaseAuthResponse();
     message.token = object.token ?? "";
+    message.refreshToken = object.refreshToken ?? "";
     message.user = (object.user !== undefined && object.user !== null)
       ? UserRequest.fromPartial(object.user)
       : undefined;
@@ -794,6 +873,7 @@ export interface AuthService {
   WalletNonce(request: WalletNonceRequest): Promise<WalletNonceResponse>;
   WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
   LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
+  RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
 }
 
 export const AuthServiceServiceName = "auth.AuthService";
@@ -809,6 +889,7 @@ export class AuthServiceClientImpl implements AuthService {
     this.WalletNonce = this.WalletNonce.bind(this);
     this.WalletLogin = this.WalletLogin.bind(this);
     this.LinkWallet = this.LinkWallet.bind(this);
+    this.RefreshToken = this.RefreshToken.bind(this);
   }
   Register(request: RegisterRequest): Promise<AuthResponse> {
     const data = RegisterRequest.encode(request).finish();
@@ -843,6 +924,12 @@ export class AuthServiceClientImpl implements AuthService {
   LinkWallet(request: LinkWalletRequest): Promise<AuthResponse> {
     const data = LinkWalletRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "LinkWallet", data);
+    return promise.then((data) => AuthResponse.decode(new BinaryReader(data)));
+  }
+
+  RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse> {
+    const data = RefreshTokenRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "RefreshToken", data);
     return promise.then((data) => AuthResponse.decode(new BinaryReader(data)));
   }
 }

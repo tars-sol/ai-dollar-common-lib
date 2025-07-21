@@ -30,6 +30,9 @@ export interface LinkWalletRequest {
     signature: string;
     nonce: string;
 }
+export interface RefreshTokenRequest {
+    refreshToken: string;
+}
 export interface UserRequest {
     id: string;
     email: string;
@@ -37,6 +40,7 @@ export interface UserRequest {
 }
 export interface AuthResponse {
     token: string;
+    refreshToken: string;
     user: UserRequest | undefined;
 }
 export declare const RegisterRequest: MessageFns<RegisterRequest>;
@@ -46,6 +50,7 @@ export declare const WalletNonceRequest: MessageFns<WalletNonceRequest>;
 export declare const WalletNonceResponse: MessageFns<WalletNonceResponse>;
 export declare const WalletLoginRequest: MessageFns<WalletLoginRequest>;
 export declare const LinkWalletRequest: MessageFns<LinkWalletRequest>;
+export declare const RefreshTokenRequest: MessageFns<RefreshTokenRequest>;
 export declare const UserRequest: MessageFns<UserRequest>;
 export declare const AuthResponse: MessageFns<AuthResponse>;
 export interface AuthService {
@@ -55,6 +60,7 @@ export interface AuthService {
     WalletNonce(request: WalletNonceRequest): Promise<WalletNonceResponse>;
     WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
     LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
+    RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
 }
 export declare const AuthServiceServiceName = "auth.AuthService";
 export declare class AuthServiceClientImpl implements AuthService {
@@ -69,6 +75,7 @@ export declare class AuthServiceClientImpl implements AuthService {
     WalletNonce(request: WalletNonceRequest): Promise<WalletNonceResponse>;
     WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
     LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
+    RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

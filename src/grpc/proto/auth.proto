@@ -9,6 +9,7 @@ service AuthService {
   rpc WalletNonce (WalletNonceRequest) returns (WalletNonceResponse);
   rpc WalletLogin (WalletLoginRequest) returns (AuthResponse);
   rpc LinkWallet (LinkWalletRequest) returns (AuthResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (AuthResponse);
 }
 
 message RegisterRequest {
@@ -48,6 +49,10 @@ message LinkWalletRequest {
   string nonce = 4;
 }
 
+message RefreshTokenRequest {
+  string refreshToken = 1;
+}
+
 message UserRequest {
   string id = 1;
   string email = 2;
@@ -56,5 +61,6 @@ message UserRequest {
 
 message AuthResponse {
   string token = 1;
-  UserRequest user = 2;
+  string refreshToken = 2;
+  UserRequest user = 3;
 }
