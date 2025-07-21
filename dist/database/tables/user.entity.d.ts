@@ -4,6 +4,7 @@ export declare class User {
     password: string;
     walletAddress: string;
     walletNonce: string;
+    refreshToken: string;
     isBanned: boolean;
     isDeleted: boolean;
     createdAt: Date;

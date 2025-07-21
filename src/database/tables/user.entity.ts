@@ -26,6 +26,9 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   walletNonce: string;
 
+  @Column({ type: 'text', nullable: true })
+  refreshToken: string;
+
   @Column({ type: 'boolean', default: false })
   isBanned: boolean;
 
