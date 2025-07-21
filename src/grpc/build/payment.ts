@@ -18,6 +18,31 @@ export interface PaymentIntentResponse {
   clientSecretKey?: string | undefined;
 }
 
+export interface PaymentIntentEvent {
+  id: string;
+  amountReceived: number;
+  currency: string;
+  status: string;
+  clientSecret?: string | undefined;
+  eventType: string;
+}
+
+export interface StripeResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface ConnectedAccountRequest {
+  email: string;
+}
+
+export interface ConnectAccountResponse {
+  accountId: string;
+  email: string;
+  isActive: boolean;
+  onBoardingUrl: string;
+}
+
 function createBaseCreatePaymentIntentRequest(): CreatePaymentIntentRequest {
   return { amount: "", currency: "" };
 }
@@ -152,8 +177,393 @@ export const PaymentIntentResponse: MessageFns<PaymentIntentResponse> = {
   },
 };
 
+function createBasePaymentIntentEvent(): PaymentIntentEvent {
+  return { id: "", amountReceived: 0, currency: "", status: "", clientSecret: undefined, eventType: "" };
+}
+
+export const PaymentIntentEvent: MessageFns<PaymentIntentEvent> = {
+  encode(message: PaymentIntentEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.amountReceived !== 0) {
+      writer.uint32(24).int64(message.amountReceived);
+    }
+    if (message.currency !== "") {
+      writer.uint32(34).string(message.currency);
+    }
+    if (message.status !== "") {
+      writer.uint32(42).string(message.status);
+    }
+    if (message.clientSecret !== undefined) {
+      writer.uint32(50).string(message.clientSecret);
+    }
+    if (message.eventType !== "") {
+      writer.uint32(58).string(message.eventType);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PaymentIntentEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePaymentIntentEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.amountReceived = longToNumber(reader.int64());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.currency = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.clientSecret = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.eventType = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PaymentIntentEvent {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      amountReceived: isSet(object.amountReceived) ? globalThis.Number(object.amountReceived) : 0,
+      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+      clientSecret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : undefined,
+      eventType: isSet(object.eventType) ? globalThis.String(object.eventType) : "",
+    };
+  },
+
+  toJSON(message: PaymentIntentEvent): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.amountReceived !== 0) {
+      obj.amountReceived = Math.round(message.amountReceived);
+    }
+    if (message.currency !== "") {
+      obj.currency = message.currency;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.clientSecret !== undefined) {
+      obj.clientSecret = message.clientSecret;
+    }
+    if (message.eventType !== "") {
+      obj.eventType = message.eventType;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PaymentIntentEvent>, I>>(base?: I): PaymentIntentEvent {
+    return PaymentIntentEvent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PaymentIntentEvent>, I>>(object: I): PaymentIntentEvent {
+    const message = createBasePaymentIntentEvent();
+    message.id = object.id ?? "";
+    message.amountReceived = object.amountReceived ?? 0;
+    message.currency = object.currency ?? "";
+    message.status = object.status ?? "";
+    message.clientSecret = object.clientSecret ?? undefined;
+    message.eventType = object.eventType ?? "";
+    return message;
+  },
+};
+
+function createBaseStripeResponse(): StripeResponse {
+  return { success: false, message: "" };
+}
+
+export const StripeResponse: MessageFns<StripeResponse> = {
+  encode(message: StripeResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    if (message.message !== "") {
+      writer.uint32(18).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StripeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStripeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.success = reader.bool();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StripeResponse {
+    return {
+      success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
+      message: isSet(object.message) ? globalThis.String(object.message) : "",
+    };
+  },
+
+  toJSON(message: StripeResponse): unknown {
+    const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StripeResponse>, I>>(base?: I): StripeResponse {
+    return StripeResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StripeResponse>, I>>(object: I): StripeResponse {
+    const message = createBaseStripeResponse();
+    message.success = object.success ?? false;
+    message.message = object.message ?? "";
+    return message;
+  },
+};
+
+function createBaseConnectedAccountRequest(): ConnectedAccountRequest {
+  return { email: "" };
+}
+
+export const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest> = {
+  encode(message: ConnectedAccountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.email !== "") {
+      writer.uint32(10).string(message.email);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ConnectedAccountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseConnectedAccountRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConnectedAccountRequest {
+    return { email: isSet(object.email) ? globalThis.String(object.email) : "" };
+  },
+
+  toJSON(message: ConnectedAccountRequest): unknown {
+    const obj: any = {};
+    if (message.email !== "") {
+      obj.email = message.email;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ConnectedAccountRequest>, I>>(base?: I): ConnectedAccountRequest {
+    return ConnectedAccountRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ConnectedAccountRequest>, I>>(object: I): ConnectedAccountRequest {
+    const message = createBaseConnectedAccountRequest();
+    message.email = object.email ?? "";
+    return message;
+  },
+};
+
+function createBaseConnectAccountResponse(): ConnectAccountResponse {
+  return { accountId: "", email: "", isActive: false, onBoardingUrl: "" };
+}
+
+export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
+  encode(message: ConnectAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.accountId !== "") {
+      writer.uint32(10).string(message.accountId);
+    }
+    if (message.email !== "") {
+      writer.uint32(18).string(message.email);
+    }
+    if (message.isActive !== false) {
+      writer.uint32(24).bool(message.isActive);
+    }
+    if (message.onBoardingUrl !== "") {
+      writer.uint32(34).string(message.onBoardingUrl);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ConnectAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseConnectAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.accountId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.isActive = reader.bool();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.onBoardingUrl = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConnectAccountResponse {
+    return {
+      accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
+      onBoardingUrl: isSet(object.onBoardingUrl) ? globalThis.String(object.onBoardingUrl) : "",
+    };
+  },
+
+  toJSON(message: ConnectAccountResponse): unknown {
+    const obj: any = {};
+    if (message.accountId !== "") {
+      obj.accountId = message.accountId;
+    }
+    if (message.email !== "") {
+      obj.email = message.email;
+    }
+    if (message.isActive !== false) {
+      obj.isActive = message.isActive;
+    }
+    if (message.onBoardingUrl !== "") {
+      obj.onBoardingUrl = message.onBoardingUrl;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ConnectAccountResponse>, I>>(base?: I): ConnectAccountResponse {
+    return ConnectAccountResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ConnectAccountResponse>, I>>(object: I): ConnectAccountResponse {
+    const message = createBaseConnectAccountResponse();
+    message.accountId = object.accountId ?? "";
+    message.email = object.email ?? "";
+    message.isActive = object.isActive ?? false;
+    message.onBoardingUrl = object.onBoardingUrl ?? "";
+    return message;
+  },
+};
+
 export interface PaymentService {
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
+  HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
+  CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
+  GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
 }
 
 export const PaymentServiceServiceName = "payment.PaymentService";
@@ -164,11 +574,32 @@ export class PaymentServiceClientImpl implements PaymentService {
     this.service = opts?.service || PaymentServiceServiceName;
     this.rpc = rpc;
     this.CreatePaymentIntent = this.CreatePaymentIntent.bind(this);
+    this.HandlePaymentIntent = this.HandlePaymentIntent.bind(this);
+    this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
+    this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
   }
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {
     const data = CreatePaymentIntentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreatePaymentIntent", data);
     return promise.then((data) => PaymentIntentResponse.decode(new BinaryReader(data)));
+  }
+
+  HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse> {
+    const data = PaymentIntentEvent.encode(request).finish();
+    const promise = this.rpc.request(this.service, "HandlePaymentIntent", data);
+    return promise.then((data) => StripeResponse.decode(new BinaryReader(data)));
+  }
+
+  CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse> {
+    const data = ConnectedAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateConnectedAccount", data);
+    return promise.then((data) => ConnectAccountResponse.decode(new BinaryReader(data)));
+  }
+
+  GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse> {
+    const data = ConnectedAccountRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetConnectedAccount", data);
+    return promise.then((data) => ConnectAccountResponse.decode(new BinaryReader(data)));
   }
 }
 
@@ -187,6 +618,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

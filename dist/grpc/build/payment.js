@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: payment.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.protobufPackage = void 0;
+exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "payment";
@@ -128,20 +128,393 @@ exports.PaymentIntentResponse = {
         return message;
     },
 };
+function createBasePaymentIntentEvent() {
+    return { id: "", amountReceived: 0, currency: "", status: "", clientSecret: undefined, eventType: "" };
+}
+exports.PaymentIntentEvent = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.amountReceived !== 0) {
+            writer.uint32(24).int64(message.amountReceived);
+        }
+        if (message.currency !== "") {
+            writer.uint32(34).string(message.currency);
+        }
+        if (message.status !== "") {
+            writer.uint32(42).string(message.status);
+        }
+        if (message.clientSecret !== undefined) {
+            writer.uint32(50).string(message.clientSecret);
+        }
+        if (message.eventType !== "") {
+            writer.uint32(58).string(message.eventType);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePaymentIntentEvent();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.amountReceived = longToNumber(reader.int64());
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.currency = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.status = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.clientSecret = reader.string();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.eventType = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            amountReceived: isSet(object.amountReceived) ? globalThis.Number(object.amountReceived) : 0,
+            currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+            status: isSet(object.status) ? globalThis.String(object.status) : "",
+            clientSecret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : undefined,
+            eventType: isSet(object.eventType) ? globalThis.String(object.eventType) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.amountReceived !== 0) {
+            obj.amountReceived = Math.round(message.amountReceived);
+        }
+        if (message.currency !== "") {
+            obj.currency = message.currency;
+        }
+        if (message.status !== "") {
+            obj.status = message.status;
+        }
+        if (message.clientSecret !== undefined) {
+            obj.clientSecret = message.clientSecret;
+        }
+        if (message.eventType !== "") {
+            obj.eventType = message.eventType;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PaymentIntentEvent.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePaymentIntentEvent();
+        message.id = object.id ?? "";
+        message.amountReceived = object.amountReceived ?? 0;
+        message.currency = object.currency ?? "";
+        message.status = object.status ?? "";
+        message.clientSecret = object.clientSecret ?? undefined;
+        message.eventType = object.eventType ?? "";
+        return message;
+    },
+};
+function createBaseStripeResponse() {
+    return { success: false, message: "" };
+}
+exports.StripeResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.success !== false) {
+            writer.uint32(8).bool(message.success);
+        }
+        if (message.message !== "") {
+            writer.uint32(18).string(message.message);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStripeResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.success = reader.bool();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.message = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
+            message: isSet(object.message) ? globalThis.String(object.message) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.success !== false) {
+            obj.success = message.success;
+        }
+        if (message.message !== "") {
+            obj.message = message.message;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StripeResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStripeResponse();
+        message.success = object.success ?? false;
+        message.message = object.message ?? "";
+        return message;
+    },
+};
+function createBaseConnectedAccountRequest() {
+    return { email: "" };
+}
+exports.ConnectedAccountRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.email !== "") {
+            writer.uint32(10).string(message.email);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseConnectedAccountRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.email = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { email: isSet(object.email) ? globalThis.String(object.email) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.email !== "") {
+            obj.email = message.email;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ConnectedAccountRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseConnectedAccountRequest();
+        message.email = object.email ?? "";
+        return message;
+    },
+};
+function createBaseConnectAccountResponse() {
+    return { accountId: "", email: "", isActive: false, onBoardingUrl: "" };
+}
+exports.ConnectAccountResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.accountId !== "") {
+            writer.uint32(10).string(message.accountId);
+        }
+        if (message.email !== "") {
+            writer.uint32(18).string(message.email);
+        }
+        if (message.isActive !== false) {
+            writer.uint32(24).bool(message.isActive);
+        }
+        if (message.onBoardingUrl !== "") {
+            writer.uint32(34).string(message.onBoardingUrl);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseConnectAccountResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.accountId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.email = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.isActive = reader.bool();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.onBoardingUrl = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            accountId: isSet(object.accountId) ? globalThis.String(object.accountId) : "",
+            email: isSet(object.email) ? globalThis.String(object.email) : "",
+            isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
+            onBoardingUrl: isSet(object.onBoardingUrl) ? globalThis.String(object.onBoardingUrl) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.accountId !== "") {
+            obj.accountId = message.accountId;
+        }
+        if (message.email !== "") {
+            obj.email = message.email;
+        }
+        if (message.isActive !== false) {
+            obj.isActive = message.isActive;
+        }
+        if (message.onBoardingUrl !== "") {
+            obj.onBoardingUrl = message.onBoardingUrl;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ConnectAccountResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseConnectAccountResponse();
+        message.accountId = object.accountId ?? "";
+        message.email = object.email ?? "";
+        message.isActive = object.isActive ?? false;
+        message.onBoardingUrl = object.onBoardingUrl ?? "";
+        return message;
+    },
+};
 exports.PaymentServiceServiceName = "payment.PaymentService";
 class PaymentServiceClientImpl {
     constructor(rpc, opts) {
         this.service = opts?.service || exports.PaymentServiceServiceName;
         this.rpc = rpc;
         this.CreatePaymentIntent = this.CreatePaymentIntent.bind(this);
+        this.HandlePaymentIntent = this.HandlePaymentIntent.bind(this);
+        this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
+        this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
     }
     CreatePaymentIntent(request) {
         const data = exports.CreatePaymentIntentRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "CreatePaymentIntent", data);
         return promise.then((data) => exports.PaymentIntentResponse.decode(new wire_1.BinaryReader(data)));
     }
+    HandlePaymentIntent(request) {
+        const data = exports.PaymentIntentEvent.encode(request).finish();
+        const promise = this.rpc.request(this.service, "HandlePaymentIntent", data);
+        return promise.then((data) => exports.StripeResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    CreateConnectedAccount(request) {
+        const data = exports.ConnectedAccountRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "CreateConnectedAccount", data);
+        return promise.then((data) => exports.ConnectAccountResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetConnectedAccount(request) {
+        const data = exports.ConnectedAccountRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetConnectedAccount", data);
+        return promise.then((data) => exports.ConnectAccountResponse.decode(new wire_1.BinaryReader(data)));
+    }
 }
 exports.PaymentServiceClientImpl = PaymentServiceClientImpl;
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

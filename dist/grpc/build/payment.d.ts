@@ -7,10 +7,38 @@ export interface CreatePaymentIntentRequest {
 export interface PaymentIntentResponse {
     clientSecretKey?: string | undefined;
 }
+export interface PaymentIntentEvent {
+    id: string;
+    amountReceived: number;
+    currency: string;
+    status: string;
+    clientSecret?: string | undefined;
+    eventType: string;
+}
+export interface StripeResponse {
+    success: boolean;
+    message: string;
+}
+export interface ConnectedAccountRequest {
+    email: string;
+}
+export interface ConnectAccountResponse {
+    accountId: string;
+    email: string;
+    isActive: boolean;
+    onBoardingUrl: string;
+}
 export declare const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest>;
 export declare const PaymentIntentResponse: MessageFns<PaymentIntentResponse>;
+export declare const PaymentIntentEvent: MessageFns<PaymentIntentEvent>;
+export declare const StripeResponse: MessageFns<StripeResponse>;
+export declare const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest>;
+export declare const ConnectAccountResponse: MessageFns<ConnectAccountResponse>;
 export interface PaymentService {
     CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
+    HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
+    CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
+    GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
 }
 export declare const PaymentServiceServiceName = "payment.PaymentService";
 export declare class PaymentServiceClientImpl implements PaymentService {
@@ -20,6 +48,9 @@ export declare class PaymentServiceClientImpl implements PaymentService {
         service?: string;
     });
     CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
+    HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
+    CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
+    GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

@@ -4,7 +4,9 @@ package payment;
 
 service PaymentService {
   rpc CreatePaymentIntent (CreatePaymentIntentRequest) returns (PaymentIntentResponse);
-
+  rpc HandlePaymentIntent (PaymentIntentEvent) returns (StripeResponse); 
+  rpc CreateConnectedAccount (ConnectedAccountRequest) returns (ConnectAccountResponse);
+  rpc GetConnectedAccount (ConnectedAccountRequest) returns (ConnectAccountResponse);
 }
 
 message CreatePaymentIntentRequest {
@@ -14,4 +16,27 @@ message CreatePaymentIntentRequest {
 
 message PaymentIntentResponse {
   optional string clientSecretKey = 1;
+}
+message PaymentIntentEvent {
+  string id = 1;
+  int64 amount_received = 3;
+  string currency = 4;
+  string status = 5;
+  optional string client_secret = 6;
+  string event_type = 7;
+}
+message StripeResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ConnectedAccountRequest{
+  string email = 1;
+}
+
+message ConnectAccountResponse{
+  string accountId = 1;
+  string email = 2;
+  bool isActive = 3;
+  string onBoardingUrl=4;
 }
