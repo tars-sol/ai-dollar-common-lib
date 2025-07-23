@@ -1,2 +1,1 @@
-declare const _default: never[];
-export default _default;
+export * from './auth-role';
