@@ -10,15 +10,15 @@ exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.C
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "payment";
 function createBaseCreatePaymentIntentRequest() {
-    return { amount: "", currency: "" };
+    return { amount: "", brandId: "" };
 }
 exports.CreatePaymentIntentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.amount !== "") {
             writer.uint32(10).string(message.amount);
         }
-        if (message.currency !== "") {
-            writer.uint32(18).string(message.currency);
+        if (message.brandId !== "") {
+            writer.uint32(18).string(message.brandId);
         }
         return writer;
     },
@@ -40,7 +40,7 @@ exports.CreatePaymentIntentRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.currency = reader.string();
+                    message.brandId = reader.string();
                     continue;
                 }
             }
@@ -54,7 +54,7 @@ exports.CreatePaymentIntentRequest = {
     fromJSON(object) {
         return {
             amount: isSet(object.amount) ? globalThis.String(object.amount) : "",
-            currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
         };
     },
     toJSON(message) {
@@ -62,8 +62,8 @@ exports.CreatePaymentIntentRequest = {
         if (message.amount !== "") {
             obj.amount = message.amount;
         }
-        if (message.currency !== "") {
-            obj.currency = message.currency;
+        if (message.brandId !== "") {
+            obj.brandId = message.brandId;
         }
         return obj;
     },
@@ -73,7 +73,7 @@ exports.CreatePaymentIntentRequest = {
     fromPartial(object) {
         const message = createBaseCreatePaymentIntentRequest();
         message.amount = object.amount ?? "";
-        message.currency = object.currency ?? "";
+        message.brandId = object.brandId ?? "";
         return message;
     },
 };
@@ -129,7 +129,7 @@ exports.PaymentIntentResponse = {
     },
 };
 function createBasePaymentIntentEvent() {
-    return { id: "", amountReceived: 0, currency: "", status: "", clientSecret: undefined, eventType: "" };
+    return { id: "", amountReceived: 0, currency: "", status: "", clientSecret: undefined, eventType: "", brandId: "" };
 }
 exports.PaymentIntentEvent = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -150,6 +150,9 @@ exports.PaymentIntentEvent = {
         }
         if (message.eventType !== "") {
             writer.uint32(58).string(message.eventType);
+        }
+        if (message.brandId !== "") {
+            writer.uint32(18).string(message.brandId);
         }
         return writer;
     },
@@ -202,6 +205,13 @@ exports.PaymentIntentEvent = {
                     message.eventType = reader.string();
                     continue;
                 }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.brandId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -218,6 +228,7 @@ exports.PaymentIntentEvent = {
             status: isSet(object.status) ? globalThis.String(object.status) : "",
             clientSecret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : undefined,
             eventType: isSet(object.eventType) ? globalThis.String(object.eventType) : "",
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
         };
     },
     toJSON(message) {
@@ -240,6 +251,9 @@ exports.PaymentIntentEvent = {
         if (message.eventType !== "") {
             obj.eventType = message.eventType;
         }
+        if (message.brandId !== "") {
+            obj.brandId = message.brandId;
+        }
         return obj;
     },
     create(base) {
@@ -253,6 +267,7 @@ exports.PaymentIntentEvent = {
         message.status = object.status ?? "";
         message.clientSecret = object.clientSecret ?? undefined;
         message.eventType = object.eventType ?? "";
+        message.brandId = object.brandId ?? "";
         return message;
     },
 };

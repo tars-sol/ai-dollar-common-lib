@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Brand } from './brand.entity';
 export enum PaymentStatus {
   PENDING = 'pending',
   SUCCEEDED = 'succeeded',
@@ -27,20 +30,23 @@ export class Payment {
   @Column({ unique: true })
   transactionId: string;
 
-//   @Column({ nullable: true })
-//   campaignId: string;
+  //   @Column({ nullable: true })
+  //   campaignId: string;
   @Column({
     type: 'enum',
     enum: PaymentStatus,
     default: PaymentStatus.PENDING,
   })
   status: PaymentStatus;
-//   @Column()
-//   userId: string;
+  @ManyToOne(() => Brand, (brand) => brand.payments, {
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  @JoinColumn({ name: 'brandId' })
+  brand: Brand;
 
-  //   @ManyToOne(() => User, (user) => user.payments, { onDelete: 'CASCADE' })
-  //   @JoinColumn({ name: 'userId' })
-  //   user: User;
+  @Column()
+  brandId: string;
 
   @CreateDateColumn()
   createdAt: Date;

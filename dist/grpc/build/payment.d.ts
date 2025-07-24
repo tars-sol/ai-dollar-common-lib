@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "payment";
 export interface CreatePaymentIntentRequest {
     amount: string;
-    currency: string;
+    brandId: string;
 }
 export interface PaymentIntentResponse {
     clientSecretKey?: string | undefined;
@@ -14,6 +14,7 @@ export interface PaymentIntentEvent {
     status: string;
     clientSecret?: string | undefined;
     eventType: string;
+    brandId: string;
 }
 export interface StripeResponse {
     success: boolean;

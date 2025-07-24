@@ -7,8 +7,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Index,
+  OneToMany,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Payment } from './payment.entity';
 
 @Entity('brands')
 export class Brand {
@@ -34,7 +36,8 @@ export class Brand {
 
   @Column({ type: 'varchar', nullable: true })
   websiteUrl: string;
-
+  @OneToMany(() => Payment, (payment) => payment.brand)
+  payments: Payment[];
   @CreateDateColumn()
   createdAt: Date;
 

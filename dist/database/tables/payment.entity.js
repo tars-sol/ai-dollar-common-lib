@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Payment = exports.PaymentStatus = void 0;
 const typeorm_1 = require("typeorm");
+const brand_entity_1 = require("./brand.entity");
 var PaymentStatus;
 (function (PaymentStatus) {
     PaymentStatus["PENDING"] = "pending";
@@ -48,6 +49,18 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Payment.prototype, "status", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => brand_entity_1.Brand, (brand) => brand.payments, {
+        onDelete: 'CASCADE',
+        eager: true,
+    }),
+    (0, typeorm_1.JoinColumn)({ name: 'brandId' }),
+    __metadata("design:type", brand_entity_1.Brand)
+], Payment.prototype, "brand", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Payment.prototype, "brandId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

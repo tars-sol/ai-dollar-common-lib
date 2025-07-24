@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Brand = void 0;
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./user.entity");
+const payment_entity_1 = require("./payment.entity");
 let Brand = class Brand {
 };
 exports.Brand = Brand;
@@ -45,6 +46,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
 ], Brand.prototype, "websiteUrl", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => payment_entity_1.Payment, (payment) => payment.brand),
+    __metadata("design:type", Array)
+], Brand.prototype, "payments", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

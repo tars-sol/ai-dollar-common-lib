@@ -11,7 +11,7 @@ service PaymentService {
 
 message CreatePaymentIntentRequest {
   string amount = 1;
-  string currency = 2;
+  string brandId = 2;
 }
 
 message PaymentIntentResponse {
@@ -24,6 +24,7 @@ message PaymentIntentEvent {
   string status = 5;
   optional string client_secret = 6;
   string event_type = 7;
+  string brandId = 2;
 }
 message StripeResponse {
   bool success = 1;

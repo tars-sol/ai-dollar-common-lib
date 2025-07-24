@@ -1,4 +1,5 @@
 import { User } from './user.entity';
+import { Payment } from './payment.entity';
 export declare class Brand {
     id: string;
     user: User;
@@ -7,6 +8,7 @@ export declare class Brand {
     description: string;
     logoUrl: string;
     websiteUrl: string;
+    payments: Payment[];
     createdAt: Date;
     updatedAt: Date;
 }

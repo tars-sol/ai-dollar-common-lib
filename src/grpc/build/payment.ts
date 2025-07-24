@@ -11,7 +11,7 @@ export const protobufPackage = "payment";
 
 export interface CreatePaymentIntentRequest {
   amount: string;
-  currency: string;
+  brandId: string;
 }
 
 export interface PaymentIntentResponse {
@@ -25,6 +25,7 @@ export interface PaymentIntentEvent {
   status: string;
   clientSecret?: string | undefined;
   eventType: string;
+  brandId: string;
 }
 
 export interface StripeResponse {
@@ -44,7 +45,7 @@ export interface ConnectAccountResponse {
 }
 
 function createBaseCreatePaymentIntentRequest(): CreatePaymentIntentRequest {
-  return { amount: "", currency: "" };
+  return { amount: "", brandId: "" };
 }
 
 export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> = {
@@ -52,8 +53,8 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     if (message.amount !== "") {
       writer.uint32(10).string(message.amount);
     }
-    if (message.currency !== "") {
-      writer.uint32(18).string(message.currency);
+    if (message.brandId !== "") {
+      writer.uint32(18).string(message.brandId);
     }
     return writer;
   },
@@ -78,7 +79,7 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
             break;
           }
 
-          message.currency = reader.string();
+          message.brandId = reader.string();
           continue;
         }
       }
@@ -93,7 +94,7 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
   fromJSON(object: any): CreatePaymentIntentRequest {
     return {
       amount: isSet(object.amount) ? globalThis.String(object.amount) : "",
-      currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
     };
   },
 
@@ -102,8 +103,8 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     if (message.amount !== "") {
       obj.amount = message.amount;
     }
-    if (message.currency !== "") {
-      obj.currency = message.currency;
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
     }
     return obj;
   },
@@ -114,7 +115,7 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
   fromPartial<I extends Exact<DeepPartial<CreatePaymentIntentRequest>, I>>(object: I): CreatePaymentIntentRequest {
     const message = createBaseCreatePaymentIntentRequest();
     message.amount = object.amount ?? "";
-    message.currency = object.currency ?? "";
+    message.brandId = object.brandId ?? "";
     return message;
   },
 };
@@ -178,7 +179,7 @@ export const PaymentIntentResponse: MessageFns<PaymentIntentResponse> = {
 };
 
 function createBasePaymentIntentEvent(): PaymentIntentEvent {
-  return { id: "", amountReceived: 0, currency: "", status: "", clientSecret: undefined, eventType: "" };
+  return { id: "", amountReceived: 0, currency: "", status: "", clientSecret: undefined, eventType: "", brandId: "" };
 }
 
 export const PaymentIntentEvent: MessageFns<PaymentIntentEvent> = {
@@ -200,6 +201,9 @@ export const PaymentIntentEvent: MessageFns<PaymentIntentEvent> = {
     }
     if (message.eventType !== "") {
       writer.uint32(58).string(message.eventType);
+    }
+    if (message.brandId !== "") {
+      writer.uint32(18).string(message.brandId);
     }
     return writer;
   },
@@ -259,6 +263,14 @@ export const PaymentIntentEvent: MessageFns<PaymentIntentEvent> = {
           message.eventType = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -276,6 +288,7 @@ export const PaymentIntentEvent: MessageFns<PaymentIntentEvent> = {
       status: isSet(object.status) ? globalThis.String(object.status) : "",
       clientSecret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : undefined,
       eventType: isSet(object.eventType) ? globalThis.String(object.eventType) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
     };
   },
 
@@ -299,6 +312,9 @@ export const PaymentIntentEvent: MessageFns<PaymentIntentEvent> = {
     if (message.eventType !== "") {
       obj.eventType = message.eventType;
     }
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
     return obj;
   },
 
@@ -313,6 +329,7 @@ export const PaymentIntentEvent: MessageFns<PaymentIntentEvent> = {
     message.status = object.status ?? "";
     message.clientSecret = object.clientSecret ?? undefined;
     message.eventType = object.eventType ?? "";
+    message.brandId = object.brandId ?? "";
     return message;
   },
 };
