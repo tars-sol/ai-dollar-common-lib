@@ -23,4 +23,5 @@ __exportStar(require("./connected_accounts.entity"), exports);
 __exportStar(require("./brand_balance.entity"), exports);
 __exportStar(require("./campaign.entity"), exports);
 __exportStar(require("./task.entity"), exports);
+__exportStar(require("./post.entity"), exports);
 //# sourceMappingURL=index.js.map

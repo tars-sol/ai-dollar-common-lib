@@ -7,3 +7,4 @@ export * from './connected_accounts.entity';
 export * from './brand_balance.entity';
 export * from './campaign.entity';
 export * from './task.entity';
+export * from './post.entity';
