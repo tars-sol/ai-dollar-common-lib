@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Brand } from './brand.entity';
+import { Campaign } from './campaign.entity';
 export enum PaymentStatus {
   PENDING = 'pending',
   SUCCEEDED = 'succeeded',
@@ -47,6 +48,16 @@ export class Payment {
 
   @Column()
   brandId: string;
+    @ManyToOne(() => Campaign, (campaign) => campaign.payment, {
+    onDelete: 'CASCADE',
+    eager: false,
+  })
+  @JoinColumn({ name: 'campaignId' })
+  campaign: Campaign;
+
+  @Column({ nullable: true })
+  campaignId: string;
+
 
   @CreateDateColumn()
   createdAt: Date;

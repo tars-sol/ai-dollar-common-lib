@@ -9,9 +9,14 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "payment";
 
+export interface TestResponse {
+  success: boolean;
+}
+
 export interface CreatePaymentIntentRequest {
   amount: string;
   brandId: string;
+  campaignId: string;
 }
 
 export interface PaymentIntentResponse {
@@ -44,8 +49,66 @@ export interface ConnectAccountResponse {
   onBoardingUrl: string;
 }
 
+function createBaseTestResponse(): TestResponse {
+  return { success: false };
+}
+
+export const TestResponse: MessageFns<TestResponse> = {
+  encode(message: TestResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TestResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTestResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.success = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TestResponse {
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+  },
+
+  toJSON(message: TestResponse): unknown {
+    const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TestResponse>, I>>(base?: I): TestResponse {
+    return TestResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TestResponse>, I>>(object: I): TestResponse {
+    const message = createBaseTestResponse();
+    message.success = object.success ?? false;
+    return message;
+  },
+};
+
 function createBaseCreatePaymentIntentRequest(): CreatePaymentIntentRequest {
-  return { amount: "", brandId: "" };
+  return { amount: "", brandId: "", campaignId: "" };
 }
 
 export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> = {
@@ -55,6 +118,9 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     }
     if (message.brandId !== "") {
       writer.uint32(18).string(message.brandId);
+    }
+    if (message.campaignId !== "") {
+      writer.uint32(26).string(message.campaignId);
     }
     return writer;
   },
@@ -82,6 +148,14 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
           message.brandId = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -95,6 +169,7 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     return {
       amount: isSet(object.amount) ? globalThis.String(object.amount) : "",
       brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
     };
   },
 
@@ -106,6 +181,9 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     if (message.brandId !== "") {
       obj.brandId = message.brandId;
     }
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
     return obj;
   },
 
@@ -116,6 +194,7 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     const message = createBaseCreatePaymentIntentRequest();
     message.amount = object.amount ?? "";
     message.brandId = object.brandId ?? "";
+    message.campaignId = object.campaignId ?? "";
     return message;
   },
 };
@@ -581,6 +660,7 @@ export interface PaymentService {
   HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
   CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
   GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
+  test(request: TestResponse): Promise<TestResponse>;
 }
 
 export const PaymentServiceServiceName = "payment.PaymentService";
@@ -594,6 +674,7 @@ export class PaymentServiceClientImpl implements PaymentService {
     this.HandlePaymentIntent = this.HandlePaymentIntent.bind(this);
     this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
     this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
+    this.test = this.test.bind(this);
   }
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {
     const data = CreatePaymentIntentRequest.encode(request).finish();
@@ -617,6 +698,12 @@ export class PaymentServiceClientImpl implements PaymentService {
     const data = ConnectedAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetConnectedAccount", data);
     return promise.then((data) => ConnectAccountResponse.decode(new BinaryReader(data)));
+  }
+
+  test(request: TestResponse): Promise<TestResponse> {
+    const data = TestResponse.encode(request).finish();
+    const promise = this.rpc.request(this.service, "test", data);
+    return promise.then((data) => TestResponse.decode(new BinaryReader(data)));
   }
 }
 

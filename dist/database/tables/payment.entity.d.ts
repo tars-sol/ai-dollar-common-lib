@@ -1,4 +1,5 @@
 import { Brand } from './brand.entity';
+import { Campaign } from './campaign.entity';
 export declare enum PaymentStatus {
     PENDING = "pending",
     SUCCEEDED = "succeeded",
@@ -13,6 +14,8 @@ export declare class Payment {
     status: PaymentStatus;
     brand: Brand;
     brandId: string;
+    campaign: Campaign;
+    campaignId: string;
     createdAt: Date;
     updatedAt: Date;
 }

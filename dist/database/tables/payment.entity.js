@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Payment = exports.PaymentStatus = void 0;
 const typeorm_1 = require("typeorm");
 const brand_entity_1 = require("./brand.entity");
+const campaign_entity_1 = require("./campaign.entity");
 var PaymentStatus;
 (function (PaymentStatus) {
     PaymentStatus["PENDING"] = "pending";
@@ -61,6 +62,18 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Payment.prototype, "brandId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => campaign_entity_1.Campaign, (campaign) => campaign.payment, {
+        onDelete: 'CASCADE',
+        eager: false,
+    }),
+    (0, typeorm_1.JoinColumn)({ name: 'campaignId' }),
+    __metadata("design:type", campaign_entity_1.Campaign)
+], Payment.prototype, "campaign", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Payment.prototype, "campaignId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

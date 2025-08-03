@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Payment } from './payment.entity';
+import { Campaign } from './campaign.entity';
 
 @Entity('brands')
 export class Brand {
@@ -20,6 +21,8 @@ export class Brand {
   @OneToOne(() => User, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
+  @OneToMany(() => Campaign, (campaign) => campaign.brand)
+  campaigns: Campaign[];
 
   @Index({ unique: true })
   @Column()

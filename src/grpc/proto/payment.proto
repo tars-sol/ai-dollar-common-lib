@@ -7,11 +7,15 @@ service PaymentService {
   rpc HandlePaymentIntent (PaymentIntentEvent) returns (StripeResponse); 
   rpc CreateConnectedAccount (ConnectedAccountRequest) returns (ConnectAccountResponse);
   rpc GetConnectedAccount (ConnectedAccountRequest) returns (ConnectAccountResponse);
+  rpc test(TestResponse) returns (TestResponse);
 }
-
+message TestResponse {
+  bool success = 1;
+}
 message CreatePaymentIntentRequest {
   string amount = 1;
   string brandId = 2;
+  string campaignId = 3;
 }
 
 message PaymentIntentResponse {

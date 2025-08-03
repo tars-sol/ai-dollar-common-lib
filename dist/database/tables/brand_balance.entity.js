@@ -43,4 +43,4 @@ __decorate([
 exports.BrandBalance = BrandBalance = __decorate([
     (0, typeorm_1.Entity)('balances')
 ], BrandBalance);
-//# sourceMappingURL=brandBalance.entity.js.map
+//# sourceMappingURL=brand_balance.entity.js.map

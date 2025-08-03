@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package campaign;
+
+// Request message for creating a campaign
+message CreateCampaignRequest {
+  string brandId = 1;
+  double amountToInvest = 2;
+  string startDate = 3; 
+  string endDate = 4;
+  repeated TaskInput tasks = 5;
+  string name = 6;
+  string description = 7;
+}
+
+// Single task input (part of the campaign)
+message TaskInput {
+  string title = 1;
+  string description = 2;
+  string type = 4;
+}
+message UpdateTaskRequest{
+  optional string title = 1;
+  optional string description = 2;
+  string brandId = 5 ;
+  optional string type = 3;
+  string id = 4;
+}
+
+
+// Response message after creating a campaign
+message CampaignResponse {
+  string id = 1;
+  string brandId = 2;
+  double amountToInvest = 3;
+  string startDate = 4;
+  string endDate = 5;
+  string createdAt = 7;
+  string updatedAt = 8;
+  string name = 9;
+  string description = 10;
+
+}
+message UpdateCampaignRequest {
+  string id = 1;
+  string brandId = 2;
+  optional double amountToInvest = 3;
+  optional string startDate = 4;
+  optional string endDate = 5;
+  optional string name = 9;
+  optional string description = 10;
+
+}
+
+// Task returned in the response
+message TaskResponse{
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string campaignId = 7;
+  string type = 8;
+  string createdAt = 5;
+  string updatedAt = 6;
+}
+message GetCampaignsByBrandIdRequest{
+  string brandId = 1;
+}
+message CampaignsByIdRequest{
+  string id = 1;
+}
+message DeleteTaskByIdRequest{
+  string brandId = 2;
+  string id = 1;
+}
+message DeleteCampaignByIdRequest{
+  string brandId = 2;
+  string id = 1;
+}
+
+message GetTasksByCampaignIdRequest{
+  string campaignId = 1;
+}
+message GetTasksResponse{
+  repeated TaskResponse tasks = 1;
+}
+message GetCampaignsResponse{
+  repeated CampaignResponse campaigns = 1;
+}
+// gRPC Service
+service CampaignService {
+  rpc CreateCampaign(CreateCampaignRequest) returns (CampaignResponse);
+  rpc GetCampaignsByBrandId(GetCampaignsByBrandIdRequest) returns (GetCampaignsResponse);
+  rpc GetCampaignById(CampaignsByIdRequest) returns (CampaignResponse);
+  rpc UpdateCampaign(UpdateCampaignRequest) returns (CampaignResponse);
+  rpc UpdateCampaignTasks(UpdateTaskRequest) returns (TaskResponse);
+  rpc GetTasksByCampaignId(GetTasksByCampaignIdRequest) returns (GetTasksResponse);
+  rpc DeleteCampaignById(CampaignsByIdRequest) returns (CampaignResponse);
+  rpc DeleteTaskById(DeleteTaskByIdRequest) returns (TaskResponse);
+}

@@ -13,6 +13,7 @@ exports.Brand = void 0;
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./user.entity");
 const payment_entity_1 = require("./payment.entity");
+const campaign_entity_1 = require("./campaign.entity");
 let Brand = class Brand {
 };
 exports.Brand = Brand;
@@ -25,6 +26,10 @@ __decorate([
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", user_entity_1.User)
 ], Brand.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => campaign_entity_1.Campaign, (campaign) => campaign.brand),
+    __metadata("design:type", Array)
+], Brand.prototype, "campaigns", void 0);
 __decorate([
     (0, typeorm_1.Index)({ unique: true }),
     (0, typeorm_1.Column)(),

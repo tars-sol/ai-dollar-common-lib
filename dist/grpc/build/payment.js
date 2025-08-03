@@ -5,12 +5,63 @@
 //   protoc               v3.21.12
 // source: payment.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.protobufPackage = void 0;
+exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.TestResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "payment";
+function createBaseTestResponse() {
+    return { success: false };
+}
+exports.TestResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.success !== false) {
+            writer.uint32(8).bool(message.success);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTestResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.success = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.success !== false) {
+            obj.success = message.success;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TestResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTestResponse();
+        message.success = object.success ?? false;
+        return message;
+    },
+};
 function createBaseCreatePaymentIntentRequest() {
-    return { amount: "", brandId: "" };
+    return { amount: "", brandId: "", campaignId: "" };
 }
 exports.CreatePaymentIntentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -19,6 +70,9 @@ exports.CreatePaymentIntentRequest = {
         }
         if (message.brandId !== "") {
             writer.uint32(18).string(message.brandId);
+        }
+        if (message.campaignId !== "") {
+            writer.uint32(26).string(message.campaignId);
         }
         return writer;
     },
@@ -43,6 +97,13 @@ exports.CreatePaymentIntentRequest = {
                     message.brandId = reader.string();
                     continue;
                 }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.campaignId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -55,6 +116,7 @@ exports.CreatePaymentIntentRequest = {
         return {
             amount: isSet(object.amount) ? globalThis.String(object.amount) : "",
             brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+            campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
         };
     },
     toJSON(message) {
@@ -65,6 +127,9 @@ exports.CreatePaymentIntentRequest = {
         if (message.brandId !== "") {
             obj.brandId = message.brandId;
         }
+        if (message.campaignId !== "") {
+            obj.campaignId = message.campaignId;
+        }
         return obj;
     },
     create(base) {
@@ -74,6 +139,7 @@ exports.CreatePaymentIntentRequest = {
         const message = createBaseCreatePaymentIntentRequest();
         message.amount = object.amount ?? "";
         message.brandId = object.brandId ?? "";
+        message.campaignId = object.campaignId ?? "";
         return message;
     },
 };
@@ -497,6 +563,7 @@ class PaymentServiceClientImpl {
         this.HandlePaymentIntent = this.HandlePaymentIntent.bind(this);
         this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
         this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
+        this.test = this.test.bind(this);
     }
     CreatePaymentIntent(request) {
         const data = exports.CreatePaymentIntentRequest.encode(request).finish();
@@ -517,6 +584,11 @@ class PaymentServiceClientImpl {
         const data = exports.ConnectedAccountRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetConnectedAccount", data);
         return promise.then((data) => exports.ConnectAccountResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    test(request) {
+        const data = exports.TestResponse.encode(request).finish();
+        const promise = this.rpc.request(this.service, "test", data);
+        return promise.then((data) => exports.TestResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.PaymentServiceClientImpl = PaymentServiceClientImpl;

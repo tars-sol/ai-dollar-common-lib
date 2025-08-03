@@ -1,8 +1,12 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "payment";
+export interface TestResponse {
+    success: boolean;
+}
 export interface CreatePaymentIntentRequest {
     amount: string;
     brandId: string;
+    campaignId: string;
 }
 export interface PaymentIntentResponse {
     clientSecretKey?: string | undefined;
@@ -29,6 +33,7 @@ export interface ConnectAccountResponse {
     isActive: boolean;
     onBoardingUrl: string;
 }
+export declare const TestResponse: MessageFns<TestResponse>;
 export declare const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest>;
 export declare const PaymentIntentResponse: MessageFns<PaymentIntentResponse>;
 export declare const PaymentIntentEvent: MessageFns<PaymentIntentEvent>;
@@ -40,6 +45,7 @@ export interface PaymentService {
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
     CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
+    test(request: TestResponse): Promise<TestResponse>;
 }
 export declare const PaymentServiceServiceName = "payment.PaymentService";
 export declare class PaymentServiceClientImpl implements PaymentService {
@@ -52,6 +58,7 @@ export declare class PaymentServiceClientImpl implements PaymentService {
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
     CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
+    test(request: TestResponse): Promise<TestResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
