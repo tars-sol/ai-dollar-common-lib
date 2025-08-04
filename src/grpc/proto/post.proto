@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package post;
+
+service PostService {
+  rpc Create (CreatePostRequest) returns (PostResponse);
+  rpc Update (UpdatePostRequest) returns (PostResponse);
+  rpc GetPostsByIds (GetPostsByIdsRequest) returns (GetPostsByIdsResponse);
+  rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
+}
+
+enum AccessType {
+  PUBLIC = 0;
+  SUBSCRIBER = 1;
+  PAID = 2;
+}
+
+enum FileType {
+  IMAGE = 0;
+  VIDEO = 1;
+  CODE = 2;
+  OTHER = 3;
+}
+
+message CreatePostRequest {
+  string userId = 1;
+  string caption = 2;
+
+  AccessType accessType = 3;
+  optional int32 priceInCents = 4;
+
+  string s3Key = 5;
+  FileType fileType = 6;
+  optional string originalFileName = 7;
+}
+
+message UpdatePostRequest {
+  string id = 1;
+  string userId = 2;
+
+  optional string caption = 3;
+  optional AccessType accessType = 4;
+  optional int32 priceInCents = 5;
+}
+
+message GetPostsByIdsRequest {
+  repeated string ids = 1;
+}
+
+message GetPostsByIdsResponse {
+  repeated PostResponse posts = 1;
+}
+
+message GenerateUploadUrlRequest {
+  string userId = 1;
+  string fileName = 2;
+  string contentType = 3;
+}
+
+message GenerateUploadUrlResponse {
+  string uploadUrl = 1;
+  string key = 2;
+}
+
+message PostResponse {
+  string id = 1;
+  string userId = 2;
+  string caption = 3;
+
+  AccessType accessType = 4;
+  optional int32 priceInCents = 5;
+
+  string s3Key = 6;
+  FileType fileType = 7;
+  string originalFileName = 8;
+
+  string createdAt = 9;
+  string updatedAt = 10;
+}

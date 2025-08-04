@@ -5,6 +5,7 @@ export const GrpcPackageToken = {
   PROFILE: 'PROFILE_PACKAGE',
   BRAND: 'BRAND_PACKAGE',
   CAMPAIGN: 'CAMPAIGN_PACKAGE',
+  POST: 'POST_PACKAGE'
 } as const;
 export type GrpcPackageToken =
   (typeof GrpcPackageToken)[keyof typeof GrpcPackageToken];
@@ -16,5 +17,6 @@ export const GrpcProtoName = {
   PROFILE: 'profile',
   BRAND: 'brand',
   CAMPAIGN: 'campaign',
+  POST: 'post'
 } as const;
 export type GrpcProtoName = (typeof GrpcProtoName)[keyof typeof GrpcProtoName];
