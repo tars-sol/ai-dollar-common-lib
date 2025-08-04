@@ -1,36 +1,20 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "post";
-export declare enum AccessType {
-    PUBLIC = 0,
-    SUBSCRIBER = 1,
-    PAID = 2,
-    UNRECOGNIZED = -1
-}
-export declare function accessTypeFromJSON(object: any): AccessType;
-export declare function accessTypeToJSON(object: AccessType): string;
-export declare enum FileType {
-    IMAGE = 0,
-    VIDEO = 1,
-    CODE = 2,
-    OTHER = 3,
-    UNRECOGNIZED = -1
-}
-export declare function fileTypeFromJSON(object: any): FileType;
-export declare function fileTypeToJSON(object: FileType): string;
 export interface CreatePostRequest {
     userId: string;
     caption: string;
-    accessType: AccessType;
+    accessType: string;
     priceInCents?: number | undefined;
     s3Key: string;
-    fileType: FileType;
+    fileType: string;
     originalFileName?: string | undefined;
 }
 export interface UpdatePostRequest {
     id: string;
     userId: string;
     caption?: string | undefined;
-    accessType?: AccessType | undefined;
+    /** "PUBLIC", "SUBSCRIBER", "PAID" */
+    accessType?: string | undefined;
     priceInCents?: number | undefined;
 }
 export interface GetPostsByIdsRequest {
@@ -52,10 +36,12 @@ export interface PostResponse {
     id: string;
     userId: string;
     caption: string;
-    accessType: AccessType;
+    /** "PUBLIC", "SUBSCRIBER", "PAID" */
+    accessType: string;
     priceInCents?: number | undefined;
     s3Key: string;
-    fileType: FileType;
+    /** "IMAGE", "VIDEO", "CODE", "OTHER" */
+    fileType: string;
     originalFileName: string;
     createdAt: string;
     updatedAt: string;

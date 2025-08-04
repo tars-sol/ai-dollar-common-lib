@@ -9,105 +9,24 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "post";
 
-export enum AccessType {
-  PUBLIC = 0,
-  SUBSCRIBER = 1,
-  PAID = 2,
-  UNRECOGNIZED = -1,
-}
-
-export function accessTypeFromJSON(object: any): AccessType {
-  switch (object) {
-    case 0:
-    case "PUBLIC":
-      return AccessType.PUBLIC;
-    case 1:
-    case "SUBSCRIBER":
-      return AccessType.SUBSCRIBER;
-    case 2:
-    case "PAID":
-      return AccessType.PAID;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return AccessType.UNRECOGNIZED;
-  }
-}
-
-export function accessTypeToJSON(object: AccessType): string {
-  switch (object) {
-    case AccessType.PUBLIC:
-      return "PUBLIC";
-    case AccessType.SUBSCRIBER:
-      return "SUBSCRIBER";
-    case AccessType.PAID:
-      return "PAID";
-    case AccessType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
-export enum FileType {
-  IMAGE = 0,
-  VIDEO = 1,
-  CODE = 2,
-  OTHER = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function fileTypeFromJSON(object: any): FileType {
-  switch (object) {
-    case 0:
-    case "IMAGE":
-      return FileType.IMAGE;
-    case 1:
-    case "VIDEO":
-      return FileType.VIDEO;
-    case 2:
-    case "CODE":
-      return FileType.CODE;
-    case 3:
-    case "OTHER":
-      return FileType.OTHER;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return FileType.UNRECOGNIZED;
-  }
-}
-
-export function fileTypeToJSON(object: FileType): string {
-  switch (object) {
-    case FileType.IMAGE:
-      return "IMAGE";
-    case FileType.VIDEO:
-      return "VIDEO";
-    case FileType.CODE:
-      return "CODE";
-    case FileType.OTHER:
-      return "OTHER";
-    case FileType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
 export interface CreatePostRequest {
   userId: string;
   caption: string;
-  accessType: AccessType;
+  accessType: string;
   priceInCents?: number | undefined;
   s3Key: string;
-  fileType: FileType;
+  fileType: string;
   originalFileName?: string | undefined;
 }
 
 export interface UpdatePostRequest {
   id: string;
   userId: string;
-  caption?: string | undefined;
-  accessType?: AccessType | undefined;
+  caption?:
+    | string
+    | undefined;
+  /** "PUBLIC", "SUBSCRIBER", "PAID" */
+  accessType?: string | undefined;
   priceInCents?: number | undefined;
 }
 
@@ -134,10 +53,12 @@ export interface PostResponse {
   id: string;
   userId: string;
   caption: string;
-  accessType: AccessType;
+  /** "PUBLIC", "SUBSCRIBER", "PAID" */
+  accessType: string;
   priceInCents?: number | undefined;
   s3Key: string;
-  fileType: FileType;
+  /** "IMAGE", "VIDEO", "CODE", "OTHER" */
+  fileType: string;
   originalFileName: string;
   createdAt: string;
   updatedAt: string;
@@ -147,10 +68,10 @@ function createBaseCreatePostRequest(): CreatePostRequest {
   return {
     userId: "",
     caption: "",
-    accessType: 0,
+    accessType: "",
     priceInCents: undefined,
     s3Key: "",
-    fileType: 0,
+    fileType: "",
     originalFileName: undefined,
   };
 }
@@ -163,8 +84,8 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     if (message.caption !== "") {
       writer.uint32(18).string(message.caption);
     }
-    if (message.accessType !== 0) {
-      writer.uint32(24).int32(message.accessType);
+    if (message.accessType !== "") {
+      writer.uint32(26).string(message.accessType);
     }
     if (message.priceInCents !== undefined) {
       writer.uint32(32).int32(message.priceInCents);
@@ -172,8 +93,8 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     if (message.s3Key !== "") {
       writer.uint32(42).string(message.s3Key);
     }
-    if (message.fileType !== 0) {
-      writer.uint32(48).int32(message.fileType);
+    if (message.fileType !== "") {
+      writer.uint32(50).string(message.fileType);
     }
     if (message.originalFileName !== undefined) {
       writer.uint32(58).string(message.originalFileName);
@@ -205,11 +126,11 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
           continue;
         }
         case 3: {
-          if (tag !== 24) {
+          if (tag !== 26) {
             break;
           }
 
-          message.accessType = reader.int32() as any;
+          message.accessType = reader.string();
           continue;
         }
         case 4: {
@@ -229,11 +150,11 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
           continue;
         }
         case 6: {
-          if (tag !== 48) {
+          if (tag !== 50) {
             break;
           }
 
-          message.fileType = reader.int32() as any;
+          message.fileType = reader.string();
           continue;
         }
         case 7: {
@@ -257,10 +178,10 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     return {
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
-      accessType: isSet(object.accessType) ? accessTypeFromJSON(object.accessType) : 0,
+      accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
       priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
       s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
-      fileType: isSet(object.fileType) ? fileTypeFromJSON(object.fileType) : 0,
+      fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : "",
       originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : undefined,
     };
   },
@@ -273,8 +194,8 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     if (message.caption !== "") {
       obj.caption = message.caption;
     }
-    if (message.accessType !== 0) {
-      obj.accessType = accessTypeToJSON(message.accessType);
+    if (message.accessType !== "") {
+      obj.accessType = message.accessType;
     }
     if (message.priceInCents !== undefined) {
       obj.priceInCents = Math.round(message.priceInCents);
@@ -282,8 +203,8 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     if (message.s3Key !== "") {
       obj.s3Key = message.s3Key;
     }
-    if (message.fileType !== 0) {
-      obj.fileType = fileTypeToJSON(message.fileType);
+    if (message.fileType !== "") {
+      obj.fileType = message.fileType;
     }
     if (message.originalFileName !== undefined) {
       obj.originalFileName = message.originalFileName;
@@ -298,10 +219,10 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     const message = createBaseCreatePostRequest();
     message.userId = object.userId ?? "";
     message.caption = object.caption ?? "";
-    message.accessType = object.accessType ?? 0;
+    message.accessType = object.accessType ?? "";
     message.priceInCents = object.priceInCents ?? undefined;
     message.s3Key = object.s3Key ?? "";
-    message.fileType = object.fileType ?? 0;
+    message.fileType = object.fileType ?? "";
     message.originalFileName = object.originalFileName ?? undefined;
     return message;
   },
@@ -323,7 +244,7 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
       writer.uint32(26).string(message.caption);
     }
     if (message.accessType !== undefined) {
-      writer.uint32(32).int32(message.accessType);
+      writer.uint32(34).string(message.accessType);
     }
     if (message.priceInCents !== undefined) {
       writer.uint32(40).int32(message.priceInCents);
@@ -363,11 +284,11 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
           continue;
         }
         case 4: {
-          if (tag !== 32) {
+          if (tag !== 34) {
             break;
           }
 
-          message.accessType = reader.int32() as any;
+          message.accessType = reader.string();
           continue;
         }
         case 5: {
@@ -392,7 +313,7 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : undefined,
-      accessType: isSet(object.accessType) ? accessTypeFromJSON(object.accessType) : undefined,
+      accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : undefined,
       priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
     };
   },
@@ -409,7 +330,7 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
       obj.caption = message.caption;
     }
     if (message.accessType !== undefined) {
-      obj.accessType = accessTypeToJSON(message.accessType);
+      obj.accessType = message.accessType;
     }
     if (message.priceInCents !== undefined) {
       obj.priceInCents = Math.round(message.priceInCents);
@@ -722,10 +643,10 @@ function createBasePostResponse(): PostResponse {
     id: "",
     userId: "",
     caption: "",
-    accessType: 0,
+    accessType: "",
     priceInCents: undefined,
     s3Key: "",
-    fileType: 0,
+    fileType: "",
     originalFileName: "",
     createdAt: "",
     updatedAt: "",
@@ -743,8 +664,8 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.caption !== "") {
       writer.uint32(26).string(message.caption);
     }
-    if (message.accessType !== 0) {
-      writer.uint32(32).int32(message.accessType);
+    if (message.accessType !== "") {
+      writer.uint32(34).string(message.accessType);
     }
     if (message.priceInCents !== undefined) {
       writer.uint32(40).int32(message.priceInCents);
@@ -752,8 +673,8 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.s3Key !== "") {
       writer.uint32(50).string(message.s3Key);
     }
-    if (message.fileType !== 0) {
-      writer.uint32(56).int32(message.fileType);
+    if (message.fileType !== "") {
+      writer.uint32(58).string(message.fileType);
     }
     if (message.originalFileName !== "") {
       writer.uint32(66).string(message.originalFileName);
@@ -799,11 +720,11 @@ export const PostResponse: MessageFns<PostResponse> = {
           continue;
         }
         case 4: {
-          if (tag !== 32) {
+          if (tag !== 34) {
             break;
           }
 
-          message.accessType = reader.int32() as any;
+          message.accessType = reader.string();
           continue;
         }
         case 5: {
@@ -823,11 +744,11 @@ export const PostResponse: MessageFns<PostResponse> = {
           continue;
         }
         case 7: {
-          if (tag !== 56) {
+          if (tag !== 58) {
             break;
           }
 
-          message.fileType = reader.int32() as any;
+          message.fileType = reader.string();
           continue;
         }
         case 8: {
@@ -868,10 +789,10 @@ export const PostResponse: MessageFns<PostResponse> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
-      accessType: isSet(object.accessType) ? accessTypeFromJSON(object.accessType) : 0,
+      accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
       priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
       s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
-      fileType: isSet(object.fileType) ? fileTypeFromJSON(object.fileType) : 0,
+      fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : "",
       originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
@@ -889,8 +810,8 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.caption !== "") {
       obj.caption = message.caption;
     }
-    if (message.accessType !== 0) {
-      obj.accessType = accessTypeToJSON(message.accessType);
+    if (message.accessType !== "") {
+      obj.accessType = message.accessType;
     }
     if (message.priceInCents !== undefined) {
       obj.priceInCents = Math.round(message.priceInCents);
@@ -898,8 +819,8 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.s3Key !== "") {
       obj.s3Key = message.s3Key;
     }
-    if (message.fileType !== 0) {
-      obj.fileType = fileTypeToJSON(message.fileType);
+    if (message.fileType !== "") {
+      obj.fileType = message.fileType;
     }
     if (message.originalFileName !== "") {
       obj.originalFileName = message.originalFileName;
@@ -921,10 +842,10 @@ export const PostResponse: MessageFns<PostResponse> = {
     message.id = object.id ?? "";
     message.userId = object.userId ?? "";
     message.caption = object.caption ?? "";
-    message.accessType = object.accessType ?? 0;
+    message.accessType = object.accessType ?? "";
     message.priceInCents = object.priceInCents ?? undefined;
     message.s3Key = object.s3Key ?? "";
-    message.fileType = object.fileType ?? 0;
+    message.fileType = object.fileType ?? "";
     message.originalFileName = object.originalFileName ?? "";
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";

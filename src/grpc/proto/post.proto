@@ -9,37 +9,21 @@ service PostService {
   rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
 }
 
-enum AccessType {
-  PUBLIC = 0;
-  SUBSCRIBER = 1;
-  PAID = 2;
-}
-
-enum FileType {
-  IMAGE = 0;
-  VIDEO = 1;
-  CODE = 2;
-  OTHER = 3;
-}
-
 message CreatePostRequest {
   string userId = 1;
   string caption = 2;
-
-  AccessType accessType = 3;
+  string accessType = 3;
   optional int32 priceInCents = 4;
-
   string s3Key = 5;
-  FileType fileType = 6;
+  string fileType = 6;
   optional string originalFileName = 7;
 }
 
 message UpdatePostRequest {
   string id = 1;
   string userId = 2;
-
   optional string caption = 3;
-  optional AccessType accessType = 4;
+  optional string accessType = 4; // "PUBLIC", "SUBSCRIBER", "PAID"
   optional int32 priceInCents = 5;
 }
 
@@ -66,12 +50,10 @@ message PostResponse {
   string id = 1;
   string userId = 2;
   string caption = 3;
-
-  AccessType accessType = 4;
+  string accessType = 4; // "PUBLIC", "SUBSCRIBER", "PAID"
   optional int32 priceInCents = 5;
-
   string s3Key = 6;
-  FileType fileType = 7;
+  string fileType = 7; // "IMAGE", "VIDEO", "CODE", "OTHER"
   string originalFileName = 8;
 
   string createdAt = 9;
