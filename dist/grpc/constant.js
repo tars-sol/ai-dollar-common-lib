@@ -8,6 +8,7 @@ exports.GrpcPackageToken = {
     PROFILE: 'PROFILE_PACKAGE',
     BRAND: 'BRAND_PACKAGE',
     CAMPAIGN: 'CAMPAIGN_PACKAGE',
+    POST: 'POST_PACKAGE'
 };
 exports.GrpcProtoName = {
     AUTH: 'auth',
@@ -16,6 +17,7 @@ exports.GrpcProtoName = {
     PROFILE: 'profile',
     BRAND: 'brand',
     CAMPAIGN: 'campaign',
+    POST: 'post'
 };
 exports.GrpcProtoServiceName = {
     AUTH_SERVICE: 'AuthService',
