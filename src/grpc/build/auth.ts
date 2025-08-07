@@ -54,6 +54,8 @@ export interface UserRequest {
   id: string;
   email: string;
   walletAddress: string;
+  role: string;
+  roleId: string;
 }
 
 export interface AuthResponse {
@@ -681,7 +683,7 @@ export const RefreshTokenRequest: MessageFns<RefreshTokenRequest> = {
 };
 
 function createBaseUserRequest(): UserRequest {
-  return { id: "", email: "", walletAddress: "" };
+  return { id: "", email: "", walletAddress: "", role: "", roleId: "" };
 }
 
 export const UserRequest: MessageFns<UserRequest> = {
@@ -694,6 +696,12 @@ export const UserRequest: MessageFns<UserRequest> = {
     }
     if (message.walletAddress !== "") {
       writer.uint32(26).string(message.walletAddress);
+    }
+    if (message.role !== "") {
+      writer.uint32(34).string(message.role);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(42).string(message.roleId);
     }
     return writer;
   },
@@ -729,6 +737,22 @@ export const UserRequest: MessageFns<UserRequest> = {
           message.walletAddress = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -743,6 +767,8 @@ export const UserRequest: MessageFns<UserRequest> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       walletAddress: isSet(object.walletAddress) ? globalThis.String(object.walletAddress) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
     };
   },
 
@@ -757,6 +783,12 @@ export const UserRequest: MessageFns<UserRequest> = {
     if (message.walletAddress !== "") {
       obj.walletAddress = message.walletAddress;
     }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
     return obj;
   },
 
@@ -768,6 +800,8 @@ export const UserRequest: MessageFns<UserRequest> = {
     message.id = object.id ?? "";
     message.email = object.email ?? "";
     message.walletAddress = object.walletAddress ?? "";
+    message.role = object.role ?? "";
+    message.roleId = object.roleId ?? "";
     return message;
   },
 };

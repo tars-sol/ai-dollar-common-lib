@@ -57,6 +57,8 @@ message UserRequest {
   string id = 1;
   string email = 2;
   string walletAddress = 3;
+  string role = 4;
+  string roleId = 5;
 }
 
 message AuthResponse {

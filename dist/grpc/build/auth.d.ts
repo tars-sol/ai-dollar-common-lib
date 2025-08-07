@@ -37,6 +37,8 @@ export interface UserRequest {
     id: string;
     email: string;
     walletAddress: string;
+    role: string;
+    roleId: string;
 }
 export interface AuthResponse {
     token: string;
