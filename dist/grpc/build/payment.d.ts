@@ -4,7 +4,6 @@ export interface TestResponse {
     success: boolean;
 }
 export interface CreatePaymentIntentRequest {
-    amount: string;
     brandId: string;
     campaignId: string;
 }

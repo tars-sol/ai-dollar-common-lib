@@ -17,4 +17,16 @@ export const GrpcProtoName = {
   BRAND: 'brand',
   CAMPAIGN: 'campaign',
 } as const;
+
 export type GrpcProtoName = (typeof GrpcProtoName)[keyof typeof GrpcProtoName];
+
+export const GrpcProtoServiceName = {
+  AUTH_SERVICE: 'AuthService',
+  USER_SERVICE: 'UserService',
+  PAYMENT_SERVICE: 'PaymentService',
+  PROFILE_SERVICE: 'ProfileService',
+  BRAND_SERVICE: 'BrandService',
+  CAMPAIGN_SERVICE: 'CampaignService',
+} as const;
+
+export type GrpcProtoServiceName = (typeof GrpcProtoServiceName)[keyof typeof GrpcProtoServiceName];

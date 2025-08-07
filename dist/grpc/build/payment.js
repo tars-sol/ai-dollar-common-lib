@@ -61,13 +61,10 @@ exports.TestResponse = {
     },
 };
 function createBaseCreatePaymentIntentRequest() {
-    return { amount: "", brandId: "", campaignId: "" };
+    return { brandId: "", campaignId: "" };
 }
 exports.CreatePaymentIntentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.amount !== "") {
-            writer.uint32(10).string(message.amount);
-        }
         if (message.brandId !== "") {
             writer.uint32(18).string(message.brandId);
         }
@@ -83,13 +80,6 @@ exports.CreatePaymentIntentRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1: {
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.amount = reader.string();
-                    continue;
-                }
                 case 2: {
                     if (tag !== 18) {
                         break;
@@ -114,16 +104,12 @@ exports.CreatePaymentIntentRequest = {
     },
     fromJSON(object) {
         return {
-            amount: isSet(object.amount) ? globalThis.String(object.amount) : "",
             brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
             campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.amount !== "") {
-            obj.amount = message.amount;
-        }
         if (message.brandId !== "") {
             obj.brandId = message.brandId;
         }
@@ -137,7 +123,6 @@ exports.CreatePaymentIntentRequest = {
     },
     fromPartial(object) {
         const message = createBaseCreatePaymentIntentRequest();
-        message.amount = object.amount ?? "";
         message.brandId = object.brandId ?? "";
         message.campaignId = object.campaignId ?? "";
         return message;

@@ -14,7 +14,6 @@ export interface TestResponse {
 }
 
 export interface CreatePaymentIntentRequest {
-  amount: string;
   brandId: string;
   campaignId: string;
 }
@@ -108,14 +107,11 @@ export const TestResponse: MessageFns<TestResponse> = {
 };
 
 function createBaseCreatePaymentIntentRequest(): CreatePaymentIntentRequest {
-  return { amount: "", brandId: "", campaignId: "" };
+  return { brandId: "", campaignId: "" };
 }
 
 export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> = {
   encode(message: CreatePaymentIntentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.amount !== "") {
-      writer.uint32(10).string(message.amount);
-    }
     if (message.brandId !== "") {
       writer.uint32(18).string(message.brandId);
     }
@@ -132,14 +128,6 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.amount = reader.string();
-          continue;
-        }
         case 2: {
           if (tag !== 18) {
             break;
@@ -167,7 +155,6 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
 
   fromJSON(object: any): CreatePaymentIntentRequest {
     return {
-      amount: isSet(object.amount) ? globalThis.String(object.amount) : "",
       brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
       campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
     };
@@ -175,9 +162,6 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
 
   toJSON(message: CreatePaymentIntentRequest): unknown {
     const obj: any = {};
-    if (message.amount !== "") {
-      obj.amount = message.amount;
-    }
     if (message.brandId !== "") {
       obj.brandId = message.brandId;
     }
@@ -192,7 +176,6 @@ export const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest> 
   },
   fromPartial<I extends Exact<DeepPartial<CreatePaymentIntentRequest>, I>>(object: I): CreatePaymentIntentRequest {
     const message = createBaseCreatePaymentIntentRequest();
-    message.amount = object.amount ?? "";
     message.brandId = object.brandId ?? "";
     message.campaignId = object.campaignId ?? "";
     return message;

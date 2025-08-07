@@ -16,3 +16,12 @@ export declare const GrpcProtoName: {
     readonly CAMPAIGN: "campaign";
 };
 export type GrpcProtoName = (typeof GrpcProtoName)[keyof typeof GrpcProtoName];
+export declare const GrpcProtoServiceName: {
+    readonly AUTH_SERVICE: "AuthService";
+    readonly USER_SERVICE: "UserService";
+    readonly PAYMENT_SERVICE: "PaymentService";
+    readonly PROFILE_SERVICE: "ProfileService";
+    readonly BRAND_SERVICE: "BrandService";
+    readonly CAMPAIGN_SERVICE: "CampaignService";
+};
+export type GrpcProtoServiceName = (typeof GrpcProtoServiceName)[keyof typeof GrpcProtoServiceName];

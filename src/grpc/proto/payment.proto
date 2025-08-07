@@ -13,7 +13,6 @@ message TestResponse {
   bool success = 1;
 }
 message CreatePaymentIntentRequest {
-  string amount = 1;
   string brandId = 2;
   string campaignId = 3;
 }

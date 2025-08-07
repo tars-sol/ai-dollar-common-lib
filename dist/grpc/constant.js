@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GrpcProtoName = exports.GrpcPackageToken = void 0;
+exports.GrpcProtoServiceName = exports.GrpcProtoName = exports.GrpcPackageToken = void 0;
 exports.GrpcPackageToken = {
     AUTH: 'AUTH_PACKAGE',
     USER: 'USER_PACKAGE',
@@ -16,5 +16,13 @@ exports.GrpcProtoName = {
     PROFILE: 'profile',
     BRAND: 'brand',
     CAMPAIGN: 'campaign',
+};
+exports.GrpcProtoServiceName = {
+    AUTH_SERVICE: 'AuthService',
+    USER_SERVICE: 'UserService',
+    PAYMENT_SERVICE: 'PaymentService',
+    PROFILE_SERVICE: 'ProfileService',
+    BRAND_SERVICE: 'BrandService',
+    CAMPAIGN_SERVICE: 'CampaignService',
 };
 //# sourceMappingURL=constant.js.map
