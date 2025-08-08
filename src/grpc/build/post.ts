@@ -30,14 +30,6 @@ export interface UpdatePostRequest {
   priceInCents?: number | undefined;
 }
 
-export interface GetPostsByIdsRequest {
-  ids: string[];
-}
-
-export interface GetPostsByIdsResponse {
-  posts: PostResponse[];
-}
-
 export interface GenerateUploadUrlRequest {
   userId: string;
   fileName: string;
@@ -47,6 +39,14 @@ export interface GenerateUploadUrlRequest {
 export interface GenerateUploadUrlResponse {
   uploadUrl: string;
   key: string;
+}
+
+export interface GetFeedRequest {
+  userId: string;
+}
+
+export interface GetFeedResponse {
+  posts: PostResponse[];
 }
 
 export interface PostResponse {
@@ -62,6 +62,7 @@ export interface PostResponse {
   originalFileName: string;
   createdAt: string;
   updatedAt: string;
+  signedUrl: string;
 }
 
 function createBaseCreatePostRequest(): CreatePostRequest {
@@ -352,124 +353,6 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
   },
 };
 
-function createBaseGetPostsByIdsRequest(): GetPostsByIdsRequest {
-  return { ids: [] };
-}
-
-export const GetPostsByIdsRequest: MessageFns<GetPostsByIdsRequest> = {
-  encode(message: GetPostsByIdsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.ids) {
-      writer.uint32(10).string(v!);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetPostsByIdsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetPostsByIdsRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.ids.push(reader.string());
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetPostsByIdsRequest {
-    return { ids: globalThis.Array.isArray(object?.ids) ? object.ids.map((e: any) => globalThis.String(e)) : [] };
-  },
-
-  toJSON(message: GetPostsByIdsRequest): unknown {
-    const obj: any = {};
-    if (message.ids?.length) {
-      obj.ids = message.ids;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetPostsByIdsRequest>, I>>(base?: I): GetPostsByIdsRequest {
-    return GetPostsByIdsRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetPostsByIdsRequest>, I>>(object: I): GetPostsByIdsRequest {
-    const message = createBaseGetPostsByIdsRequest();
-    message.ids = object.ids?.map((e) => e) || [];
-    return message;
-  },
-};
-
-function createBaseGetPostsByIdsResponse(): GetPostsByIdsResponse {
-  return { posts: [] };
-}
-
-export const GetPostsByIdsResponse: MessageFns<GetPostsByIdsResponse> = {
-  encode(message: GetPostsByIdsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    for (const v of message.posts) {
-      PostResponse.encode(v!, writer.uint32(10).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetPostsByIdsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetPostsByIdsResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.posts.push(PostResponse.decode(reader, reader.uint32()));
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetPostsByIdsResponse {
-    return {
-      posts: globalThis.Array.isArray(object?.posts) ? object.posts.map((e: any) => PostResponse.fromJSON(e)) : [],
-    };
-  },
-
-  toJSON(message: GetPostsByIdsResponse): unknown {
-    const obj: any = {};
-    if (message.posts?.length) {
-      obj.posts = message.posts.map((e) => PostResponse.toJSON(e));
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetPostsByIdsResponse>, I>>(base?: I): GetPostsByIdsResponse {
-    return GetPostsByIdsResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetPostsByIdsResponse>, I>>(object: I): GetPostsByIdsResponse {
-    const message = createBaseGetPostsByIdsResponse();
-    message.posts = object.posts?.map((e) => PostResponse.fromPartial(e)) || [];
-    return message;
-  },
-};
-
 function createBaseGenerateUploadUrlRequest(): GenerateUploadUrlRequest {
   return { userId: "", fileName: "", contentType: "" };
 }
@@ -638,6 +521,124 @@ export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = 
   },
 };
 
+function createBaseGetFeedRequest(): GetFeedRequest {
+  return { userId: "" };
+}
+
+export const GetFeedRequest: MessageFns<GetFeedRequest> = {
+  encode(message: GetFeedRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetFeedRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFeedRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFeedRequest {
+    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+  },
+
+  toJSON(message: GetFeedRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetFeedRequest>, I>>(base?: I): GetFeedRequest {
+    return GetFeedRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetFeedRequest>, I>>(object: I): GetFeedRequest {
+    const message = createBaseGetFeedRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetFeedResponse(): GetFeedResponse {
+  return { posts: [] };
+}
+
+export const GetFeedResponse: MessageFns<GetFeedResponse> = {
+  encode(message: GetFeedResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.posts) {
+      PostResponse.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetFeedResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetFeedResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.posts.push(PostResponse.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetFeedResponse {
+    return {
+      posts: globalThis.Array.isArray(object?.posts) ? object.posts.map((e: any) => PostResponse.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: GetFeedResponse): unknown {
+    const obj: any = {};
+    if (message.posts?.length) {
+      obj.posts = message.posts.map((e) => PostResponse.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetFeedResponse>, I>>(base?: I): GetFeedResponse {
+    return GetFeedResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetFeedResponse>, I>>(object: I): GetFeedResponse {
+    const message = createBaseGetFeedResponse();
+    message.posts = object.posts?.map((e) => PostResponse.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 function createBasePostResponse(): PostResponse {
   return {
     id: "",
@@ -650,6 +651,7 @@ function createBasePostResponse(): PostResponse {
     originalFileName: "",
     createdAt: "",
     updatedAt: "",
+    signedUrl: "",
   };
 }
 
@@ -684,6 +686,9 @@ export const PostResponse: MessageFns<PostResponse> = {
     }
     if (message.updatedAt !== "") {
       writer.uint32(82).string(message.updatedAt);
+    }
+    if (message.signedUrl !== "") {
+      writer.uint32(90).string(message.signedUrl);
     }
     return writer;
   },
@@ -775,6 +780,14 @@ export const PostResponse: MessageFns<PostResponse> = {
           message.updatedAt = reader.string();
           continue;
         }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.signedUrl = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -796,6 +809,7 @@ export const PostResponse: MessageFns<PostResponse> = {
       originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+      signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : "",
     };
   },
 
@@ -831,6 +845,9 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.updatedAt !== "") {
       obj.updatedAt = message.updatedAt;
     }
+    if (message.signedUrl !== "") {
+      obj.signedUrl = message.signedUrl;
+    }
     return obj;
   },
 
@@ -849,6 +866,7 @@ export const PostResponse: MessageFns<PostResponse> = {
     message.originalFileName = object.originalFileName ?? "";
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";
+    message.signedUrl = object.signedUrl ?? "";
     return message;
   },
 };
@@ -856,8 +874,8 @@ export const PostResponse: MessageFns<PostResponse> = {
 export interface PostService {
   Create(request: CreatePostRequest): Promise<PostResponse>;
   Update(request: UpdatePostRequest): Promise<PostResponse>;
-  GetPostsByIds(request: GetPostsByIdsRequest): Promise<GetPostsByIdsResponse>;
   GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
+  GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -869,8 +887,8 @@ export class PostServiceClientImpl implements PostService {
     this.rpc = rpc;
     this.Create = this.Create.bind(this);
     this.Update = this.Update.bind(this);
-    this.GetPostsByIds = this.GetPostsByIds.bind(this);
     this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
+    this.GetFeed = this.GetFeed.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -884,16 +902,16 @@ export class PostServiceClientImpl implements PostService {
     return promise.then((data) => PostResponse.decode(new BinaryReader(data)));
   }
 
-  GetPostsByIds(request: GetPostsByIdsRequest): Promise<GetPostsByIdsResponse> {
-    const data = GetPostsByIdsRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "GetPostsByIds", data);
-    return promise.then((data) => GetPostsByIdsResponse.decode(new BinaryReader(data)));
-  }
-
   GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse> {
     const data = GenerateUploadUrlRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GenerateUploadUrl", data);
     return promise.then((data) => GenerateUploadUrlResponse.decode(new BinaryReader(data)));
+  }
+
+  GetFeed(request: GetFeedRequest): Promise<GetFeedResponse> {
+    const data = GetFeedRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetFeed", data);
+    return promise.then((data) => GetFeedResponse.decode(new BinaryReader(data)));
   }
 }
 

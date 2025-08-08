@@ -5,8 +5,8 @@ package post;
 service PostService {
   rpc Create (CreatePostRequest) returns (PostResponse);
   rpc Update (UpdatePostRequest) returns (PostResponse);
-  rpc GetPostsByIds (GetPostsByIdsRequest) returns (GetPostsByIdsResponse);
   rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
+  rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
 }
 
 message CreatePostRequest {
@@ -27,14 +27,6 @@ message UpdatePostRequest {
   optional int32 priceInCents = 5;
 }
 
-message GetPostsByIdsRequest {
-  repeated string ids = 1;
-}
-
-message GetPostsByIdsResponse {
-  repeated PostResponse posts = 1;
-}
-
 message GenerateUploadUrlRequest {
   string userId = 1;
   string fileName = 2;
@@ -44,6 +36,14 @@ message GenerateUploadUrlRequest {
 message GenerateUploadUrlResponse {
   string uploadUrl = 1;
   string key = 2;
+}
+
+message GetFeedRequest {
+  string userId = 1;
+}
+
+message GetFeedResponse {
+  repeated PostResponse posts = 1;
 }
 
 message PostResponse {
@@ -58,4 +58,6 @@ message PostResponse {
 
   string createdAt = 9;
   string updatedAt = 10;
+
+  string signedUrl = 11;
 }

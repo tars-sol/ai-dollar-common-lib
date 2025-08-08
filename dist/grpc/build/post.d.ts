@@ -17,12 +17,6 @@ export interface UpdatePostRequest {
     accessType?: string | undefined;
     priceInCents?: number | undefined;
 }
-export interface GetPostsByIdsRequest {
-    ids: string[];
-}
-export interface GetPostsByIdsResponse {
-    posts: PostResponse[];
-}
 export interface GenerateUploadUrlRequest {
     userId: string;
     fileName: string;
@@ -31,6 +25,12 @@ export interface GenerateUploadUrlRequest {
 export interface GenerateUploadUrlResponse {
     uploadUrl: string;
     key: string;
+}
+export interface GetFeedRequest {
+    userId: string;
+}
+export interface GetFeedResponse {
+    posts: PostResponse[];
 }
 export interface PostResponse {
     id: string;
@@ -45,19 +45,20 @@ export interface PostResponse {
     originalFileName: string;
     createdAt: string;
     updatedAt: string;
+    signedUrl: string;
 }
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;
-export declare const GetPostsByIdsRequest: MessageFns<GetPostsByIdsRequest>;
-export declare const GetPostsByIdsResponse: MessageFns<GetPostsByIdsResponse>;
 export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
+export declare const GetFeedRequest: MessageFns<GetFeedRequest>;
+export declare const GetFeedResponse: MessageFns<GetFeedResponse>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
-    GetPostsByIds(request: GetPostsByIdsRequest): Promise<GetPostsByIdsResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
+    GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -68,8 +69,8 @@ export declare class PostServiceClientImpl implements PostService {
     });
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
-    GetPostsByIds(request: GetPostsByIdsRequest): Promise<GetPostsByIdsResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
+    GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
