@@ -17,9 +17,10 @@ message ProfileResponse {
   string bio = 6;
   string websiteUrl = 7;
   string twitter = 8;
-  string github = 9;
+  string facebook = 9;
   string youtube = 10;
-  string linkedin = 11;
+  string tiktok = 11;
+  string instagram = 15;
   bool isVerified = 12;
   string createdAt = 13;
   string updatedAt = 14;
@@ -33,9 +34,10 @@ message CreateProfileRequest {
   optional string bio = 5;
   optional string websiteUrl = 6;
   optional string twitter = 7;
-  optional string github = 8;
+  optional string facebook = 8;
   optional string youtube = 9;
-  optional string linkedin = 10;
+  optional string tiktok = 10;
+  optional string instagram=11;
 }
 
 message UpdateProfileRequest {
@@ -46,9 +48,10 @@ message UpdateProfileRequest {
   optional string bio = 5;
   optional string websiteUrl = 6;
   optional string twitter = 7;
-  optional string github = 8;
+  optional string facebook = 8;
   optional string youtube = 9;
-  optional string linkedin = 10;
+  optional string tiktok = 10;
+  optional string instagram=11;
 }
 
 message GetProfileByUserIdRequest {

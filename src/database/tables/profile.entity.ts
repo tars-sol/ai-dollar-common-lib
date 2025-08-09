@@ -43,13 +43,15 @@ export class Profile {
     twitter: string;
 
     @Column({ nullable: true })
-    github: string;
+    facebook: string;
 
     @Column({ nullable: true })
     youtube: string;
 
     @Column({ nullable: true })
-    linkedin: string;
+    tiktok: string;
+    @Column({ nullable: true })
+    instagram: string;
 
     @Column({ type: 'boolean', default: false })
     isVerified: boolean;

@@ -9,9 +9,10 @@ export interface ProfileResponse {
     bio: string;
     websiteUrl: string;
     twitter: string;
-    github: string;
+    facebook: string;
     youtube: string;
-    linkedin: string;
+    tiktok: string;
+    instagram: string;
     isVerified: boolean;
     createdAt: string;
     updatedAt: string;
@@ -24,9 +25,10 @@ export interface CreateProfileRequest {
     bio?: string | undefined;
     websiteUrl?: string | undefined;
     twitter?: string | undefined;
-    github?: string | undefined;
+    facebook?: string | undefined;
     youtube?: string | undefined;
-    linkedin?: string | undefined;
+    tiktok?: string | undefined;
+    instagram?: string | undefined;
 }
 export interface UpdateProfileRequest {
     userId: string;
@@ -36,9 +38,10 @@ export interface UpdateProfileRequest {
     bio?: string | undefined;
     websiteUrl?: string | undefined;
     twitter?: string | undefined;
-    github?: string | undefined;
+    facebook?: string | undefined;
     youtube?: string | undefined;
-    linkedin?: string | undefined;
+    tiktok?: string | undefined;
+    instagram?: string | undefined;
 }
 export interface GetProfileByUserIdRequest {
     userId: string;

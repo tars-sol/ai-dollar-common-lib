@@ -18,9 +18,10 @@ export interface ProfileResponse {
   bio: string;
   websiteUrl: string;
   twitter: string;
-  github: string;
+  facebook: string;
   youtube: string;
-  linkedin: string;
+  tiktok: string;
+  instagram: string;
   isVerified: boolean;
   createdAt: string;
   updatedAt: string;
@@ -34,9 +35,10 @@ export interface CreateProfileRequest {
   bio?: string | undefined;
   websiteUrl?: string | undefined;
   twitter?: string | undefined;
-  github?: string | undefined;
+  facebook?: string | undefined;
   youtube?: string | undefined;
-  linkedin?: string | undefined;
+  tiktok?: string | undefined;
+  instagram?: string | undefined;
 }
 
 export interface UpdateProfileRequest {
@@ -47,9 +49,10 @@ export interface UpdateProfileRequest {
   bio?: string | undefined;
   websiteUrl?: string | undefined;
   twitter?: string | undefined;
-  github?: string | undefined;
+  facebook?: string | undefined;
   youtube?: string | undefined;
-  linkedin?: string | undefined;
+  tiktok?: string | undefined;
+  instagram?: string | undefined;
 }
 
 export interface GetProfileByUserIdRequest {
@@ -66,9 +69,10 @@ function createBaseProfileResponse(): ProfileResponse {
     bio: "",
     websiteUrl: "",
     twitter: "",
-    github: "",
+    facebook: "",
     youtube: "",
-    linkedin: "",
+    tiktok: "",
+    instagram: "",
     isVerified: false,
     createdAt: "",
     updatedAt: "",
@@ -101,14 +105,17 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     if (message.twitter !== "") {
       writer.uint32(66).string(message.twitter);
     }
-    if (message.github !== "") {
-      writer.uint32(74).string(message.github);
+    if (message.facebook !== "") {
+      writer.uint32(74).string(message.facebook);
     }
     if (message.youtube !== "") {
       writer.uint32(82).string(message.youtube);
     }
-    if (message.linkedin !== "") {
-      writer.uint32(90).string(message.linkedin);
+    if (message.tiktok !== "") {
+      writer.uint32(90).string(message.tiktok);
+    }
+    if (message.instagram !== "") {
+      writer.uint32(122).string(message.instagram);
     }
     if (message.isVerified !== false) {
       writer.uint32(96).bool(message.isVerified);
@@ -198,7 +205,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
             break;
           }
 
-          message.github = reader.string();
+          message.facebook = reader.string();
           continue;
         }
         case 10: {
@@ -214,7 +221,15 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
             break;
           }
 
-          message.linkedin = reader.string();
+          message.tiktok = reader.string();
+          continue;
+        }
+        case 15: {
+          if (tag !== 122) {
+            break;
+          }
+
+          message.instagram = reader.string();
           continue;
         }
         case 12: {
@@ -260,9 +275,10 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
       bio: isSet(object.bio) ? globalThis.String(object.bio) : "",
       websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : "",
       twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
-      github: isSet(object.github) ? globalThis.String(object.github) : "",
+      facebook: isSet(object.facebook) ? globalThis.String(object.facebook) : "",
       youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : "",
-      linkedin: isSet(object.linkedin) ? globalThis.String(object.linkedin) : "",
+      tiktok: isSet(object.tiktok) ? globalThis.String(object.tiktok) : "",
+      instagram: isSet(object.instagram) ? globalThis.String(object.instagram) : "",
       isVerified: isSet(object.isVerified) ? globalThis.Boolean(object.isVerified) : false,
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
@@ -295,14 +311,17 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     if (message.twitter !== "") {
       obj.twitter = message.twitter;
     }
-    if (message.github !== "") {
-      obj.github = message.github;
+    if (message.facebook !== "") {
+      obj.facebook = message.facebook;
     }
     if (message.youtube !== "") {
       obj.youtube = message.youtube;
     }
-    if (message.linkedin !== "") {
-      obj.linkedin = message.linkedin;
+    if (message.tiktok !== "") {
+      obj.tiktok = message.tiktok;
+    }
+    if (message.instagram !== "") {
+      obj.instagram = message.instagram;
     }
     if (message.isVerified !== false) {
       obj.isVerified = message.isVerified;
@@ -329,9 +348,10 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     message.bio = object.bio ?? "";
     message.websiteUrl = object.websiteUrl ?? "";
     message.twitter = object.twitter ?? "";
-    message.github = object.github ?? "";
+    message.facebook = object.facebook ?? "";
     message.youtube = object.youtube ?? "";
-    message.linkedin = object.linkedin ?? "";
+    message.tiktok = object.tiktok ?? "";
+    message.instagram = object.instagram ?? "";
     message.isVerified = object.isVerified ?? false;
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";
@@ -348,9 +368,10 @@ function createBaseCreateProfileRequest(): CreateProfileRequest {
     bio: undefined,
     websiteUrl: undefined,
     twitter: undefined,
-    github: undefined,
+    facebook: undefined,
     youtube: undefined,
-    linkedin: undefined,
+    tiktok: undefined,
+    instagram: undefined,
   };
 }
 
@@ -377,14 +398,17 @@ export const CreateProfileRequest: MessageFns<CreateProfileRequest> = {
     if (message.twitter !== undefined) {
       writer.uint32(58).string(message.twitter);
     }
-    if (message.github !== undefined) {
-      writer.uint32(66).string(message.github);
+    if (message.facebook !== undefined) {
+      writer.uint32(66).string(message.facebook);
     }
     if (message.youtube !== undefined) {
       writer.uint32(74).string(message.youtube);
     }
-    if (message.linkedin !== undefined) {
-      writer.uint32(82).string(message.linkedin);
+    if (message.tiktok !== undefined) {
+      writer.uint32(82).string(message.tiktok);
+    }
+    if (message.instagram !== undefined) {
+      writer.uint32(90).string(message.instagram);
     }
     return writer;
   },
@@ -457,7 +481,7 @@ export const CreateProfileRequest: MessageFns<CreateProfileRequest> = {
             break;
           }
 
-          message.github = reader.string();
+          message.facebook = reader.string();
           continue;
         }
         case 9: {
@@ -473,7 +497,15 @@ export const CreateProfileRequest: MessageFns<CreateProfileRequest> = {
             break;
           }
 
-          message.linkedin = reader.string();
+          message.tiktok = reader.string();
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.instagram = reader.string();
           continue;
         }
       }
@@ -494,9 +526,10 @@ export const CreateProfileRequest: MessageFns<CreateProfileRequest> = {
       bio: isSet(object.bio) ? globalThis.String(object.bio) : undefined,
       websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
       twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
-      github: isSet(object.github) ? globalThis.String(object.github) : undefined,
+      facebook: isSet(object.facebook) ? globalThis.String(object.facebook) : undefined,
       youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : undefined,
-      linkedin: isSet(object.linkedin) ? globalThis.String(object.linkedin) : undefined,
+      tiktok: isSet(object.tiktok) ? globalThis.String(object.tiktok) : undefined,
+      instagram: isSet(object.instagram) ? globalThis.String(object.instagram) : undefined,
     };
   },
 
@@ -523,14 +556,17 @@ export const CreateProfileRequest: MessageFns<CreateProfileRequest> = {
     if (message.twitter !== undefined) {
       obj.twitter = message.twitter;
     }
-    if (message.github !== undefined) {
-      obj.github = message.github;
+    if (message.facebook !== undefined) {
+      obj.facebook = message.facebook;
     }
     if (message.youtube !== undefined) {
       obj.youtube = message.youtube;
     }
-    if (message.linkedin !== undefined) {
-      obj.linkedin = message.linkedin;
+    if (message.tiktok !== undefined) {
+      obj.tiktok = message.tiktok;
+    }
+    if (message.instagram !== undefined) {
+      obj.instagram = message.instagram;
     }
     return obj;
   },
@@ -547,9 +583,10 @@ export const CreateProfileRequest: MessageFns<CreateProfileRequest> = {
     message.bio = object.bio ?? undefined;
     message.websiteUrl = object.websiteUrl ?? undefined;
     message.twitter = object.twitter ?? undefined;
-    message.github = object.github ?? undefined;
+    message.facebook = object.facebook ?? undefined;
     message.youtube = object.youtube ?? undefined;
-    message.linkedin = object.linkedin ?? undefined;
+    message.tiktok = object.tiktok ?? undefined;
+    message.instagram = object.instagram ?? undefined;
     return message;
   },
 };
@@ -563,9 +600,10 @@ function createBaseUpdateProfileRequest(): UpdateProfileRequest {
     bio: undefined,
     websiteUrl: undefined,
     twitter: undefined,
-    github: undefined,
+    facebook: undefined,
     youtube: undefined,
-    linkedin: undefined,
+    tiktok: undefined,
+    instagram: undefined,
   };
 }
 
@@ -592,14 +630,17 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
     if (message.twitter !== undefined) {
       writer.uint32(58).string(message.twitter);
     }
-    if (message.github !== undefined) {
-      writer.uint32(66).string(message.github);
+    if (message.facebook !== undefined) {
+      writer.uint32(66).string(message.facebook);
     }
     if (message.youtube !== undefined) {
       writer.uint32(74).string(message.youtube);
     }
-    if (message.linkedin !== undefined) {
-      writer.uint32(82).string(message.linkedin);
+    if (message.tiktok !== undefined) {
+      writer.uint32(82).string(message.tiktok);
+    }
+    if (message.instagram !== undefined) {
+      writer.uint32(90).string(message.instagram);
     }
     return writer;
   },
@@ -672,7 +713,7 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
             break;
           }
 
-          message.github = reader.string();
+          message.facebook = reader.string();
           continue;
         }
         case 9: {
@@ -688,7 +729,15 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
             break;
           }
 
-          message.linkedin = reader.string();
+          message.tiktok = reader.string();
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.instagram = reader.string();
           continue;
         }
       }
@@ -709,9 +758,10 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
       bio: isSet(object.bio) ? globalThis.String(object.bio) : undefined,
       websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
       twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
-      github: isSet(object.github) ? globalThis.String(object.github) : undefined,
+      facebook: isSet(object.facebook) ? globalThis.String(object.facebook) : undefined,
       youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : undefined,
-      linkedin: isSet(object.linkedin) ? globalThis.String(object.linkedin) : undefined,
+      tiktok: isSet(object.tiktok) ? globalThis.String(object.tiktok) : undefined,
+      instagram: isSet(object.instagram) ? globalThis.String(object.instagram) : undefined,
     };
   },
 
@@ -738,14 +788,17 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
     if (message.twitter !== undefined) {
       obj.twitter = message.twitter;
     }
-    if (message.github !== undefined) {
-      obj.github = message.github;
+    if (message.facebook !== undefined) {
+      obj.facebook = message.facebook;
     }
     if (message.youtube !== undefined) {
       obj.youtube = message.youtube;
     }
-    if (message.linkedin !== undefined) {
-      obj.linkedin = message.linkedin;
+    if (message.tiktok !== undefined) {
+      obj.tiktok = message.tiktok;
+    }
+    if (message.instagram !== undefined) {
+      obj.instagram = message.instagram;
     }
     return obj;
   },
@@ -762,9 +815,10 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
     message.bio = object.bio ?? undefined;
     message.websiteUrl = object.websiteUrl ?? undefined;
     message.twitter = object.twitter ?? undefined;
-    message.github = object.github ?? undefined;
+    message.facebook = object.facebook ?? undefined;
     message.youtube = object.youtube ?? undefined;
-    message.linkedin = object.linkedin ?? undefined;
+    message.tiktok = object.tiktok ?? undefined;
+    message.instagram = object.instagram ?? undefined;
     return message;
   },
 };

@@ -5,7 +5,7 @@ export const GrpcPackageToken = {
   PROFILE: 'PROFILE_PACKAGE',
   BRAND: 'BRAND_PACKAGE',
   CAMPAIGN: 'CAMPAIGN_PACKAGE',
-  POST: 'POST_PACKAGE'
+  POST: 'POST_PACKAGE',
 } as const;
 export type GrpcPackageToken =
   (typeof GrpcPackageToken)[keyof typeof GrpcPackageToken];
@@ -17,7 +17,7 @@ export const GrpcProtoName = {
   PROFILE: 'profile',
   BRAND: 'brand',
   CAMPAIGN: 'campaign',
-  POST: 'post'
+  POST: 'post',
 } as const;
 
 export type GrpcProtoName = (typeof GrpcProtoName)[keyof typeof GrpcProtoName];
@@ -31,4 +31,9 @@ export const GrpcProtoServiceName = {
   CAMPAIGN_SERVICE: 'CampaignService',
 } as const;
 
-export type GrpcProtoServiceName = (typeof GrpcProtoServiceName)[keyof typeof GrpcProtoServiceName];
+export type GrpcProtoServiceName =
+  (typeof GrpcProtoServiceName)[keyof typeof GrpcProtoServiceName];
+
+export function resolveGrpcProtoPath(protoName: GrpcProtoName): string {
+  return `ai-dollar-common-lib/src/grpc/proto/${protoName}.proto`;
+}

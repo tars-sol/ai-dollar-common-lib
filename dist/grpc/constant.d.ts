@@ -27,3 +27,4 @@ export declare const GrpcProtoServiceName: {
     readonly CAMPAIGN_SERVICE: "CampaignService";
 };
 export type GrpcProtoServiceName = (typeof GrpcProtoServiceName)[keyof typeof GrpcProtoServiceName];
+export declare function resolveGrpcProtoPath(protoName: GrpcProtoName): string;

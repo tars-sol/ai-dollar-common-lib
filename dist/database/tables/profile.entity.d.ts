@@ -9,9 +9,10 @@ export declare class Profile {
     bio: string;
     websiteUrl: string;
     twitter: string;
-    github: string;
+    facebook: string;
     youtube: string;
-    linkedin: string;
+    tiktok: string;
+    instagram: string;
     isVerified: boolean;
     createdAt: Date;
     updatedAt: Date;
