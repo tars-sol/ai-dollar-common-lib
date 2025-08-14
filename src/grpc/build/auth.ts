@@ -9,6 +9,23 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "auth";
 
+export interface RevokeTokenRequest {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface ValidateTokenRequest {
+  token: string;
+}
+
+export interface ValidateTokenResponse {
+  isValid: boolean;
+}
+
+export interface RevokeTokenResponse {
+  success: boolean;
+}
+
 export interface RegisterRequest {
   email: string;
   password: string;
@@ -63,6 +80,256 @@ export interface AuthResponse {
   refreshToken: string;
   user: UserRequest | undefined;
 }
+
+function createBaseRevokeTokenRequest(): RevokeTokenRequest {
+  return { accessToken: "", refreshToken: "" };
+}
+
+export const RevokeTokenRequest: MessageFns<RevokeTokenRequest> = {
+  encode(message: RevokeTokenRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.accessToken !== "") {
+      writer.uint32(18).string(message.accessToken);
+    }
+    if (message.refreshToken !== "") {
+      writer.uint32(10).string(message.refreshToken);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RevokeTokenRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRevokeTokenRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.accessToken = reader.string();
+          continue;
+        }
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.refreshToken = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RevokeTokenRequest {
+    return {
+      accessToken: isSet(object.accessToken) ? globalThis.String(object.accessToken) : "",
+      refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : "",
+    };
+  },
+
+  toJSON(message: RevokeTokenRequest): unknown {
+    const obj: any = {};
+    if (message.accessToken !== "") {
+      obj.accessToken = message.accessToken;
+    }
+    if (message.refreshToken !== "") {
+      obj.refreshToken = message.refreshToken;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RevokeTokenRequest>, I>>(base?: I): RevokeTokenRequest {
+    return RevokeTokenRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RevokeTokenRequest>, I>>(object: I): RevokeTokenRequest {
+    const message = createBaseRevokeTokenRequest();
+    message.accessToken = object.accessToken ?? "";
+    message.refreshToken = object.refreshToken ?? "";
+    return message;
+  },
+};
+
+function createBaseValidateTokenRequest(): ValidateTokenRequest {
+  return { token: "" };
+}
+
+export const ValidateTokenRequest: MessageFns<ValidateTokenRequest> = {
+  encode(message: ValidateTokenRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.token !== "") {
+      writer.uint32(10).string(message.token);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidateTokenRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValidateTokenRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.token = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidateTokenRequest {
+    return { token: isSet(object.token) ? globalThis.String(object.token) : "" };
+  },
+
+  toJSON(message: ValidateTokenRequest): unknown {
+    const obj: any = {};
+    if (message.token !== "") {
+      obj.token = message.token;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ValidateTokenRequest>, I>>(base?: I): ValidateTokenRequest {
+    return ValidateTokenRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ValidateTokenRequest>, I>>(object: I): ValidateTokenRequest {
+    const message = createBaseValidateTokenRequest();
+    message.token = object.token ?? "";
+    return message;
+  },
+};
+
+function createBaseValidateTokenResponse(): ValidateTokenResponse {
+  return { isValid: false };
+}
+
+export const ValidateTokenResponse: MessageFns<ValidateTokenResponse> = {
+  encode(message: ValidateTokenResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.isValid !== false) {
+      writer.uint32(8).bool(message.isValid);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidateTokenResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseValidateTokenResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.isValid = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidateTokenResponse {
+    return { isValid: isSet(object.isValid) ? globalThis.Boolean(object.isValid) : false };
+  },
+
+  toJSON(message: ValidateTokenResponse): unknown {
+    const obj: any = {};
+    if (message.isValid !== false) {
+      obj.isValid = message.isValid;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ValidateTokenResponse>, I>>(base?: I): ValidateTokenResponse {
+    return ValidateTokenResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ValidateTokenResponse>, I>>(object: I): ValidateTokenResponse {
+    const message = createBaseValidateTokenResponse();
+    message.isValid = object.isValid ?? false;
+    return message;
+  },
+};
+
+function createBaseRevokeTokenResponse(): RevokeTokenResponse {
+  return { success: false };
+}
+
+export const RevokeTokenResponse: MessageFns<RevokeTokenResponse> = {
+  encode(message: RevokeTokenResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RevokeTokenResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRevokeTokenResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.success = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RevokeTokenResponse {
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+  },
+
+  toJSON(message: RevokeTokenResponse): unknown {
+    const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RevokeTokenResponse>, I>>(base?: I): RevokeTokenResponse {
+    return RevokeTokenResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RevokeTokenResponse>, I>>(object: I): RevokeTokenResponse {
+    const message = createBaseRevokeTokenResponse();
+    message.success = object.success ?? false;
+    return message;
+  },
+};
 
 function createBaseRegisterRequest(): RegisterRequest {
   return { email: "", password: "", name: "" };
@@ -908,6 +1175,8 @@ export interface AuthService {
   WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
   LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
   RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
+  RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
+  ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
 }
 
 export const AuthServiceServiceName = "auth.AuthService";
@@ -924,6 +1193,8 @@ export class AuthServiceClientImpl implements AuthService {
     this.WalletLogin = this.WalletLogin.bind(this);
     this.LinkWallet = this.LinkWallet.bind(this);
     this.RefreshToken = this.RefreshToken.bind(this);
+    this.RevokeToken = this.RevokeToken.bind(this);
+    this.ValidateToken = this.ValidateToken.bind(this);
   }
   Register(request: RegisterRequest): Promise<AuthResponse> {
     const data = RegisterRequest.encode(request).finish();
@@ -965,6 +1236,18 @@ export class AuthServiceClientImpl implements AuthService {
     const data = RefreshTokenRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "RefreshToken", data);
     return promise.then((data) => AuthResponse.decode(new BinaryReader(data)));
+  }
+
+  RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse> {
+    const data = RevokeTokenRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "RevokeToken", data);
+    return promise.then((data) => RevokeTokenResponse.decode(new BinaryReader(data)));
+  }
+
+  ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse> {
+    const data = ValidateTokenRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ValidateToken", data);
+    return promise.then((data) => ValidateTokenResponse.decode(new BinaryReader(data)));
   }
 }
 

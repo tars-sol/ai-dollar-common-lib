@@ -1,5 +1,18 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "auth";
+export interface RevokeTokenRequest {
+    accessToken: string;
+    refreshToken: string;
+}
+export interface ValidateTokenRequest {
+    token: string;
+}
+export interface ValidateTokenResponse {
+    isValid: boolean;
+}
+export interface RevokeTokenResponse {
+    success: boolean;
+}
 export interface RegisterRequest {
     email: string;
     password: string;
@@ -45,6 +58,10 @@ export interface AuthResponse {
     refreshToken: string;
     user: UserRequest | undefined;
 }
+export declare const RevokeTokenRequest: MessageFns<RevokeTokenRequest>;
+export declare const ValidateTokenRequest: MessageFns<ValidateTokenRequest>;
+export declare const ValidateTokenResponse: MessageFns<ValidateTokenResponse>;
+export declare const RevokeTokenResponse: MessageFns<RevokeTokenResponse>;
 export declare const RegisterRequest: MessageFns<RegisterRequest>;
 export declare const LoginRequest: MessageFns<LoginRequest>;
 export declare const SsoLoginRequest: MessageFns<SsoLoginRequest>;
@@ -63,6 +80,8 @@ export interface AuthService {
     WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
     LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
     RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
+    RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
+    ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
 }
 export declare const AuthServiceServiceName = "auth.AuthService";
 export declare class AuthServiceClientImpl implements AuthService {
@@ -78,6 +97,8 @@ export declare class AuthServiceClientImpl implements AuthService {
     WalletLogin(request: WalletLoginRequest): Promise<AuthResponse>;
     LinkWallet(request: LinkWalletRequest): Promise<AuthResponse>;
     RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
+    RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
+    ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

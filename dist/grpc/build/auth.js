@@ -5,10 +5,231 @@
 //   protoc               v3.21.12
 // source: auth.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.protobufPackage = void 0;
+exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "auth";
+function createBaseRevokeTokenRequest() {
+    return { accessToken: "", refreshToken: "" };
+}
+exports.RevokeTokenRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.accessToken !== "") {
+            writer.uint32(18).string(message.accessToken);
+        }
+        if (message.refreshToken !== "") {
+            writer.uint32(10).string(message.refreshToken);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseRevokeTokenRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.accessToken = reader.string();
+                    continue;
+                }
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.refreshToken = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            accessToken: isSet(object.accessToken) ? globalThis.String(object.accessToken) : "",
+            refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.accessToken !== "") {
+            obj.accessToken = message.accessToken;
+        }
+        if (message.refreshToken !== "") {
+            obj.refreshToken = message.refreshToken;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.RevokeTokenRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseRevokeTokenRequest();
+        message.accessToken = object.accessToken ?? "";
+        message.refreshToken = object.refreshToken ?? "";
+        return message;
+    },
+};
+function createBaseValidateTokenRequest() {
+    return { token: "" };
+}
+exports.ValidateTokenRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.token !== "") {
+            writer.uint32(10).string(message.token);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseValidateTokenRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.token = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { token: isSet(object.token) ? globalThis.String(object.token) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.token !== "") {
+            obj.token = message.token;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ValidateTokenRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseValidateTokenRequest();
+        message.token = object.token ?? "";
+        return message;
+    },
+};
+function createBaseValidateTokenResponse() {
+    return { isValid: false };
+}
+exports.ValidateTokenResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.isValid !== false) {
+            writer.uint32(8).bool(message.isValid);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseValidateTokenResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.isValid = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { isValid: isSet(object.isValid) ? globalThis.Boolean(object.isValid) : false };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.isValid !== false) {
+            obj.isValid = message.isValid;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ValidateTokenResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseValidateTokenResponse();
+        message.isValid = object.isValid ?? false;
+        return message;
+    },
+};
+function createBaseRevokeTokenResponse() {
+    return { success: false };
+}
+exports.RevokeTokenResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.success !== false) {
+            writer.uint32(8).bool(message.success);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseRevokeTokenResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.success = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.success !== false) {
+            obj.success = message.success;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.RevokeTokenResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseRevokeTokenResponse();
+        message.success = object.success ?? false;
+        return message;
+    },
+};
 function createBaseRegisterRequest() {
     return { email: "", password: "", name: "" };
 }
@@ -772,6 +993,8 @@ class AuthServiceClientImpl {
         this.WalletLogin = this.WalletLogin.bind(this);
         this.LinkWallet = this.LinkWallet.bind(this);
         this.RefreshToken = this.RefreshToken.bind(this);
+        this.RevokeToken = this.RevokeToken.bind(this);
+        this.ValidateToken = this.ValidateToken.bind(this);
     }
     Register(request) {
         const data = exports.RegisterRequest.encode(request).finish();
@@ -807,6 +1030,16 @@ class AuthServiceClientImpl {
         const data = exports.RefreshTokenRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "RefreshToken", data);
         return promise.then((data) => exports.AuthResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    RevokeToken(request) {
+        const data = exports.RevokeTokenRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "RevokeToken", data);
+        return promise.then((data) => exports.RevokeTokenResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    ValidateToken(request) {
+        const data = exports.ValidateTokenRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "ValidateToken", data);
+        return promise.then((data) => exports.ValidateTokenResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.AuthServiceClientImpl = AuthServiceClientImpl;

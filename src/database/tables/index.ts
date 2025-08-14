@@ -8,3 +8,4 @@ export * from './brand_balance.entity';
 export * from './campaign.entity';
 export * from './task.entity';
 export * from './post.entity'
+export * from './revoked_tokens.entity';

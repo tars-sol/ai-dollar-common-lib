@@ -34,9 +34,15 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sha1 = sha1;
+exports.sha256 = sha256;
 const crypto = __importStar(require("crypto"));
 function sha1(text) {
     const hash = crypto.createHash('sha1');
+    hash.update(text);
+    return hash.digest('hex');
+}
+function sha256(text) {
+    const hash = crypto.createHash('sha256');
     hash.update(text);
     return hash.digest('hex');
 }

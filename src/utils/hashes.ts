@@ -5,3 +5,9 @@ export function sha1(text: crypto.BinaryLike) {
   hash.update(text);
   return hash.digest('hex');
 }
+
+export function sha256(text: crypto.BinaryLike) {
+  const hash = crypto.createHash('sha256');
+  hash.update(text);
+  return hash.digest('hex');
+}
