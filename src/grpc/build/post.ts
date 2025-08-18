@@ -37,7 +37,6 @@ export interface GenerateUploadUrlRequest {
   userId: string;
   fileName: string;
   contentType: string;
-  accessType: string;
 }
 
 export interface GenerateUploadUrlResponse {
@@ -444,7 +443,7 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
 };
 
 function createBaseGenerateUploadUrlRequest(): GenerateUploadUrlRequest {
-  return { userId: "", fileName: "", contentType: "", accessType: "" };
+  return { userId: "", fileName: "", contentType: "" };
 }
 
 export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
@@ -457,9 +456,6 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
     }
     if (message.contentType !== "") {
       writer.uint32(26).string(message.contentType);
-    }
-    if (message.accessType !== "") {
-      writer.uint32(34).string(message.accessType);
     }
     return writer;
   },
@@ -495,14 +491,6 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
           message.contentType = reader.string();
           continue;
         }
-        case 4: {
-          if (tag !== 34) {
-            break;
-          }
-
-          message.accessType = reader.string();
-          continue;
-        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -517,7 +505,6 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
       contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
-      accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
     };
   },
 
@@ -532,9 +519,6 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
     if (message.contentType !== "") {
       obj.contentType = message.contentType;
     }
-    if (message.accessType !== "") {
-      obj.accessType = message.accessType;
-    }
     return obj;
   },
 
@@ -546,7 +530,6 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
     message.userId = object.userId ?? "";
     message.fileName = object.fileName ?? "";
     message.contentType = object.contentType ?? "";
-    message.accessType = object.accessType ?? "";
     return message;
   },
 };

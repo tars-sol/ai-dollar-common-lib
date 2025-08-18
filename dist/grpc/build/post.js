@@ -323,7 +323,7 @@ exports.UpdatePostRequest = {
     },
 };
 function createBaseGenerateUploadUrlRequest() {
-    return { userId: "", fileName: "", contentType: "", accessType: "" };
+    return { userId: "", fileName: "", contentType: "" };
 }
 exports.GenerateUploadUrlRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -335,9 +335,6 @@ exports.GenerateUploadUrlRequest = {
         }
         if (message.contentType !== "") {
             writer.uint32(26).string(message.contentType);
-        }
-        if (message.accessType !== "") {
-            writer.uint32(34).string(message.accessType);
         }
         return writer;
     },
@@ -369,13 +366,6 @@ exports.GenerateUploadUrlRequest = {
                     message.contentType = reader.string();
                     continue;
                 }
-                case 4: {
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.accessType = reader.string();
-                    continue;
-                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -389,7 +379,6 @@ exports.GenerateUploadUrlRequest = {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
             contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
-            accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
         };
     },
     toJSON(message) {
@@ -403,9 +392,6 @@ exports.GenerateUploadUrlRequest = {
         if (message.contentType !== "") {
             obj.contentType = message.contentType;
         }
-        if (message.accessType !== "") {
-            obj.accessType = message.accessType;
-        }
         return obj;
     },
     create(base) {
@@ -416,7 +402,6 @@ exports.GenerateUploadUrlRequest = {
         message.userId = object.userId ?? "";
         message.fileName = object.fileName ?? "";
         message.contentType = object.contentType ?? "";
-        message.accessType = object.accessType ?? "";
         return message;
     },
 };

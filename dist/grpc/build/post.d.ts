@@ -24,7 +24,6 @@ export interface GenerateUploadUrlRequest {
     userId: string;
     fileName: string;
     contentType: string;
-    accessType: string;
 }
 export interface GenerateUploadUrlResponse {
     uploadUrl: string;

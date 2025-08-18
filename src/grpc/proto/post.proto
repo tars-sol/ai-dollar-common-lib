@@ -35,7 +35,6 @@ message GenerateUploadUrlRequest {
   string userId = 1;
   string fileName = 2;
   string contentType = 3;
-  string accessType = 4;
 }
 
 message GenerateUploadUrlResponse {
