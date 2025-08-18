@@ -4,10 +4,14 @@ export interface CreatePostRequest {
     userId: string;
     caption: string;
     accessType: string;
-    priceInCents?: number | undefined;
-    s3Key: string;
-    fileType: string;
+    postType: string;
+    mimeType?: string | undefined;
+    mediaType?: string | undefined;
+    s3Key?: string | undefined;
+    fileType?: string | undefined;
     originalFileName?: string | undefined;
+    pollEndTime?: string | undefined;
+    options: string[];
 }
 export interface UpdatePostRequest {
     id: string;
@@ -15,12 +19,12 @@ export interface UpdatePostRequest {
     caption?: string | undefined;
     /** "PUBLIC", "SUBSCRIBER", "PAID" */
     accessType?: string | undefined;
-    priceInCents?: number | undefined;
 }
 export interface GenerateUploadUrlRequest {
     userId: string;
     fileName: string;
     contentType: string;
+    accessType: string;
 }
 export interface GenerateUploadUrlResponse {
     uploadUrl: string;
@@ -32,20 +36,49 @@ export interface GetFeedRequest {
 export interface GetFeedResponse {
     posts: PostResponse[];
 }
+export interface PostMediaResponse {
+    id: string;
+    mimeType: string;
+    mediaType: string;
+    s3Key: string;
+    originalFileName: string;
+    signedUrl: string;
+}
+export interface PostFileResponse {
+    id: string;
+    mimeType: string;
+    s3Key: string;
+    originalFileName: string;
+    signedUrl: string;
+    fileType: string;
+    sizeInBytes: string;
+}
+export interface VoteOnPollRequest {
+    userId: string;
+    postId: string;
+    optionId: string;
+}
+export interface PostPollResponse {
+    id: string;
+    pollEndTime: string;
+    postPollOptions: PostPollOptionResponse[];
+}
+export interface PostPollOptionResponse {
+    id: string;
+    text: string;
+    voteCount: string;
+}
 export interface PostResponse {
     id: string;
     userId: string;
     caption: string;
-    /** "PUBLIC", "SUBSCRIBER", "PAID" */
     accessType: string;
-    priceInCents?: number | undefined;
-    s3Key: string;
-    /** "IMAGE", "VIDEO", "CODE", "OTHER" */
-    fileType: string;
-    originalFileName: string;
+    postType: string;
+    postMedia?: PostMediaResponse | undefined;
+    postPoll?: PostPollResponse | undefined;
+    postFile?: PostFileResponse | undefined;
     createdAt: string;
     updatedAt: string;
-    signedUrl: string;
 }
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;
@@ -53,12 +86,18 @@ export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlReque
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
 export declare const GetFeedRequest: MessageFns<GetFeedRequest>;
 export declare const GetFeedResponse: MessageFns<GetFeedResponse>;
+export declare const PostMediaResponse: MessageFns<PostMediaResponse>;
+export declare const PostFileResponse: MessageFns<PostFileResponse>;
+export declare const VoteOnPollRequest: MessageFns<VoteOnPollRequest>;
+export declare const PostPollResponse: MessageFns<PostPollResponse>;
+export declare const PostPollOptionResponse: MessageFns<PostPollOptionResponse>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
+    VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -71,6 +110,7 @@ export declare class PostServiceClientImpl implements PostService {
     Update(request: UpdatePostRequest): Promise<PostResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
+    VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

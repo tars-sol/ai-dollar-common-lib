@@ -13,10 +13,14 @@ export interface CreatePostRequest {
   userId: string;
   caption: string;
   accessType: string;
-  priceInCents?: number | undefined;
-  s3Key: string;
-  fileType: string;
+  postType: string;
+  mimeType?: string | undefined;
+  mediaType?: string | undefined;
+  s3Key?: string | undefined;
+  fileType?: string | undefined;
   originalFileName?: string | undefined;
+  pollEndTime?: string | undefined;
+  options: string[];
 }
 
 export interface UpdatePostRequest {
@@ -27,13 +31,13 @@ export interface UpdatePostRequest {
     | undefined;
   /** "PUBLIC", "SUBSCRIBER", "PAID" */
   accessType?: string | undefined;
-  priceInCents?: number | undefined;
 }
 
 export interface GenerateUploadUrlRequest {
   userId: string;
   fileName: string;
   contentType: string;
+  accessType: string;
 }
 
 export interface GenerateUploadUrlResponse {
@@ -49,20 +53,54 @@ export interface GetFeedResponse {
   posts: PostResponse[];
 }
 
+export interface PostMediaResponse {
+  id: string;
+  mimeType: string;
+  mediaType: string;
+  s3Key: string;
+  originalFileName: string;
+  signedUrl: string;
+}
+
+export interface PostFileResponse {
+  id: string;
+  mimeType: string;
+  s3Key: string;
+  originalFileName: string;
+  signedUrl: string;
+  fileType: string;
+  sizeInBytes: string;
+}
+
+export interface VoteOnPollRequest {
+  userId: string;
+  postId: string;
+  optionId: string;
+}
+
+export interface PostPollResponse {
+  id: string;
+  pollEndTime: string;
+  postPollOptions: PostPollOptionResponse[];
+}
+
+export interface PostPollOptionResponse {
+  id: string;
+  text: string;
+  voteCount: string;
+}
+
 export interface PostResponse {
   id: string;
   userId: string;
   caption: string;
-  /** "PUBLIC", "SUBSCRIBER", "PAID" */
   accessType: string;
-  priceInCents?: number | undefined;
-  s3Key: string;
-  /** "IMAGE", "VIDEO", "CODE", "OTHER" */
-  fileType: string;
-  originalFileName: string;
+  postType: string;
+  postMedia?: PostMediaResponse | undefined;
+  postPoll?: PostPollResponse | undefined;
+  postFile?: PostFileResponse | undefined;
   createdAt: string;
   updatedAt: string;
-  signedUrl: string;
 }
 
 function createBaseCreatePostRequest(): CreatePostRequest {
@@ -70,10 +108,14 @@ function createBaseCreatePostRequest(): CreatePostRequest {
     userId: "",
     caption: "",
     accessType: "",
-    priceInCents: undefined,
-    s3Key: "",
-    fileType: "",
+    postType: "",
+    mimeType: undefined,
+    mediaType: undefined,
+    s3Key: undefined,
+    fileType: undefined,
     originalFileName: undefined,
+    pollEndTime: undefined,
+    options: [],
   };
 }
 
@@ -88,17 +130,29 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     if (message.accessType !== "") {
       writer.uint32(26).string(message.accessType);
     }
-    if (message.priceInCents !== undefined) {
-      writer.uint32(32).int32(message.priceInCents);
+    if (message.postType !== "") {
+      writer.uint32(66).string(message.postType);
     }
-    if (message.s3Key !== "") {
+    if (message.mimeType !== undefined) {
+      writer.uint32(34).string(message.mimeType);
+    }
+    if (message.mediaType !== undefined) {
+      writer.uint32(74).string(message.mediaType);
+    }
+    if (message.s3Key !== undefined) {
       writer.uint32(42).string(message.s3Key);
     }
-    if (message.fileType !== "") {
+    if (message.fileType !== undefined) {
       writer.uint32(50).string(message.fileType);
     }
     if (message.originalFileName !== undefined) {
       writer.uint32(58).string(message.originalFileName);
+    }
+    if (message.pollEndTime !== undefined) {
+      writer.uint32(82).string(message.pollEndTime);
+    }
+    for (const v of message.options) {
+      writer.uint32(90).string(v!);
     }
     return writer;
   },
@@ -134,12 +188,28 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
           message.accessType = reader.string();
           continue;
         }
-        case 4: {
-          if (tag !== 32) {
+        case 8: {
+          if (tag !== 66) {
             break;
           }
 
-          message.priceInCents = reader.int32();
+          message.postType = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.mimeType = reader.string();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.mediaType = reader.string();
           continue;
         }
         case 5: {
@@ -166,6 +236,22 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
           message.originalFileName = reader.string();
           continue;
         }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.pollEndTime = reader.string();
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.options.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -180,10 +266,14 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
       accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
-      priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
-      s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
-      fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : "",
+      postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
+      mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : undefined,
+      mediaType: isSet(object.mediaType) ? globalThis.String(object.mediaType) : undefined,
+      s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : undefined,
+      fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : undefined,
       originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : undefined,
+      pollEndTime: isSet(object.pollEndTime) ? globalThis.String(object.pollEndTime) : undefined,
+      options: globalThis.Array.isArray(object?.options) ? object.options.map((e: any) => globalThis.String(e)) : [],
     };
   },
 
@@ -198,17 +288,29 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     if (message.accessType !== "") {
       obj.accessType = message.accessType;
     }
-    if (message.priceInCents !== undefined) {
-      obj.priceInCents = Math.round(message.priceInCents);
+    if (message.postType !== "") {
+      obj.postType = message.postType;
     }
-    if (message.s3Key !== "") {
+    if (message.mimeType !== undefined) {
+      obj.mimeType = message.mimeType;
+    }
+    if (message.mediaType !== undefined) {
+      obj.mediaType = message.mediaType;
+    }
+    if (message.s3Key !== undefined) {
       obj.s3Key = message.s3Key;
     }
-    if (message.fileType !== "") {
+    if (message.fileType !== undefined) {
       obj.fileType = message.fileType;
     }
     if (message.originalFileName !== undefined) {
       obj.originalFileName = message.originalFileName;
+    }
+    if (message.pollEndTime !== undefined) {
+      obj.pollEndTime = message.pollEndTime;
+    }
+    if (message.options?.length) {
+      obj.options = message.options;
     }
     return obj;
   },
@@ -221,16 +323,20 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     message.userId = object.userId ?? "";
     message.caption = object.caption ?? "";
     message.accessType = object.accessType ?? "";
-    message.priceInCents = object.priceInCents ?? undefined;
-    message.s3Key = object.s3Key ?? "";
-    message.fileType = object.fileType ?? "";
+    message.postType = object.postType ?? "";
+    message.mimeType = object.mimeType ?? undefined;
+    message.mediaType = object.mediaType ?? undefined;
+    message.s3Key = object.s3Key ?? undefined;
+    message.fileType = object.fileType ?? undefined;
     message.originalFileName = object.originalFileName ?? undefined;
+    message.pollEndTime = object.pollEndTime ?? undefined;
+    message.options = object.options?.map((e) => e) || [];
     return message;
   },
 };
 
 function createBaseUpdatePostRequest(): UpdatePostRequest {
-  return { id: "", userId: "", caption: undefined, accessType: undefined, priceInCents: undefined };
+  return { id: "", userId: "", caption: undefined, accessType: undefined };
 }
 
 export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
@@ -246,9 +352,6 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
     }
     if (message.accessType !== undefined) {
       writer.uint32(34).string(message.accessType);
-    }
-    if (message.priceInCents !== undefined) {
-      writer.uint32(40).int32(message.priceInCents);
     }
     return writer;
   },
@@ -292,14 +395,6 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
           message.accessType = reader.string();
           continue;
         }
-        case 5: {
-          if (tag !== 40) {
-            break;
-          }
-
-          message.priceInCents = reader.int32();
-          continue;
-        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -315,7 +410,6 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : undefined,
       accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : undefined,
-      priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
     };
   },
 
@@ -333,9 +427,6 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
     if (message.accessType !== undefined) {
       obj.accessType = message.accessType;
     }
-    if (message.priceInCents !== undefined) {
-      obj.priceInCents = Math.round(message.priceInCents);
-    }
     return obj;
   },
 
@@ -348,13 +439,12 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
     message.userId = object.userId ?? "";
     message.caption = object.caption ?? undefined;
     message.accessType = object.accessType ?? undefined;
-    message.priceInCents = object.priceInCents ?? undefined;
     return message;
   },
 };
 
 function createBaseGenerateUploadUrlRequest(): GenerateUploadUrlRequest {
-  return { userId: "", fileName: "", contentType: "" };
+  return { userId: "", fileName: "", contentType: "", accessType: "" };
 }
 
 export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
@@ -367,6 +457,9 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
     }
     if (message.contentType !== "") {
       writer.uint32(26).string(message.contentType);
+    }
+    if (message.accessType !== "") {
+      writer.uint32(34).string(message.accessType);
     }
     return writer;
   },
@@ -402,6 +495,14 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
           message.contentType = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.accessType = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -416,6 +517,7 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
       contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
+      accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
     };
   },
 
@@ -430,6 +532,9 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
     if (message.contentType !== "") {
       obj.contentType = message.contentType;
     }
+    if (message.accessType !== "") {
+      obj.accessType = message.accessType;
+    }
     return obj;
   },
 
@@ -441,6 +546,7 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
     message.userId = object.userId ?? "";
     message.fileName = object.fileName ?? "";
     message.contentType = object.contentType ?? "";
+    message.accessType = object.accessType ?? "";
     return message;
   },
 };
@@ -639,19 +745,592 @@ export const GetFeedResponse: MessageFns<GetFeedResponse> = {
   },
 };
 
+function createBasePostMediaResponse(): PostMediaResponse {
+  return { id: "", mimeType: "", mediaType: "", s3Key: "", originalFileName: "", signedUrl: "" };
+}
+
+export const PostMediaResponse: MessageFns<PostMediaResponse> = {
+  encode(message: PostMediaResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(50).string(message.id);
+    }
+    if (message.mimeType !== "") {
+      writer.uint32(10).string(message.mimeType);
+    }
+    if (message.mediaType !== "") {
+      writer.uint32(18).string(message.mediaType);
+    }
+    if (message.s3Key !== "") {
+      writer.uint32(26).string(message.s3Key);
+    }
+    if (message.originalFileName !== "") {
+      writer.uint32(34).string(message.originalFileName);
+    }
+    if (message.signedUrl !== "") {
+      writer.uint32(42).string(message.signedUrl);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PostMediaResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePostMediaResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.mimeType = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.mediaType = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.s3Key = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.originalFileName = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.signedUrl = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PostMediaResponse {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : "",
+      mediaType: isSet(object.mediaType) ? globalThis.String(object.mediaType) : "",
+      s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
+      originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
+      signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : "",
+    };
+  },
+
+  toJSON(message: PostMediaResponse): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.mimeType !== "") {
+      obj.mimeType = message.mimeType;
+    }
+    if (message.mediaType !== "") {
+      obj.mediaType = message.mediaType;
+    }
+    if (message.s3Key !== "") {
+      obj.s3Key = message.s3Key;
+    }
+    if (message.originalFileName !== "") {
+      obj.originalFileName = message.originalFileName;
+    }
+    if (message.signedUrl !== "") {
+      obj.signedUrl = message.signedUrl;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostMediaResponse>, I>>(base?: I): PostMediaResponse {
+    return PostMediaResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PostMediaResponse>, I>>(object: I): PostMediaResponse {
+    const message = createBasePostMediaResponse();
+    message.id = object.id ?? "";
+    message.mimeType = object.mimeType ?? "";
+    message.mediaType = object.mediaType ?? "";
+    message.s3Key = object.s3Key ?? "";
+    message.originalFileName = object.originalFileName ?? "";
+    message.signedUrl = object.signedUrl ?? "";
+    return message;
+  },
+};
+
+function createBasePostFileResponse(): PostFileResponse {
+  return { id: "", mimeType: "", s3Key: "", originalFileName: "", signedUrl: "", fileType: "", sizeInBytes: "" };
+}
+
+export const PostFileResponse: MessageFns<PostFileResponse> = {
+  encode(message: PostFileResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(50).string(message.id);
+    }
+    if (message.mimeType !== "") {
+      writer.uint32(10).string(message.mimeType);
+    }
+    if (message.s3Key !== "") {
+      writer.uint32(26).string(message.s3Key);
+    }
+    if (message.originalFileName !== "") {
+      writer.uint32(34).string(message.originalFileName);
+    }
+    if (message.signedUrl !== "") {
+      writer.uint32(42).string(message.signedUrl);
+    }
+    if (message.fileType !== "") {
+      writer.uint32(58).string(message.fileType);
+    }
+    if (message.sizeInBytes !== "") {
+      writer.uint32(66).string(message.sizeInBytes);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PostFileResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePostFileResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.mimeType = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.s3Key = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.originalFileName = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.signedUrl = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.fileType = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.sizeInBytes = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PostFileResponse {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : "",
+      s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
+      originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
+      signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : "",
+      fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : "",
+      sizeInBytes: isSet(object.sizeInBytes) ? globalThis.String(object.sizeInBytes) : "",
+    };
+  },
+
+  toJSON(message: PostFileResponse): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.mimeType !== "") {
+      obj.mimeType = message.mimeType;
+    }
+    if (message.s3Key !== "") {
+      obj.s3Key = message.s3Key;
+    }
+    if (message.originalFileName !== "") {
+      obj.originalFileName = message.originalFileName;
+    }
+    if (message.signedUrl !== "") {
+      obj.signedUrl = message.signedUrl;
+    }
+    if (message.fileType !== "") {
+      obj.fileType = message.fileType;
+    }
+    if (message.sizeInBytes !== "") {
+      obj.sizeInBytes = message.sizeInBytes;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostFileResponse>, I>>(base?: I): PostFileResponse {
+    return PostFileResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PostFileResponse>, I>>(object: I): PostFileResponse {
+    const message = createBasePostFileResponse();
+    message.id = object.id ?? "";
+    message.mimeType = object.mimeType ?? "";
+    message.s3Key = object.s3Key ?? "";
+    message.originalFileName = object.originalFileName ?? "";
+    message.signedUrl = object.signedUrl ?? "";
+    message.fileType = object.fileType ?? "";
+    message.sizeInBytes = object.sizeInBytes ?? "";
+    return message;
+  },
+};
+
+function createBaseVoteOnPollRequest(): VoteOnPollRequest {
+  return { userId: "", postId: "", optionId: "" };
+}
+
+export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
+  encode(message: VoteOnPollRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.postId !== "") {
+      writer.uint32(18).string(message.postId);
+    }
+    if (message.optionId !== "") {
+      writer.uint32(26).string(message.optionId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): VoteOnPollRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseVoteOnPollRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.optionId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): VoteOnPollRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+      optionId: isSet(object.optionId) ? globalThis.String(object.optionId) : "",
+    };
+  },
+
+  toJSON(message: VoteOnPollRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    if (message.optionId !== "") {
+      obj.optionId = message.optionId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<VoteOnPollRequest>, I>>(base?: I): VoteOnPollRequest {
+    return VoteOnPollRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<VoteOnPollRequest>, I>>(object: I): VoteOnPollRequest {
+    const message = createBaseVoteOnPollRequest();
+    message.userId = object.userId ?? "";
+    message.postId = object.postId ?? "";
+    message.optionId = object.optionId ?? "";
+    return message;
+  },
+};
+
+function createBasePostPollResponse(): PostPollResponse {
+  return { id: "", pollEndTime: "", postPollOptions: [] };
+}
+
+export const PostPollResponse: MessageFns<PostPollResponse> = {
+  encode(message: PostPollResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.pollEndTime !== "") {
+      writer.uint32(18).string(message.pollEndTime);
+    }
+    for (const v of message.postPollOptions) {
+      PostPollOptionResponse.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PostPollResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePostPollResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.pollEndTime = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.postPollOptions.push(PostPollOptionResponse.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PostPollResponse {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      pollEndTime: isSet(object.pollEndTime) ? globalThis.String(object.pollEndTime) : "",
+      postPollOptions: globalThis.Array.isArray(object?.postPollOptions)
+        ? object.postPollOptions.map((e: any) => PostPollOptionResponse.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: PostPollResponse): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.pollEndTime !== "") {
+      obj.pollEndTime = message.pollEndTime;
+    }
+    if (message.postPollOptions?.length) {
+      obj.postPollOptions = message.postPollOptions.map((e) => PostPollOptionResponse.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostPollResponse>, I>>(base?: I): PostPollResponse {
+    return PostPollResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PostPollResponse>, I>>(object: I): PostPollResponse {
+    const message = createBasePostPollResponse();
+    message.id = object.id ?? "";
+    message.pollEndTime = object.pollEndTime ?? "";
+    message.postPollOptions = object.postPollOptions?.map((e) => PostPollOptionResponse.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBasePostPollOptionResponse(): PostPollOptionResponse {
+  return { id: "", text: "", voteCount: "" };
+}
+
+export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
+  encode(message: PostPollOptionResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.text !== "") {
+      writer.uint32(18).string(message.text);
+    }
+    if (message.voteCount !== "") {
+      writer.uint32(26).string(message.voteCount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PostPollOptionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePostPollOptionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.text = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.voteCount = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PostPollOptionResponse {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      text: isSet(object.text) ? globalThis.String(object.text) : "",
+      voteCount: isSet(object.voteCount) ? globalThis.String(object.voteCount) : "",
+    };
+  },
+
+  toJSON(message: PostPollOptionResponse): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.text !== "") {
+      obj.text = message.text;
+    }
+    if (message.voteCount !== "") {
+      obj.voteCount = message.voteCount;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostPollOptionResponse>, I>>(base?: I): PostPollOptionResponse {
+    return PostPollOptionResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PostPollOptionResponse>, I>>(object: I): PostPollOptionResponse {
+    const message = createBasePostPollOptionResponse();
+    message.id = object.id ?? "";
+    message.text = object.text ?? "";
+    message.voteCount = object.voteCount ?? "";
+    return message;
+  },
+};
+
 function createBasePostResponse(): PostResponse {
   return {
     id: "",
     userId: "",
     caption: "",
     accessType: "",
-    priceInCents: undefined,
-    s3Key: "",
-    fileType: "",
-    originalFileName: "",
+    postType: "",
+    postMedia: undefined,
+    postPoll: undefined,
+    postFile: undefined,
     createdAt: "",
     updatedAt: "",
-    signedUrl: "",
   };
 }
 
@@ -669,26 +1348,23 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.accessType !== "") {
       writer.uint32(34).string(message.accessType);
     }
-    if (message.priceInCents !== undefined) {
-      writer.uint32(40).int32(message.priceInCents);
+    if (message.postType !== "") {
+      writer.uint32(42).string(message.postType);
     }
-    if (message.s3Key !== "") {
-      writer.uint32(50).string(message.s3Key);
+    if (message.postMedia !== undefined) {
+      PostMediaResponse.encode(message.postMedia, writer.uint32(50).fork()).join();
     }
-    if (message.fileType !== "") {
-      writer.uint32(58).string(message.fileType);
+    if (message.postPoll !== undefined) {
+      PostPollResponse.encode(message.postPoll, writer.uint32(58).fork()).join();
     }
-    if (message.originalFileName !== "") {
-      writer.uint32(66).string(message.originalFileName);
+    if (message.postFile !== undefined) {
+      PostFileResponse.encode(message.postFile, writer.uint32(66).fork()).join();
     }
     if (message.createdAt !== "") {
       writer.uint32(74).string(message.createdAt);
     }
     if (message.updatedAt !== "") {
       writer.uint32(82).string(message.updatedAt);
-    }
-    if (message.signedUrl !== "") {
-      writer.uint32(90).string(message.signedUrl);
     }
     return writer;
   },
@@ -733,11 +1409,11 @@ export const PostResponse: MessageFns<PostResponse> = {
           continue;
         }
         case 5: {
-          if (tag !== 40) {
+          if (tag !== 42) {
             break;
           }
 
-          message.priceInCents = reader.int32();
+          message.postType = reader.string();
           continue;
         }
         case 6: {
@@ -745,7 +1421,7 @@ export const PostResponse: MessageFns<PostResponse> = {
             break;
           }
 
-          message.s3Key = reader.string();
+          message.postMedia = PostMediaResponse.decode(reader, reader.uint32());
           continue;
         }
         case 7: {
@@ -753,7 +1429,7 @@ export const PostResponse: MessageFns<PostResponse> = {
             break;
           }
 
-          message.fileType = reader.string();
+          message.postPoll = PostPollResponse.decode(reader, reader.uint32());
           continue;
         }
         case 8: {
@@ -761,7 +1437,7 @@ export const PostResponse: MessageFns<PostResponse> = {
             break;
           }
 
-          message.originalFileName = reader.string();
+          message.postFile = PostFileResponse.decode(reader, reader.uint32());
           continue;
         }
         case 9: {
@@ -780,14 +1456,6 @@ export const PostResponse: MessageFns<PostResponse> = {
           message.updatedAt = reader.string();
           continue;
         }
-        case 11: {
-          if (tag !== 90) {
-            break;
-          }
-
-          message.signedUrl = reader.string();
-          continue;
-        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -803,13 +1471,12 @@ export const PostResponse: MessageFns<PostResponse> = {
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
       accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
-      priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
-      s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
-      fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : "",
-      originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
+      postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
+      postMedia: isSet(object.postMedia) ? PostMediaResponse.fromJSON(object.postMedia) : undefined,
+      postPoll: isSet(object.postPoll) ? PostPollResponse.fromJSON(object.postPoll) : undefined,
+      postFile: isSet(object.postFile) ? PostFileResponse.fromJSON(object.postFile) : undefined,
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
-      signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : "",
     };
   },
 
@@ -827,26 +1494,23 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.accessType !== "") {
       obj.accessType = message.accessType;
     }
-    if (message.priceInCents !== undefined) {
-      obj.priceInCents = Math.round(message.priceInCents);
+    if (message.postType !== "") {
+      obj.postType = message.postType;
     }
-    if (message.s3Key !== "") {
-      obj.s3Key = message.s3Key;
+    if (message.postMedia !== undefined) {
+      obj.postMedia = PostMediaResponse.toJSON(message.postMedia);
     }
-    if (message.fileType !== "") {
-      obj.fileType = message.fileType;
+    if (message.postPoll !== undefined) {
+      obj.postPoll = PostPollResponse.toJSON(message.postPoll);
     }
-    if (message.originalFileName !== "") {
-      obj.originalFileName = message.originalFileName;
+    if (message.postFile !== undefined) {
+      obj.postFile = PostFileResponse.toJSON(message.postFile);
     }
     if (message.createdAt !== "") {
       obj.createdAt = message.createdAt;
     }
     if (message.updatedAt !== "") {
       obj.updatedAt = message.updatedAt;
-    }
-    if (message.signedUrl !== "") {
-      obj.signedUrl = message.signedUrl;
     }
     return obj;
   },
@@ -860,13 +1524,18 @@ export const PostResponse: MessageFns<PostResponse> = {
     message.userId = object.userId ?? "";
     message.caption = object.caption ?? "";
     message.accessType = object.accessType ?? "";
-    message.priceInCents = object.priceInCents ?? undefined;
-    message.s3Key = object.s3Key ?? "";
-    message.fileType = object.fileType ?? "";
-    message.originalFileName = object.originalFileName ?? "";
+    message.postType = object.postType ?? "";
+    message.postMedia = (object.postMedia !== undefined && object.postMedia !== null)
+      ? PostMediaResponse.fromPartial(object.postMedia)
+      : undefined;
+    message.postPoll = (object.postPoll !== undefined && object.postPoll !== null)
+      ? PostPollResponse.fromPartial(object.postPoll)
+      : undefined;
+    message.postFile = (object.postFile !== undefined && object.postFile !== null)
+      ? PostFileResponse.fromPartial(object.postFile)
+      : undefined;
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";
-    message.signedUrl = object.signedUrl ?? "";
     return message;
   },
 };
@@ -876,6 +1545,7 @@ export interface PostService {
   Update(request: UpdatePostRequest): Promise<PostResponse>;
   GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
   GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
+  VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -889,6 +1559,7 @@ export class PostServiceClientImpl implements PostService {
     this.Update = this.Update.bind(this);
     this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
     this.GetFeed = this.GetFeed.bind(this);
+    this.VoteOnPoll = this.VoteOnPoll.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -912,6 +1583,12 @@ export class PostServiceClientImpl implements PostService {
     const data = GetFeedRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetFeed", data);
     return promise.then((data) => GetFeedResponse.decode(new BinaryReader(data)));
+  }
+
+  VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse> {
+    const data = VoteOnPollRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "VoteOnPoll", data);
+    return promise.then((data) => PostResponse.decode(new BinaryReader(data)));
   }
 }
 

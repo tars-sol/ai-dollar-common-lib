@@ -7,16 +7,21 @@ service PostService {
   rpc Update (UpdatePostRequest) returns (PostResponse);
   rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
   rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
+  rpc VoteOnPoll (VoteOnPollRequest) returns (PostResponse);
 }
 
 message CreatePostRequest {
   string userId = 1;
   string caption = 2;
   string accessType = 3;
-  optional int32 priceInCents = 4;
-  string s3Key = 5;
-  string fileType = 6;
+  string postType = 8;
+  optional string mimeType = 4;
+  optional string mediaType = 9;
+  optional string s3Key = 5;
+  optional string fileType = 6;
   optional string originalFileName = 7;
+  optional string pollEndTime=10;
+  repeated string options = 11;
 }
 
 message UpdatePostRequest {
@@ -24,13 +29,13 @@ message UpdatePostRequest {
   string userId = 2;
   optional string caption = 3;
   optional string accessType = 4; // "PUBLIC", "SUBSCRIBER", "PAID"
-  optional int32 priceInCents = 5;
 }
 
 message GenerateUploadUrlRequest {
   string userId = 1;
   string fileName = 2;
   string contentType = 3;
+  string accessType = 4;
 }
 
 message GenerateUploadUrlResponse {
@@ -45,19 +50,54 @@ message GetFeedRequest {
 message GetFeedResponse {
   repeated PostResponse posts = 1;
 }
+message PostMediaResponse{
+   string id = 6;
+   string mimeType = 1;
+   string mediaType = 2;
+   string s3Key = 3;
+   string originalFileName = 4;
+   string signedUrl = 5;
+
+}
+
+message PostFileResponse{
+   string id = 6;
+   string mimeType = 1;
+   string s3Key = 3;
+   string originalFileName = 4;
+   string signedUrl = 5;
+   string fileType = 7;
+   string sizeInBytes = 8;
+
+}
+message VoteOnPollRequest{
+  string userId = 1;
+  string postId = 2;
+  string optionId = 3;
+}
+message PostPollResponse{
+  string id = 1;
+  string pollEndTime = 2; 
+  repeated PostPollOptionResponse postPollOptions= 3;
+}
+message PostPollOptionResponse{
+  string id = 1;
+  string text = 2;
+  string voteCount = 3;
+}
 
 message PostResponse {
   string id = 1;
   string userId = 2;
   string caption = 3;
-  string accessType = 4; // "PUBLIC", "SUBSCRIBER", "PAID"
-  optional int32 priceInCents = 5;
-  string s3Key = 6;
-  string fileType = 7; // "IMAGE", "VIDEO", "CODE", "OTHER"
-  string originalFileName = 8;
+  string accessType = 4;
+  string postType = 5;
+  optional PostMediaResponse postMedia = 6;
+  optional PostPollResponse postPoll=7;
+  optional PostFileResponse postFile=8;
+  
 
   string createdAt = 9;
   string updatedAt = 10;
 
-  string signedUrl = 11;
 }

@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.PostResponse = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.PostResponse = exports.PostPollOptionResponse = exports.PostPollResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "post";
@@ -14,10 +14,14 @@ function createBaseCreatePostRequest() {
         userId: "",
         caption: "",
         accessType: "",
-        priceInCents: undefined,
-        s3Key: "",
-        fileType: "",
+        postType: "",
+        mimeType: undefined,
+        mediaType: undefined,
+        s3Key: undefined,
+        fileType: undefined,
         originalFileName: undefined,
+        pollEndTime: undefined,
+        options: [],
     };
 }
 exports.CreatePostRequest = {
@@ -31,17 +35,29 @@ exports.CreatePostRequest = {
         if (message.accessType !== "") {
             writer.uint32(26).string(message.accessType);
         }
-        if (message.priceInCents !== undefined) {
-            writer.uint32(32).int32(message.priceInCents);
+        if (message.postType !== "") {
+            writer.uint32(66).string(message.postType);
         }
-        if (message.s3Key !== "") {
+        if (message.mimeType !== undefined) {
+            writer.uint32(34).string(message.mimeType);
+        }
+        if (message.mediaType !== undefined) {
+            writer.uint32(74).string(message.mediaType);
+        }
+        if (message.s3Key !== undefined) {
             writer.uint32(42).string(message.s3Key);
         }
-        if (message.fileType !== "") {
+        if (message.fileType !== undefined) {
             writer.uint32(50).string(message.fileType);
         }
         if (message.originalFileName !== undefined) {
             writer.uint32(58).string(message.originalFileName);
+        }
+        if (message.pollEndTime !== undefined) {
+            writer.uint32(82).string(message.pollEndTime);
+        }
+        for (const v of message.options) {
+            writer.uint32(90).string(v);
         }
         return writer;
     },
@@ -73,11 +89,25 @@ exports.CreatePostRequest = {
                     message.accessType = reader.string();
                     continue;
                 }
-                case 4: {
-                    if (tag !== 32) {
+                case 8: {
+                    if (tag !== 66) {
                         break;
                     }
-                    message.priceInCents = reader.int32();
+                    message.postType = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.mimeType = reader.string();
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.mediaType = reader.string();
                     continue;
                 }
                 case 5: {
@@ -101,6 +131,20 @@ exports.CreatePostRequest = {
                     message.originalFileName = reader.string();
                     continue;
                 }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.pollEndTime = reader.string();
+                    continue;
+                }
+                case 11: {
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.options.push(reader.string());
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -114,10 +158,14 @@ exports.CreatePostRequest = {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
             accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
-            priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
-            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
-            fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : "",
+            postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
+            mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : undefined,
+            mediaType: isSet(object.mediaType) ? globalThis.String(object.mediaType) : undefined,
+            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : undefined,
+            fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : undefined,
             originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : undefined,
+            pollEndTime: isSet(object.pollEndTime) ? globalThis.String(object.pollEndTime) : undefined,
+            options: globalThis.Array.isArray(object?.options) ? object.options.map((e) => globalThis.String(e)) : [],
         };
     },
     toJSON(message) {
@@ -131,17 +179,29 @@ exports.CreatePostRequest = {
         if (message.accessType !== "") {
             obj.accessType = message.accessType;
         }
-        if (message.priceInCents !== undefined) {
-            obj.priceInCents = Math.round(message.priceInCents);
+        if (message.postType !== "") {
+            obj.postType = message.postType;
         }
-        if (message.s3Key !== "") {
+        if (message.mimeType !== undefined) {
+            obj.mimeType = message.mimeType;
+        }
+        if (message.mediaType !== undefined) {
+            obj.mediaType = message.mediaType;
+        }
+        if (message.s3Key !== undefined) {
             obj.s3Key = message.s3Key;
         }
-        if (message.fileType !== "") {
+        if (message.fileType !== undefined) {
             obj.fileType = message.fileType;
         }
         if (message.originalFileName !== undefined) {
             obj.originalFileName = message.originalFileName;
+        }
+        if (message.pollEndTime !== undefined) {
+            obj.pollEndTime = message.pollEndTime;
+        }
+        if (message.options?.length) {
+            obj.options = message.options;
         }
         return obj;
     },
@@ -153,15 +213,19 @@ exports.CreatePostRequest = {
         message.userId = object.userId ?? "";
         message.caption = object.caption ?? "";
         message.accessType = object.accessType ?? "";
-        message.priceInCents = object.priceInCents ?? undefined;
-        message.s3Key = object.s3Key ?? "";
-        message.fileType = object.fileType ?? "";
+        message.postType = object.postType ?? "";
+        message.mimeType = object.mimeType ?? undefined;
+        message.mediaType = object.mediaType ?? undefined;
+        message.s3Key = object.s3Key ?? undefined;
+        message.fileType = object.fileType ?? undefined;
         message.originalFileName = object.originalFileName ?? undefined;
+        message.pollEndTime = object.pollEndTime ?? undefined;
+        message.options = object.options?.map((e) => e) || [];
         return message;
     },
 };
 function createBaseUpdatePostRequest() {
-    return { id: "", userId: "", caption: undefined, accessType: undefined, priceInCents: undefined };
+    return { id: "", userId: "", caption: undefined, accessType: undefined };
 }
 exports.UpdatePostRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -176,9 +240,6 @@ exports.UpdatePostRequest = {
         }
         if (message.accessType !== undefined) {
             writer.uint32(34).string(message.accessType);
-        }
-        if (message.priceInCents !== undefined) {
-            writer.uint32(40).int32(message.priceInCents);
         }
         return writer;
     },
@@ -217,13 +278,6 @@ exports.UpdatePostRequest = {
                     message.accessType = reader.string();
                     continue;
                 }
-                case 5: {
-                    if (tag !== 40) {
-                        break;
-                    }
-                    message.priceInCents = reader.int32();
-                    continue;
-                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -238,7 +292,6 @@ exports.UpdatePostRequest = {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             caption: isSet(object.caption) ? globalThis.String(object.caption) : undefined,
             accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : undefined,
-            priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
         };
     },
     toJSON(message) {
@@ -255,9 +308,6 @@ exports.UpdatePostRequest = {
         if (message.accessType !== undefined) {
             obj.accessType = message.accessType;
         }
-        if (message.priceInCents !== undefined) {
-            obj.priceInCents = Math.round(message.priceInCents);
-        }
         return obj;
     },
     create(base) {
@@ -269,12 +319,11 @@ exports.UpdatePostRequest = {
         message.userId = object.userId ?? "";
         message.caption = object.caption ?? undefined;
         message.accessType = object.accessType ?? undefined;
-        message.priceInCents = object.priceInCents ?? undefined;
         return message;
     },
 };
 function createBaseGenerateUploadUrlRequest() {
-    return { userId: "", fileName: "", contentType: "" };
+    return { userId: "", fileName: "", contentType: "", accessType: "" };
 }
 exports.GenerateUploadUrlRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -286,6 +335,9 @@ exports.GenerateUploadUrlRequest = {
         }
         if (message.contentType !== "") {
             writer.uint32(26).string(message.contentType);
+        }
+        if (message.accessType !== "") {
+            writer.uint32(34).string(message.accessType);
         }
         return writer;
     },
@@ -317,6 +369,13 @@ exports.GenerateUploadUrlRequest = {
                     message.contentType = reader.string();
                     continue;
                 }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.accessType = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -330,6 +389,7 @@ exports.GenerateUploadUrlRequest = {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
             contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
+            accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
         };
     },
     toJSON(message) {
@@ -343,6 +403,9 @@ exports.GenerateUploadUrlRequest = {
         if (message.contentType !== "") {
             obj.contentType = message.contentType;
         }
+        if (message.accessType !== "") {
+            obj.accessType = message.accessType;
+        }
         return obj;
     },
     create(base) {
@@ -353,6 +416,7 @@ exports.GenerateUploadUrlRequest = {
         message.userId = object.userId ?? "";
         message.fileName = object.fileName ?? "";
         message.contentType = object.contentType ?? "";
+        message.accessType = object.accessType ?? "";
         return message;
     },
 };
@@ -528,19 +592,540 @@ exports.GetFeedResponse = {
         return message;
     },
 };
+function createBasePostMediaResponse() {
+    return { id: "", mimeType: "", mediaType: "", s3Key: "", originalFileName: "", signedUrl: "" };
+}
+exports.PostMediaResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(50).string(message.id);
+        }
+        if (message.mimeType !== "") {
+            writer.uint32(10).string(message.mimeType);
+        }
+        if (message.mediaType !== "") {
+            writer.uint32(18).string(message.mediaType);
+        }
+        if (message.s3Key !== "") {
+            writer.uint32(26).string(message.s3Key);
+        }
+        if (message.originalFileName !== "") {
+            writer.uint32(34).string(message.originalFileName);
+        }
+        if (message.signedUrl !== "") {
+            writer.uint32(42).string(message.signedUrl);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePostMediaResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.mimeType = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.mediaType = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.s3Key = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.originalFileName = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.signedUrl = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : "",
+            mediaType: isSet(object.mediaType) ? globalThis.String(object.mediaType) : "",
+            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
+            originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
+            signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.mimeType !== "") {
+            obj.mimeType = message.mimeType;
+        }
+        if (message.mediaType !== "") {
+            obj.mediaType = message.mediaType;
+        }
+        if (message.s3Key !== "") {
+            obj.s3Key = message.s3Key;
+        }
+        if (message.originalFileName !== "") {
+            obj.originalFileName = message.originalFileName;
+        }
+        if (message.signedUrl !== "") {
+            obj.signedUrl = message.signedUrl;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PostMediaResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePostMediaResponse();
+        message.id = object.id ?? "";
+        message.mimeType = object.mimeType ?? "";
+        message.mediaType = object.mediaType ?? "";
+        message.s3Key = object.s3Key ?? "";
+        message.originalFileName = object.originalFileName ?? "";
+        message.signedUrl = object.signedUrl ?? "";
+        return message;
+    },
+};
+function createBasePostFileResponse() {
+    return { id: "", mimeType: "", s3Key: "", originalFileName: "", signedUrl: "", fileType: "", sizeInBytes: "" };
+}
+exports.PostFileResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(50).string(message.id);
+        }
+        if (message.mimeType !== "") {
+            writer.uint32(10).string(message.mimeType);
+        }
+        if (message.s3Key !== "") {
+            writer.uint32(26).string(message.s3Key);
+        }
+        if (message.originalFileName !== "") {
+            writer.uint32(34).string(message.originalFileName);
+        }
+        if (message.signedUrl !== "") {
+            writer.uint32(42).string(message.signedUrl);
+        }
+        if (message.fileType !== "") {
+            writer.uint32(58).string(message.fileType);
+        }
+        if (message.sizeInBytes !== "") {
+            writer.uint32(66).string(message.sizeInBytes);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePostFileResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.mimeType = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.s3Key = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.originalFileName = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.signedUrl = reader.string();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.fileType = reader.string();
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.sizeInBytes = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : "",
+            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
+            originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
+            signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : "",
+            fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : "",
+            sizeInBytes: isSet(object.sizeInBytes) ? globalThis.String(object.sizeInBytes) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.mimeType !== "") {
+            obj.mimeType = message.mimeType;
+        }
+        if (message.s3Key !== "") {
+            obj.s3Key = message.s3Key;
+        }
+        if (message.originalFileName !== "") {
+            obj.originalFileName = message.originalFileName;
+        }
+        if (message.signedUrl !== "") {
+            obj.signedUrl = message.signedUrl;
+        }
+        if (message.fileType !== "") {
+            obj.fileType = message.fileType;
+        }
+        if (message.sizeInBytes !== "") {
+            obj.sizeInBytes = message.sizeInBytes;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PostFileResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePostFileResponse();
+        message.id = object.id ?? "";
+        message.mimeType = object.mimeType ?? "";
+        message.s3Key = object.s3Key ?? "";
+        message.originalFileName = object.originalFileName ?? "";
+        message.signedUrl = object.signedUrl ?? "";
+        message.fileType = object.fileType ?? "";
+        message.sizeInBytes = object.sizeInBytes ?? "";
+        return message;
+    },
+};
+function createBaseVoteOnPollRequest() {
+    return { userId: "", postId: "", optionId: "" };
+}
+exports.VoteOnPollRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.postId !== "") {
+            writer.uint32(18).string(message.postId);
+        }
+        if (message.optionId !== "") {
+            writer.uint32(26).string(message.optionId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseVoteOnPollRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.postId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.optionId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+            optionId: isSet(object.optionId) ? globalThis.String(object.optionId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.postId !== "") {
+            obj.postId = message.postId;
+        }
+        if (message.optionId !== "") {
+            obj.optionId = message.optionId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.VoteOnPollRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseVoteOnPollRequest();
+        message.userId = object.userId ?? "";
+        message.postId = object.postId ?? "";
+        message.optionId = object.optionId ?? "";
+        return message;
+    },
+};
+function createBasePostPollResponse() {
+    return { id: "", pollEndTime: "", postPollOptions: [] };
+}
+exports.PostPollResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.pollEndTime !== "") {
+            writer.uint32(18).string(message.pollEndTime);
+        }
+        for (const v of message.postPollOptions) {
+            exports.PostPollOptionResponse.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePostPollResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.pollEndTime = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.postPollOptions.push(exports.PostPollOptionResponse.decode(reader, reader.uint32()));
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            pollEndTime: isSet(object.pollEndTime) ? globalThis.String(object.pollEndTime) : "",
+            postPollOptions: globalThis.Array.isArray(object?.postPollOptions)
+                ? object.postPollOptions.map((e) => exports.PostPollOptionResponse.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.pollEndTime !== "") {
+            obj.pollEndTime = message.pollEndTime;
+        }
+        if (message.postPollOptions?.length) {
+            obj.postPollOptions = message.postPollOptions.map((e) => exports.PostPollOptionResponse.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PostPollResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePostPollResponse();
+        message.id = object.id ?? "";
+        message.pollEndTime = object.pollEndTime ?? "";
+        message.postPollOptions = object.postPollOptions?.map((e) => exports.PostPollOptionResponse.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBasePostPollOptionResponse() {
+    return { id: "", text: "", voteCount: "" };
+}
+exports.PostPollOptionResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.text !== "") {
+            writer.uint32(18).string(message.text);
+        }
+        if (message.voteCount !== "") {
+            writer.uint32(26).string(message.voteCount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePostPollOptionResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.text = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.voteCount = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            text: isSet(object.text) ? globalThis.String(object.text) : "",
+            voteCount: isSet(object.voteCount) ? globalThis.String(object.voteCount) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.text !== "") {
+            obj.text = message.text;
+        }
+        if (message.voteCount !== "") {
+            obj.voteCount = message.voteCount;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PostPollOptionResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePostPollOptionResponse();
+        message.id = object.id ?? "";
+        message.text = object.text ?? "";
+        message.voteCount = object.voteCount ?? "";
+        return message;
+    },
+};
 function createBasePostResponse() {
     return {
         id: "",
         userId: "",
         caption: "",
         accessType: "",
-        priceInCents: undefined,
-        s3Key: "",
-        fileType: "",
-        originalFileName: "",
+        postType: "",
+        postMedia: undefined,
+        postPoll: undefined,
+        postFile: undefined,
         createdAt: "",
         updatedAt: "",
-        signedUrl: "",
     };
 }
 exports.PostResponse = {
@@ -557,26 +1142,23 @@ exports.PostResponse = {
         if (message.accessType !== "") {
             writer.uint32(34).string(message.accessType);
         }
-        if (message.priceInCents !== undefined) {
-            writer.uint32(40).int32(message.priceInCents);
+        if (message.postType !== "") {
+            writer.uint32(42).string(message.postType);
         }
-        if (message.s3Key !== "") {
-            writer.uint32(50).string(message.s3Key);
+        if (message.postMedia !== undefined) {
+            exports.PostMediaResponse.encode(message.postMedia, writer.uint32(50).fork()).join();
         }
-        if (message.fileType !== "") {
-            writer.uint32(58).string(message.fileType);
+        if (message.postPoll !== undefined) {
+            exports.PostPollResponse.encode(message.postPoll, writer.uint32(58).fork()).join();
         }
-        if (message.originalFileName !== "") {
-            writer.uint32(66).string(message.originalFileName);
+        if (message.postFile !== undefined) {
+            exports.PostFileResponse.encode(message.postFile, writer.uint32(66).fork()).join();
         }
         if (message.createdAt !== "") {
             writer.uint32(74).string(message.createdAt);
         }
         if (message.updatedAt !== "") {
             writer.uint32(82).string(message.updatedAt);
-        }
-        if (message.signedUrl !== "") {
-            writer.uint32(90).string(message.signedUrl);
         }
         return writer;
     },
@@ -616,31 +1198,31 @@ exports.PostResponse = {
                     continue;
                 }
                 case 5: {
-                    if (tag !== 40) {
+                    if (tag !== 42) {
                         break;
                     }
-                    message.priceInCents = reader.int32();
+                    message.postType = reader.string();
                     continue;
                 }
                 case 6: {
                     if (tag !== 50) {
                         break;
                     }
-                    message.s3Key = reader.string();
+                    message.postMedia = exports.PostMediaResponse.decode(reader, reader.uint32());
                     continue;
                 }
                 case 7: {
                     if (tag !== 58) {
                         break;
                     }
-                    message.fileType = reader.string();
+                    message.postPoll = exports.PostPollResponse.decode(reader, reader.uint32());
                     continue;
                 }
                 case 8: {
                     if (tag !== 66) {
                         break;
                     }
-                    message.originalFileName = reader.string();
+                    message.postFile = exports.PostFileResponse.decode(reader, reader.uint32());
                     continue;
                 }
                 case 9: {
@@ -657,13 +1239,6 @@ exports.PostResponse = {
                     message.updatedAt = reader.string();
                     continue;
                 }
-                case 11: {
-                    if (tag !== 90) {
-                        break;
-                    }
-                    message.signedUrl = reader.string();
-                    continue;
-                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -678,13 +1253,12 @@ exports.PostResponse = {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
             accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
-            priceInCents: isSet(object.priceInCents) ? globalThis.Number(object.priceInCents) : undefined,
-            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
-            fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : "",
-            originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
+            postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
+            postMedia: isSet(object.postMedia) ? exports.PostMediaResponse.fromJSON(object.postMedia) : undefined,
+            postPoll: isSet(object.postPoll) ? exports.PostPollResponse.fromJSON(object.postPoll) : undefined,
+            postFile: isSet(object.postFile) ? exports.PostFileResponse.fromJSON(object.postFile) : undefined,
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
-            signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : "",
         };
     },
     toJSON(message) {
@@ -701,26 +1275,23 @@ exports.PostResponse = {
         if (message.accessType !== "") {
             obj.accessType = message.accessType;
         }
-        if (message.priceInCents !== undefined) {
-            obj.priceInCents = Math.round(message.priceInCents);
+        if (message.postType !== "") {
+            obj.postType = message.postType;
         }
-        if (message.s3Key !== "") {
-            obj.s3Key = message.s3Key;
+        if (message.postMedia !== undefined) {
+            obj.postMedia = exports.PostMediaResponse.toJSON(message.postMedia);
         }
-        if (message.fileType !== "") {
-            obj.fileType = message.fileType;
+        if (message.postPoll !== undefined) {
+            obj.postPoll = exports.PostPollResponse.toJSON(message.postPoll);
         }
-        if (message.originalFileName !== "") {
-            obj.originalFileName = message.originalFileName;
+        if (message.postFile !== undefined) {
+            obj.postFile = exports.PostFileResponse.toJSON(message.postFile);
         }
         if (message.createdAt !== "") {
             obj.createdAt = message.createdAt;
         }
         if (message.updatedAt !== "") {
             obj.updatedAt = message.updatedAt;
-        }
-        if (message.signedUrl !== "") {
-            obj.signedUrl = message.signedUrl;
         }
         return obj;
     },
@@ -733,13 +1304,18 @@ exports.PostResponse = {
         message.userId = object.userId ?? "";
         message.caption = object.caption ?? "";
         message.accessType = object.accessType ?? "";
-        message.priceInCents = object.priceInCents ?? undefined;
-        message.s3Key = object.s3Key ?? "";
-        message.fileType = object.fileType ?? "";
-        message.originalFileName = object.originalFileName ?? "";
+        message.postType = object.postType ?? "";
+        message.postMedia = (object.postMedia !== undefined && object.postMedia !== null)
+            ? exports.PostMediaResponse.fromPartial(object.postMedia)
+            : undefined;
+        message.postPoll = (object.postPoll !== undefined && object.postPoll !== null)
+            ? exports.PostPollResponse.fromPartial(object.postPoll)
+            : undefined;
+        message.postFile = (object.postFile !== undefined && object.postFile !== null)
+            ? exports.PostFileResponse.fromPartial(object.postFile)
+            : undefined;
         message.createdAt = object.createdAt ?? "";
         message.updatedAt = object.updatedAt ?? "";
-        message.signedUrl = object.signedUrl ?? "";
         return message;
     },
 };
@@ -752,6 +1328,7 @@ class PostServiceClientImpl {
         this.Update = this.Update.bind(this);
         this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
         this.GetFeed = this.GetFeed.bind(this);
+        this.VoteOnPoll = this.VoteOnPoll.bind(this);
     }
     Create(request) {
         const data = exports.CreatePostRequest.encode(request).finish();
@@ -772,6 +1349,11 @@ class PostServiceClientImpl {
         const data = exports.GetFeedRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetFeed", data);
         return promise.then((data) => exports.GetFeedResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    VoteOnPoll(request) {
+        const data = exports.VoteOnPollRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "VoteOnPoll", data);
+        return promise.then((data) => exports.PostResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.PostServiceClientImpl = PostServiceClientImpl;

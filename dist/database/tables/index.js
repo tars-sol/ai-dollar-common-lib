@@ -24,5 +24,10 @@ __exportStar(require("./brand_balance.entity"), exports);
 __exportStar(require("./campaign.entity"), exports);
 __exportStar(require("./task.entity"), exports);
 __exportStar(require("./post.entity"), exports);
+__exportStar(require("./post_poll.entity"), exports);
+__exportStar(require("./post_option.entity"), exports);
+__exportStar(require("./post_file.entity"), exports);
+__exportStar(require("./post_poll_vote.entity"), exports);
+__exportStar(require("./post_media.entity"), exports);
 __exportStar(require("./revoked_tokens.entity"), exports);
 //# sourceMappingURL=index.js.map
