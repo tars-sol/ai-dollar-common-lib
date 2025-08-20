@@ -26,10 +26,7 @@ export interface CreatePostRequest {
 export interface UpdatePostRequest {
   id: string;
   userId: string;
-  caption?:
-    | string
-    | undefined;
-  /** "PUBLIC", "SUBSCRIBER", "PAID" */
+  caption?: string | undefined;
   accessType?: string | undefined;
 }
 

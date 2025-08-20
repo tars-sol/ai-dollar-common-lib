@@ -1,64 +1,69 @@
 import {
-    Entity,
-    Column,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    OneToOne,
-    JoinColumn,
-    Index,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
+  Index,
 } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity('profiles')
 export class Profile {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @OneToOne(() => User, { onDelete: 'CASCADE' })
-    @JoinColumn()
-    user: User;
+  @OneToOne(() => User, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  user: User;
 
-    @Column()
-    @Index({ unique: true })
-    userId: string;
+  @Column()
+  @Index({ unique: true })
+  userId: string;
 
-    @Index({ unique: true })
-    @Column({ type: 'varchar', length: 32 })
-    username: string;
+  @Index({ unique: true })
+  @Column({ type: 'varchar', length: 32 })
+  username: string;
 
-    @Column({ type: 'varchar', length: 64, nullable: true })
-    name: string;
+  @Column({ type: 'varchar', length: 64, nullable: true })
+  name: string;
 
-    @Column({ type: 'varchar', nullable: true })
-    avatarUrl: string;
+  @Column({ type: 'varchar', nullable: true })
+  avatarUrl: string;
 
-    @Column({ type: 'text', nullable: true })
-    bio: string;
+  @Column({ type: 'text', nullable: true })
+  bio: string;
 
-    @Column({ nullable: true })
-    websiteUrl: string;
+  @Column({ nullable: true })
+  websiteUrl: string;
 
-    @Column({ nullable: true })
-    twitter: string;
+  @Column({ nullable: true })
+  twitter: string;
 
-    @Column({ nullable: true })
-    facebook: string;
+  @Column({ nullable: true })
+  facebook: string;
 
-    @Column({ nullable: true })
-    youtube: string;
+  @Column({ nullable: true })
+  youtube: string;
 
-    @Column({ nullable: true })
-    tiktok: string;
-    @Column({ nullable: true })
-    instagram: string;
+  @Column({ nullable: true })
+  tiktok: string;
+  @Column({ nullable: true })
+  instagram: string;
 
-    @Column({ type: 'boolean', default: false })
-    isVerified: boolean;
+  @Column({ type: 'boolean', default: false })
+  isVerified: boolean;
+  @Column({ type: 'int', default: 0 })
+  followersCount: number;
+  @Column({ type: 'int', default: 0 })
+  followingCount: number;
+  @Column({ type: 'int', default: 0 })
+  subscribersCount: number;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

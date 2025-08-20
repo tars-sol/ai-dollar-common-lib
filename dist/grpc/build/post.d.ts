@@ -17,7 +17,6 @@ export interface UpdatePostRequest {
     id: string;
     userId: string;
     caption?: string | undefined;
-    /** "PUBLIC", "SUBSCRIBER", "PAID" */
     accessType?: string | undefined;
 }
 export interface GenerateUploadUrlRequest {

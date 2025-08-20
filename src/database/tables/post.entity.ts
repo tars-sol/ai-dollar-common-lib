@@ -8,11 +8,14 @@ import {
   Index,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { User } from './user.entity';
 import { PostMedia } from './post_media.entity';
 import { PostPoll } from './post_poll.entity';
 import { PostFile } from './post_file.entity';
+import { PostComment } from './post_comment.entity';
+import { PostLike } from './post_like.entity';
 
 export enum AccessType {
   PUBLIC = 'PUBLIC',
@@ -24,7 +27,7 @@ export enum PostType {
   TEXT = 'TEXT',
   MEDIA = 'MEDIA', // image/video/gif gallery
   POLL = 'POLL',
-  FILE = 'FILE', 
+  FILE = 'FILE',
 }
 
 @Entity('posts')
@@ -64,4 +67,16 @@ export class Post {
 
   @OneToOne(() => PostPoll, (p) => p.post)
   poll?: PostPoll;
+
+  @Column({ type: 'int', default: 0 })
+  likeCount: number;
+
+  @Column({ type: 'int', default: 0 })
+  commentCount: number;
+
+  @OneToMany(() => PostComment, (c) => c.post)
+  comments?: PostComment[];
+
+  @OneToMany(() => PostLike, (l) => l.post)
+  likes?: PostLike[];
 }

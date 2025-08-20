@@ -29,5 +29,10 @@ __exportStar(require("./post_option.entity"), exports);
 __exportStar(require("./post_file.entity"), exports);
 __exportStar(require("./post_poll_vote.entity"), exports);
 __exportStar(require("./post_media.entity"), exports);
+__exportStar(require("./post_comment.entity"), exports);
+__exportStar(require("./post_like.entity"), exports);
+__exportStar(require("./profile_follow.entity"), exports);
+__exportStar(require("./profile_subscribe.entity"), exports);
+__exportStar(require("./profile_events.entity"), exports);
 __exportStar(require("./revoked_tokens.entity"), exports);
 //# sourceMappingURL=index.js.map

@@ -28,7 +28,7 @@ message UpdatePostRequest {
   string id = 1;
   string userId = 2;
   optional string caption = 3;
-  optional string accessType = 4; // "PUBLIC", "SUBSCRIBER", "PAID"
+  optional string accessType = 4; 
 }
 
 message GenerateUploadUrlRequest {
