@@ -43,6 +43,8 @@ export interface GenerateUploadUrlResponse {
 
 export interface GetFeedRequest {
   userId: string;
+  page: number;
+  perPage: number;
 }
 
 export interface GetFeedResponse {
@@ -608,13 +610,19 @@ export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = 
 };
 
 function createBaseGetFeedRequest(): GetFeedRequest {
-  return { userId: "" };
+  return { userId: "", page: 0, perPage: 0 };
 }
 
 export const GetFeedRequest: MessageFns<GetFeedRequest> = {
   encode(message: GetFeedRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.userId !== "") {
       writer.uint32(10).string(message.userId);
+    }
+    if (message.page !== 0) {
+      writer.uint32(16).uint32(message.page);
+    }
+    if (message.perPage !== 0) {
+      writer.uint32(24).uint32(message.perPage);
     }
     return writer;
   },
@@ -634,6 +642,22 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
           message.userId = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.page = reader.uint32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.perPage = reader.uint32();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -644,13 +668,23 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
   },
 
   fromJSON(object: any): GetFeedRequest {
-    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+    };
   },
 
   toJSON(message: GetFeedRequest): unknown {
     const obj: any = {};
     if (message.userId !== "") {
       obj.userId = message.userId;
+    }
+    if (message.page !== 0) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.perPage !== 0) {
+      obj.perPage = Math.round(message.perPage);
     }
     return obj;
   },
@@ -661,6 +695,8 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
   fromPartial<I extends Exact<DeepPartial<GetFeedRequest>, I>>(object: I): GetFeedRequest {
     const message = createBaseGetFeedRequest();
     message.userId = object.userId ?? "";
+    message.page = object.page ?? 0;
+    message.perPage = object.perPage ?? 0;
     return message;
   },
 };

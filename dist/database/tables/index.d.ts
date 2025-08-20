@@ -19,3 +19,5 @@ export * from './profile_follow.entity';
 export * from './profile_subscribe.entity';
 export * from './profile_events.entity';
 export * from './revoked_tokens.entity';
+export * from './event_queue_user.entity';
+export * from './event_queue_post.entity';

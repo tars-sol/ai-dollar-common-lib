@@ -474,12 +474,18 @@ exports.GenerateUploadUrlResponse = {
     },
 };
 function createBaseGetFeedRequest() {
-    return { userId: "" };
+    return { userId: "", page: 0, perPage: 0 };
 }
 exports.GetFeedRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.userId !== "") {
             writer.uint32(10).string(message.userId);
+        }
+        if (message.page !== 0) {
+            writer.uint32(16).uint32(message.page);
+        }
+        if (message.perPage !== 0) {
+            writer.uint32(24).uint32(message.perPage);
         }
         return writer;
     },
@@ -497,6 +503,20 @@ exports.GetFeedRequest = {
                     message.userId = reader.string();
                     continue;
                 }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.page = reader.uint32();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.perPage = reader.uint32();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -506,12 +526,22 @@ exports.GetFeedRequest = {
         return message;
     },
     fromJSON(object) {
-        return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.userId !== "") {
             obj.userId = message.userId;
+        }
+        if (message.page !== 0) {
+            obj.page = Math.round(message.page);
+        }
+        if (message.perPage !== 0) {
+            obj.perPage = Math.round(message.perPage);
         }
         return obj;
     },
@@ -521,6 +551,8 @@ exports.GetFeedRequest = {
     fromPartial(object) {
         const message = createBaseGetFeedRequest();
         message.userId = object.userId ?? "";
+        message.page = object.page ?? 0;
+        message.perPage = object.perPage ?? 0;
         return message;
     },
 };
