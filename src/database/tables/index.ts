@@ -14,3 +14,5 @@ export * from './post_file.entity';
 export * from './post_poll_vote.entity';
 export * from './post_media.entity';
 export * from './revoked_tokens.entity';
+export * from './event_queue_user.entity'
+export * from './event_queue_post.entity'

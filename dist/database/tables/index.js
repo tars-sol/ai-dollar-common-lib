@@ -30,4 +30,6 @@ __exportStar(require("./post_file.entity"), exports);
 __exportStar(require("./post_poll_vote.entity"), exports);
 __exportStar(require("./post_media.entity"), exports);
 __exportStar(require("./revoked_tokens.entity"), exports);
+__exportStar(require("./event_queue_user.entity"), exports);
+__exportStar(require("./event_queue_post.entity"), exports);
 //# sourceMappingURL=index.js.map

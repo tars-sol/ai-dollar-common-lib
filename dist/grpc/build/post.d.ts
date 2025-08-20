@@ -31,6 +31,8 @@ export interface GenerateUploadUrlResponse {
 }
 export interface GetFeedRequest {
     userId: string;
+    page: number;
+    perPage: number;
 }
 export interface GetFeedResponse {
     posts: PostResponse[];

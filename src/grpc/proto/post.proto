@@ -44,6 +44,8 @@ message GenerateUploadUrlResponse {
 
 message GetFeedRequest {
   string userId = 1;
+  uint32 page = 2;
+  uint32 perPage = 3; 
 }
 
 message GetFeedResponse {
