@@ -8,6 +8,7 @@ service PostService {
   rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
   rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
   rpc VoteOnPoll (VoteOnPollRequest) returns (PostResponse);
+  rpc GetUserPosts(GetUserPostsRequest) returns (GetFeedResponse);
 }
 
 message CreatePostRequest {
@@ -50,6 +51,25 @@ message GetFeedRequest {
 
 message GetFeedResponse {
   repeated PostResponse posts = 1;
+}
+message CreateCommentRequest{
+  string userId = 1;
+  string text = 2;
+  string postId = 3;
+}
+message CommentResponse{
+  string userId = 1;
+  string text = 2;
+  string postId = 3;
+  string createdAt=4;
+  string updatedAt=5;
+  string id = 6;
+}
+message GetCommentsRequest{
+  string postId=1;
+}
+message GetCommentsResponse{
+  CommentResponse comments=1;
 }
 message PostMediaResponse{
    string id = 6;
@@ -101,4 +121,7 @@ message PostResponse {
   string createdAt = 9;
   string updatedAt = 10;
 
+}
+message GetUserPostsRequest{
+  string userId = 1;
 }

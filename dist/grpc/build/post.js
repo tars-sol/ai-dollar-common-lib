@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.PostResponse = exports.PostPollOptionResponse = exports.PostPollResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetUserPostsRequest = exports.PostResponse = exports.PostPollOptionResponse = exports.PostPollResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "post";
@@ -606,6 +606,321 @@ exports.GetFeedResponse = {
     fromPartial(object) {
         const message = createBaseGetFeedResponse();
         message.posts = object.posts?.map((e) => exports.PostResponse.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCreateCommentRequest() {
+    return { userId: "", text: "", postId: "" };
+}
+exports.CreateCommentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.text !== "") {
+            writer.uint32(18).string(message.text);
+        }
+        if (message.postId !== "") {
+            writer.uint32(26).string(message.postId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateCommentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.text = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.postId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            text: isSet(object.text) ? globalThis.String(object.text) : "",
+            postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.text !== "") {
+            obj.text = message.text;
+        }
+        if (message.postId !== "") {
+            obj.postId = message.postId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateCommentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateCommentRequest();
+        message.userId = object.userId ?? "";
+        message.text = object.text ?? "";
+        message.postId = object.postId ?? "";
+        return message;
+    },
+};
+function createBaseCommentResponse() {
+    return { userId: "", text: "", postId: "", createdAt: "", updatedAt: "", id: "" };
+}
+exports.CommentResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.text !== "") {
+            writer.uint32(18).string(message.text);
+        }
+        if (message.postId !== "") {
+            writer.uint32(26).string(message.postId);
+        }
+        if (message.createdAt !== "") {
+            writer.uint32(34).string(message.createdAt);
+        }
+        if (message.updatedAt !== "") {
+            writer.uint32(42).string(message.updatedAt);
+        }
+        if (message.id !== "") {
+            writer.uint32(50).string(message.id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCommentResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.text = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.postId = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.createdAt = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.updatedAt = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            text: isSet(object.text) ? globalThis.String(object.text) : "",
+            postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+            createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+            updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.text !== "") {
+            obj.text = message.text;
+        }
+        if (message.postId !== "") {
+            obj.postId = message.postId;
+        }
+        if (message.createdAt !== "") {
+            obj.createdAt = message.createdAt;
+        }
+        if (message.updatedAt !== "") {
+            obj.updatedAt = message.updatedAt;
+        }
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CommentResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCommentResponse();
+        message.userId = object.userId ?? "";
+        message.text = object.text ?? "";
+        message.postId = object.postId ?? "";
+        message.createdAt = object.createdAt ?? "";
+        message.updatedAt = object.updatedAt ?? "";
+        message.id = object.id ?? "";
+        return message;
+    },
+};
+function createBaseGetCommentsRequest() {
+    return { postId: "" };
+}
+exports.GetCommentsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.postId !== "") {
+            writer.uint32(10).string(message.postId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCommentsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.postId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { postId: isSet(object.postId) ? globalThis.String(object.postId) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.postId !== "") {
+            obj.postId = message.postId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCommentsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCommentsRequest();
+        message.postId = object.postId ?? "";
+        return message;
+    },
+};
+function createBaseGetCommentsResponse() {
+    return { comments: undefined };
+}
+exports.GetCommentsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.comments !== undefined) {
+            exports.CommentResponse.encode(message.comments, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCommentsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.comments = exports.CommentResponse.decode(reader, reader.uint32());
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { comments: isSet(object.comments) ? exports.CommentResponse.fromJSON(object.comments) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.comments !== undefined) {
+            obj.comments = exports.CommentResponse.toJSON(message.comments);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCommentsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCommentsResponse();
+        message.comments = (object.comments !== undefined && object.comments !== null)
+            ? exports.CommentResponse.fromPartial(object.comments)
+            : undefined;
         return message;
     },
 };
@@ -1336,6 +1651,57 @@ exports.PostResponse = {
         return message;
     },
 };
+function createBaseGetUserPostsRequest() {
+    return { userId: "" };
+}
+exports.GetUserPostsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetUserPostsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetUserPostsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetUserPostsRequest();
+        message.userId = object.userId ?? "";
+        return message;
+    },
+};
 exports.PostServiceServiceName = "post.PostService";
 class PostServiceClientImpl {
     constructor(rpc, opts) {
@@ -1346,6 +1712,7 @@ class PostServiceClientImpl {
         this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
         this.GetFeed = this.GetFeed.bind(this);
         this.VoteOnPoll = this.VoteOnPoll.bind(this);
+        this.GetUserPosts = this.GetUserPosts.bind(this);
     }
     Create(request) {
         const data = exports.CreatePostRequest.encode(request).finish();
@@ -1371,6 +1738,11 @@ class PostServiceClientImpl {
         const data = exports.VoteOnPollRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "VoteOnPoll", data);
         return promise.then((data) => exports.PostResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetUserPosts(request) {
+        const data = exports.GetUserPostsRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetUserPosts", data);
+        return promise.then((data) => exports.GetFeedResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.PostServiceClientImpl = PostServiceClientImpl;

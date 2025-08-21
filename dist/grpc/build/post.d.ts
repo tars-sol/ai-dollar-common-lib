@@ -36,6 +36,25 @@ export interface GetFeedRequest {
 export interface GetFeedResponse {
     posts: PostResponse[];
 }
+export interface CreateCommentRequest {
+    userId: string;
+    text: string;
+    postId: string;
+}
+export interface CommentResponse {
+    userId: string;
+    text: string;
+    postId: string;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+}
+export interface GetCommentsRequest {
+    postId: string;
+}
+export interface GetCommentsResponse {
+    comments: CommentResponse | undefined;
+}
 export interface PostMediaResponse {
     id: string;
     mimeType: string;
@@ -80,24 +99,33 @@ export interface PostResponse {
     createdAt: string;
     updatedAt: string;
 }
+export interface GetUserPostsRequest {
+    userId: string;
+}
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;
 export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
 export declare const GetFeedRequest: MessageFns<GetFeedRequest>;
 export declare const GetFeedResponse: MessageFns<GetFeedResponse>;
+export declare const CreateCommentRequest: MessageFns<CreateCommentRequest>;
+export declare const CommentResponse: MessageFns<CommentResponse>;
+export declare const GetCommentsRequest: MessageFns<GetCommentsRequest>;
+export declare const GetCommentsResponse: MessageFns<GetCommentsResponse>;
 export declare const PostMediaResponse: MessageFns<PostMediaResponse>;
 export declare const PostFileResponse: MessageFns<PostFileResponse>;
 export declare const VoteOnPollRequest: MessageFns<VoteOnPollRequest>;
 export declare const PostPollResponse: MessageFns<PostPollResponse>;
 export declare const PostPollOptionResponse: MessageFns<PostPollOptionResponse>;
 export declare const PostResponse: MessageFns<PostResponse>;
+export declare const GetUserPostsRequest: MessageFns<GetUserPostsRequest>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
+    GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -111,6 +139,7 @@ export declare class PostServiceClientImpl implements PostService {
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
+    GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

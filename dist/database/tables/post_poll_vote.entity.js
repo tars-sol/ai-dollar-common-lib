@@ -13,7 +13,7 @@ exports.PostPollVote = void 0;
 const typeorm_1 = require("typeorm");
 const post_option_entity_1 = require("./post_option.entity");
 const post_poll_entity_1 = require("./post_poll.entity");
-const user_entity_1 = require("./user.entity");
+const profile_entity_1 = require("./profile.entity");
 let PostPollVote = class PostPollVote {
 };
 exports.PostPollVote = PostPollVote;
@@ -32,15 +32,15 @@ __decorate([
     __metadata("design:type", String)
 ], PostPollVote.prototype, "pollId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)({ name: 'userId' }),
-    __metadata("design:type", user_entity_1.User)
-], PostPollVote.prototype, "user", void 0);
+    (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)({ name: 'profileId' }),
+    __metadata("design:type", profile_entity_1.Profile)
+], PostPollVote.prototype, "profile", void 0);
 __decorate([
     (0, typeorm_1.Index)(),
-    (0, typeorm_1.Column)({ name: 'userId', type: 'uuid' }),
+    (0, typeorm_1.Column)({ name: 'profileId', type: 'uuid' }),
     __metadata("design:type", String)
-], PostPollVote.prototype, "userId", void 0);
+], PostPollVote.prototype, "profileId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => post_option_entity_1.PostPollOption, (o) => o.votes, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'optionId' }),

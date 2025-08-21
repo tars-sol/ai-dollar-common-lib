@@ -1,9 +1,9 @@
-import { User } from './user.entity';
 import { PostMedia } from './post_media.entity';
 import { PostPoll } from './post_poll.entity';
 import { PostFile } from './post_file.entity';
 import { PostComment } from './post_comment.entity';
 import { PostLike } from './post_like.entity';
+import { Profile } from './profile.entity';
 export declare enum AccessType {
     PUBLIC = "PUBLIC",
     SUBSCRIBER = "SUBSCRIBER"
@@ -16,8 +16,8 @@ export declare enum PostType {
 }
 export declare class Post {
     id: string;
-    user: User;
-    userId: string;
+    profile: Profile;
+    profileId: string;
     caption?: string;
     accessType: AccessType;
     type: PostType;

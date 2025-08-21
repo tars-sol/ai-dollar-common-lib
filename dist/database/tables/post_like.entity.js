@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostLike = void 0;
 const typeorm_1 = require("typeorm");
 const post_entity_1 = require("./post.entity");
-const user_entity_1 = require("./user.entity");
+const profile_entity_1 = require("./profile.entity");
 // entities/post-like.entity.ts
 let PostLike = class PostLike {
 };
@@ -32,15 +32,15 @@ __decorate([
     __metadata("design:type", String)
 ], PostLike.prototype, "postId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", user_entity_1.User)
-], PostLike.prototype, "user", void 0);
+    __metadata("design:type", profile_entity_1.Profile)
+], PostLike.prototype, "profile", void 0);
 __decorate([
     (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], PostLike.prototype, "userId", void 0);
+], PostLike.prototype, "profileId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

@@ -51,6 +51,29 @@ export interface GetFeedResponse {
   posts: PostResponse[];
 }
 
+export interface CreateCommentRequest {
+  userId: string;
+  text: string;
+  postId: string;
+}
+
+export interface CommentResponse {
+  userId: string;
+  text: string;
+  postId: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+}
+
+export interface GetCommentsRequest {
+  postId: string;
+}
+
+export interface GetCommentsResponse {
+  comments: CommentResponse | undefined;
+}
+
 export interface PostMediaResponse {
   id: string;
   mimeType: string;
@@ -99,6 +122,10 @@ export interface PostResponse {
   postFile?: PostFileResponse | undefined;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface GetUserPostsRequest {
+  userId: string;
 }
 
 function createBaseCreatePostRequest(): CreatePostRequest {
@@ -757,6 +784,356 @@ export const GetFeedResponse: MessageFns<GetFeedResponse> = {
   fromPartial<I extends Exact<DeepPartial<GetFeedResponse>, I>>(object: I): GetFeedResponse {
     const message = createBaseGetFeedResponse();
     message.posts = object.posts?.map((e) => PostResponse.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCreateCommentRequest(): CreateCommentRequest {
+  return { userId: "", text: "", postId: "" };
+}
+
+export const CreateCommentRequest: MessageFns<CreateCommentRequest> = {
+  encode(message: CreateCommentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.text !== "") {
+      writer.uint32(18).string(message.text);
+    }
+    if (message.postId !== "") {
+      writer.uint32(26).string(message.postId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateCommentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateCommentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.text = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateCommentRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      text: isSet(object.text) ? globalThis.String(object.text) : "",
+      postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+    };
+  },
+
+  toJSON(message: CreateCommentRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.text !== "") {
+      obj.text = message.text;
+    }
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateCommentRequest>, I>>(base?: I): CreateCommentRequest {
+    return CreateCommentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateCommentRequest>, I>>(object: I): CreateCommentRequest {
+    const message = createBaseCreateCommentRequest();
+    message.userId = object.userId ?? "";
+    message.text = object.text ?? "";
+    message.postId = object.postId ?? "";
+    return message;
+  },
+};
+
+function createBaseCommentResponse(): CommentResponse {
+  return { userId: "", text: "", postId: "", createdAt: "", updatedAt: "", id: "" };
+}
+
+export const CommentResponse: MessageFns<CommentResponse> = {
+  encode(message: CommentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.text !== "") {
+      writer.uint32(18).string(message.text);
+    }
+    if (message.postId !== "") {
+      writer.uint32(26).string(message.postId);
+    }
+    if (message.createdAt !== "") {
+      writer.uint32(34).string(message.createdAt);
+    }
+    if (message.updatedAt !== "") {
+      writer.uint32(42).string(message.updatedAt);
+    }
+    if (message.id !== "") {
+      writer.uint32(50).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CommentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCommentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.text = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.createdAt = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.updatedAt = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CommentResponse {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      text: isSet(object.text) ? globalThis.String(object.text) : "",
+      postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+      createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+      updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+    };
+  },
+
+  toJSON(message: CommentResponse): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.text !== "") {
+      obj.text = message.text;
+    }
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    if (message.createdAt !== "") {
+      obj.createdAt = message.createdAt;
+    }
+    if (message.updatedAt !== "") {
+      obj.updatedAt = message.updatedAt;
+    }
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CommentResponse>, I>>(base?: I): CommentResponse {
+    return CommentResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CommentResponse>, I>>(object: I): CommentResponse {
+    const message = createBaseCommentResponse();
+    message.userId = object.userId ?? "";
+    message.text = object.text ?? "";
+    message.postId = object.postId ?? "";
+    message.createdAt = object.createdAt ?? "";
+    message.updatedAt = object.updatedAt ?? "";
+    message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseGetCommentsRequest(): GetCommentsRequest {
+  return { postId: "" };
+}
+
+export const GetCommentsRequest: MessageFns<GetCommentsRequest> = {
+  encode(message: GetCommentsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCommentsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCommentsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCommentsRequest {
+    return { postId: isSet(object.postId) ? globalThis.String(object.postId) : "" };
+  },
+
+  toJSON(message: GetCommentsRequest): unknown {
+    const obj: any = {};
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCommentsRequest>, I>>(base?: I): GetCommentsRequest {
+    return GetCommentsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCommentsRequest>, I>>(object: I): GetCommentsRequest {
+    const message = createBaseGetCommentsRequest();
+    message.postId = object.postId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetCommentsResponse(): GetCommentsResponse {
+  return { comments: undefined };
+}
+
+export const GetCommentsResponse: MessageFns<GetCommentsResponse> = {
+  encode(message: GetCommentsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.comments !== undefined) {
+      CommentResponse.encode(message.comments, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCommentsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCommentsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.comments = CommentResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCommentsResponse {
+    return { comments: isSet(object.comments) ? CommentResponse.fromJSON(object.comments) : undefined };
+  },
+
+  toJSON(message: GetCommentsResponse): unknown {
+    const obj: any = {};
+    if (message.comments !== undefined) {
+      obj.comments = CommentResponse.toJSON(message.comments);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCommentsResponse>, I>>(base?: I): GetCommentsResponse {
+    return GetCommentsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCommentsResponse>, I>>(object: I): GetCommentsResponse {
+    const message = createBaseGetCommentsResponse();
+    message.comments = (object.comments !== undefined && object.comments !== null)
+      ? CommentResponse.fromPartial(object.comments)
+      : undefined;
     return message;
   },
 };
@@ -1556,12 +1933,71 @@ export const PostResponse: MessageFns<PostResponse> = {
   },
 };
 
+function createBaseGetUserPostsRequest(): GetUserPostsRequest {
+  return { userId: "" };
+}
+
+export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
+  encode(message: GetUserPostsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetUserPostsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUserPostsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUserPostsRequest {
+    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+  },
+
+  toJSON(message: GetUserPostsRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetUserPostsRequest>, I>>(base?: I): GetUserPostsRequest {
+    return GetUserPostsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetUserPostsRequest>, I>>(object: I): GetUserPostsRequest {
+    const message = createBaseGetUserPostsRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
 export interface PostService {
   Create(request: CreatePostRequest): Promise<PostResponse>;
   Update(request: UpdatePostRequest): Promise<PostResponse>;
   GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
   GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
   VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
+  GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -1576,6 +2012,7 @@ export class PostServiceClientImpl implements PostService {
     this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
     this.GetFeed = this.GetFeed.bind(this);
     this.VoteOnPoll = this.VoteOnPoll.bind(this);
+    this.GetUserPosts = this.GetUserPosts.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -1605,6 +2042,12 @@ export class PostServiceClientImpl implements PostService {
     const data = VoteOnPollRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "VoteOnPoll", data);
     return promise.then((data) => PostResponse.decode(new BinaryReader(data)));
+  }
+
+  GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse> {
+    const data = GetUserPostsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetUserPosts", data);
+    return promise.then((data) => GetFeedResponse.decode(new BinaryReader(data)));
   }
 }
 

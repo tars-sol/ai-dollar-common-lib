@@ -10,12 +10,12 @@ import {
   OneToOne,
   OneToMany,
 } from 'typeorm';
-import { User } from './user.entity';
 import { PostMedia } from './post_media.entity';
 import { PostPoll } from './post_poll.entity';
 import { PostFile } from './post_file.entity';
 import { PostComment } from './post_comment.entity';
 import { PostLike } from './post_like.entity';
+import { Profile } from './profile.entity';
 
 export enum AccessType {
   PUBLIC = 'PUBLIC',
@@ -35,13 +35,13 @@ export class Post {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn()
-  user: User;
+  @ManyToOne(() => Profile, { onDelete: 'CASCADE', nullable: false })
+  @JoinColumn({ name: 'profileId' })
+  profile: Profile;
 
   @Index()
   @Column()
-  userId: string;
+  profileId: string;
 
   @Column({ type: 'text', nullable: true })
   caption?: string;

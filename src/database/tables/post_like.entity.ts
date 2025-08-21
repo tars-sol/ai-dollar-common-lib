@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Post } from "./post.entity";
-import { User } from "./user.entity";
+import { Profile } from "./profile.entity";
 
 // entities/post-like.entity.ts
 @Entity('post_likes')
@@ -14,11 +14,11 @@ export class PostLike {
   @Index()
   @Column() postId: string;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn() user: User;
+  @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
+  @JoinColumn() profile: Profile;
 
   @Index()
-  @Column() userId: string;
+  @Column() profileId: string;
 
   @CreateDateColumn() createdAt: Date;
 }
