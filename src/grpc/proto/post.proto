@@ -12,7 +12,7 @@ service PostService {
 }
 
 message CreatePostRequest {
-  string userId = 1;
+  string profileId = 1;
   string caption = 2;
   string accessType = 3;
   string postType = 8;
@@ -27,13 +27,13 @@ message CreatePostRequest {
 
 message UpdatePostRequest {
   string id = 1;
-  string userId = 2;
+  string profileId = 2;
   optional string caption = 3;
   optional string accessType = 4; 
 }
 
 message GenerateUploadUrlRequest {
-  string userId = 1;
+  string profileId = 1;
   string fileName = 2;
   string contentType = 3;
 }
@@ -44,7 +44,7 @@ message GenerateUploadUrlResponse {
 }
 
 message GetFeedRequest {
-  string userId = 1;
+  string profileId = 1;
   uint32 page = 2;
   uint32 perPage = 3; 
 }
@@ -53,12 +53,12 @@ message GetFeedResponse {
   repeated PostResponse posts = 1;
 }
 message CreateCommentRequest{
-  string userId = 1;
+  string profileId = 1;
   string text = 2;
   string postId = 3;
 }
 message CommentResponse{
-  string userId = 1;
+  string profileId = 1;
   string text = 2;
   string postId = 3;
   string createdAt=4;
@@ -92,7 +92,7 @@ message PostFileResponse{
 
 }
 message VoteOnPollRequest{
-  string userId = 1;
+  string profileId = 1;
   string postId = 2;
   string optionId = 3;
 }
@@ -109,7 +109,7 @@ message PostPollOptionResponse{
 
 message PostResponse {
   string id = 1;
-  string userId = 2;
+  string profileId = 2;
   string caption = 3;
   string accessType = 4;
   string postType = 5;
@@ -123,5 +123,5 @@ message PostResponse {
 
 }
 message GetUserPostsRequest{
-  string userId = 1;
+  string profileId = 1;
 }

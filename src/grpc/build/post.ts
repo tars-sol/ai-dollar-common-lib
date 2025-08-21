@@ -10,7 +10,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "post";
 
 export interface CreatePostRequest {
-  userId: string;
+  profileId: string;
   caption: string;
   accessType: string;
   postType: string;
@@ -25,13 +25,13 @@ export interface CreatePostRequest {
 
 export interface UpdatePostRequest {
   id: string;
-  userId: string;
+  profileId: string;
   caption?: string | undefined;
   accessType?: string | undefined;
 }
 
 export interface GenerateUploadUrlRequest {
-  userId: string;
+  profileId: string;
   fileName: string;
   contentType: string;
 }
@@ -42,7 +42,7 @@ export interface GenerateUploadUrlResponse {
 }
 
 export interface GetFeedRequest {
-  userId: string;
+  profileId: string;
   page: number;
   perPage: number;
 }
@@ -52,13 +52,13 @@ export interface GetFeedResponse {
 }
 
 export interface CreateCommentRequest {
-  userId: string;
+  profileId: string;
   text: string;
   postId: string;
 }
 
 export interface CommentResponse {
-  userId: string;
+  profileId: string;
   text: string;
   postId: string;
   createdAt: string;
@@ -94,7 +94,7 @@ export interface PostFileResponse {
 }
 
 export interface VoteOnPollRequest {
-  userId: string;
+  profileId: string;
   postId: string;
   optionId: string;
 }
@@ -113,7 +113,7 @@ export interface PostPollOptionResponse {
 
 export interface PostResponse {
   id: string;
-  userId: string;
+  profileId: string;
   caption: string;
   accessType: string;
   postType: string;
@@ -125,12 +125,12 @@ export interface PostResponse {
 }
 
 export interface GetUserPostsRequest {
-  userId: string;
+  profileId: string;
 }
 
 function createBaseCreatePostRequest(): CreatePostRequest {
   return {
-    userId: "",
+    profileId: "",
     caption: "",
     accessType: "",
     postType: "",
@@ -146,8 +146,8 @@ function createBaseCreatePostRequest(): CreatePostRequest {
 
 export const CreatePostRequest: MessageFns<CreatePostRequest> = {
   encode(message: CreatePostRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
     }
     if (message.caption !== "") {
       writer.uint32(18).string(message.caption);
@@ -194,7 +194,7 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 2: {
@@ -288,7 +288,7 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
 
   fromJSON(object: any): CreatePostRequest {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
       accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
       postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
@@ -304,8 +304,8 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
 
   toJSON(message: CreatePostRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     if (message.caption !== "") {
       obj.caption = message.caption;
@@ -345,7 +345,7 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<CreatePostRequest>, I>>(object: I): CreatePostRequest {
     const message = createBaseCreatePostRequest();
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     message.caption = object.caption ?? "";
     message.accessType = object.accessType ?? "";
     message.postType = object.postType ?? "";
@@ -361,7 +361,7 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
 };
 
 function createBaseUpdatePostRequest(): UpdatePostRequest {
-  return { id: "", userId: "", caption: undefined, accessType: undefined };
+  return { id: "", profileId: "", caption: undefined, accessType: undefined };
 }
 
 export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
@@ -369,8 +369,8 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(18).string(message.profileId);
     }
     if (message.caption !== undefined) {
       writer.uint32(26).string(message.caption);
@@ -401,7 +401,7 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 3: {
@@ -432,7 +432,7 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
   fromJSON(object: any): UpdatePostRequest {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : undefined,
       accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : undefined,
     };
@@ -443,8 +443,8 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     if (message.caption !== undefined) {
       obj.caption = message.caption;
@@ -461,7 +461,7 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
   fromPartial<I extends Exact<DeepPartial<UpdatePostRequest>, I>>(object: I): UpdatePostRequest {
     const message = createBaseUpdatePostRequest();
     message.id = object.id ?? "";
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     message.caption = object.caption ?? undefined;
     message.accessType = object.accessType ?? undefined;
     return message;
@@ -469,13 +469,13 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
 };
 
 function createBaseGenerateUploadUrlRequest(): GenerateUploadUrlRequest {
-  return { userId: "", fileName: "", contentType: "" };
+  return { profileId: "", fileName: "", contentType: "" };
 }
 
 export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
   encode(message: GenerateUploadUrlRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
     }
     if (message.fileName !== "") {
       writer.uint32(18).string(message.fileName);
@@ -498,7 +498,7 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 2: {
@@ -528,7 +528,7 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
 
   fromJSON(object: any): GenerateUploadUrlRequest {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
       contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
     };
@@ -536,8 +536,8 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
 
   toJSON(message: GenerateUploadUrlRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     if (message.fileName !== "") {
       obj.fileName = message.fileName;
@@ -553,7 +553,7 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<GenerateUploadUrlRequest>, I>>(object: I): GenerateUploadUrlRequest {
     const message = createBaseGenerateUploadUrlRequest();
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     message.fileName = object.fileName ?? "";
     message.contentType = object.contentType ?? "";
     return message;
@@ -637,13 +637,13 @@ export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = 
 };
 
 function createBaseGetFeedRequest(): GetFeedRequest {
-  return { userId: "", page: 0, perPage: 0 };
+  return { profileId: "", page: 0, perPage: 0 };
 }
 
 export const GetFeedRequest: MessageFns<GetFeedRequest> = {
   encode(message: GetFeedRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
     }
     if (message.page !== 0) {
       writer.uint32(16).uint32(message.page);
@@ -666,7 +666,7 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 2: {
@@ -696,7 +696,7 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
 
   fromJSON(object: any): GetFeedRequest {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
       perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
     };
@@ -704,8 +704,8 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
 
   toJSON(message: GetFeedRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     if (message.page !== 0) {
       obj.page = Math.round(message.page);
@@ -721,7 +721,7 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetFeedRequest>, I>>(object: I): GetFeedRequest {
     const message = createBaseGetFeedRequest();
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     message.page = object.page ?? 0;
     message.perPage = object.perPage ?? 0;
     return message;
@@ -789,13 +789,13 @@ export const GetFeedResponse: MessageFns<GetFeedResponse> = {
 };
 
 function createBaseCreateCommentRequest(): CreateCommentRequest {
-  return { userId: "", text: "", postId: "" };
+  return { profileId: "", text: "", postId: "" };
 }
 
 export const CreateCommentRequest: MessageFns<CreateCommentRequest> = {
   encode(message: CreateCommentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
     }
     if (message.text !== "") {
       writer.uint32(18).string(message.text);
@@ -818,7 +818,7 @@ export const CreateCommentRequest: MessageFns<CreateCommentRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 2: {
@@ -848,7 +848,7 @@ export const CreateCommentRequest: MessageFns<CreateCommentRequest> = {
 
   fromJSON(object: any): CreateCommentRequest {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       text: isSet(object.text) ? globalThis.String(object.text) : "",
       postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
     };
@@ -856,8 +856,8 @@ export const CreateCommentRequest: MessageFns<CreateCommentRequest> = {
 
   toJSON(message: CreateCommentRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     if (message.text !== "") {
       obj.text = message.text;
@@ -873,7 +873,7 @@ export const CreateCommentRequest: MessageFns<CreateCommentRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<CreateCommentRequest>, I>>(object: I): CreateCommentRequest {
     const message = createBaseCreateCommentRequest();
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     message.text = object.text ?? "";
     message.postId = object.postId ?? "";
     return message;
@@ -881,13 +881,13 @@ export const CreateCommentRequest: MessageFns<CreateCommentRequest> = {
 };
 
 function createBaseCommentResponse(): CommentResponse {
-  return { userId: "", text: "", postId: "", createdAt: "", updatedAt: "", id: "" };
+  return { profileId: "", text: "", postId: "", createdAt: "", updatedAt: "", id: "" };
 }
 
 export const CommentResponse: MessageFns<CommentResponse> = {
   encode(message: CommentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
     }
     if (message.text !== "") {
       writer.uint32(18).string(message.text);
@@ -919,7 +919,7 @@ export const CommentResponse: MessageFns<CommentResponse> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 2: {
@@ -973,7 +973,7 @@ export const CommentResponse: MessageFns<CommentResponse> = {
 
   fromJSON(object: any): CommentResponse {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       text: isSet(object.text) ? globalThis.String(object.text) : "",
       postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
@@ -984,8 +984,8 @@ export const CommentResponse: MessageFns<CommentResponse> = {
 
   toJSON(message: CommentResponse): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     if (message.text !== "") {
       obj.text = message.text;
@@ -1010,7 +1010,7 @@ export const CommentResponse: MessageFns<CommentResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<CommentResponse>, I>>(object: I): CommentResponse {
     const message = createBaseCommentResponse();
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     message.text = object.text ?? "";
     message.postId = object.postId ?? "";
     message.createdAt = object.createdAt ?? "";
@@ -1435,13 +1435,13 @@ export const PostFileResponse: MessageFns<PostFileResponse> = {
 };
 
 function createBaseVoteOnPollRequest(): VoteOnPollRequest {
-  return { userId: "", postId: "", optionId: "" };
+  return { profileId: "", postId: "", optionId: "" };
 }
 
 export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
   encode(message: VoteOnPollRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
     }
     if (message.postId !== "") {
       writer.uint32(18).string(message.postId);
@@ -1464,7 +1464,7 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 2: {
@@ -1494,7 +1494,7 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
 
   fromJSON(object: any): VoteOnPollRequest {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
       optionId: isSet(object.optionId) ? globalThis.String(object.optionId) : "",
     };
@@ -1502,8 +1502,8 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
 
   toJSON(message: VoteOnPollRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     if (message.postId !== "") {
       obj.postId = message.postId;
@@ -1519,7 +1519,7 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<VoteOnPollRequest>, I>>(object: I): VoteOnPollRequest {
     const message = createBaseVoteOnPollRequest();
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     message.postId = object.postId ?? "";
     message.optionId = object.optionId ?? "";
     return message;
@@ -1715,7 +1715,7 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
 function createBasePostResponse(): PostResponse {
   return {
     id: "",
-    userId: "",
+    profileId: "",
     caption: "",
     accessType: "",
     postType: "",
@@ -1732,8 +1732,8 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(18).string(message.profileId);
     }
     if (message.caption !== "") {
       writer.uint32(26).string(message.caption);
@@ -1782,7 +1782,7 @@ export const PostResponse: MessageFns<PostResponse> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 3: {
@@ -1861,7 +1861,7 @@ export const PostResponse: MessageFns<PostResponse> = {
   fromJSON(object: any): PostResponse {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
       accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
       postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
@@ -1878,8 +1878,8 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     if (message.caption !== "") {
       obj.caption = message.caption;
@@ -1914,7 +1914,7 @@ export const PostResponse: MessageFns<PostResponse> = {
   fromPartial<I extends Exact<DeepPartial<PostResponse>, I>>(object: I): PostResponse {
     const message = createBasePostResponse();
     message.id = object.id ?? "";
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     message.caption = object.caption ?? "";
     message.accessType = object.accessType ?? "";
     message.postType = object.postType ?? "";
@@ -1934,13 +1934,13 @@ export const PostResponse: MessageFns<PostResponse> = {
 };
 
 function createBaseGetUserPostsRequest(): GetUserPostsRequest {
-  return { userId: "" };
+  return { profileId: "" };
 }
 
 export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
   encode(message: GetUserPostsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
     }
     return writer;
   },
@@ -1957,7 +1957,7 @@ export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
       }
@@ -1970,13 +1970,13 @@ export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
   },
 
   fromJSON(object: any): GetUserPostsRequest {
-    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+    return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
   },
 
   toJSON(message: GetUserPostsRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     return obj;
   },
@@ -1986,7 +1986,7 @@ export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetUserPostsRequest>, I>>(object: I): GetUserPostsRequest {
     const message = createBaseGetUserPostsRequest();
-    message.userId = object.userId ?? "";
+    message.profileId = object.profileId ?? "";
     return message;
   },
 };

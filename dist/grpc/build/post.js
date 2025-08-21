@@ -11,7 +11,7 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "post";
 function createBaseCreatePostRequest() {
     return {
-        userId: "",
+        profileId: "",
         caption: "",
         accessType: "",
         postType: "",
@@ -26,8 +26,8 @@ function createBaseCreatePostRequest() {
 }
 exports.CreatePostRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
         }
         if (message.caption !== "") {
             writer.uint32(18).string(message.caption);
@@ -72,7 +72,7 @@ exports.CreatePostRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -155,7 +155,7 @@ exports.CreatePostRequest = {
     },
     fromJSON(object) {
         return {
-            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
             accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
             postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
@@ -170,8 +170,8 @@ exports.CreatePostRequest = {
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         if (message.caption !== "") {
             obj.caption = message.caption;
@@ -210,7 +210,7 @@ exports.CreatePostRequest = {
     },
     fromPartial(object) {
         const message = createBaseCreatePostRequest();
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         message.caption = object.caption ?? "";
         message.accessType = object.accessType ?? "";
         message.postType = object.postType ?? "";
@@ -225,15 +225,15 @@ exports.CreatePostRequest = {
     },
 };
 function createBaseUpdatePostRequest() {
-    return { id: "", userId: "", caption: undefined, accessType: undefined };
+    return { id: "", profileId: "", caption: undefined, accessType: undefined };
 }
 exports.UpdatePostRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
-        if (message.userId !== "") {
-            writer.uint32(18).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(18).string(message.profileId);
         }
         if (message.caption !== undefined) {
             writer.uint32(26).string(message.caption);
@@ -261,7 +261,7 @@ exports.UpdatePostRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 3: {
@@ -289,7 +289,7 @@ exports.UpdatePostRequest = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
-            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             caption: isSet(object.caption) ? globalThis.String(object.caption) : undefined,
             accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : undefined,
         };
@@ -299,8 +299,8 @@ exports.UpdatePostRequest = {
         if (message.id !== "") {
             obj.id = message.id;
         }
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         if (message.caption !== undefined) {
             obj.caption = message.caption;
@@ -316,19 +316,19 @@ exports.UpdatePostRequest = {
     fromPartial(object) {
         const message = createBaseUpdatePostRequest();
         message.id = object.id ?? "";
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         message.caption = object.caption ?? undefined;
         message.accessType = object.accessType ?? undefined;
         return message;
     },
 };
 function createBaseGenerateUploadUrlRequest() {
-    return { userId: "", fileName: "", contentType: "" };
+    return { profileId: "", fileName: "", contentType: "" };
 }
 exports.GenerateUploadUrlRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
         }
         if (message.fileName !== "") {
             writer.uint32(18).string(message.fileName);
@@ -349,7 +349,7 @@ exports.GenerateUploadUrlRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -376,15 +376,15 @@ exports.GenerateUploadUrlRequest = {
     },
     fromJSON(object) {
         return {
-            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
             contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         if (message.fileName !== "") {
             obj.fileName = message.fileName;
@@ -399,7 +399,7 @@ exports.GenerateUploadUrlRequest = {
     },
     fromPartial(object) {
         const message = createBaseGenerateUploadUrlRequest();
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         message.fileName = object.fileName ?? "";
         message.contentType = object.contentType ?? "";
         return message;
@@ -474,12 +474,12 @@ exports.GenerateUploadUrlResponse = {
     },
 };
 function createBaseGetFeedRequest() {
-    return { userId: "", page: 0, perPage: 0 };
+    return { profileId: "", page: 0, perPage: 0 };
 }
 exports.GetFeedRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
         }
         if (message.page !== 0) {
             writer.uint32(16).uint32(message.page);
@@ -500,7 +500,7 @@ exports.GetFeedRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -527,15 +527,15 @@ exports.GetFeedRequest = {
     },
     fromJSON(object) {
         return {
-            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
             perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         if (message.page !== 0) {
             obj.page = Math.round(message.page);
@@ -550,7 +550,7 @@ exports.GetFeedRequest = {
     },
     fromPartial(object) {
         const message = createBaseGetFeedRequest();
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         message.page = object.page ?? 0;
         message.perPage = object.perPage ?? 0;
         return message;
@@ -610,12 +610,12 @@ exports.GetFeedResponse = {
     },
 };
 function createBaseCreateCommentRequest() {
-    return { userId: "", text: "", postId: "" };
+    return { profileId: "", text: "", postId: "" };
 }
 exports.CreateCommentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
         }
         if (message.text !== "") {
             writer.uint32(18).string(message.text);
@@ -636,7 +636,7 @@ exports.CreateCommentRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -663,15 +663,15 @@ exports.CreateCommentRequest = {
     },
     fromJSON(object) {
         return {
-            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             text: isSet(object.text) ? globalThis.String(object.text) : "",
             postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         if (message.text !== "") {
             obj.text = message.text;
@@ -686,19 +686,19 @@ exports.CreateCommentRequest = {
     },
     fromPartial(object) {
         const message = createBaseCreateCommentRequest();
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         message.text = object.text ?? "";
         message.postId = object.postId ?? "";
         return message;
     },
 };
 function createBaseCommentResponse() {
-    return { userId: "", text: "", postId: "", createdAt: "", updatedAt: "", id: "" };
+    return { profileId: "", text: "", postId: "", createdAt: "", updatedAt: "", id: "" };
 }
 exports.CommentResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
         }
         if (message.text !== "") {
             writer.uint32(18).string(message.text);
@@ -728,7 +728,7 @@ exports.CommentResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -776,7 +776,7 @@ exports.CommentResponse = {
     },
     fromJSON(object) {
         return {
-            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             text: isSet(object.text) ? globalThis.String(object.text) : "",
             postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
@@ -786,8 +786,8 @@ exports.CommentResponse = {
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         if (message.text !== "") {
             obj.text = message.text;
@@ -811,7 +811,7 @@ exports.CommentResponse = {
     },
     fromPartial(object) {
         const message = createBaseCommentResponse();
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         message.text = object.text ?? "";
         message.postId = object.postId ?? "";
         message.createdAt = object.createdAt ?? "";
@@ -1196,12 +1196,12 @@ exports.PostFileResponse = {
     },
 };
 function createBaseVoteOnPollRequest() {
-    return { userId: "", postId: "", optionId: "" };
+    return { profileId: "", postId: "", optionId: "" };
 }
 exports.VoteOnPollRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
         }
         if (message.postId !== "") {
             writer.uint32(18).string(message.postId);
@@ -1222,7 +1222,7 @@ exports.VoteOnPollRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -1249,15 +1249,15 @@ exports.VoteOnPollRequest = {
     },
     fromJSON(object) {
         return {
-            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
             optionId: isSet(object.optionId) ? globalThis.String(object.optionId) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         if (message.postId !== "") {
             obj.postId = message.postId;
@@ -1272,7 +1272,7 @@ exports.VoteOnPollRequest = {
     },
     fromPartial(object) {
         const message = createBaseVoteOnPollRequest();
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         message.postId = object.postId ?? "";
         message.optionId = object.optionId ?? "";
         return message;
@@ -1449,7 +1449,7 @@ exports.PostPollOptionResponse = {
 function createBasePostResponse() {
     return {
         id: "",
-        userId: "",
+        profileId: "",
         caption: "",
         accessType: "",
         postType: "",
@@ -1465,8 +1465,8 @@ exports.PostResponse = {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
-        if (message.userId !== "") {
-            writer.uint32(18).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(18).string(message.profileId);
         }
         if (message.caption !== "") {
             writer.uint32(26).string(message.caption);
@@ -1512,7 +1512,7 @@ exports.PostResponse = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 3: {
@@ -1582,7 +1582,7 @@ exports.PostResponse = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
-            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
             accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
             postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
@@ -1598,8 +1598,8 @@ exports.PostResponse = {
         if (message.id !== "") {
             obj.id = message.id;
         }
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         if (message.caption !== "") {
             obj.caption = message.caption;
@@ -1633,7 +1633,7 @@ exports.PostResponse = {
     fromPartial(object) {
         const message = createBasePostResponse();
         message.id = object.id ?? "";
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         message.caption = object.caption ?? "";
         message.accessType = object.accessType ?? "";
         message.postType = object.postType ?? "";
@@ -1652,12 +1652,12 @@ exports.PostResponse = {
     },
 };
 function createBaseGetUserPostsRequest() {
-    return { userId: "" };
+    return { profileId: "" };
 }
 exports.GetUserPostsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
         }
         return writer;
     },
@@ -1672,7 +1672,7 @@ exports.GetUserPostsRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
             }
@@ -1684,12 +1684,12 @@ exports.GetUserPostsRequest = {
         return message;
     },
     fromJSON(object) {
-        return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+        return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         return obj;
     },
@@ -1698,7 +1698,7 @@ exports.GetUserPostsRequest = {
     },
     fromPartial(object) {
         const message = createBaseGetUserPostsRequest();
-        message.userId = object.userId ?? "";
+        message.profileId = object.profileId ?? "";
         return message;
     },
 };

@@ -57,6 +57,6 @@ __decorate([
 ], PostPollVote.prototype, "createdAt", void 0);
 exports.PostPollVote = PostPollVote = __decorate([
     (0, typeorm_1.Entity)('post_poll_votes'),
-    (0, typeorm_1.Unique)('uniq_vote_per_option', ['pollId', 'userId', 'optionId'])
+    (0, typeorm_1.Unique)('uniq_vote_per_option', ['pollId', 'profileId', 'optionId'])
 ], PostPollVote);
 //# sourceMappingURL=post_poll_vote.entity.js.map

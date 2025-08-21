@@ -4,7 +4,7 @@ import { Profile } from "./profile.entity";
 
 // entities/post-like.entity.ts
 @Entity('post_likes')
-@Unique(['postId', 'userId'])
+@Unique(['postId', 'profileId'])
 export class PostLike {
   @PrimaryGeneratedColumn('uuid') id: string;
 

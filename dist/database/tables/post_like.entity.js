@@ -47,6 +47,6 @@ __decorate([
 ], PostLike.prototype, "createdAt", void 0);
 exports.PostLike = PostLike = __decorate([
     (0, typeorm_1.Entity)('post_likes'),
-    (0, typeorm_1.Unique)(['postId', 'userId'])
+    (0, typeorm_1.Unique)(['postId', 'profileId'])
 ], PostLike);
 //# sourceMappingURL=post_like.entity.js.map

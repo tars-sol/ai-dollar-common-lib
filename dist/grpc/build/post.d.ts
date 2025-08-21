@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "post";
 export interface CreatePostRequest {
-    userId: string;
+    profileId: string;
     caption: string;
     accessType: string;
     postType: string;
@@ -15,12 +15,12 @@ export interface CreatePostRequest {
 }
 export interface UpdatePostRequest {
     id: string;
-    userId: string;
+    profileId: string;
     caption?: string | undefined;
     accessType?: string | undefined;
 }
 export interface GenerateUploadUrlRequest {
-    userId: string;
+    profileId: string;
     fileName: string;
     contentType: string;
 }
@@ -29,7 +29,7 @@ export interface GenerateUploadUrlResponse {
     key: string;
 }
 export interface GetFeedRequest {
-    userId: string;
+    profileId: string;
     page: number;
     perPage: number;
 }
@@ -37,12 +37,12 @@ export interface GetFeedResponse {
     posts: PostResponse[];
 }
 export interface CreateCommentRequest {
-    userId: string;
+    profileId: string;
     text: string;
     postId: string;
 }
 export interface CommentResponse {
-    userId: string;
+    profileId: string;
     text: string;
     postId: string;
     createdAt: string;
@@ -73,7 +73,7 @@ export interface PostFileResponse {
     sizeInBytes: string;
 }
 export interface VoteOnPollRequest {
-    userId: string;
+    profileId: string;
     postId: string;
     optionId: string;
 }
@@ -89,7 +89,7 @@ export interface PostPollOptionResponse {
 }
 export interface PostResponse {
     id: string;
-    userId: string;
+    profileId: string;
     caption: string;
     accessType: string;
     postType: string;
@@ -100,7 +100,7 @@ export interface PostResponse {
     updatedAt: string;
 }
 export interface GetUserPostsRequest {
-    userId: string;
+    profileId: string;
 }
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;

@@ -13,7 +13,7 @@ import { PostPoll } from './post_poll.entity';
 import { Profile } from './profile.entity';
 
 @Entity('post_poll_votes')
-@Unique('uniq_vote_per_option', ['pollId', 'userId', 'optionId'])
+@Unique('uniq_vote_per_option', ['pollId', 'profileId', 'optionId'])
 export class PostPollVote {
   @PrimaryGeneratedColumn('uuid')
   id: string;
