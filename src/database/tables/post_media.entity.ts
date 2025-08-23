@@ -28,17 +28,17 @@ export class PostMedia {
 
   @Column({ type: 'enum', enum: MediaType })
   mediaType: MediaType;
-
+  @Column({ nullable: true })
+  giphyUrl: string;
   // storage
-  @Column()
+  @Column({ nullable: true })
   s3Key: string;
-  @Column()
+  @Column({ nullable: true })
   originalFileName: string;
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   mimeType: string;
   // video-only (optional)
- 
+
   @Column({ type: 'int', nullable: true })
   durationSec?: number;
- 
 }

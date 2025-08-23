@@ -9,6 +9,7 @@ export declare class PostMedia {
     post: Post;
     postId: string;
     mediaType: MediaType;
+    giphyUrl: string;
     s3Key: string;
     originalFileName: string;
     mimeType: string;

@@ -17,6 +17,7 @@ message CreatePostRequest {
   string accessType = 3;
   string postType = 8;
   optional string mimeType = 4;
+  optional string giphyUrl=13;
   optional string mediaType = 9;
   optional string s3Key = 5;
   optional string fileType = 6;
@@ -73,11 +74,12 @@ message GetCommentsResponse{
 }
 message PostMediaResponse{
    string id = 6;
-   string mimeType = 1;
-   string mediaType = 2;
-   string s3Key = 3;
-   string originalFileName = 4;
-   string signedUrl = 5;
+   optional string mimeType = 1;
+  string mediaType = 2;
+   optional string s3Key = 3;
+   optional string originalFileName = 4;
+   optional string signedUrl = 5;
+   optional string giphyUrl=7;
 
 }
 

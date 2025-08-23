@@ -16,6 +16,7 @@ function createBaseCreatePostRequest() {
         accessType: "",
         postType: "",
         mimeType: undefined,
+        giphyUrl: undefined,
         mediaType: undefined,
         s3Key: undefined,
         fileType: undefined,
@@ -40,6 +41,9 @@ exports.CreatePostRequest = {
         }
         if (message.mimeType !== undefined) {
             writer.uint32(34).string(message.mimeType);
+        }
+        if (message.giphyUrl !== undefined) {
+            writer.uint32(106).string(message.giphyUrl);
         }
         if (message.mediaType !== undefined) {
             writer.uint32(74).string(message.mediaType);
@@ -103,6 +107,13 @@ exports.CreatePostRequest = {
                     message.mimeType = reader.string();
                     continue;
                 }
+                case 13: {
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.giphyUrl = reader.string();
+                    continue;
+                }
                 case 9: {
                     if (tag !== 74) {
                         break;
@@ -160,6 +171,7 @@ exports.CreatePostRequest = {
             accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
             postType: isSet(object.postType) ? globalThis.String(object.postType) : "",
             mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : undefined,
+            giphyUrl: isSet(object.giphyUrl) ? globalThis.String(object.giphyUrl) : undefined,
             mediaType: isSet(object.mediaType) ? globalThis.String(object.mediaType) : undefined,
             s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : undefined,
             fileType: isSet(object.fileType) ? globalThis.String(object.fileType) : undefined,
@@ -184,6 +196,9 @@ exports.CreatePostRequest = {
         }
         if (message.mimeType !== undefined) {
             obj.mimeType = message.mimeType;
+        }
+        if (message.giphyUrl !== undefined) {
+            obj.giphyUrl = message.giphyUrl;
         }
         if (message.mediaType !== undefined) {
             obj.mediaType = message.mediaType;
@@ -215,6 +230,7 @@ exports.CreatePostRequest = {
         message.accessType = object.accessType ?? "";
         message.postType = object.postType ?? "";
         message.mimeType = object.mimeType ?? undefined;
+        message.giphyUrl = object.giphyUrl ?? undefined;
         message.mediaType = object.mediaType ?? undefined;
         message.s3Key = object.s3Key ?? undefined;
         message.fileType = object.fileType ?? undefined;
@@ -925,27 +941,38 @@ exports.GetCommentsResponse = {
     },
 };
 function createBasePostMediaResponse() {
-    return { id: "", mimeType: "", mediaType: "", s3Key: "", originalFileName: "", signedUrl: "" };
+    return {
+        id: "",
+        mimeType: undefined,
+        mediaType: "",
+        s3Key: undefined,
+        originalFileName: undefined,
+        signedUrl: undefined,
+        giphyUrl: undefined,
+    };
 }
 exports.PostMediaResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== "") {
             writer.uint32(50).string(message.id);
         }
-        if (message.mimeType !== "") {
+        if (message.mimeType !== undefined) {
             writer.uint32(10).string(message.mimeType);
         }
         if (message.mediaType !== "") {
             writer.uint32(18).string(message.mediaType);
         }
-        if (message.s3Key !== "") {
+        if (message.s3Key !== undefined) {
             writer.uint32(26).string(message.s3Key);
         }
-        if (message.originalFileName !== "") {
+        if (message.originalFileName !== undefined) {
             writer.uint32(34).string(message.originalFileName);
         }
-        if (message.signedUrl !== "") {
+        if (message.signedUrl !== undefined) {
             writer.uint32(42).string(message.signedUrl);
+        }
+        if (message.giphyUrl !== undefined) {
+            writer.uint32(58).string(message.giphyUrl);
         }
         return writer;
     },
@@ -998,6 +1025,13 @@ exports.PostMediaResponse = {
                     message.signedUrl = reader.string();
                     continue;
                 }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.giphyUrl = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1009,11 +1043,12 @@ exports.PostMediaResponse = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
-            mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : "",
+            mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : undefined,
             mediaType: isSet(object.mediaType) ? globalThis.String(object.mediaType) : "",
-            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
-            originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
-            signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : "",
+            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : undefined,
+            originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : undefined,
+            signedUrl: isSet(object.signedUrl) ? globalThis.String(object.signedUrl) : undefined,
+            giphyUrl: isSet(object.giphyUrl) ? globalThis.String(object.giphyUrl) : undefined,
         };
     },
     toJSON(message) {
@@ -1021,20 +1056,23 @@ exports.PostMediaResponse = {
         if (message.id !== "") {
             obj.id = message.id;
         }
-        if (message.mimeType !== "") {
+        if (message.mimeType !== undefined) {
             obj.mimeType = message.mimeType;
         }
         if (message.mediaType !== "") {
             obj.mediaType = message.mediaType;
         }
-        if (message.s3Key !== "") {
+        if (message.s3Key !== undefined) {
             obj.s3Key = message.s3Key;
         }
-        if (message.originalFileName !== "") {
+        if (message.originalFileName !== undefined) {
             obj.originalFileName = message.originalFileName;
         }
-        if (message.signedUrl !== "") {
+        if (message.signedUrl !== undefined) {
             obj.signedUrl = message.signedUrl;
+        }
+        if (message.giphyUrl !== undefined) {
+            obj.giphyUrl = message.giphyUrl;
         }
         return obj;
     },
@@ -1044,11 +1082,12 @@ exports.PostMediaResponse = {
     fromPartial(object) {
         const message = createBasePostMediaResponse();
         message.id = object.id ?? "";
-        message.mimeType = object.mimeType ?? "";
+        message.mimeType = object.mimeType ?? undefined;
         message.mediaType = object.mediaType ?? "";
-        message.s3Key = object.s3Key ?? "";
-        message.originalFileName = object.originalFileName ?? "";
-        message.signedUrl = object.signedUrl ?? "";
+        message.s3Key = object.s3Key ?? undefined;
+        message.originalFileName = object.originalFileName ?? undefined;
+        message.signedUrl = object.signedUrl ?? undefined;
+        message.giphyUrl = object.giphyUrl ?? undefined;
         return message;
     },
 };

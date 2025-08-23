@@ -40,15 +40,19 @@ __decorate([
     __metadata("design:type", String)
 ], PostMedia.prototype, "mediaType", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], PostMedia.prototype, "giphyUrl", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], PostMedia.prototype, "s3Key", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], PostMedia.prototype, "originalFileName", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text' }),
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
 ], PostMedia.prototype, "mimeType", void 0);
 __decorate([

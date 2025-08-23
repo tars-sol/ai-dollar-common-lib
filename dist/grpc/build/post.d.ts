@@ -6,6 +6,7 @@ export interface CreatePostRequest {
     accessType: string;
     postType: string;
     mimeType?: string | undefined;
+    giphyUrl?: string | undefined;
     mediaType?: string | undefined;
     s3Key?: string | undefined;
     fileType?: string | undefined;
@@ -57,11 +58,12 @@ export interface GetCommentsResponse {
 }
 export interface PostMediaResponse {
     id: string;
-    mimeType: string;
+    mimeType?: string | undefined;
     mediaType: string;
-    s3Key: string;
-    originalFileName: string;
-    signedUrl: string;
+    s3Key?: string | undefined;
+    originalFileName?: string | undefined;
+    signedUrl?: string | undefined;
+    giphyUrl?: string | undefined;
 }
 export interface PostFileResponse {
     id: string;
