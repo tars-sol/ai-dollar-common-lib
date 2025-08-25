@@ -27,6 +27,7 @@ exports.GrpcProtoServiceName = {
     PROFILE_SERVICE: 'ProfileService',
     BRAND_SERVICE: 'BrandService',
     CAMPAIGN_SERVICE: 'CampaignService',
+    POST_SERVICE: 'PostService',
 };
 function resolveGrpcProtoPath(protoName) {
     return `ai-dollar-common-lib/src/grpc/proto/${protoName}.proto`;

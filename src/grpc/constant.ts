@@ -29,6 +29,7 @@ export const GrpcProtoServiceName = {
   PROFILE_SERVICE: 'ProfileService',
   BRAND_SERVICE: 'BrandService',
   CAMPAIGN_SERVICE: 'CampaignService',
+  POST_SERVICE: 'PostService',
 } as const;
 
 export type GrpcProtoServiceName =

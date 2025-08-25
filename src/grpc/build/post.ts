@@ -72,7 +72,7 @@ export interface GetCommentsRequest {
 }
 
 export interface GetCommentsResponse {
-  comments: CommentResponse | undefined;
+  comments: CommentResponse[];
 }
 
 export interface PostMediaResponse {
@@ -113,6 +113,12 @@ export interface PostPollOptionResponse {
   voteCount: string;
 }
 
+export interface LikePostRequest {
+  profileId: string;
+  postId: string;
+  like: boolean;
+}
+
 export interface PostResponse {
   id: string;
   profileId: string;
@@ -124,6 +130,8 @@ export interface PostResponse {
   postFile?: PostFileResponse | undefined;
   createdAt: string;
   updatedAt: string;
+  commentCount: string;
+  likeCount: string;
 }
 
 export interface GetUserPostsRequest {
@@ -1098,13 +1106,13 @@ export const GetCommentsRequest: MessageFns<GetCommentsRequest> = {
 };
 
 function createBaseGetCommentsResponse(): GetCommentsResponse {
-  return { comments: undefined };
+  return { comments: [] };
 }
 
 export const GetCommentsResponse: MessageFns<GetCommentsResponse> = {
   encode(message: GetCommentsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.comments !== undefined) {
-      CommentResponse.encode(message.comments, writer.uint32(10).fork()).join();
+    for (const v of message.comments) {
+      CommentResponse.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -1121,7 +1129,7 @@ export const GetCommentsResponse: MessageFns<GetCommentsResponse> = {
             break;
           }
 
-          message.comments = CommentResponse.decode(reader, reader.uint32());
+          message.comments.push(CommentResponse.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -1134,13 +1142,17 @@ export const GetCommentsResponse: MessageFns<GetCommentsResponse> = {
   },
 
   fromJSON(object: any): GetCommentsResponse {
-    return { comments: isSet(object.comments) ? CommentResponse.fromJSON(object.comments) : undefined };
+    return {
+      comments: globalThis.Array.isArray(object?.comments)
+        ? object.comments.map((e: any) => CommentResponse.fromJSON(e))
+        : [],
+    };
   },
 
   toJSON(message: GetCommentsResponse): unknown {
     const obj: any = {};
-    if (message.comments !== undefined) {
-      obj.comments = CommentResponse.toJSON(message.comments);
+    if (message.comments?.length) {
+      obj.comments = message.comments.map((e) => CommentResponse.toJSON(e));
     }
     return obj;
   },
@@ -1150,9 +1162,7 @@ export const GetCommentsResponse: MessageFns<GetCommentsResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetCommentsResponse>, I>>(object: I): GetCommentsResponse {
     const message = createBaseGetCommentsResponse();
-    message.comments = (object.comments !== undefined && object.comments !== null)
-      ? CommentResponse.fromPartial(object.comments)
-      : undefined;
+    message.comments = object.comments?.map((e) => CommentResponse.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1755,6 +1765,98 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
   },
 };
 
+function createBaseLikePostRequest(): LikePostRequest {
+  return { profileId: "", postId: "", like: false };
+}
+
+export const LikePostRequest: MessageFns<LikePostRequest> = {
+  encode(message: LikePostRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    if (message.postId !== "") {
+      writer.uint32(18).string(message.postId);
+    }
+    if (message.like !== false) {
+      writer.uint32(24).bool(message.like);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LikePostRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLikePostRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.like = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LikePostRequest {
+    return {
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+      like: isSet(object.like) ? globalThis.Boolean(object.like) : false,
+    };
+  },
+
+  toJSON(message: LikePostRequest): unknown {
+    const obj: any = {};
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    if (message.like !== false) {
+      obj.like = message.like;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LikePostRequest>, I>>(base?: I): LikePostRequest {
+    return LikePostRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LikePostRequest>, I>>(object: I): LikePostRequest {
+    const message = createBaseLikePostRequest();
+    message.profileId = object.profileId ?? "";
+    message.postId = object.postId ?? "";
+    message.like = object.like ?? false;
+    return message;
+  },
+};
+
 function createBasePostResponse(): PostResponse {
   return {
     id: "",
@@ -1767,6 +1869,8 @@ function createBasePostResponse(): PostResponse {
     postFile: undefined,
     createdAt: "",
     updatedAt: "",
+    commentCount: "",
+    likeCount: "",
   };
 }
 
@@ -1801,6 +1905,12 @@ export const PostResponse: MessageFns<PostResponse> = {
     }
     if (message.updatedAt !== "") {
       writer.uint32(82).string(message.updatedAt);
+    }
+    if (message.commentCount !== "") {
+      writer.uint32(90).string(message.commentCount);
+    }
+    if (message.likeCount !== "") {
+      writer.uint32(98).string(message.likeCount);
     }
     return writer;
   },
@@ -1892,6 +2002,22 @@ export const PostResponse: MessageFns<PostResponse> = {
           message.updatedAt = reader.string();
           continue;
         }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.commentCount = reader.string();
+          continue;
+        }
+        case 12: {
+          if (tag !== 98) {
+            break;
+          }
+
+          message.likeCount = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1913,6 +2039,8 @@ export const PostResponse: MessageFns<PostResponse> = {
       postFile: isSet(object.postFile) ? PostFileResponse.fromJSON(object.postFile) : undefined,
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+      commentCount: isSet(object.commentCount) ? globalThis.String(object.commentCount) : "",
+      likeCount: isSet(object.likeCount) ? globalThis.String(object.likeCount) : "",
     };
   },
 
@@ -1948,6 +2076,12 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.updatedAt !== "") {
       obj.updatedAt = message.updatedAt;
     }
+    if (message.commentCount !== "") {
+      obj.commentCount = message.commentCount;
+    }
+    if (message.likeCount !== "") {
+      obj.likeCount = message.likeCount;
+    }
     return obj;
   },
 
@@ -1972,6 +2106,8 @@ export const PostResponse: MessageFns<PostResponse> = {
       : undefined;
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";
+    message.commentCount = object.commentCount ?? "";
+    message.likeCount = object.likeCount ?? "";
     return message;
   },
 };
@@ -2041,6 +2177,9 @@ export interface PostService {
   GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
   VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
   GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
+  LikePost(request: LikePostRequest): Promise<PostResponse>;
+  CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
+  GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -2056,6 +2195,9 @@ export class PostServiceClientImpl implements PostService {
     this.GetFeed = this.GetFeed.bind(this);
     this.VoteOnPoll = this.VoteOnPoll.bind(this);
     this.GetUserPosts = this.GetUserPosts.bind(this);
+    this.LikePost = this.LikePost.bind(this);
+    this.CreateComment = this.CreateComment.bind(this);
+    this.GetComments = this.GetComments.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -2091,6 +2233,24 @@ export class PostServiceClientImpl implements PostService {
     const data = GetUserPostsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetUserPosts", data);
     return promise.then((data) => GetFeedResponse.decode(new BinaryReader(data)));
+  }
+
+  LikePost(request: LikePostRequest): Promise<PostResponse> {
+    const data = LikePostRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "LikePost", data);
+    return promise.then((data) => PostResponse.decode(new BinaryReader(data)));
+  }
+
+  CreateComment(request: CreateCommentRequest): Promise<CommentResponse> {
+    const data = CreateCommentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateComment", data);
+    return promise.then((data) => CommentResponse.decode(new BinaryReader(data)));
+  }
+
+  GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse> {
+    const data = GetCommentsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetComments", data);
+    return promise.then((data) => GetCommentsResponse.decode(new BinaryReader(data)));
   }
 }
 

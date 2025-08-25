@@ -9,6 +9,9 @@ service PostService {
   rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
   rpc VoteOnPoll (VoteOnPollRequest) returns (PostResponse);
   rpc GetUserPosts(GetUserPostsRequest) returns (GetFeedResponse);
+  rpc LikePost(LikePostRequest) returns (PostResponse);
+  rpc CreateComment(CreateCommentRequest) returns (CommentResponse);
+  rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
 }
 
 message CreatePostRequest {
@@ -70,27 +73,27 @@ message GetCommentsRequest{
   string postId=1;
 }
 message GetCommentsResponse{
-  CommentResponse comments=1;
+ repeated CommentResponse comments=1;
 }
 message PostMediaResponse{
-   string id = 6;
-   optional string mimeType = 1;
+  string id = 6;
+  optional string mimeType = 1;
   string mediaType = 2;
-   optional string s3Key = 3;
-   optional string originalFileName = 4;
-   optional string signedUrl = 5;
-   optional string giphyUrl=7;
+  optional string s3Key = 3;
+  optional string originalFileName = 4;
+  optional string signedUrl = 5;
+  optional string giphyUrl=7;
 
 }
 
 message PostFileResponse{
-   string id = 6;
-   string mimeType = 1;
-   string s3Key = 3;
-   string originalFileName = 4;
-   string signedUrl = 5;
-   string fileType = 7;
-   string sizeInBytes = 8;
+  string id = 6;
+  string mimeType = 1;
+  string s3Key = 3;
+  string originalFileName = 4;
+  string signedUrl = 5;
+  string fileType = 7;
+  string sizeInBytes = 8;
 
 }
 message VoteOnPollRequest{
@@ -108,7 +111,11 @@ message PostPollOptionResponse{
   string text = 2;
   string voteCount = 3;
 }
-
+message LikePostRequest{
+  string profileId= 1;
+  string postId= 2;
+  bool like = 3;
+}
 message PostResponse {
   string id = 1;
   string profileId = 2;
@@ -118,11 +125,10 @@ message PostResponse {
   optional PostMediaResponse postMedia = 6;
   optional PostPollResponse postPoll=7;
   optional PostFileResponse postFile=8;
-  
-
   string createdAt = 9;
   string updatedAt = 10;
-
+  string commentCount = 11;
+  string likeCount = 12;
 }
 message GetUserPostsRequest{
   string profileId = 1;

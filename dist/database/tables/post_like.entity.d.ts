@@ -1,5 +1,5 @@
-import { Post } from "./post.entity";
-import { Profile } from "./profile.entity";
+import { Post } from './post.entity';
+import { Profile } from './profile.entity';
 export declare class PostLike {
     id: string;
     post: Post;

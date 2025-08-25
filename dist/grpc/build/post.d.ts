@@ -54,7 +54,7 @@ export interface GetCommentsRequest {
     postId: string;
 }
 export interface GetCommentsResponse {
-    comments: CommentResponse | undefined;
+    comments: CommentResponse[];
 }
 export interface PostMediaResponse {
     id: string;
@@ -89,6 +89,11 @@ export interface PostPollOptionResponse {
     text: string;
     voteCount: string;
 }
+export interface LikePostRequest {
+    profileId: string;
+    postId: string;
+    like: boolean;
+}
 export interface PostResponse {
     id: string;
     profileId: string;
@@ -100,6 +105,8 @@ export interface PostResponse {
     postFile?: PostFileResponse | undefined;
     createdAt: string;
     updatedAt: string;
+    commentCount: string;
+    likeCount: string;
 }
 export interface GetUserPostsRequest {
     profileId: string;
@@ -119,6 +126,7 @@ export declare const PostFileResponse: MessageFns<PostFileResponse>;
 export declare const VoteOnPollRequest: MessageFns<VoteOnPollRequest>;
 export declare const PostPollResponse: MessageFns<PostPollResponse>;
 export declare const PostPollOptionResponse: MessageFns<PostPollOptionResponse>;
+export declare const LikePostRequest: MessageFns<LikePostRequest>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export declare const GetUserPostsRequest: MessageFns<GetUserPostsRequest>;
 export interface PostService {
@@ -128,6 +136,9 @@ export interface PostService {
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
+    LikePost(request: LikePostRequest): Promise<PostResponse>;
+    CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
+    GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -142,6 +153,9 @@ export declare class PostServiceClientImpl implements PostService {
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
+    LikePost(request: LikePostRequest): Promise<PostResponse>;
+    CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
+    GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
