@@ -6,8 +6,19 @@ service ProfileService {
   rpc Create (CreateProfileRequest) returns (ProfileResponse);
   rpc Update (UpdateProfileRequest) returns (ProfileResponse);
   rpc GetByUserId (GetProfileByUserIdRequest) returns (ProfileResponse);
+  rpc FollowProfile (FollowRequest) returns (ProfileResponse);
+  rpc SubscribeProfile (SubscribeRequest) returns (ProfileResponse);
 }
-
+message FollowRequest{
+  string profileId = 1;
+  string targetId = 2;
+  bool follow = 3;
+}
+message SubscribeRequest{
+  string profileId = 1;
+  string targetId = 2;
+  bool subscribe = 3;
+}
 message ProfileResponse {
   string id = 1;
   string userId = 2;
@@ -26,7 +37,12 @@ message ProfileResponse {
   string updatedAt = 14;
   optional string jwtToken = 16;
   optional string refreshToken = 17;
+  string followersCount = 18;
+  string followingCount = 19;
+  string subscribersCount = 20;
+  string subscriptionsCount = 21;
 }
+
 
 message CreateProfileRequest {
   string userId = 1;

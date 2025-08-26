@@ -87,6 +87,10 @@ __decorate([
     __metadata("design:type", Number)
 ], Profile.prototype, "subscribersCount", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
+], Profile.prototype, "subscriptionsCount", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Profile.prototype, "createdAt", void 0);

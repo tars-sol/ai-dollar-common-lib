@@ -17,6 +17,7 @@ export declare class Profile {
     followersCount: number;
     followingCount: number;
     subscribersCount: number;
+    subscriptionsCount: number;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -9,6 +9,18 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "profile";
 
+export interface FollowRequest {
+  profileId: string;
+  targetId: string;
+  follow: boolean;
+}
+
+export interface SubscribeRequest {
+  profileId: string;
+  targetId: string;
+  subscribe: boolean;
+}
+
 export interface ProfileResponse {
   id: string;
   userId: string;
@@ -27,6 +39,10 @@ export interface ProfileResponse {
   updatedAt: string;
   jwtToken?: string | undefined;
   refreshToken?: string | undefined;
+  followersCount: string;
+  followingCount: string;
+  subscribersCount: string;
+  subscriptionsCount: string;
 }
 
 export interface CreateProfileRequest {
@@ -61,6 +77,190 @@ export interface GetProfileByUserIdRequest {
   userId: string;
 }
 
+function createBaseFollowRequest(): FollowRequest {
+  return { profileId: "", targetId: "", follow: false };
+}
+
+export const FollowRequest: MessageFns<FollowRequest> = {
+  encode(message: FollowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    if (message.targetId !== "") {
+      writer.uint32(18).string(message.targetId);
+    }
+    if (message.follow !== false) {
+      writer.uint32(24).bool(message.follow);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FollowRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFollowRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.targetId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.follow = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FollowRequest {
+    return {
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      targetId: isSet(object.targetId) ? globalThis.String(object.targetId) : "",
+      follow: isSet(object.follow) ? globalThis.Boolean(object.follow) : false,
+    };
+  },
+
+  toJSON(message: FollowRequest): unknown {
+    const obj: any = {};
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.targetId !== "") {
+      obj.targetId = message.targetId;
+    }
+    if (message.follow !== false) {
+      obj.follow = message.follow;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<FollowRequest>, I>>(base?: I): FollowRequest {
+    return FollowRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<FollowRequest>, I>>(object: I): FollowRequest {
+    const message = createBaseFollowRequest();
+    message.profileId = object.profileId ?? "";
+    message.targetId = object.targetId ?? "";
+    message.follow = object.follow ?? false;
+    return message;
+  },
+};
+
+function createBaseSubscribeRequest(): SubscribeRequest {
+  return { profileId: "", targetId: "", subscribe: false };
+}
+
+export const SubscribeRequest: MessageFns<SubscribeRequest> = {
+  encode(message: SubscribeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    if (message.targetId !== "") {
+      writer.uint32(18).string(message.targetId);
+    }
+    if (message.subscribe !== false) {
+      writer.uint32(24).bool(message.subscribe);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SubscribeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSubscribeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.targetId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.subscribe = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SubscribeRequest {
+    return {
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      targetId: isSet(object.targetId) ? globalThis.String(object.targetId) : "",
+      subscribe: isSet(object.subscribe) ? globalThis.Boolean(object.subscribe) : false,
+    };
+  },
+
+  toJSON(message: SubscribeRequest): unknown {
+    const obj: any = {};
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.targetId !== "") {
+      obj.targetId = message.targetId;
+    }
+    if (message.subscribe !== false) {
+      obj.subscribe = message.subscribe;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SubscribeRequest>, I>>(base?: I): SubscribeRequest {
+    return SubscribeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SubscribeRequest>, I>>(object: I): SubscribeRequest {
+    const message = createBaseSubscribeRequest();
+    message.profileId = object.profileId ?? "";
+    message.targetId = object.targetId ?? "";
+    message.subscribe = object.subscribe ?? false;
+    return message;
+  },
+};
+
 function createBaseProfileResponse(): ProfileResponse {
   return {
     id: "",
@@ -80,6 +280,10 @@ function createBaseProfileResponse(): ProfileResponse {
     updatedAt: "",
     jwtToken: undefined,
     refreshToken: undefined,
+    followersCount: "",
+    followingCount: "",
+    subscribersCount: "",
+    subscriptionsCount: "",
   };
 }
 
@@ -135,6 +339,18 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     }
     if (message.refreshToken !== undefined) {
       writer.uint32(138).string(message.refreshToken);
+    }
+    if (message.followersCount !== "") {
+      writer.uint32(146).string(message.followersCount);
+    }
+    if (message.followingCount !== "") {
+      writer.uint32(154).string(message.followingCount);
+    }
+    if (message.subscribersCount !== "") {
+      writer.uint32(162).string(message.subscribersCount);
+    }
+    if (message.subscriptionsCount !== "") {
+      writer.uint32(170).string(message.subscriptionsCount);
     }
     return writer;
   },
@@ -282,6 +498,38 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
           message.refreshToken = reader.string();
           continue;
         }
+        case 18: {
+          if (tag !== 146) {
+            break;
+          }
+
+          message.followersCount = reader.string();
+          continue;
+        }
+        case 19: {
+          if (tag !== 154) {
+            break;
+          }
+
+          message.followingCount = reader.string();
+          continue;
+        }
+        case 20: {
+          if (tag !== 162) {
+            break;
+          }
+
+          message.subscribersCount = reader.string();
+          continue;
+        }
+        case 21: {
+          if (tag !== 170) {
+            break;
+          }
+
+          message.subscriptionsCount = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -310,6 +558,10 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
       jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
       refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
+      followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
+      followingCount: isSet(object.followingCount) ? globalThis.String(object.followingCount) : "",
+      subscribersCount: isSet(object.subscribersCount) ? globalThis.String(object.subscribersCount) : "",
+      subscriptionsCount: isSet(object.subscriptionsCount) ? globalThis.String(object.subscriptionsCount) : "",
     };
   },
 
@@ -366,6 +618,18 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     if (message.refreshToken !== undefined) {
       obj.refreshToken = message.refreshToken;
     }
+    if (message.followersCount !== "") {
+      obj.followersCount = message.followersCount;
+    }
+    if (message.followingCount !== "") {
+      obj.followingCount = message.followingCount;
+    }
+    if (message.subscribersCount !== "") {
+      obj.subscribersCount = message.subscribersCount;
+    }
+    if (message.subscriptionsCount !== "") {
+      obj.subscriptionsCount = message.subscriptionsCount;
+    }
     return obj;
   },
 
@@ -391,6 +655,10 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     message.updatedAt = object.updatedAt ?? "";
     message.jwtToken = object.jwtToken ?? undefined;
     message.refreshToken = object.refreshToken ?? undefined;
+    message.followersCount = object.followersCount ?? "";
+    message.followingCount = object.followingCount ?? "";
+    message.subscribersCount = object.subscribersCount ?? "";
+    message.subscriptionsCount = object.subscriptionsCount ?? "";
     return message;
   },
 };
@@ -921,6 +1189,8 @@ export interface ProfileService {
   Create(request: CreateProfileRequest): Promise<ProfileResponse>;
   Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
   GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
+  FollowProfile(request: FollowRequest): Promise<ProfileResponse>;
+  SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
 }
 
 export const ProfileServiceServiceName = "profile.ProfileService";
@@ -933,6 +1203,8 @@ export class ProfileServiceClientImpl implements ProfileService {
     this.Create = this.Create.bind(this);
     this.Update = this.Update.bind(this);
     this.GetByUserId = this.GetByUserId.bind(this);
+    this.FollowProfile = this.FollowProfile.bind(this);
+    this.SubscribeProfile = this.SubscribeProfile.bind(this);
   }
   Create(request: CreateProfileRequest): Promise<ProfileResponse> {
     const data = CreateProfileRequest.encode(request).finish();
@@ -949,6 +1221,18 @@ export class ProfileServiceClientImpl implements ProfileService {
   GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse> {
     const data = GetProfileByUserIdRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetByUserId", data);
+    return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
+  }
+
+  FollowProfile(request: FollowRequest): Promise<ProfileResponse> {
+    const data = FollowRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "FollowProfile", data);
+    return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
+  }
+
+  SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse> {
+    const data = SubscribeRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SubscribeProfile", data);
     return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
   }
 }
