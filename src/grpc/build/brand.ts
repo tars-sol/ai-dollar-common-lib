@@ -19,6 +19,8 @@ export interface BrandResponse {
   websiteUrl: string;
   createdAt: string;
   updatedAt: string;
+  jwtToken?: string | undefined;
+  refreshToken?: string | undefined;
 }
 
 /** Request for creating a brand (userId comes from JWT in server) */
@@ -40,7 +42,18 @@ export interface UpdateBrandRequest {
 }
 
 function createBaseBrandResponse(): BrandResponse {
-  return { id: "", userId: "", name: "", description: "", logoUrl: "", websiteUrl: "", createdAt: "", updatedAt: "" };
+  return {
+    id: "",
+    userId: "",
+    name: "",
+    description: "",
+    logoUrl: "",
+    websiteUrl: "",
+    createdAt: "",
+    updatedAt: "",
+    jwtToken: undefined,
+    refreshToken: undefined,
+  };
 }
 
 export const BrandResponse: MessageFns<BrandResponse> = {
@@ -68,6 +81,12 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     }
     if (message.updatedAt !== "") {
       writer.uint32(66).string(message.updatedAt);
+    }
+    if (message.jwtToken !== undefined) {
+      writer.uint32(74).string(message.jwtToken);
+    }
+    if (message.refreshToken !== undefined) {
+      writer.uint32(82).string(message.refreshToken);
     }
     return writer;
   },
@@ -143,6 +162,22 @@ export const BrandResponse: MessageFns<BrandResponse> = {
           message.updatedAt = reader.string();
           continue;
         }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.jwtToken = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.refreshToken = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -162,6 +197,8 @@ export const BrandResponse: MessageFns<BrandResponse> = {
       websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : "",
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+      jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
+      refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
     };
   },
 
@@ -191,6 +228,12 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     if (message.updatedAt !== "") {
       obj.updatedAt = message.updatedAt;
     }
+    if (message.jwtToken !== undefined) {
+      obj.jwtToken = message.jwtToken;
+    }
+    if (message.refreshToken !== undefined) {
+      obj.refreshToken = message.refreshToken;
+    }
     return obj;
   },
 
@@ -207,6 +250,8 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     message.websiteUrl = object.websiteUrl ?? "";
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";
+    message.jwtToken = object.jwtToken ?? undefined;
+    message.refreshToken = object.refreshToken ?? undefined;
     return message;
   },
 };

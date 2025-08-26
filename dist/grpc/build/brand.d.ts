@@ -10,6 +10,8 @@ export interface BrandResponse {
     websiteUrl: string;
     createdAt: string;
     updatedAt: string;
+    jwtToken?: string | undefined;
+    refreshToken?: string | undefined;
 }
 /** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {

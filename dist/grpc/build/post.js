@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetUserPostsRequest = exports.PostResponse = exports.LikePostRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetUserPostsRequest = exports.PostResponse = exports.LikePostRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.DeletePostResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "post";
@@ -237,6 +237,125 @@ exports.CreatePostRequest = {
         message.originalFileName = object.originalFileName ?? undefined;
         message.pollEndTime = object.pollEndTime ?? undefined;
         message.options = object.options?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBaseDeletePostRequest() {
+    return { id: "", profileId: "" };
+}
+exports.DeletePostRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.profileId !== "") {
+            writer.uint32(18).string(message.profileId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseDeletePostRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.DeletePostRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseDeletePostRequest();
+        message.id = object.id ?? "";
+        message.profileId = object.profileId ?? "";
+        return message;
+    },
+};
+function createBaseDeletePostResponse() {
+    return { success: false };
+}
+exports.DeletePostResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.success !== false) {
+            writer.uint32(8).bool(message.success);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseDeletePostResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.success = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.success !== false) {
+            obj.success = message.success;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.DeletePostResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseDeletePostResponse();
+        message.success = object.success ?? false;
         return message;
     },
 };
@@ -1872,6 +1991,7 @@ class PostServiceClientImpl {
         this.LikePost = this.LikePost.bind(this);
         this.CreateComment = this.CreateComment.bind(this);
         this.GetComments = this.GetComments.bind(this);
+        this.DeletePost = this.DeletePost.bind(this);
     }
     Create(request) {
         const data = exports.CreatePostRequest.encode(request).finish();
@@ -1917,6 +2037,11 @@ class PostServiceClientImpl {
         const data = exports.GetCommentsRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetComments", data);
         return promise.then((data) => exports.GetCommentsResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    DeletePost(request) {
+        const data = exports.DeletePostRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "DeletePost", data);
+        return promise.then((data) => exports.DeletePostResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.PostServiceClientImpl = PostServiceClientImpl;

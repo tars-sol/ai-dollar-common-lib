@@ -24,6 +24,15 @@ export interface CreatePostRequest {
   options: string[];
 }
 
+export interface DeletePostRequest {
+  id: string;
+  profileId: string;
+}
+
+export interface DeletePostResponse {
+  success: boolean;
+}
+
 export interface UpdatePostRequest {
   id: string;
   profileId: string;
@@ -383,6 +392,140 @@ export const CreatePostRequest: MessageFns<CreatePostRequest> = {
     message.originalFileName = object.originalFileName ?? undefined;
     message.pollEndTime = object.pollEndTime ?? undefined;
     message.options = object.options?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseDeletePostRequest(): DeletePostRequest {
+  return { id: "", profileId: "" };
+}
+
+export const DeletePostRequest: MessageFns<DeletePostRequest> = {
+  encode(message: DeletePostRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.profileId !== "") {
+      writer.uint32(18).string(message.profileId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeletePostRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeletePostRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeletePostRequest {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+    };
+  },
+
+  toJSON(message: DeletePostRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeletePostRequest>, I>>(base?: I): DeletePostRequest {
+    return DeletePostRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeletePostRequest>, I>>(object: I): DeletePostRequest {
+    const message = createBaseDeletePostRequest();
+    message.id = object.id ?? "";
+    message.profileId = object.profileId ?? "";
+    return message;
+  },
+};
+
+function createBaseDeletePostResponse(): DeletePostResponse {
+  return { success: false };
+}
+
+export const DeletePostResponse: MessageFns<DeletePostResponse> = {
+  encode(message: DeletePostResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeletePostResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeletePostResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.success = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeletePostResponse {
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+  },
+
+  toJSON(message: DeletePostResponse): unknown {
+    const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeletePostResponse>, I>>(base?: I): DeletePostResponse {
+    return DeletePostResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeletePostResponse>, I>>(object: I): DeletePostResponse {
+    const message = createBaseDeletePostResponse();
+    message.success = object.success ?? false;
     return message;
   },
 };
@@ -2180,6 +2323,7 @@ export interface PostService {
   LikePost(request: LikePostRequest): Promise<PostResponse>;
   CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
   GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
+  DeletePost(request: DeletePostRequest): Promise<DeletePostResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -2198,6 +2342,7 @@ export class PostServiceClientImpl implements PostService {
     this.LikePost = this.LikePost.bind(this);
     this.CreateComment = this.CreateComment.bind(this);
     this.GetComments = this.GetComments.bind(this);
+    this.DeletePost = this.DeletePost.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -2251,6 +2396,12 @@ export class PostServiceClientImpl implements PostService {
     const data = GetCommentsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetComments", data);
     return promise.then((data) => GetCommentsResponse.decode(new BinaryReader(data)));
+  }
+
+  DeletePost(request: DeletePostRequest): Promise<DeletePostResponse> {
+    const data = DeletePostRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeletePost", data);
+    return promise.then((data) => DeletePostResponse.decode(new BinaryReader(data)));
   }
 }
 

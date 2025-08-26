@@ -26,6 +26,8 @@ function createBaseProfileResponse() {
         isVerified: false,
         createdAt: "",
         updatedAt: "",
+        jwtToken: undefined,
+        refreshToken: undefined,
     };
 }
 exports.ProfileResponse = {
@@ -74,6 +76,12 @@ exports.ProfileResponse = {
         }
         if (message.updatedAt !== "") {
             writer.uint32(114).string(message.updatedAt);
+        }
+        if (message.jwtToken !== undefined) {
+            writer.uint32(130).string(message.jwtToken);
+        }
+        if (message.refreshToken !== undefined) {
+            writer.uint32(138).string(message.refreshToken);
         }
         return writer;
     },
@@ -189,6 +197,20 @@ exports.ProfileResponse = {
                     message.updatedAt = reader.string();
                     continue;
                 }
+                case 16: {
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.jwtToken = reader.string();
+                    continue;
+                }
+                case 17: {
+                    if (tag !== 138) {
+                        break;
+                    }
+                    message.refreshToken = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -214,6 +236,8 @@ exports.ProfileResponse = {
             isVerified: isSet(object.isVerified) ? globalThis.Boolean(object.isVerified) : false,
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+            jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
+            refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
         };
     },
     toJSON(message) {
@@ -263,6 +287,12 @@ exports.ProfileResponse = {
         if (message.updatedAt !== "") {
             obj.updatedAt = message.updatedAt;
         }
+        if (message.jwtToken !== undefined) {
+            obj.jwtToken = message.jwtToken;
+        }
+        if (message.refreshToken !== undefined) {
+            obj.refreshToken = message.refreshToken;
+        }
         return obj;
     },
     create(base) {
@@ -285,6 +315,8 @@ exports.ProfileResponse = {
         message.isVerified = object.isVerified ?? false;
         message.createdAt = object.createdAt ?? "";
         message.updatedAt = object.updatedAt ?? "";
+        message.jwtToken = object.jwtToken ?? undefined;
+        message.refreshToken = object.refreshToken ?? undefined;
         return message;
     },
 };

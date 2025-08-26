@@ -16,6 +16,8 @@ export interface ProfileResponse {
     isVerified: boolean;
     createdAt: string;
     updatedAt: string;
+    jwtToken?: string | undefined;
+    refreshToken?: string | undefined;
 }
 export interface CreateProfileRequest {
     userId: string;

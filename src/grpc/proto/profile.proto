@@ -24,6 +24,8 @@ message ProfileResponse {
   bool isVerified = 12;
   string createdAt = 13;
   string updatedAt = 14;
+  optional string jwtToken = 16;
+  optional string refreshToken = 17;
 }
 
 message CreateProfileRequest {

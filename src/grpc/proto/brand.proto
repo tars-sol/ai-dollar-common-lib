@@ -18,6 +18,8 @@ message BrandResponse {
   string websiteUrl = 6;
   string createdAt = 7;
   string updatedAt = 8;
+  optional string jwtToken=9;
+  optional string refreshToken=10;
 }
 
 // Request for creating a brand (userId comes from JWT in server)

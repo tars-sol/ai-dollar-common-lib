@@ -14,6 +14,13 @@ export interface CreatePostRequest {
     pollEndTime?: string | undefined;
     options: string[];
 }
+export interface DeletePostRequest {
+    id: string;
+    profileId: string;
+}
+export interface DeletePostResponse {
+    success: boolean;
+}
 export interface UpdatePostRequest {
     id: string;
     profileId: string;
@@ -112,6 +119,8 @@ export interface GetUserPostsRequest {
     profileId: string;
 }
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
+export declare const DeletePostRequest: MessageFns<DeletePostRequest>;
+export declare const DeletePostResponse: MessageFns<DeletePostResponse>;
 export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;
 export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
@@ -139,6 +148,7 @@ export interface PostService {
     LikePost(request: LikePostRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
+    DeletePost(request: DeletePostRequest): Promise<DeletePostResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -156,6 +166,7 @@ export declare class PostServiceClientImpl implements PostService {
     LikePost(request: LikePostRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
+    DeletePost(request: DeletePostRequest): Promise<DeletePostResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
