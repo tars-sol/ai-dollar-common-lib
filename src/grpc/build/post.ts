@@ -122,10 +122,11 @@ export interface PostPollOptionResponse {
   voteCount: string;
 }
 
-export interface LikePostRequest {
+export interface PostReactionRequest {
   profileId: string;
   postId: string;
-  like: boolean;
+  reaction: boolean;
+  reactionType: string;
 }
 
 export interface PostResponse {
@@ -141,6 +142,7 @@ export interface PostResponse {
   updatedAt: string;
   commentCount: string;
   likeCount: string;
+  dislikeCount: string;
 }
 
 export interface GetUserPostsRequest {
@@ -1908,28 +1910,31 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
   },
 };
 
-function createBaseLikePostRequest(): LikePostRequest {
-  return { profileId: "", postId: "", like: false };
+function createBasePostReactionRequest(): PostReactionRequest {
+  return { profileId: "", postId: "", reaction: false, reactionType: "" };
 }
 
-export const LikePostRequest: MessageFns<LikePostRequest> = {
-  encode(message: LikePostRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const PostReactionRequest: MessageFns<PostReactionRequest> = {
+  encode(message: PostReactionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.profileId !== "") {
       writer.uint32(10).string(message.profileId);
     }
     if (message.postId !== "") {
       writer.uint32(18).string(message.postId);
     }
-    if (message.like !== false) {
-      writer.uint32(24).bool(message.like);
+    if (message.reaction !== false) {
+      writer.uint32(24).bool(message.reaction);
+    }
+    if (message.reactionType !== "") {
+      writer.uint32(34).string(message.reactionType);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): LikePostRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): PostReactionRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLikePostRequest();
+    const message = createBasePostReactionRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1954,7 +1959,15 @@ export const LikePostRequest: MessageFns<LikePostRequest> = {
             break;
           }
 
-          message.like = reader.bool();
+          message.reaction = reader.bool();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.reactionType = reader.string();
           continue;
         }
       }
@@ -1966,15 +1979,16 @@ export const LikePostRequest: MessageFns<LikePostRequest> = {
     return message;
   },
 
-  fromJSON(object: any): LikePostRequest {
+  fromJSON(object: any): PostReactionRequest {
     return {
       profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
-      like: isSet(object.like) ? globalThis.Boolean(object.like) : false,
+      reaction: isSet(object.reaction) ? globalThis.Boolean(object.reaction) : false,
+      reactionType: isSet(object.reactionType) ? globalThis.String(object.reactionType) : "",
     };
   },
 
-  toJSON(message: LikePostRequest): unknown {
+  toJSON(message: PostReactionRequest): unknown {
     const obj: any = {};
     if (message.profileId !== "") {
       obj.profileId = message.profileId;
@@ -1982,20 +1996,24 @@ export const LikePostRequest: MessageFns<LikePostRequest> = {
     if (message.postId !== "") {
       obj.postId = message.postId;
     }
-    if (message.like !== false) {
-      obj.like = message.like;
+    if (message.reaction !== false) {
+      obj.reaction = message.reaction;
+    }
+    if (message.reactionType !== "") {
+      obj.reactionType = message.reactionType;
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LikePostRequest>, I>>(base?: I): LikePostRequest {
-    return LikePostRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<PostReactionRequest>, I>>(base?: I): PostReactionRequest {
+    return PostReactionRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<LikePostRequest>, I>>(object: I): LikePostRequest {
-    const message = createBaseLikePostRequest();
+  fromPartial<I extends Exact<DeepPartial<PostReactionRequest>, I>>(object: I): PostReactionRequest {
+    const message = createBasePostReactionRequest();
     message.profileId = object.profileId ?? "";
     message.postId = object.postId ?? "";
-    message.like = object.like ?? false;
+    message.reaction = object.reaction ?? false;
+    message.reactionType = object.reactionType ?? "";
     return message;
   },
 };
@@ -2014,6 +2032,7 @@ function createBasePostResponse(): PostResponse {
     updatedAt: "",
     commentCount: "",
     likeCount: "",
+    dislikeCount: "",
   };
 }
 
@@ -2054,6 +2073,9 @@ export const PostResponse: MessageFns<PostResponse> = {
     }
     if (message.likeCount !== "") {
       writer.uint32(98).string(message.likeCount);
+    }
+    if (message.dislikeCount !== "") {
+      writer.uint32(106).string(message.dislikeCount);
     }
     return writer;
   },
@@ -2161,6 +2183,14 @@ export const PostResponse: MessageFns<PostResponse> = {
           message.likeCount = reader.string();
           continue;
         }
+        case 13: {
+          if (tag !== 106) {
+            break;
+          }
+
+          message.dislikeCount = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2184,6 +2214,7 @@ export const PostResponse: MessageFns<PostResponse> = {
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
       commentCount: isSet(object.commentCount) ? globalThis.String(object.commentCount) : "",
       likeCount: isSet(object.likeCount) ? globalThis.String(object.likeCount) : "",
+      dislikeCount: isSet(object.dislikeCount) ? globalThis.String(object.dislikeCount) : "",
     };
   },
 
@@ -2225,6 +2256,9 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.likeCount !== "") {
       obj.likeCount = message.likeCount;
     }
+    if (message.dislikeCount !== "") {
+      obj.dislikeCount = message.dislikeCount;
+    }
     return obj;
   },
 
@@ -2251,6 +2285,7 @@ export const PostResponse: MessageFns<PostResponse> = {
     message.updatedAt = object.updatedAt ?? "";
     message.commentCount = object.commentCount ?? "";
     message.likeCount = object.likeCount ?? "";
+    message.dislikeCount = object.dislikeCount ?? "";
     return message;
   },
 };
@@ -2320,7 +2355,7 @@ export interface PostService {
   GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
   VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
   GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
-  LikePost(request: LikePostRequest): Promise<PostResponse>;
+  PostReaction(request: PostReactionRequest): Promise<PostResponse>;
   CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
   GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
   DeletePost(request: DeletePostRequest): Promise<DeletePostResponse>;
@@ -2339,7 +2374,7 @@ export class PostServiceClientImpl implements PostService {
     this.GetFeed = this.GetFeed.bind(this);
     this.VoteOnPoll = this.VoteOnPoll.bind(this);
     this.GetUserPosts = this.GetUserPosts.bind(this);
-    this.LikePost = this.LikePost.bind(this);
+    this.PostReaction = this.PostReaction.bind(this);
     this.CreateComment = this.CreateComment.bind(this);
     this.GetComments = this.GetComments.bind(this);
     this.DeletePost = this.DeletePost.bind(this);
@@ -2380,9 +2415,9 @@ export class PostServiceClientImpl implements PostService {
     return promise.then((data) => GetFeedResponse.decode(new BinaryReader(data)));
   }
 
-  LikePost(request: LikePostRequest): Promise<PostResponse> {
-    const data = LikePostRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "LikePost", data);
+  PostReaction(request: PostReactionRequest): Promise<PostResponse> {
+    const data = PostReactionRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "PostReaction", data);
     return promise.then((data) => PostResponse.decode(new BinaryReader(data)));
   }
 

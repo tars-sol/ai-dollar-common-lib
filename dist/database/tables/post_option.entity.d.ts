@@ -5,6 +5,7 @@ export declare class PostPollOption {
     poll: PostPoll;
     pollId: string;
     votes: PostPollVote[];
+    indexNumber: number;
     text: string;
     voteCount: number;
 }

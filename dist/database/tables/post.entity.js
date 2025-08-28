@@ -15,7 +15,7 @@ const post_media_entity_1 = require("./post_media.entity");
 const post_poll_entity_1 = require("./post_poll.entity");
 const post_file_entity_1 = require("./post_file.entity");
 const post_comment_entity_1 = require("./post_comment.entity");
-const post_like_entity_1 = require("./post_like.entity");
+const post_reaction_entity_1 = require("./post_reaction.entity");
 const profile_entity_1 = require("./profile.entity");
 var AccessType;
 (function (AccessType) {
@@ -86,15 +86,19 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'int', default: 0 }),
     __metadata("design:type", Number)
+], Post.prototype, "dislikeCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
 ], Post.prototype, "commentCount", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => post_comment_entity_1.PostComment, (c) => c.post),
     __metadata("design:type", Array)
 ], Post.prototype, "comments", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => post_like_entity_1.PostLike, (l) => l.post),
+    (0, typeorm_1.OneToMany)(() => post_reaction_entity_1.PostReactions, (l) => l.post),
     __metadata("design:type", Array)
-], Post.prototype, "likes", void 0);
+], Post.prototype, "reactions", void 0);
 exports.Post = Post = __decorate([
     (0, typeorm_1.Entity)('posts')
 ], Post);

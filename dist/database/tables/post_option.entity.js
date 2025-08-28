@@ -35,6 +35,10 @@ __decorate([
     __metadata("design:type", Array)
 ], PostPollOption.prototype, "votes", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ name: 'indexNumber', type: 'int' }),
+    __metadata("design:type", Number)
+], PostPollOption.prototype, "indexNumber", void 0);
+__decorate([
     (0, typeorm_1.Column)({ length: 120 }),
     __metadata("design:type", String)
 ], PostPollOption.prototype, "text", void 0);

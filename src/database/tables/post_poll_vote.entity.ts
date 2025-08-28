@@ -40,6 +40,8 @@ export class PostPollVote {
   @Column({ name: 'optionId', type: 'uuid' })
   optionId: string;
 
+
+
   @CreateDateColumn()
   createdAt: Date;
 }

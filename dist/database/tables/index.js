@@ -30,7 +30,7 @@ __exportStar(require("./post_file.entity"), exports);
 __exportStar(require("./post_poll_vote.entity"), exports);
 __exportStar(require("./post_media.entity"), exports);
 __exportStar(require("./post_comment.entity"), exports);
-__exportStar(require("./post_like.entity"), exports);
+__exportStar(require("./post_reaction.entity"), exports);
 __exportStar(require("./profile_follow.entity"), exports);
 __exportStar(require("./profile_subscribe.entity"), exports);
 __exportStar(require("./profile_events.entity"), exports);

@@ -11,10 +11,13 @@ import {
 } from 'typeorm';
 import { Post } from './post.entity';
 import { Profile } from './profile.entity';
-
-@Entity('post_likes')
-@Unique(['postId', 'profileId'])
-export class PostLike {
+export enum ReactionType {
+  LIKE = 'LIKE',
+  DISLIKE = 'DISLIKE',
+}
+@Entity('post_reactions')
+@Unique(['postId', 'profileId', 'reactionType'])
+export class PostReactions {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -29,6 +32,8 @@ export class PostLike {
   @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'profileId' })
   profile: Profile;
+  @Column({ type: 'enum', enum: ReactionType })
+  reactionType: ReactionType;
 
   @Index()
   @Column({ name: 'profileId', type: 'uuid' })

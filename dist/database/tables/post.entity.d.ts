@@ -2,7 +2,7 @@ import { PostMedia } from './post_media.entity';
 import { PostPoll } from './post_poll.entity';
 import { PostFile } from './post_file.entity';
 import { PostComment } from './post_comment.entity';
-import { PostLike } from './post_like.entity';
+import { PostReactions } from './post_reaction.entity';
 import { Profile } from './profile.entity';
 export declare enum AccessType {
     PUBLIC = "PUBLIC",
@@ -27,7 +27,8 @@ export declare class Post {
     file?: PostFile;
     poll?: PostPoll;
     likeCount: number;
+    dislikeCount: number;
     commentCount: number;
     comments?: PostComment[];
-    likes?: PostLike[];
+    reactions?: PostReactions[];
 }

@@ -25,6 +25,8 @@ export class PostPollOption {
   pollId: string;
   @OneToMany(() => PostPollVote, (v) => v.option)
   votes: PostPollVote[];
+  @Column({ name: 'indexNumber', type: 'int' })
+  indexNumber: number;
 
   @Column({ length: 120 })
   text: string;

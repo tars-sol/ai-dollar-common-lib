@@ -9,46 +9,55 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostLike = void 0;
+exports.PostReactions = exports.ReactionType = void 0;
 // entities/post-like.entity.ts
 const typeorm_1 = require("typeorm");
 const post_entity_1 = require("./post.entity");
 const profile_entity_1 = require("./profile.entity");
-let PostLike = class PostLike {
+var ReactionType;
+(function (ReactionType) {
+    ReactionType["LIKE"] = "LIKE";
+    ReactionType["DISLIKE"] = "DISLIKE";
+})(ReactionType || (exports.ReactionType = ReactionType = {}));
+let PostReactions = class PostReactions {
 };
-exports.PostLike = PostLike;
+exports.PostReactions = PostReactions;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], PostLike.prototype, "id", void 0);
+], PostReactions.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => post_entity_1.Post, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'postId' }) // <-- make it explicit
     ,
     __metadata("design:type", post_entity_1.Post)
-], PostLike.prototype, "post", void 0);
+], PostReactions.prototype, "post", void 0);
 __decorate([
     (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ name: 'postId', type: 'uuid' }) // <-- same column name
     ,
     __metadata("design:type", String)
-], PostLike.prototype, "postId", void 0);
+], PostReactions.prototype, "postId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'profileId' }),
     __metadata("design:type", profile_entity_1.Profile)
-], PostLike.prototype, "profile", void 0);
+], PostReactions.prototype, "profile", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'enum', enum: ReactionType }),
+    __metadata("design:type", String)
+], PostReactions.prototype, "reactionType", void 0);
 __decorate([
     (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ name: 'profileId', type: 'uuid' }),
     __metadata("design:type", String)
-], PostLike.prototype, "profileId", void 0);
+], PostReactions.prototype, "profileId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], PostLike.prototype, "createdAt", void 0);
-exports.PostLike = PostLike = __decorate([
-    (0, typeorm_1.Entity)('post_likes'),
-    (0, typeorm_1.Unique)(['postId', 'profileId'])
-], PostLike);
-//# sourceMappingURL=post_like.entity.js.map
+], PostReactions.prototype, "createdAt", void 0);
+exports.PostReactions = PostReactions = __decorate([
+    (0, typeorm_1.Entity)('post_reactions'),
+    (0, typeorm_1.Unique)(['postId', 'profileId', 'reactionType'])
+], PostReactions);
+//# sourceMappingURL=post_reaction.entity.js.map

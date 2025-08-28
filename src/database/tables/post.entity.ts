@@ -14,7 +14,7 @@ import { PostMedia } from './post_media.entity';
 import { PostPoll } from './post_poll.entity';
 import { PostFile } from './post_file.entity';
 import { PostComment } from './post_comment.entity';
-import { PostLike } from './post_like.entity';
+import { PostReactions } from './post_reaction.entity';
 import { Profile } from './profile.entity';
 
 export enum AccessType {
@@ -70,6 +70,8 @@ export class Post {
 
   @Column({ type: 'int', default: 0 })
   likeCount: number;
+  @Column({ type: 'int', default: 0 })
+  dislikeCount: number;
 
   @Column({ type: 'int', default: 0 })
   commentCount: number;
@@ -77,6 +79,6 @@ export class Post {
   @OneToMany(() => PostComment, (c) => c.post)
   comments?: PostComment[];
 
-  @OneToMany(() => PostLike, (l) => l.post)
-  likes?: PostLike[];
+  @OneToMany(() => PostReactions, (l) => l.post)
+  reactions?: PostReactions[];
 }

@@ -96,10 +96,11 @@ export interface PostPollOptionResponse {
     text: string;
     voteCount: string;
 }
-export interface LikePostRequest {
+export interface PostReactionRequest {
     profileId: string;
     postId: string;
-    like: boolean;
+    reaction: boolean;
+    reactionType: string;
 }
 export interface PostResponse {
     id: string;
@@ -114,6 +115,7 @@ export interface PostResponse {
     updatedAt: string;
     commentCount: string;
     likeCount: string;
+    dislikeCount: string;
 }
 export interface GetUserPostsRequest {
     profileId: string;
@@ -135,7 +137,7 @@ export declare const PostFileResponse: MessageFns<PostFileResponse>;
 export declare const VoteOnPollRequest: MessageFns<VoteOnPollRequest>;
 export declare const PostPollResponse: MessageFns<PostPollResponse>;
 export declare const PostPollOptionResponse: MessageFns<PostPollOptionResponse>;
-export declare const LikePostRequest: MessageFns<LikePostRequest>;
+export declare const PostReactionRequest: MessageFns<PostReactionRequest>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export declare const GetUserPostsRequest: MessageFns<GetUserPostsRequest>;
 export interface PostService {
@@ -145,7 +147,7 @@ export interface PostService {
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
-    LikePost(request: LikePostRequest): Promise<PostResponse>;
+    PostReaction(request: PostReactionRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
     DeletePost(request: DeletePostRequest): Promise<DeletePostResponse>;
@@ -163,7 +165,7 @@ export declare class PostServiceClientImpl implements PostService {
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
-    LikePost(request: LikePostRequest): Promise<PostResponse>;
+    PostReaction(request: PostReactionRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
     DeletePost(request: DeletePostRequest): Promise<DeletePostResponse>;

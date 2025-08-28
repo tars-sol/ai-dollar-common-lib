@@ -9,7 +9,7 @@ service PostService {
   rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
   rpc VoteOnPoll (VoteOnPollRequest) returns (PostResponse);
   rpc GetUserPosts(GetUserPostsRequest) returns (GetFeedResponse);
-  rpc LikePost(LikePostRequest) returns (PostResponse);
+  rpc PostReaction(PostReactionRequest) returns (PostResponse);
   rpc CreateComment(CreateCommentRequest) returns (CommentResponse);
   rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
   rpc DeletePost(DeletePostRequest) returns (DeletePostResponse);
@@ -118,10 +118,12 @@ message PostPollOptionResponse{
   string text = 2;
   string voteCount = 3;
 }
-message LikePostRequest{
+message PostReactionRequest{
   string profileId= 1;
   string postId= 2;
-  bool like = 3;
+  bool reaction = 3;
+  string reactionType=4;
+
 }
 message PostResponse {
   string id = 1;
@@ -136,6 +138,7 @@ message PostResponse {
   string updatedAt = 10;
   string commentCount = 11;
   string likeCount = 12;
+  string dislikeCount = 13;
 }
 message GetUserPostsRequest{
   string profileId = 1;

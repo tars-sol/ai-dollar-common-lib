@@ -14,7 +14,7 @@ export * from './post_file.entity';
 export * from './post_poll_vote.entity';
 export * from './post_media.entity';
 export * from './post_comment.entity';
-export * from './post_like.entity';
+export * from './post_reaction.entity';
 export * from './profile_follow.entity';
 export * from './profile_subscribe.entity';
 export * from './profile_events.entity';
