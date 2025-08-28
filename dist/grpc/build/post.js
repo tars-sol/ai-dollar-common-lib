@@ -1524,7 +1524,7 @@ exports.PostPollResponse = {
     },
 };
 function createBasePostPollOptionResponse() {
-    return { id: "", text: "", voteCount: "" };
+    return { id: "", text: "", voteCount: "", indexNumber: "" };
 }
 exports.PostPollOptionResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1536,6 +1536,9 @@ exports.PostPollOptionResponse = {
         }
         if (message.voteCount !== "") {
             writer.uint32(26).string(message.voteCount);
+        }
+        if (message.indexNumber !== "") {
+            writer.uint32(34).string(message.indexNumber);
         }
         return writer;
     },
@@ -1567,6 +1570,13 @@ exports.PostPollOptionResponse = {
                     message.voteCount = reader.string();
                     continue;
                 }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.indexNumber = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1580,6 +1590,7 @@ exports.PostPollOptionResponse = {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
             text: isSet(object.text) ? globalThis.String(object.text) : "",
             voteCount: isSet(object.voteCount) ? globalThis.String(object.voteCount) : "",
+            indexNumber: isSet(object.indexNumber) ? globalThis.String(object.indexNumber) : "",
         };
     },
     toJSON(message) {
@@ -1593,6 +1604,9 @@ exports.PostPollOptionResponse = {
         if (message.voteCount !== "") {
             obj.voteCount = message.voteCount;
         }
+        if (message.indexNumber !== "") {
+            obj.indexNumber = message.indexNumber;
+        }
         return obj;
     },
     create(base) {
@@ -1603,6 +1617,7 @@ exports.PostPollOptionResponse = {
         message.id = object.id ?? "";
         message.text = object.text ?? "";
         message.voteCount = object.voteCount ?? "";
+        message.indexNumber = object.indexNumber ?? "";
         return message;
     },
 };
