@@ -126,6 +126,13 @@ message PostReactionRequest{
   string reactionType=4;
 
 }
+
+message Creator {
+  string name = 1;
+  string image = 2;
+  bool isVerified = 3;
+}
+
 message PostResponse {
   string id = 1;
   string profileId = 2;
@@ -140,6 +147,7 @@ message PostResponse {
   string commentCount = 11;
   string likeCount = 12;
   string dislikeCount = 13;
+  optional Creator creator = 14;
 }
 message GetUserPostsRequest{
   string profileId = 1;

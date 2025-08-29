@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetUserPostsRequest = exports.PostResponse = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.DeletePostResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetUserPostsRequest = exports.PostResponse = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.DeletePostResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "post";
@@ -1719,6 +1719,89 @@ exports.PostReactionRequest = {
         return message;
     },
 };
+function createBaseCreator() {
+    return { name: "", image: "", isVerified: false };
+}
+exports.Creator = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.name !== "") {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.image !== "") {
+            writer.uint32(18).string(message.image);
+        }
+        if (message.isVerified !== false) {
+            writer.uint32(24).bool(message.isVerified);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreator();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.image = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.isVerified = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            image: isSet(object.image) ? globalThis.String(object.image) : "",
+            isVerified: isSet(object.isVerified) ? globalThis.Boolean(object.isVerified) : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.image !== "") {
+            obj.image = message.image;
+        }
+        if (message.isVerified !== false) {
+            obj.isVerified = message.isVerified;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.Creator.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreator();
+        message.name = object.name ?? "";
+        message.image = object.image ?? "";
+        message.isVerified = object.isVerified ?? false;
+        return message;
+    },
+};
 function createBasePostResponse() {
     return {
         id: "",
@@ -1734,6 +1817,7 @@ function createBasePostResponse() {
         commentCount: "",
         likeCount: "",
         dislikeCount: "",
+        creator: undefined,
     };
 }
 exports.PostResponse = {
@@ -1776,6 +1860,9 @@ exports.PostResponse = {
         }
         if (message.dislikeCount !== "") {
             writer.uint32(106).string(message.dislikeCount);
+        }
+        if (message.creator !== undefined) {
+            exports.Creator.encode(message.creator, writer.uint32(114).fork()).join();
         }
         return writer;
     },
@@ -1877,6 +1964,13 @@ exports.PostResponse = {
                     message.dislikeCount = reader.string();
                     continue;
                 }
+                case 14: {
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.creator = exports.Creator.decode(reader, reader.uint32());
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1900,6 +1994,7 @@ exports.PostResponse = {
             commentCount: isSet(object.commentCount) ? globalThis.String(object.commentCount) : "",
             likeCount: isSet(object.likeCount) ? globalThis.String(object.likeCount) : "",
             dislikeCount: isSet(object.dislikeCount) ? globalThis.String(object.dislikeCount) : "",
+            creator: isSet(object.creator) ? exports.Creator.fromJSON(object.creator) : undefined,
         };
     },
     toJSON(message) {
@@ -1943,6 +2038,9 @@ exports.PostResponse = {
         if (message.dislikeCount !== "") {
             obj.dislikeCount = message.dislikeCount;
         }
+        if (message.creator !== undefined) {
+            obj.creator = exports.Creator.toJSON(message.creator);
+        }
         return obj;
     },
     create(base) {
@@ -1969,6 +2067,9 @@ exports.PostResponse = {
         message.commentCount = object.commentCount ?? "";
         message.likeCount = object.likeCount ?? "";
         message.dislikeCount = object.dislikeCount ?? "";
+        message.creator = (object.creator !== undefined && object.creator !== null)
+            ? exports.Creator.fromPartial(object.creator)
+            : undefined;
         return message;
     },
 };

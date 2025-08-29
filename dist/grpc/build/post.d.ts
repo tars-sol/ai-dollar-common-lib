@@ -103,6 +103,11 @@ export interface PostReactionRequest {
     reaction: boolean;
     reactionType: string;
 }
+export interface Creator {
+    name: string;
+    image: string;
+    isVerified: boolean;
+}
 export interface PostResponse {
     id: string;
     profileId: string;
@@ -117,6 +122,7 @@ export interface PostResponse {
     commentCount: string;
     likeCount: string;
     dislikeCount: string;
+    creator?: Creator | undefined;
 }
 export interface GetUserPostsRequest {
     profileId: string;
@@ -139,6 +145,7 @@ export declare const VoteOnPollRequest: MessageFns<VoteOnPollRequest>;
 export declare const PostPollResponse: MessageFns<PostPollResponse>;
 export declare const PostPollOptionResponse: MessageFns<PostPollOptionResponse>;
 export declare const PostReactionRequest: MessageFns<PostReactionRequest>;
+export declare const Creator: MessageFns<Creator>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export declare const GetUserPostsRequest: MessageFns<GetUserPostsRequest>;
 export interface PostService {
