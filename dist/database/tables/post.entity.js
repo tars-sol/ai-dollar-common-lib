@@ -60,6 +60,10 @@ __decorate([
     __metadata("design:type", String)
 ], Post.prototype, "type", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
+], Post.prototype, "inPortfolio", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Post.prototype, "createdAt", void 0);

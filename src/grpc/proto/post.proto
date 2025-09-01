@@ -12,7 +12,10 @@ service PostService {
   rpc PostReaction(PostReactionRequest) returns (PostResponse);
   rpc CreateComment(CreateCommentRequest) returns (CommentResponse);
   rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
-  rpc DeletePost(DeletePostRequest) returns (DeletePostResponse);
+  rpc DeletePost(DeletePostRequest) returns (SuccessResponse);
+  rpc AddToPortfolio(AddToPortfolioRequest) returns (SuccessResponse);
+  rpc RemoveFromPortfolio(RemoveFromPortfolioRequest) returns (SuccessResponse);
+  rpc GetPortfolio(GetPortfolioRequest) returns (GetFeedResponse);
 }
 
 message CreatePostRequest {
@@ -33,7 +36,7 @@ message DeletePostRequest{
   string id = 1;
   string profileId = 2;
 }
-message DeletePostResponse{
+message SuccessResponse{
   bool success = 1;
 }
 message UpdatePostRequest {
@@ -78,6 +81,9 @@ message CommentResponse{
 }
 message GetCommentsRequest{
   string postId=1;
+}
+message GetPortfolioRequest{
+  string profileId=1;
 }
 message GetCommentsResponse{
  repeated CommentResponse comments=1;
@@ -132,6 +138,15 @@ message Creator {
   string image = 2;
   bool isVerified = 3;
 }
+message AddToPortfolioRequest{
+  string profileId= 1;
+  repeated string postIds= 2;
+}
+
+message RemoveFromPortfolioRequest{
+  string profileId= 1;
+  repeated string postIds= 2;
+}
 
 message PostResponse {
   string id = 1;
@@ -148,6 +163,8 @@ message PostResponse {
   string likeCount = 12;
   string dislikeCount = 13;
   optional Creator creator = 14;
+  optional bool viewerLiked = 15;
+  optional bool viewerDisliked = 16;
 }
 message GetUserPostsRequest{
   string profileId = 1;

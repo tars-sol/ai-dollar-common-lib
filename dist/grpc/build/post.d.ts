@@ -18,7 +18,7 @@ export interface DeletePostRequest {
     id: string;
     profileId: string;
 }
-export interface DeletePostResponse {
+export interface SuccessResponse {
     success: boolean;
 }
 export interface UpdatePostRequest {
@@ -59,6 +59,9 @@ export interface CommentResponse {
 }
 export interface GetCommentsRequest {
     postId: string;
+}
+export interface GetPortfolioRequest {
+    profileId: string;
 }
 export interface GetCommentsResponse {
     comments: CommentResponse[];
@@ -108,6 +111,14 @@ export interface Creator {
     image: string;
     isVerified: boolean;
 }
+export interface AddToPortfolioRequest {
+    profileId: string;
+    postIds: string[];
+}
+export interface RemoveFromPortfolioRequest {
+    profileId: string;
+    postIds: string[];
+}
 export interface PostResponse {
     id: string;
     profileId: string;
@@ -123,13 +134,15 @@ export interface PostResponse {
     likeCount: string;
     dislikeCount: string;
     creator?: Creator | undefined;
+    viewerLiked?: boolean | undefined;
+    viewerDisliked?: boolean | undefined;
 }
 export interface GetUserPostsRequest {
     profileId: string;
 }
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const DeletePostRequest: MessageFns<DeletePostRequest>;
-export declare const DeletePostResponse: MessageFns<DeletePostResponse>;
+export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;
 export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
@@ -138,6 +151,7 @@ export declare const GetFeedResponse: MessageFns<GetFeedResponse>;
 export declare const CreateCommentRequest: MessageFns<CreateCommentRequest>;
 export declare const CommentResponse: MessageFns<CommentResponse>;
 export declare const GetCommentsRequest: MessageFns<GetCommentsRequest>;
+export declare const GetPortfolioRequest: MessageFns<GetPortfolioRequest>;
 export declare const GetCommentsResponse: MessageFns<GetCommentsResponse>;
 export declare const PostMediaResponse: MessageFns<PostMediaResponse>;
 export declare const PostFileResponse: MessageFns<PostFileResponse>;
@@ -146,6 +160,8 @@ export declare const PostPollResponse: MessageFns<PostPollResponse>;
 export declare const PostPollOptionResponse: MessageFns<PostPollOptionResponse>;
 export declare const PostReactionRequest: MessageFns<PostReactionRequest>;
 export declare const Creator: MessageFns<Creator>;
+export declare const AddToPortfolioRequest: MessageFns<AddToPortfolioRequest>;
+export declare const RemoveFromPortfolioRequest: MessageFns<RemoveFromPortfolioRequest>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export declare const GetUserPostsRequest: MessageFns<GetUserPostsRequest>;
 export interface PostService {
@@ -158,7 +174,10 @@ export interface PostService {
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
-    DeletePost(request: DeletePostRequest): Promise<DeletePostResponse>;
+    DeletePost(request: DeletePostRequest): Promise<SuccessResponse>;
+    AddToPortfolio(request: AddToPortfolioRequest): Promise<SuccessResponse>;
+    RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
+    GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -176,7 +195,10 @@ export declare class PostServiceClientImpl implements PostService {
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
-    DeletePost(request: DeletePostRequest): Promise<DeletePostResponse>;
+    DeletePost(request: DeletePostRequest): Promise<SuccessResponse>;
+    AddToPortfolio(request: AddToPortfolioRequest): Promise<SuccessResponse>;
+    RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
+    GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

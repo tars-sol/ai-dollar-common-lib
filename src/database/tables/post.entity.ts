@@ -55,7 +55,8 @@ export class Post {
 
   @Column({ type: 'enum', enum: PostType })
   type: PostType;
-
+  @Column({ type: 'boolean', default: false })
+  inPortfolio: boolean;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()

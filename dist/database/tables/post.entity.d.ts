@@ -21,6 +21,7 @@ export declare class Post {
     caption?: string;
     accessType: AccessType;
     type: PostType;
+    inPortfolio: boolean;
     createdAt: Date;
     updatedAt: Date;
     media?: PostMedia;

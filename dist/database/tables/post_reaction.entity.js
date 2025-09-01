@@ -58,6 +58,6 @@ __decorate([
 ], PostReactions.prototype, "createdAt", void 0);
 exports.PostReactions = PostReactions = __decorate([
     (0, typeorm_1.Entity)('post_reactions'),
-    (0, typeorm_1.Unique)(['postId', 'profileId', 'reactionType'])
+    (0, typeorm_1.Unique)(['postId', 'profileId'])
 ], PostReactions);
 //# sourceMappingURL=post_reaction.entity.js.map

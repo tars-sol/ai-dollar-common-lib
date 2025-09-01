@@ -16,7 +16,7 @@ export enum ReactionType {
   DISLIKE = 'DISLIKE',
 }
 @Entity('post_reactions')
-@Unique(['postId', 'profileId', 'reactionType'])
+@Unique(['postId', 'profileId'])
 export class PostReactions {
   @PrimaryGeneratedColumn('uuid')
   id: string;
