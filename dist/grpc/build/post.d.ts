@@ -99,6 +99,7 @@ export interface PostPollOptionResponse {
     text: string;
     voteCount: string;
     indexNumber: string;
+    userVoted: boolean;
 }
 export interface PostReactionRequest {
     profileId: string;

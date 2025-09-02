@@ -36,4 +36,6 @@ export class PostPoll {
     cascade: ['insert', 'remove'],
   })
   options: PostPollOption[];
+
+  
 }

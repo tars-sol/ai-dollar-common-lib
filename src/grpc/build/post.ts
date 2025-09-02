@@ -125,6 +125,7 @@ export interface PostPollOptionResponse {
   text: string;
   voteCount: string;
   indexNumber: string;
+  userVoted: boolean;
 }
 
 export interface PostReactionRequest {
@@ -1901,7 +1902,7 @@ export const PostPollResponse: MessageFns<PostPollResponse> = {
 };
 
 function createBasePostPollOptionResponse(): PostPollOptionResponse {
-  return { id: "", text: "", voteCount: "", indexNumber: "" };
+  return { id: "", text: "", voteCount: "", indexNumber: "", userVoted: false };
 }
 
 export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
@@ -1917,6 +1918,9 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
     }
     if (message.indexNumber !== "") {
       writer.uint32(34).string(message.indexNumber);
+    }
+    if (message.userVoted !== false) {
+      writer.uint32(40).bool(message.userVoted);
     }
     return writer;
   },
@@ -1960,6 +1964,14 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
           message.indexNumber = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.userVoted = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1975,6 +1987,7 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
       text: isSet(object.text) ? globalThis.String(object.text) : "",
       voteCount: isSet(object.voteCount) ? globalThis.String(object.voteCount) : "",
       indexNumber: isSet(object.indexNumber) ? globalThis.String(object.indexNumber) : "",
+      userVoted: isSet(object.userVoted) ? globalThis.Boolean(object.userVoted) : false,
     };
   },
 
@@ -1992,6 +2005,9 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
     if (message.indexNumber !== "") {
       obj.indexNumber = message.indexNumber;
     }
+    if (message.userVoted !== false) {
+      obj.userVoted = message.userVoted;
+    }
     return obj;
   },
 
@@ -2004,6 +2020,7 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
     message.text = object.text ?? "";
     message.voteCount = object.voteCount ?? "";
     message.indexNumber = object.indexNumber ?? "";
+    message.userVoted = object.userVoted ?? false;
     return message;
   },
 };

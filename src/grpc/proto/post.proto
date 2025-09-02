@@ -124,6 +124,7 @@ message PostPollOptionResponse{
   string text = 2;
   string voteCount = 3;
   string indexNumber=4;
+  bool userVoted = 5;
 }
 message PostReactionRequest{
   string profileId= 1;
