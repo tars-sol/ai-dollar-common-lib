@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "post";
 export interface CreatePostRequest {
     profileId: string;
@@ -89,6 +90,9 @@ export interface VoteOnPollRequest {
     postId: string;
     optionId: string;
 }
+export interface HealthResponse {
+    isHealthy: boolean;
+}
 export interface PostPollResponse {
     id: string;
     pollEndTime: string;
@@ -158,6 +162,7 @@ export declare const GetCommentsResponse: MessageFns<GetCommentsResponse>;
 export declare const PostMediaResponse: MessageFns<PostMediaResponse>;
 export declare const PostFileResponse: MessageFns<PostFileResponse>;
 export declare const VoteOnPollRequest: MessageFns<VoteOnPollRequest>;
+export declare const HealthResponse: MessageFns<HealthResponse>;
 export declare const PostPollResponse: MessageFns<PostPollResponse>;
 export declare const PostPollOptionResponse: MessageFns<PostPollOptionResponse>;
 export declare const PostReactionRequest: MessageFns<PostReactionRequest>;
@@ -180,6 +185,7 @@ export interface PostService {
     AddToPortfolio(request: AddToPortfolioRequest): Promise<SuccessResponse>;
     RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
     GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
+    Health(request: Empty): Promise<HealthResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -201,6 +207,7 @@ export declare class PostServiceClientImpl implements PostService {
     AddToPortfolio(request: AddToPortfolioRequest): Promise<SuccessResponse>;
     RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
     GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
+    Health(request: Empty): Promise<HealthResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

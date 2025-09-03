@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "post";
 
@@ -112,6 +113,10 @@ export interface VoteOnPollRequest {
   profileId: string;
   postId: string;
   optionId: string;
+}
+
+export interface HealthResponse {
+  isHealthy: boolean;
 }
 
 export interface PostPollResponse {
@@ -1808,6 +1813,64 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
   },
 };
 
+function createBaseHealthResponse(): HealthResponse {
+  return { isHealthy: false };
+}
+
+export const HealthResponse: MessageFns<HealthResponse> = {
+  encode(message: HealthResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.isHealthy !== false) {
+      writer.uint32(8).bool(message.isHealthy);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HealthResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHealthResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.isHealthy = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HealthResponse {
+    return { isHealthy: isSet(object.isHealthy) ? globalThis.Boolean(object.isHealthy) : false };
+  },
+
+  toJSON(message: HealthResponse): unknown {
+    const obj: any = {};
+    if (message.isHealthy !== false) {
+      obj.isHealthy = message.isHealthy;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HealthResponse>, I>>(base?: I): HealthResponse {
+    return HealthResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HealthResponse>, I>>(object: I): HealthResponse {
+    const message = createBaseHealthResponse();
+    message.isHealthy = object.isHealthy ?? false;
+    return message;
+  },
+};
+
 function createBasePostPollResponse(): PostPollResponse {
   return { id: "", pollEndTime: "", votedProfilePics: [], postPollOptions: [] };
 }
@@ -2793,6 +2856,7 @@ export interface PostService {
   AddToPortfolio(request: AddToPortfolioRequest): Promise<SuccessResponse>;
   RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
   GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
+  Health(request: Empty): Promise<HealthResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -2815,6 +2879,7 @@ export class PostServiceClientImpl implements PostService {
     this.AddToPortfolio = this.AddToPortfolio.bind(this);
     this.RemoveFromPortfolio = this.RemoveFromPortfolio.bind(this);
     this.GetPortfolio = this.GetPortfolio.bind(this);
+    this.Health = this.Health.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -2892,6 +2957,12 @@ export class PostServiceClientImpl implements PostService {
     const data = GetPortfolioRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetPortfolio", data);
     return promise.then((data) => GetFeedResponse.decode(new BinaryReader(data)));
+  }
+
+  Health(request: Empty): Promise<HealthResponse> {
+    const data = Empty.encode(request).finish();
+    const promise = this.rpc.request(this.service, "Health", data);
+    return promise.then((data) => HealthResponse.decode(new BinaryReader(data)));
   }
 }
 

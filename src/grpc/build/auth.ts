@@ -56,6 +56,10 @@ export interface WalletLoginRequest {
   nonce: string;
 }
 
+export interface HealthResponse {
+  isHealthy: boolean;
+}
+
 export interface LinkWalletRequest {
   userId: string;
   walletAddress: string;
@@ -779,6 +783,64 @@ export const WalletLoginRequest: MessageFns<WalletLoginRequest> = {
     message.walletAddress = object.walletAddress ?? "";
     message.signature = object.signature ?? "";
     message.nonce = object.nonce ?? "";
+    return message;
+  },
+};
+
+function createBaseHealthResponse(): HealthResponse {
+  return { isHealthy: false };
+}
+
+export const HealthResponse: MessageFns<HealthResponse> = {
+  encode(message: HealthResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.isHealthy !== false) {
+      writer.uint32(8).bool(message.isHealthy);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HealthResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHealthResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.isHealthy = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HealthResponse {
+    return { isHealthy: isSet(object.isHealthy) ? globalThis.Boolean(object.isHealthy) : false };
+  },
+
+  toJSON(message: HealthResponse): unknown {
+    const obj: any = {};
+    if (message.isHealthy !== false) {
+      obj.isHealthy = message.isHealthy;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HealthResponse>, I>>(base?: I): HealthResponse {
+    return HealthResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HealthResponse>, I>>(object: I): HealthResponse {
+    const message = createBaseHealthResponse();
+    message.isHealthy = object.isHealthy ?? false;
     return message;
   },
 };

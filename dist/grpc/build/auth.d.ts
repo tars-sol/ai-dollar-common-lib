@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "auth";
 export interface RevokeTokenRequest {
     accessToken: string;
@@ -37,6 +38,9 @@ export interface WalletLoginRequest {
     signature: string;
     nonce: string;
 }
+export interface HealthResponse {
+    isHealthy: boolean;
+}
 export interface LinkWalletRequest {
     userId: string;
     walletAddress: string;
@@ -68,6 +72,7 @@ export declare const SsoLoginRequest: MessageFns<SsoLoginRequest>;
 export declare const WalletNonceRequest: MessageFns<WalletNonceRequest>;
 export declare const WalletNonceResponse: MessageFns<WalletNonceResponse>;
 export declare const WalletLoginRequest: MessageFns<WalletLoginRequest>;
+export declare const HealthResponse: MessageFns<HealthResponse>;
 export declare const LinkWalletRequest: MessageFns<LinkWalletRequest>;
 export declare const RefreshTokenRequest: MessageFns<RefreshTokenRequest>;
 export declare const UserRequest: MessageFns<UserRequest>;
@@ -82,6 +87,7 @@ export interface AuthService {
     RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
     RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
     ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
+    Health(request: Empty): Promise<HealthResponse>;
 }
 export declare const AuthServiceServiceName = "auth.AuthService";
 export declare class AuthServiceClientImpl implements AuthService {
@@ -99,6 +105,7 @@ export declare class AuthServiceClientImpl implements AuthService {
     RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
     RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
     ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
+    Health(request: Empty): Promise<HealthResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

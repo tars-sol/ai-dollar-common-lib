@@ -5,9 +5,10 @@
 //   protoc               v3.21.12
 // source: auth.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.protobufPackage = void 0;
+exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.HealthResponse = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const empty_1 = require("./google/protobuf/empty");
 exports.protobufPackage = "auth";
 function createBaseRevokeTokenRequest() {
     return { accessToken: "", refreshToken: "" };
@@ -634,6 +635,57 @@ exports.WalletLoginRequest = {
         return message;
     },
 };
+function createBaseHealthResponse() {
+    return { isHealthy: false };
+}
+exports.HealthResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.isHealthy !== false) {
+            writer.uint32(8).bool(message.isHealthy);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseHealthResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.isHealthy = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { isHealthy: isSet(object.isHealthy) ? globalThis.Boolean(object.isHealthy) : false };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.isHealthy !== false) {
+            obj.isHealthy = message.isHealthy;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.HealthResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseHealthResponse();
+        message.isHealthy = object.isHealthy ?? false;
+        return message;
+    },
+};
 function createBaseLinkWalletRequest() {
     return { userId: "", walletAddress: "", signature: "", nonce: "" };
 }
@@ -995,6 +1047,7 @@ class AuthServiceClientImpl {
         this.RefreshToken = this.RefreshToken.bind(this);
         this.RevokeToken = this.RevokeToken.bind(this);
         this.ValidateToken = this.ValidateToken.bind(this);
+        this.Health = this.Health.bind(this);
     }
     Register(request) {
         const data = exports.RegisterRequest.encode(request).finish();
@@ -1040,6 +1093,11 @@ class AuthServiceClientImpl {
         const data = exports.ValidateTokenRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "ValidateToken", data);
         return promise.then((data) => exports.ValidateTokenResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    Health(request) {
+        const data = empty_1.Empty.encode(request).finish();
+        const promise = this.rpc.request(this.service, "Health", data);
+        return promise.then((data) => exports.HealthResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.AuthServiceClientImpl = AuthServiceClientImpl;

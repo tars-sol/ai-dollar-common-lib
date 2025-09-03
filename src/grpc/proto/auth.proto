@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package auth;
+import "google/protobuf/empty.proto";
 
 service AuthService {
   rpc Register (RegisterRequest) returns (AuthResponse);
@@ -12,6 +13,8 @@ service AuthService {
   rpc RefreshToken(RefreshTokenRequest) returns (AuthResponse);
   rpc RevokeToken(RevokeTokenRequest) returns (RevokeTokenResponse);
   rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+  rpc Health(google.protobuf.Empty) returns (HealthResponse);
+
 }
 message RevokeTokenRequest{
   string accessToken = 2;
@@ -55,7 +58,9 @@ message WalletLoginRequest {
   string signature = 2;
   string nonce = 3;
 }
-
+message HealthResponse{
+  bool isHealthy = 1;
+}
 message LinkWalletRequest {
   string userId = 1;      
   string walletAddress = 2;
