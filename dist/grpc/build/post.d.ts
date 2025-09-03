@@ -92,6 +92,7 @@ export interface VoteOnPollRequest {
 export interface PostPollResponse {
     id: string;
     pollEndTime: string;
+    votedProfilePics: string[];
     postPollOptions: PostPollOptionResponse[];
 }
 export interface PostPollOptionResponse {

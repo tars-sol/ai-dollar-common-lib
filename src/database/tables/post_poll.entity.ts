@@ -36,6 +36,6 @@ export class PostPoll {
     cascade: ['insert', 'remove'],
   })
   options: PostPollOption[];
-
-  
+  @Column({ type: 'text', array: true, default: () => "'{}'::text[]" })
+  votedProfilePics: string[];
 }

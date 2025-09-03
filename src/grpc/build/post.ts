@@ -117,6 +117,7 @@ export interface VoteOnPollRequest {
 export interface PostPollResponse {
   id: string;
   pollEndTime: string;
+  votedProfilePics: string[];
   postPollOptions: PostPollOptionResponse[];
 }
 
@@ -1808,7 +1809,7 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
 };
 
 function createBasePostPollResponse(): PostPollResponse {
-  return { id: "", pollEndTime: "", postPollOptions: [] };
+  return { id: "", pollEndTime: "", votedProfilePics: [], postPollOptions: [] };
 }
 
 export const PostPollResponse: MessageFns<PostPollResponse> = {
@@ -1819,8 +1820,11 @@ export const PostPollResponse: MessageFns<PostPollResponse> = {
     if (message.pollEndTime !== "") {
       writer.uint32(18).string(message.pollEndTime);
     }
+    for (const v of message.votedProfilePics) {
+      writer.uint32(26).string(v!);
+    }
     for (const v of message.postPollOptions) {
-      PostPollOptionResponse.encode(v!, writer.uint32(26).fork()).join();
+      PostPollOptionResponse.encode(v!, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -1853,6 +1857,14 @@ export const PostPollResponse: MessageFns<PostPollResponse> = {
             break;
           }
 
+          message.votedProfilePics.push(reader.string());
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
           message.postPollOptions.push(PostPollOptionResponse.decode(reader, reader.uint32()));
           continue;
         }
@@ -1869,6 +1881,9 @@ export const PostPollResponse: MessageFns<PostPollResponse> = {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       pollEndTime: isSet(object.pollEndTime) ? globalThis.String(object.pollEndTime) : "",
+      votedProfilePics: globalThis.Array.isArray(object?.votedProfilePics)
+        ? object.votedProfilePics.map((e: any) => globalThis.String(e))
+        : [],
       postPollOptions: globalThis.Array.isArray(object?.postPollOptions)
         ? object.postPollOptions.map((e: any) => PostPollOptionResponse.fromJSON(e))
         : [],
@@ -1883,6 +1898,9 @@ export const PostPollResponse: MessageFns<PostPollResponse> = {
     if (message.pollEndTime !== "") {
       obj.pollEndTime = message.pollEndTime;
     }
+    if (message.votedProfilePics?.length) {
+      obj.votedProfilePics = message.votedProfilePics;
+    }
     if (message.postPollOptions?.length) {
       obj.postPollOptions = message.postPollOptions.map((e) => PostPollOptionResponse.toJSON(e));
     }
@@ -1896,6 +1914,7 @@ export const PostPollResponse: MessageFns<PostPollResponse> = {
     const message = createBasePostPollResponse();
     message.id = object.id ?? "";
     message.pollEndTime = object.pollEndTime ?? "";
+    message.votedProfilePics = object.votedProfilePics?.map((e) => e) || [];
     message.postPollOptions = object.postPollOptions?.map((e) => PostPollOptionResponse.fromPartial(e)) || [];
     return message;
   },

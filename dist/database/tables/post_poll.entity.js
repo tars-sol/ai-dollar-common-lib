@@ -48,6 +48,10 @@ __decorate([
     }),
     __metadata("design:type", Array)
 ], PostPoll.prototype, "options", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', array: true, default: () => "'{}'::text[]" }),
+    __metadata("design:type", Array)
+], PostPoll.prototype, "votedProfilePics", void 0);
 exports.PostPoll = PostPoll = __decorate([
     (0, typeorm_1.Entity)('post_poll')
 ], PostPoll);

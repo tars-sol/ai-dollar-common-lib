@@ -116,8 +116,9 @@ message VoteOnPollRequest{
 }
 message PostPollResponse{
   string id = 1;
-  string pollEndTime = 2; 
-  repeated PostPollOptionResponse postPollOptions= 3;
+  string pollEndTime = 2;
+  repeated string votedProfilePics = 3;
+  repeated PostPollOptionResponse postPollOptions = 4;
 }
 message PostPollOptionResponse{
   string id = 1;

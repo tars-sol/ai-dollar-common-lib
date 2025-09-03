@@ -8,4 +8,5 @@ export declare class PostPoll {
     allowMultiple: boolean;
     maxChoices?: number;
     options: PostPollOption[];
+    votedProfilePics: string[];
 }
