@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "auth";
 
@@ -1239,6 +1240,7 @@ export interface AuthService {
   RefreshToken(request: RefreshTokenRequest): Promise<AuthResponse>;
   RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
   ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
+  Health(request: Empty): Promise<HealthResponse>;
 }
 
 export const AuthServiceServiceName = "auth.AuthService";
@@ -1257,6 +1259,7 @@ export class AuthServiceClientImpl implements AuthService {
     this.RefreshToken = this.RefreshToken.bind(this);
     this.RevokeToken = this.RevokeToken.bind(this);
     this.ValidateToken = this.ValidateToken.bind(this);
+    this.Health = this.Health.bind(this);
   }
   Register(request: RegisterRequest): Promise<AuthResponse> {
     const data = RegisterRequest.encode(request).finish();
@@ -1310,6 +1313,12 @@ export class AuthServiceClientImpl implements AuthService {
     const data = ValidateTokenRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ValidateToken", data);
     return promise.then((data) => ValidateTokenResponse.decode(new BinaryReader(data)));
+  }
+
+  Health(request: Empty): Promise<HealthResponse> {
+    const data = Empty.encode(request).finish();
+    const promise = this.rpc.request(this.service, "Health", data);
+    return promise.then((data) => HealthResponse.decode(new BinaryReader(data)));
   }
 }
 

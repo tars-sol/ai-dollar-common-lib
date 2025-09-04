@@ -10,13 +10,13 @@ import {
   Unique,
 } from 'typeorm';
 import { Post } from './post.entity';
-import { Profile } from './profile.entity';
+import { User } from './user.entity';
 export enum ReactionType {
   LIKE = 'LIKE',
   DISLIKE = 'DISLIKE',
 }
 @Entity('post_reactions')
-@Unique(['postId', 'profileId'])
+@Unique(['postId', 'userId'])
 export class PostReactions {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -29,15 +29,16 @@ export class PostReactions {
   @Column({ name: 'postId', type: 'uuid' }) // <-- same column name
   postId: string;
 
-  @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'profileId' })
-  profile: Profile;
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
+  user: User;
+
   @Column({ type: 'enum', enum: ReactionType })
   reactionType: ReactionType;
 
   @Index()
-  @Column({ name: 'profileId', type: 'uuid' })
-  profileId: string;
+  @Column({ name: 'userId', type: 'uuid' })
+  userId: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -62,6 +62,7 @@ message GetFeedRequest {
   string profileId = 1;
   uint32 page = 2;
   uint32 perPage = 3; 
+  string userId = 4;
 }
 
 message GetFeedResponse {
@@ -111,9 +112,11 @@ message PostFileResponse{
 
 }
 message VoteOnPollRequest{
-  string profileId = 1;
+  string roleId = 1;
   string postId = 2;
   string optionId = 3;
+  string role= 4;
+  string userId= 5;
 }
 message HealthResponse{
   bool isHealthy = 1;
@@ -132,10 +135,12 @@ message PostPollOptionResponse{
   bool userVoted = 5;
 }
 message PostReactionRequest{
-  string profileId= 1;
+  string roleId= 1;
   string postId= 2;
   bool reaction = 3;
   string reactionType=4;
+  string role= 5;
+  string userId= 6;
 
 }
 
@@ -174,4 +179,5 @@ message PostResponse {
 }
 message GetUserPostsRequest{
   string profileId = 1;
+  string userId = 2;
 }

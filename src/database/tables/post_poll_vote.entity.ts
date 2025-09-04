@@ -10,10 +10,10 @@ import {
 } from 'typeorm';
 import { PostPollOption } from './post_option.entity';
 import { PostPoll } from './post_poll.entity';
-import { Profile } from './profile.entity';
+import { User } from './user.entity';
 
 @Entity('post_poll_votes')
-@Unique('uniq_vote_per_option', ['pollId', 'profileId', 'optionId'])
+@Unique('uniq_vote_per_option', ['pollId', 'userId', 'optionId'])
 export class PostPollVote {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -24,13 +24,13 @@ export class PostPollVote {
   @Index()
   @Column({ name: 'pollId', type: 'uuid' })
   pollId: string;
-  @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'profileId' })
-  profile: Profile;
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @Index()
-  @Column({ name: 'profileId', type: 'uuid' })
-  profileId: string;
+  @Column({ name: 'userId', type: 'uuid' })
+  userId: string;
 
   @ManyToOne(() => PostPollOption, (o) => o.votes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'optionId' })

@@ -1,5 +1,5 @@
 import { Post } from './post.entity';
-import { Profile } from './profile.entity';
+import { User } from './user.entity';
 export declare enum ReactionType {
     LIKE = "LIKE",
     DISLIKE = "DISLIKE"
@@ -8,8 +8,8 @@ export declare class PostReactions {
     id: string;
     post: Post;
     postId: string;
-    profile: Profile;
+    user: User;
     reactionType: ReactionType;
-    profileId: string;
+    userId: string;
     createdAt: Date;
 }

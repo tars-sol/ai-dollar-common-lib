@@ -610,7 +610,7 @@ exports.GenerateUploadUrlResponse = {
     },
 };
 function createBaseGetFeedRequest() {
-    return { profileId: "", page: 0, perPage: 0 };
+    return { profileId: "", page: 0, perPage: 0, userId: "" };
 }
 exports.GetFeedRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -622,6 +622,9 @@ exports.GetFeedRequest = {
         }
         if (message.perPage !== 0) {
             writer.uint32(24).uint32(message.perPage);
+        }
+        if (message.userId !== "") {
+            writer.uint32(34).string(message.userId);
         }
         return writer;
     },
@@ -653,6 +656,13 @@ exports.GetFeedRequest = {
                     message.perPage = reader.uint32();
                     continue;
                 }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -666,6 +676,7 @@ exports.GetFeedRequest = {
             profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
             perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
         };
     },
     toJSON(message) {
@@ -679,6 +690,9 @@ exports.GetFeedRequest = {
         if (message.perPage !== 0) {
             obj.perPage = Math.round(message.perPage);
         }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
         return obj;
     },
     create(base) {
@@ -689,6 +703,7 @@ exports.GetFeedRequest = {
         message.profileId = object.profileId ?? "";
         message.page = object.page ?? 0;
         message.perPage = object.perPage ?? 0;
+        message.userId = object.userId ?? "";
         return message;
     },
 };
@@ -1408,18 +1423,24 @@ exports.PostFileResponse = {
     },
 };
 function createBaseVoteOnPollRequest() {
-    return { profileId: "", postId: "", optionId: "" };
+    return { roleId: "", postId: "", optionId: "", role: "", userId: "" };
 }
 exports.VoteOnPollRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.profileId !== "") {
-            writer.uint32(10).string(message.profileId);
+        if (message.roleId !== "") {
+            writer.uint32(10).string(message.roleId);
         }
         if (message.postId !== "") {
             writer.uint32(18).string(message.postId);
         }
         if (message.optionId !== "") {
             writer.uint32(26).string(message.optionId);
+        }
+        if (message.role !== "") {
+            writer.uint32(34).string(message.role);
+        }
+        if (message.userId !== "") {
+            writer.uint32(42).string(message.userId);
         }
         return writer;
     },
@@ -1434,7 +1455,7 @@ exports.VoteOnPollRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.profileId = reader.string();
+                    message.roleId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -1451,6 +1472,20 @@ exports.VoteOnPollRequest = {
                     message.optionId = reader.string();
                     continue;
                 }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1461,21 +1496,29 @@ exports.VoteOnPollRequest = {
     },
     fromJSON(object) {
         return {
-            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
             postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
             optionId: isSet(object.optionId) ? globalThis.String(object.optionId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.profileId !== "") {
-            obj.profileId = message.profileId;
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
         }
         if (message.postId !== "") {
             obj.postId = message.postId;
         }
         if (message.optionId !== "") {
             obj.optionId = message.optionId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
         }
         return obj;
     },
@@ -1484,9 +1527,11 @@ exports.VoteOnPollRequest = {
     },
     fromPartial(object) {
         const message = createBaseVoteOnPollRequest();
-        message.profileId = object.profileId ?? "";
+        message.roleId = object.roleId ?? "";
         message.postId = object.postId ?? "";
         message.optionId = object.optionId ?? "";
+        message.role = object.role ?? "";
+        message.userId = object.userId ?? "";
         return message;
     },
 };
@@ -1757,12 +1802,12 @@ exports.PostPollOptionResponse = {
     },
 };
 function createBasePostReactionRequest() {
-    return { profileId: "", postId: "", reaction: false, reactionType: "" };
+    return { roleId: "", postId: "", reaction: false, reactionType: "", role: "", userId: "" };
 }
 exports.PostReactionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.profileId !== "") {
-            writer.uint32(10).string(message.profileId);
+        if (message.roleId !== "") {
+            writer.uint32(10).string(message.roleId);
         }
         if (message.postId !== "") {
             writer.uint32(18).string(message.postId);
@@ -1772,6 +1817,12 @@ exports.PostReactionRequest = {
         }
         if (message.reactionType !== "") {
             writer.uint32(34).string(message.reactionType);
+        }
+        if (message.role !== "") {
+            writer.uint32(42).string(message.role);
+        }
+        if (message.userId !== "") {
+            writer.uint32(50).string(message.userId);
         }
         return writer;
     },
@@ -1786,7 +1837,7 @@ exports.PostReactionRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.profileId = reader.string();
+                    message.roleId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -1810,6 +1861,20 @@ exports.PostReactionRequest = {
                     message.reactionType = reader.string();
                     continue;
                 }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1820,16 +1885,18 @@ exports.PostReactionRequest = {
     },
     fromJSON(object) {
         return {
-            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
             postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
             reaction: isSet(object.reaction) ? globalThis.Boolean(object.reaction) : false,
             reactionType: isSet(object.reactionType) ? globalThis.String(object.reactionType) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.profileId !== "") {
-            obj.profileId = message.profileId;
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
         }
         if (message.postId !== "") {
             obj.postId = message.postId;
@@ -1840,6 +1907,12 @@ exports.PostReactionRequest = {
         if (message.reactionType !== "") {
             obj.reactionType = message.reactionType;
         }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
         return obj;
     },
     create(base) {
@@ -1847,10 +1920,12 @@ exports.PostReactionRequest = {
     },
     fromPartial(object) {
         const message = createBasePostReactionRequest();
-        message.profileId = object.profileId ?? "";
+        message.roleId = object.roleId ?? "";
         message.postId = object.postId ?? "";
         message.reaction = object.reaction ?? false;
         message.reactionType = object.reactionType ?? "";
+        message.role = object.role ?? "";
+        message.userId = object.userId ?? "";
         return message;
     },
 };
@@ -2377,12 +2452,15 @@ exports.PostResponse = {
     },
 };
 function createBaseGetUserPostsRequest() {
-    return { profileId: "" };
+    return { profileId: "", userId: "" };
 }
 exports.GetUserPostsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.profileId !== "") {
             writer.uint32(10).string(message.profileId);
+        }
+        if (message.userId !== "") {
+            writer.uint32(18).string(message.userId);
         }
         return writer;
     },
@@ -2400,6 +2478,13 @@ exports.GetUserPostsRequest = {
                     message.profileId = reader.string();
                     continue;
                 }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2409,12 +2494,18 @@ exports.GetUserPostsRequest = {
         return message;
     },
     fromJSON(object) {
-        return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
+        return {
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.profileId !== "") {
             obj.profileId = message.profileId;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
         }
         return obj;
     },
@@ -2424,6 +2515,7 @@ exports.GetUserPostsRequest = {
     fromPartial(object) {
         const message = createBaseGetUserPostsRequest();
         message.profileId = object.profileId ?? "";
+        message.userId = object.userId ?? "";
         return message;
     },
 };

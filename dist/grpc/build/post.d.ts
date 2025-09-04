@@ -41,6 +41,7 @@ export interface GetFeedRequest {
     profileId: string;
     page: number;
     perPage: number;
+    userId: string;
 }
 export interface GetFeedResponse {
     posts: PostResponse[];
@@ -86,9 +87,11 @@ export interface PostFileResponse {
     sizeInBytes: string;
 }
 export interface VoteOnPollRequest {
-    profileId: string;
+    roleId: string;
     postId: string;
     optionId: string;
+    role: string;
+    userId: string;
 }
 export interface HealthResponse {
     isHealthy: boolean;
@@ -107,10 +110,12 @@ export interface PostPollOptionResponse {
     userVoted: boolean;
 }
 export interface PostReactionRequest {
-    profileId: string;
+    roleId: string;
     postId: string;
     reaction: boolean;
     reactionType: string;
+    role: string;
+    userId: string;
 }
 export interface Creator {
     name: string;
@@ -145,6 +150,7 @@ export interface PostResponse {
 }
 export interface GetUserPostsRequest {
     profileId: string;
+    userId: string;
 }
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const DeletePostRequest: MessageFns<DeletePostRequest>;

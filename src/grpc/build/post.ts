@@ -56,6 +56,7 @@ export interface GetFeedRequest {
   profileId: string;
   page: number;
   perPage: number;
+  userId: string;
 }
 
 export interface GetFeedResponse {
@@ -110,9 +111,11 @@ export interface PostFileResponse {
 }
 
 export interface VoteOnPollRequest {
-  profileId: string;
+  roleId: string;
   postId: string;
   optionId: string;
+  role: string;
+  userId: string;
 }
 
 export interface HealthResponse {
@@ -135,10 +138,12 @@ export interface PostPollOptionResponse {
 }
 
 export interface PostReactionRequest {
-  profileId: string;
+  roleId: string;
   postId: string;
   reaction: boolean;
   reactionType: string;
+  role: string;
+  userId: string;
 }
 
 export interface Creator {
@@ -178,6 +183,7 @@ export interface PostResponse {
 
 export interface GetUserPostsRequest {
   profileId: string;
+  userId: string;
 }
 
 function createBaseCreatePostRequest(): CreatePostRequest {
@@ -840,7 +846,7 @@ export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = 
 };
 
 function createBaseGetFeedRequest(): GetFeedRequest {
-  return { profileId: "", page: 0, perPage: 0 };
+  return { profileId: "", page: 0, perPage: 0, userId: "" };
 }
 
 export const GetFeedRequest: MessageFns<GetFeedRequest> = {
@@ -853,6 +859,9 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
     }
     if (message.perPage !== 0) {
       writer.uint32(24).uint32(message.perPage);
+    }
+    if (message.userId !== "") {
+      writer.uint32(34).string(message.userId);
     }
     return writer;
   },
@@ -888,6 +897,14 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
           message.perPage = reader.uint32();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -902,6 +919,7 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
       profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
       perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
     };
   },
 
@@ -916,6 +934,9 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
     if (message.perPage !== 0) {
       obj.perPage = Math.round(message.perPage);
     }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
     return obj;
   },
 
@@ -927,6 +948,7 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
     message.profileId = object.profileId ?? "";
     message.page = object.page ?? 0;
     message.perPage = object.perPage ?? 0;
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -1722,19 +1744,25 @@ export const PostFileResponse: MessageFns<PostFileResponse> = {
 };
 
 function createBaseVoteOnPollRequest(): VoteOnPollRequest {
-  return { profileId: "", postId: "", optionId: "" };
+  return { roleId: "", postId: "", optionId: "", role: "", userId: "" };
 }
 
 export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
   encode(message: VoteOnPollRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.profileId !== "") {
-      writer.uint32(10).string(message.profileId);
+    if (message.roleId !== "") {
+      writer.uint32(10).string(message.roleId);
     }
     if (message.postId !== "") {
       writer.uint32(18).string(message.postId);
     }
     if (message.optionId !== "") {
       writer.uint32(26).string(message.optionId);
+    }
+    if (message.role !== "") {
+      writer.uint32(34).string(message.role);
+    }
+    if (message.userId !== "") {
+      writer.uint32(42).string(message.userId);
     }
     return writer;
   },
@@ -1751,7 +1779,7 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
             break;
           }
 
-          message.profileId = reader.string();
+          message.roleId = reader.string();
           continue;
         }
         case 2: {
@@ -1770,6 +1798,22 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
           message.optionId = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1781,22 +1825,30 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
 
   fromJSON(object: any): VoteOnPollRequest {
     return {
-      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
       postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
       optionId: isSet(object.optionId) ? globalThis.String(object.optionId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
     };
   },
 
   toJSON(message: VoteOnPollRequest): unknown {
     const obj: any = {};
-    if (message.profileId !== "") {
-      obj.profileId = message.profileId;
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
     }
     if (message.postId !== "") {
       obj.postId = message.postId;
     }
     if (message.optionId !== "") {
       obj.optionId = message.optionId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
     }
     return obj;
   },
@@ -1806,9 +1858,11 @@ export const VoteOnPollRequest: MessageFns<VoteOnPollRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<VoteOnPollRequest>, I>>(object: I): VoteOnPollRequest {
     const message = createBaseVoteOnPollRequest();
-    message.profileId = object.profileId ?? "";
+    message.roleId = object.roleId ?? "";
     message.postId = object.postId ?? "";
     message.optionId = object.optionId ?? "";
+    message.role = object.role ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -2108,13 +2162,13 @@ export const PostPollOptionResponse: MessageFns<PostPollOptionResponse> = {
 };
 
 function createBasePostReactionRequest(): PostReactionRequest {
-  return { profileId: "", postId: "", reaction: false, reactionType: "" };
+  return { roleId: "", postId: "", reaction: false, reactionType: "", role: "", userId: "" };
 }
 
 export const PostReactionRequest: MessageFns<PostReactionRequest> = {
   encode(message: PostReactionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.profileId !== "") {
-      writer.uint32(10).string(message.profileId);
+    if (message.roleId !== "") {
+      writer.uint32(10).string(message.roleId);
     }
     if (message.postId !== "") {
       writer.uint32(18).string(message.postId);
@@ -2124,6 +2178,12 @@ export const PostReactionRequest: MessageFns<PostReactionRequest> = {
     }
     if (message.reactionType !== "") {
       writer.uint32(34).string(message.reactionType);
+    }
+    if (message.role !== "") {
+      writer.uint32(42).string(message.role);
+    }
+    if (message.userId !== "") {
+      writer.uint32(50).string(message.userId);
     }
     return writer;
   },
@@ -2140,7 +2200,7 @@ export const PostReactionRequest: MessageFns<PostReactionRequest> = {
             break;
           }
 
-          message.profileId = reader.string();
+          message.roleId = reader.string();
           continue;
         }
         case 2: {
@@ -2167,6 +2227,22 @@ export const PostReactionRequest: MessageFns<PostReactionRequest> = {
           message.reactionType = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2178,17 +2254,19 @@ export const PostReactionRequest: MessageFns<PostReactionRequest> = {
 
   fromJSON(object: any): PostReactionRequest {
     return {
-      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
       postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
       reaction: isSet(object.reaction) ? globalThis.Boolean(object.reaction) : false,
       reactionType: isSet(object.reactionType) ? globalThis.String(object.reactionType) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
     };
   },
 
   toJSON(message: PostReactionRequest): unknown {
     const obj: any = {};
-    if (message.profileId !== "") {
-      obj.profileId = message.profileId;
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
     }
     if (message.postId !== "") {
       obj.postId = message.postId;
@@ -2199,6 +2277,12 @@ export const PostReactionRequest: MessageFns<PostReactionRequest> = {
     if (message.reactionType !== "") {
       obj.reactionType = message.reactionType;
     }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
     return obj;
   },
 
@@ -2207,10 +2291,12 @@ export const PostReactionRequest: MessageFns<PostReactionRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<PostReactionRequest>, I>>(object: I): PostReactionRequest {
     const message = createBasePostReactionRequest();
-    message.profileId = object.profileId ?? "";
+    message.roleId = object.roleId ?? "";
     message.postId = object.postId ?? "";
     message.reaction = object.reaction ?? false;
     message.reactionType = object.reactionType ?? "";
+    message.role = object.role ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -2785,13 +2871,16 @@ export const PostResponse: MessageFns<PostResponse> = {
 };
 
 function createBaseGetUserPostsRequest(): GetUserPostsRequest {
-  return { profileId: "" };
+  return { profileId: "", userId: "" };
 }
 
 export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
   encode(message: GetUserPostsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.profileId !== "") {
       writer.uint32(10).string(message.profileId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
     }
     return writer;
   },
@@ -2811,6 +2900,14 @@ export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
           message.profileId = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2821,13 +2918,19 @@ export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
   },
 
   fromJSON(object: any): GetUserPostsRequest {
-    return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
+    return {
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+    };
   },
 
   toJSON(message: GetUserPostsRequest): unknown {
     const obj: any = {};
     if (message.profileId !== "") {
       obj.profileId = message.profileId;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
     }
     return obj;
   },
@@ -2838,6 +2941,7 @@ export const GetUserPostsRequest: MessageFns<GetUserPostsRequest> = {
   fromPartial<I extends Exact<DeepPartial<GetUserPostsRequest>, I>>(object: I): GetUserPostsRequest {
     const message = createBaseGetUserPostsRequest();
     message.profileId = object.profileId ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
