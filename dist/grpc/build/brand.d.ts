@@ -12,6 +12,8 @@ export interface BrandResponse {
     updatedAt: string;
     jwtToken?: string | undefined;
     refreshToken?: string | undefined;
+    followersCount: string;
+    followingCount: string;
 }
 /** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {

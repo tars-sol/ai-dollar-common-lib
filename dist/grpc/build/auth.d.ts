@@ -1,6 +1,16 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "auth";
+export interface SuccessResponse {
+    success: boolean;
+}
+export interface FollowRequest {
+    roleId: string;
+    followingId: string;
+    role: string;
+    userId: string;
+    follow: boolean;
+}
 export interface RevokeTokenRequest {
     accessToken: string;
     refreshToken: string;
@@ -62,6 +72,8 @@ export interface AuthResponse {
     refreshToken: string;
     user: UserRequest | undefined;
 }
+export declare const SuccessResponse: MessageFns<SuccessResponse>;
+export declare const FollowRequest: MessageFns<FollowRequest>;
 export declare const RevokeTokenRequest: MessageFns<RevokeTokenRequest>;
 export declare const ValidateTokenRequest: MessageFns<ValidateTokenRequest>;
 export declare const ValidateTokenResponse: MessageFns<ValidateTokenResponse>;
@@ -88,6 +100,7 @@ export interface AuthService {
     RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
     ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
     Health(request: Empty): Promise<HealthResponse>;
+    FollowUser(request: FollowRequest): Promise<SuccessResponse>;
 }
 export declare const AuthServiceServiceName = "auth.AuthService";
 export declare class AuthServiceClientImpl implements AuthService {
@@ -106,6 +119,7 @@ export declare class AuthServiceClientImpl implements AuthService {
     RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
     ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
     Health(request: Empty): Promise<HealthResponse>;
+    FollowUser(request: FollowRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

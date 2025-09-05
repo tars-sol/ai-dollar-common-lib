@@ -5,93 +5,10 @@
 //   protoc               v3.21.12
 // source: profile.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.GetProfileByUserIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.FollowRequest = exports.protobufPackage = void 0;
+exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.GetProfileByUserIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "profile";
-function createBaseFollowRequest() {
-    return { profileId: "", targetId: "", follow: false };
-}
-exports.FollowRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.profileId !== "") {
-            writer.uint32(10).string(message.profileId);
-        }
-        if (message.targetId !== "") {
-            writer.uint32(18).string(message.targetId);
-        }
-        if (message.follow !== false) {
-            writer.uint32(24).bool(message.follow);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        const end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseFollowRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1: {
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.profileId = reader.string();
-                    continue;
-                }
-                case 2: {
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.targetId = reader.string();
-                    continue;
-                }
-                case 3: {
-                    if (tag !== 24) {
-                        break;
-                    }
-                    message.follow = reader.bool();
-                    continue;
-                }
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
-            targetId: isSet(object.targetId) ? globalThis.String(object.targetId) : "",
-            follow: isSet(object.follow) ? globalThis.Boolean(object.follow) : false,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.profileId !== "") {
-            obj.profileId = message.profileId;
-        }
-        if (message.targetId !== "") {
-            obj.targetId = message.targetId;
-        }
-        if (message.follow !== false) {
-            obj.follow = message.follow;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.FollowRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseFollowRequest();
-        message.profileId = object.profileId ?? "";
-        message.targetId = object.targetId ?? "";
-        message.follow = object.follow ?? false;
-        return message;
-    },
-};
 function createBaseSubscribeRequest() {
     return { profileId: "", targetId: "", subscribe: false };
 }
@@ -1039,7 +956,6 @@ class ProfileServiceClientImpl {
         this.Create = this.Create.bind(this);
         this.Update = this.Update.bind(this);
         this.GetByUserId = this.GetByUserId.bind(this);
-        this.FollowProfile = this.FollowProfile.bind(this);
         this.SubscribeProfile = this.SubscribeProfile.bind(this);
     }
     Create(request) {
@@ -1055,11 +971,6 @@ class ProfileServiceClientImpl {
     GetByUserId(request) {
         const data = exports.GetProfileByUserIdRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetByUserId", data);
-        return promise.then((data) => exports.ProfileResponse.decode(new wire_1.BinaryReader(data)));
-    }
-    FollowProfile(request) {
-        const data = exports.FollowRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "FollowProfile", data);
         return promise.then((data) => exports.ProfileResponse.decode(new wire_1.BinaryReader(data)));
     }
     SubscribeProfile(request) {

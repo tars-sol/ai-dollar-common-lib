@@ -9,12 +9,6 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "profile";
 
-export interface FollowRequest {
-  profileId: string;
-  targetId: string;
-  follow: boolean;
-}
-
 export interface SubscribeRequest {
   profileId: string;
   targetId: string;
@@ -76,98 +70,6 @@ export interface UpdateProfileRequest {
 export interface GetProfileByUserIdRequest {
   userId: string;
 }
-
-function createBaseFollowRequest(): FollowRequest {
-  return { profileId: "", targetId: "", follow: false };
-}
-
-export const FollowRequest: MessageFns<FollowRequest> = {
-  encode(message: FollowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.profileId !== "") {
-      writer.uint32(10).string(message.profileId);
-    }
-    if (message.targetId !== "") {
-      writer.uint32(18).string(message.targetId);
-    }
-    if (message.follow !== false) {
-      writer.uint32(24).bool(message.follow);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): FollowRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFollowRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.profileId = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.targetId = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 24) {
-            break;
-          }
-
-          message.follow = reader.bool();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): FollowRequest {
-    return {
-      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
-      targetId: isSet(object.targetId) ? globalThis.String(object.targetId) : "",
-      follow: isSet(object.follow) ? globalThis.Boolean(object.follow) : false,
-    };
-  },
-
-  toJSON(message: FollowRequest): unknown {
-    const obj: any = {};
-    if (message.profileId !== "") {
-      obj.profileId = message.profileId;
-    }
-    if (message.targetId !== "") {
-      obj.targetId = message.targetId;
-    }
-    if (message.follow !== false) {
-      obj.follow = message.follow;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<FollowRequest>, I>>(base?: I): FollowRequest {
-    return FollowRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<FollowRequest>, I>>(object: I): FollowRequest {
-    const message = createBaseFollowRequest();
-    message.profileId = object.profileId ?? "";
-    message.targetId = object.targetId ?? "";
-    message.follow = object.follow ?? false;
-    return message;
-  },
-};
 
 function createBaseSubscribeRequest(): SubscribeRequest {
   return { profileId: "", targetId: "", subscribe: false };
@@ -1189,7 +1091,6 @@ export interface ProfileService {
   Create(request: CreateProfileRequest): Promise<ProfileResponse>;
   Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
   GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
-  FollowProfile(request: FollowRequest): Promise<ProfileResponse>;
   SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
 }
 
@@ -1203,7 +1104,6 @@ export class ProfileServiceClientImpl implements ProfileService {
     this.Create = this.Create.bind(this);
     this.Update = this.Update.bind(this);
     this.GetByUserId = this.GetByUserId.bind(this);
-    this.FollowProfile = this.FollowProfile.bind(this);
     this.SubscribeProfile = this.SubscribeProfile.bind(this);
   }
   Create(request: CreateProfileRequest): Promise<ProfileResponse> {
@@ -1221,12 +1121,6 @@ export class ProfileServiceClientImpl implements ProfileService {
   GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse> {
     const data = GetProfileByUserIdRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetByUserId", data);
-    return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
-  }
-
-  FollowProfile(request: FollowRequest): Promise<ProfileResponse> {
-    const data = FollowRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "FollowProfile", data);
     return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
   }
 

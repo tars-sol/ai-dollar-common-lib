@@ -5,11 +5,175 @@
 //   protoc               v3.21.12
 // source: auth.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.HealthResponse = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.protobufPackage = void 0;
+exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.HealthResponse = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.FollowRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
 exports.protobufPackage = "auth";
+function createBaseSuccessResponse() {
+    return { success: false };
+}
+exports.SuccessResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.success !== false) {
+            writer.uint32(8).bool(message.success);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSuccessResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.success = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.success !== false) {
+            obj.success = message.success;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SuccessResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSuccessResponse();
+        message.success = object.success ?? false;
+        return message;
+    },
+};
+function createBaseFollowRequest() {
+    return { roleId: "", followingId: "", role: "", userId: "", follow: false };
+}
+exports.FollowRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.roleId !== "") {
+            writer.uint32(10).string(message.roleId);
+        }
+        if (message.followingId !== "") {
+            writer.uint32(18).string(message.followingId);
+        }
+        if (message.role !== "") {
+            writer.uint32(26).string(message.role);
+        }
+        if (message.userId !== "") {
+            writer.uint32(42).string(message.userId);
+        }
+        if (message.follow !== false) {
+            writer.uint32(32).bool(message.follow);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseFollowRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.followingId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.follow = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+            followingId: isSet(object.followingId) ? globalThis.String(object.followingId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            follow: isSet(object.follow) ? globalThis.Boolean(object.follow) : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        if (message.followingId !== "") {
+            obj.followingId = message.followingId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.follow !== false) {
+            obj.follow = message.follow;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.FollowRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseFollowRequest();
+        message.roleId = object.roleId ?? "";
+        message.followingId = object.followingId ?? "";
+        message.role = object.role ?? "";
+        message.userId = object.userId ?? "";
+        message.follow = object.follow ?? false;
+        return message;
+    },
+};
 function createBaseRevokeTokenRequest() {
     return { accessToken: "", refreshToken: "" };
 }
@@ -1048,6 +1212,7 @@ class AuthServiceClientImpl {
         this.RevokeToken = this.RevokeToken.bind(this);
         this.ValidateToken = this.ValidateToken.bind(this);
         this.Health = this.Health.bind(this);
+        this.FollowUser = this.FollowUser.bind(this);
     }
     Register(request) {
         const data = exports.RegisterRequest.encode(request).finish();
@@ -1098,6 +1263,11 @@ class AuthServiceClientImpl {
         const data = empty_1.Empty.encode(request).finish();
         const promise = this.rpc.request(this.service, "Health", data);
         return promise.then((data) => exports.HealthResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    FollowUser(request) {
+        const data = exports.FollowRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "FollowUser", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.AuthServiceClientImpl = AuthServiceClientImpl;

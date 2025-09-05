@@ -14,8 +14,6 @@ export declare class Profile {
     tiktok: string;
     instagram: string;
     isVerified: boolean;
-    followersCount: number;
-    followingCount: number;
     subscribersCount: number;
     subscriptionsCount: number;
     createdAt: Date;

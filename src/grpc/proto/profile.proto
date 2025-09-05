@@ -6,14 +6,9 @@ service ProfileService {
   rpc Create (CreateProfileRequest) returns (ProfileResponse);
   rpc Update (UpdateProfileRequest) returns (ProfileResponse);
   rpc GetByUserId (GetProfileByUserIdRequest) returns (ProfileResponse);
-  rpc FollowProfile (FollowRequest) returns (ProfileResponse);
   rpc SubscribeProfile (SubscribeRequest) returns (ProfileResponse);
 }
-message FollowRequest{
-  string profileId = 1;
-  string targetId = 2;
-  bool follow = 3;
-}
+
 message SubscribeRequest{
   string profileId = 1;
   string targetId = 2;

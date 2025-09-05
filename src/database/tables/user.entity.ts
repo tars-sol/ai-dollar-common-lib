@@ -6,7 +6,10 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-
+export enum Role {
+  PROFILE = 'profile',
+  BRAND = 'brand',
+}
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -35,6 +38,12 @@ export class User {
   @Column({ type: 'boolean', default: false })
   isDeleted: boolean;
 
+  @Column({ type: 'enum', enum: Role, nullable: true })
+  role: Role;
+  @Column({ type: 'int', default: 0 })
+  followersCount: number;
+  @Column({ type: 'int', default: 0 })
+  followingCount: number;
   @CreateDateColumn()
   createdAt: Date;
 

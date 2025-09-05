@@ -9,8 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.User = exports.Role = void 0;
 const typeorm_1 = require("typeorm");
+var Role;
+(function (Role) {
+    Role["PROFILE"] = "profile";
+    Role["BRAND"] = "brand";
+})(Role || (exports.Role = Role = {}));
 let User = class User {
 };
 exports.User = User;
@@ -48,6 +53,18 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'boolean', default: false }),
     __metadata("design:type", Boolean)
 ], User.prototype, "isDeleted", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'enum', enum: Role, nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "role", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
+], User.prototype, "followersCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
+], User.prototype, "followingCount", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

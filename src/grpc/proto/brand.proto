@@ -20,6 +20,8 @@ message BrandResponse {
   string updatedAt = 8;
   optional string jwtToken=9;
   optional string refreshToken=10;
+  string followersCount = 11;
+  string followingCount = 12;
 }
 
 // Request for creating a brand (userId comes from JWT in server)

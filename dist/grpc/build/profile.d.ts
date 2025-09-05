@@ -1,10 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "profile";
-export interface FollowRequest {
-    profileId: string;
-    targetId: string;
-    follow: boolean;
-}
 export interface SubscribeRequest {
     profileId: string;
     targetId: string;
@@ -62,7 +57,6 @@ export interface UpdateProfileRequest {
 export interface GetProfileByUserIdRequest {
     userId: string;
 }
-export declare const FollowRequest: MessageFns<FollowRequest>;
 export declare const SubscribeRequest: MessageFns<SubscribeRequest>;
 export declare const ProfileResponse: MessageFns<ProfileResponse>;
 export declare const CreateProfileRequest: MessageFns<CreateProfileRequest>;
@@ -72,7 +66,6 @@ export interface ProfileService {
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
     GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
-    FollowProfile(request: FollowRequest): Promise<ProfileResponse>;
     SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
 }
 export declare const ProfileServiceServiceName = "profile.ProfileService";
@@ -85,7 +78,6 @@ export declare class ProfileServiceClientImpl implements ProfileService {
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
     GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
-    FollowProfile(request: FollowRequest): Promise<ProfileResponse>;
     SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
 }
 interface Rpc {

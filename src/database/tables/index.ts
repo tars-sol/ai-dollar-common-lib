@@ -1,7 +1,6 @@
 export * from './user.entity';
 export * from './payment.entity';
 export * from './profile.entity';
-export * from './user_follows.entity';
 export * from './brand.entity';
 export * from './connected_accounts.entity';
 export * from './brand_balance.entity';
@@ -15,7 +14,7 @@ export * from './post_poll_vote.entity';
 export * from './post_media.entity';
 export * from './post_comment.entity';
 export * from './post_reaction.entity';
-export * from './profile_follow.entity';
+export * from './user_follow.entity';
 export * from './profile_subscribe.entity';
 export * from './profile_events.entity';
 export * from './revoked_tokens.entity';

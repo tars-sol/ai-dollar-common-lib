@@ -10,6 +10,18 @@ import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "auth";
 
+export interface SuccessResponse {
+  success: boolean;
+}
+
+export interface FollowRequest {
+  roleId: string;
+  followingId: string;
+  role: string;
+  userId: string;
+  follow: boolean;
+}
+
 export interface RevokeTokenRequest {
   accessToken: string;
   refreshToken: string;
@@ -85,6 +97,188 @@ export interface AuthResponse {
   refreshToken: string;
   user: UserRequest | undefined;
 }
+
+function createBaseSuccessResponse(): SuccessResponse {
+  return { success: false };
+}
+
+export const SuccessResponse: MessageFns<SuccessResponse> = {
+  encode(message: SuccessResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SuccessResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSuccessResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.success = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SuccessResponse {
+    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+  },
+
+  toJSON(message: SuccessResponse): unknown {
+    const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SuccessResponse>, I>>(base?: I): SuccessResponse {
+    return SuccessResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SuccessResponse>, I>>(object: I): SuccessResponse {
+    const message = createBaseSuccessResponse();
+    message.success = object.success ?? false;
+    return message;
+  },
+};
+
+function createBaseFollowRequest(): FollowRequest {
+  return { roleId: "", followingId: "", role: "", userId: "", follow: false };
+}
+
+export const FollowRequest: MessageFns<FollowRequest> = {
+  encode(message: FollowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.roleId !== "") {
+      writer.uint32(10).string(message.roleId);
+    }
+    if (message.followingId !== "") {
+      writer.uint32(18).string(message.followingId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    if (message.userId !== "") {
+      writer.uint32(42).string(message.userId);
+    }
+    if (message.follow !== false) {
+      writer.uint32(32).bool(message.follow);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FollowRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFollowRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.followingId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.follow = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FollowRequest {
+    return {
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+      followingId: isSet(object.followingId) ? globalThis.String(object.followingId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      follow: isSet(object.follow) ? globalThis.Boolean(object.follow) : false,
+    };
+  },
+
+  toJSON(message: FollowRequest): unknown {
+    const obj: any = {};
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
+    if (message.followingId !== "") {
+      obj.followingId = message.followingId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.follow !== false) {
+      obj.follow = message.follow;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<FollowRequest>, I>>(base?: I): FollowRequest {
+    return FollowRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<FollowRequest>, I>>(object: I): FollowRequest {
+    const message = createBaseFollowRequest();
+    message.roleId = object.roleId ?? "";
+    message.followingId = object.followingId ?? "";
+    message.role = object.role ?? "";
+    message.userId = object.userId ?? "";
+    message.follow = object.follow ?? false;
+    return message;
+  },
+};
 
 function createBaseRevokeTokenRequest(): RevokeTokenRequest {
   return { accessToken: "", refreshToken: "" };
@@ -1241,6 +1435,7 @@ export interface AuthService {
   RevokeToken(request: RevokeTokenRequest): Promise<RevokeTokenResponse>;
   ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
   Health(request: Empty): Promise<HealthResponse>;
+  FollowUser(request: FollowRequest): Promise<SuccessResponse>;
 }
 
 export const AuthServiceServiceName = "auth.AuthService";
@@ -1260,6 +1455,7 @@ export class AuthServiceClientImpl implements AuthService {
     this.RevokeToken = this.RevokeToken.bind(this);
     this.ValidateToken = this.ValidateToken.bind(this);
     this.Health = this.Health.bind(this);
+    this.FollowUser = this.FollowUser.bind(this);
   }
   Register(request: RegisterRequest): Promise<AuthResponse> {
     const data = RegisterRequest.encode(request).finish();
@@ -1319,6 +1515,12 @@ export class AuthServiceClientImpl implements AuthService {
     const data = Empty.encode(request).finish();
     const promise = this.rpc.request(this.service, "Health", data);
     return promise.then((data) => HealthResponse.decode(new BinaryReader(data)));
+  }
+
+  FollowUser(request: FollowRequest): Promise<SuccessResponse> {
+    const data = FollowRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "FollowUser", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }
 

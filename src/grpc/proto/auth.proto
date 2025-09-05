@@ -14,7 +14,17 @@ service AuthService {
   rpc RevokeToken(RevokeTokenRequest) returns (RevokeTokenResponse);
   rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
   rpc Health(google.protobuf.Empty) returns (HealthResponse);
-
+  rpc FollowUser (FollowRequest) returns (SuccessResponse);
+}
+message SuccessResponse{
+  bool success = 1 ; 
+}
+message FollowRequest{
+  string roleId = 1;
+  string followingId = 2;
+  string role = 3;
+  string userId = 5;
+  bool follow = 4;
 }
 message RevokeTokenRequest{
   string accessToken = 2;

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserFollow = void 0;
+// profiles/entities/profile-follow.entity.ts
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./user.entity");
 let UserFollow = class UserFollow {
@@ -20,13 +21,23 @@ __decorate([
     __metadata("design:type", String)
 ], UserFollow.prototype, "id", void 0);
 __decorate([
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], UserFollow.prototype, "followerId", void 0);
+__decorate([
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], UserFollow.prototype, "followingId", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)({ name: 'follower_id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'followerId' }),
     __metadata("design:type", user_entity_1.User)
 ], UserFollow.prototype, "follower", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)({ name: 'following_id' }),
+    (0, typeorm_1.JoinColumn)({ name: 'followingId' }),
     __metadata("design:type", user_entity_1.User)
 ], UserFollow.prototype, "following", void 0);
 __decorate([
@@ -35,6 +46,8 @@ __decorate([
 ], UserFollow.prototype, "createdAt", void 0);
 exports.UserFollow = UserFollow = __decorate([
     (0, typeorm_1.Entity)('user_follows'),
-    (0, typeorm_1.Unique)(['follower', 'following'])
+    (0, typeorm_1.Unique)(['followerId', 'followingId']) // one follow per pair
+    ,
+    (0, typeorm_1.Check)(`"followerId" <> "followingId"`) // no self-follow
 ], UserFollow);
-//# sourceMappingURL=user_follows.entity.js.map
+//# sourceMappingURL=user_follow.entity.js.map

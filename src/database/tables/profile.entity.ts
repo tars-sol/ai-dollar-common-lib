@@ -55,10 +55,7 @@ export class Profile {
 
   @Column({ type: 'boolean', default: false })
   isVerified: boolean;
-  @Column({ type: 'int', default: 0 })
-  followersCount: number;
-  @Column({ type: 'int', default: 0 })
-  followingCount: number;
+
   @Column({ type: 'int', default: 0 })
   subscribersCount: number;
   @Column({ type: 'int', default: 0 })

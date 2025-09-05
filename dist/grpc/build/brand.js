@@ -21,6 +21,8 @@ function createBaseBrandResponse() {
         updatedAt: "",
         jwtToken: undefined,
         refreshToken: undefined,
+        followersCount: "",
+        followingCount: "",
     };
 }
 exports.BrandResponse = {
@@ -54,6 +56,12 @@ exports.BrandResponse = {
         }
         if (message.refreshToken !== undefined) {
             writer.uint32(82).string(message.refreshToken);
+        }
+        if (message.followersCount !== "") {
+            writer.uint32(90).string(message.followersCount);
+        }
+        if (message.followingCount !== "") {
+            writer.uint32(98).string(message.followingCount);
         }
         return writer;
     },
@@ -134,6 +142,20 @@ exports.BrandResponse = {
                     message.refreshToken = reader.string();
                     continue;
                 }
+                case 11: {
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.followersCount = reader.string();
+                    continue;
+                }
+                case 12: {
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.followingCount = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -154,6 +176,8 @@ exports.BrandResponse = {
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
             jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
             refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
+            followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
+            followingCount: isSet(object.followingCount) ? globalThis.String(object.followingCount) : "",
         };
     },
     toJSON(message) {
@@ -188,6 +212,12 @@ exports.BrandResponse = {
         if (message.refreshToken !== undefined) {
             obj.refreshToken = message.refreshToken;
         }
+        if (message.followersCount !== "") {
+            obj.followersCount = message.followersCount;
+        }
+        if (message.followingCount !== "") {
+            obj.followingCount = message.followingCount;
+        }
         return obj;
     },
     create(base) {
@@ -205,6 +235,8 @@ exports.BrandResponse = {
         message.updatedAt = object.updatedAt ?? "";
         message.jwtToken = object.jwtToken ?? undefined;
         message.refreshToken = object.refreshToken ?? undefined;
+        message.followersCount = object.followersCount ?? "";
+        message.followingCount = object.followingCount ?? "";
         return message;
     },
 };
