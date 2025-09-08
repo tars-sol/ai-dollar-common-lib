@@ -38,9 +38,10 @@ export interface GenerateUploadUrlResponse {
     key: string;
 }
 export interface GetFeedRequest {
-    profileId: string;
     page: number;
     perPage: number;
+    role: string;
+    roleId: string;
     userId: string;
 }
 export interface GetFeedResponse {

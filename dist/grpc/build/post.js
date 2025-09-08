@@ -610,21 +610,24 @@ exports.GenerateUploadUrlResponse = {
     },
 };
 function createBaseGetFeedRequest() {
-    return { profileId: "", page: 0, perPage: 0, userId: "" };
+    return { page: 0, perPage: 0, role: "", roleId: "", userId: "" };
 }
 exports.GetFeedRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.profileId !== "") {
-            writer.uint32(10).string(message.profileId);
-        }
         if (message.page !== 0) {
-            writer.uint32(16).uint32(message.page);
+            writer.uint32(8).uint32(message.page);
         }
         if (message.perPage !== 0) {
-            writer.uint32(24).uint32(message.perPage);
+            writer.uint32(16).uint32(message.perPage);
+        }
+        if (message.role !== "") {
+            writer.uint32(26).string(message.role);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(34).string(message.roleId);
         }
         if (message.userId !== "") {
-            writer.uint32(34).string(message.userId);
+            writer.uint32(42).string(message.userId);
         }
         return writer;
     },
@@ -636,28 +639,35 @@ exports.GetFeedRequest = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1: {
-                    if (tag !== 10) {
+                    if (tag !== 8) {
                         break;
                     }
-                    message.profileId = reader.string();
+                    message.page = reader.uint32();
                     continue;
                 }
                 case 2: {
                     if (tag !== 16) {
                         break;
                     }
-                    message.page = reader.uint32();
+                    message.perPage = reader.uint32();
                     continue;
                 }
                 case 3: {
-                    if (tag !== 24) {
+                    if (tag !== 26) {
                         break;
                     }
-                    message.perPage = reader.uint32();
+                    message.role = reader.string();
                     continue;
                 }
                 case 4: {
                     if (tag !== 34) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
                         break;
                     }
                     message.userId = reader.string();
@@ -673,22 +683,26 @@ exports.GetFeedRequest = {
     },
     fromJSON(object) {
         return {
-            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             page: isSet(object.page) ? globalThis.Number(object.page) : 0,
             perPage: isSet(object.perPage) ? globalThis.Number(object.perPage) : 0,
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.profileId !== "") {
-            obj.profileId = message.profileId;
-        }
         if (message.page !== 0) {
             obj.page = Math.round(message.page);
         }
         if (message.perPage !== 0) {
             obj.perPage = Math.round(message.perPage);
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
         }
         if (message.userId !== "") {
             obj.userId = message.userId;
@@ -700,9 +714,10 @@ exports.GetFeedRequest = {
     },
     fromPartial(object) {
         const message = createBaseGetFeedRequest();
-        message.profileId = object.profileId ?? "";
         message.page = object.page ?? 0;
         message.perPage = object.perPage ?? 0;
+        message.role = object.role ?? "";
+        message.roleId = object.roleId ?? "";
         message.userId = object.userId ?? "";
         return message;
     },

@@ -59,10 +59,11 @@ message GenerateUploadUrlResponse {
 }
 
 message GetFeedRequest {
-  string profileId = 1;
-  uint32 page = 2;
-  uint32 perPage = 3; 
-  string userId = 4;
+  uint32 page = 1;
+  uint32 perPage = 2; 
+  string role= 3;
+  string roleId= 4;
+  string userId= 5;
 }
 
 message GetFeedResponse {
