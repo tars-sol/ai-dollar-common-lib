@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetUserPostsRequest = exports.PostResponse = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetProfilePostsRequest = exports.PostResponse = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -761,12 +761,12 @@ exports.GetFeedResponse = {
     },
 };
 function createBaseCreateCommentRequest() {
-    return { profileId: "", text: "", postId: "" };
+    return { userId: "", text: "", postId: "" };
 }
 exports.CreateCommentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.profileId !== "") {
-            writer.uint32(10).string(message.profileId);
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
         }
         if (message.text !== "") {
             writer.uint32(18).string(message.text);
@@ -787,7 +787,7 @@ exports.CreateCommentRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.profileId = reader.string();
+                    message.userId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -814,15 +814,15 @@ exports.CreateCommentRequest = {
     },
     fromJSON(object) {
         return {
-            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             text: isSet(object.text) ? globalThis.String(object.text) : "",
             postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.profileId !== "") {
-            obj.profileId = message.profileId;
+        if (message.userId !== "") {
+            obj.userId = message.userId;
         }
         if (message.text !== "") {
             obj.text = message.text;
@@ -837,19 +837,19 @@ exports.CreateCommentRequest = {
     },
     fromPartial(object) {
         const message = createBaseCreateCommentRequest();
-        message.profileId = object.profileId ?? "";
+        message.userId = object.userId ?? "";
         message.text = object.text ?? "";
         message.postId = object.postId ?? "";
         return message;
     },
 };
 function createBaseCommentResponse() {
-    return { profileId: "", text: "", postId: "", createdAt: "", updatedAt: "", id: "" };
+    return { userId: "", text: "", postId: "", createdAt: "", updatedAt: "", id: "" };
 }
 exports.CommentResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.profileId !== "") {
-            writer.uint32(10).string(message.profileId);
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
         }
         if (message.text !== "") {
             writer.uint32(18).string(message.text);
@@ -879,7 +879,7 @@ exports.CommentResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.profileId = reader.string();
+                    message.userId = reader.string();
                     continue;
                 }
                 case 2: {
@@ -927,7 +927,7 @@ exports.CommentResponse = {
     },
     fromJSON(object) {
         return {
-            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             text: isSet(object.text) ? globalThis.String(object.text) : "",
             postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
@@ -937,8 +937,8 @@ exports.CommentResponse = {
     },
     toJSON(message) {
         const obj = {};
-        if (message.profileId !== "") {
-            obj.profileId = message.profileId;
+        if (message.userId !== "") {
+            obj.userId = message.userId;
         }
         if (message.text !== "") {
             obj.text = message.text;
@@ -962,7 +962,7 @@ exports.CommentResponse = {
     },
     fromPartial(object) {
         const message = createBaseCommentResponse();
-        message.profileId = object.profileId ?? "";
+        message.userId = object.userId ?? "";
         message.text = object.text ?? "";
         message.postId = object.postId ?? "";
         message.createdAt = object.createdAt ?? "";
@@ -2451,10 +2451,10 @@ exports.PostResponse = {
         return message;
     },
 };
-function createBaseGetUserPostsRequest() {
+function createBaseGetProfilePostsRequest() {
     return { profileId: "", userId: "" };
 }
-exports.GetUserPostsRequest = {
+exports.GetProfilePostsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.profileId !== "") {
             writer.uint32(10).string(message.profileId);
@@ -2467,7 +2467,7 @@ exports.GetUserPostsRequest = {
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         const end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetUserPostsRequest();
+        const message = createBaseGetProfilePostsRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -2510,10 +2510,10 @@ exports.GetUserPostsRequest = {
         return obj;
     },
     create(base) {
-        return exports.GetUserPostsRequest.fromPartial(base ?? {});
+        return exports.GetProfilePostsRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGetUserPostsRequest();
+        const message = createBaseGetProfilePostsRequest();
         message.profileId = object.profileId ?? "";
         message.userId = object.userId ?? "";
         return message;
@@ -2529,7 +2529,7 @@ class PostServiceClientImpl {
         this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
         this.GetFeed = this.GetFeed.bind(this);
         this.VoteOnPoll = this.VoteOnPoll.bind(this);
-        this.GetUserPosts = this.GetUserPosts.bind(this);
+        this.GetProfilePosts = this.GetProfilePosts.bind(this);
         this.PostReaction = this.PostReaction.bind(this);
         this.CreateComment = this.CreateComment.bind(this);
         this.GetComments = this.GetComments.bind(this);
@@ -2564,9 +2564,9 @@ class PostServiceClientImpl {
         const promise = this.rpc.request(this.service, "VoteOnPoll", data);
         return promise.then((data) => exports.PostResponse.decode(new wire_1.BinaryReader(data)));
     }
-    GetUserPosts(request) {
-        const data = exports.GetUserPostsRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "GetUserPosts", data);
+    GetProfilePosts(request) {
+        const data = exports.GetProfilePostsRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetProfilePosts", data);
         return promise.then((data) => exports.GetFeedResponse.decode(new wire_1.BinaryReader(data)));
     }
     PostReaction(request) {

@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: profile.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.GetProfileByUserIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
+exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.GetProfileByIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "profile";
@@ -897,20 +897,20 @@ exports.UpdateProfileRequest = {
         return message;
     },
 };
-function createBaseGetProfileByUserIdRequest() {
-    return { userId: "" };
+function createBaseGetProfileByIdRequest() {
+    return { profileId: "" };
 }
-exports.GetProfileByUserIdRequest = {
+exports.GetProfileByIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         const end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetProfileByUserIdRequest();
+        const message = createBaseGetProfileByIdRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -918,7 +918,7 @@ exports.GetProfileByUserIdRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
             }
@@ -930,21 +930,21 @@ exports.GetProfileByUserIdRequest = {
         return message;
     },
     fromJSON(object) {
-        return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+        return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         return obj;
     },
     create(base) {
-        return exports.GetProfileByUserIdRequest.fromPartial(base ?? {});
+        return exports.GetProfileByIdRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGetProfileByUserIdRequest();
-        message.userId = object.userId ?? "";
+        const message = createBaseGetProfileByIdRequest();
+        message.profileId = object.profileId ?? "";
         return message;
     },
 };
@@ -955,7 +955,7 @@ class ProfileServiceClientImpl {
         this.rpc = rpc;
         this.Create = this.Create.bind(this);
         this.Update = this.Update.bind(this);
-        this.GetByUserId = this.GetByUserId.bind(this);
+        this.GetProfileById = this.GetProfileById.bind(this);
         this.SubscribeProfile = this.SubscribeProfile.bind(this);
     }
     Create(request) {
@@ -968,9 +968,9 @@ class ProfileServiceClientImpl {
         const promise = this.rpc.request(this.service, "Update", data);
         return promise.then((data) => exports.ProfileResponse.decode(new wire_1.BinaryReader(data)));
     }
-    GetByUserId(request) {
-        const data = exports.GetProfileByUserIdRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "GetByUserId", data);
+    GetProfileById(request) {
+        const data = exports.GetProfileByIdRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetProfileById", data);
         return promise.then((data) => exports.ProfileResponse.decode(new wire_1.BinaryReader(data)));
     }
     SubscribeProfile(request) {

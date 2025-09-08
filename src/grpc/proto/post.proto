@@ -8,7 +8,7 @@ service PostService {
   rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
   rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
   rpc VoteOnPoll (VoteOnPollRequest) returns (PostResponse);
-  rpc GetUserPosts(GetUserPostsRequest) returns (GetFeedResponse);
+  rpc GetProfilePosts(GetProfilePostsRequest) returns (GetFeedResponse);
   rpc PostReaction(PostReactionRequest) returns (PostResponse);
   rpc CreateComment(CreateCommentRequest) returns (CommentResponse);
   rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
@@ -69,12 +69,12 @@ message GetFeedResponse {
   repeated PostResponse posts = 1;
 }
 message CreateCommentRequest{
-  string profileId = 1;
+  string userId = 1;
   string text = 2;
   string postId = 3;
 }
 message CommentResponse{
-  string profileId = 1;
+  string userId = 1;
   string text = 2;
   string postId = 3;
   string createdAt=4;
@@ -177,7 +177,7 @@ message PostResponse {
   optional bool viewerLiked = 15;
   optional bool viewerDisliked = 16;
 }
-message GetUserPostsRequest{
+message GetProfilePostsRequest{
   string profileId = 1;
   string userId = 2;
 }

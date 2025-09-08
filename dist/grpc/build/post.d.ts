@@ -47,12 +47,12 @@ export interface GetFeedResponse {
     posts: PostResponse[];
 }
 export interface CreateCommentRequest {
-    profileId: string;
+    userId: string;
     text: string;
     postId: string;
 }
 export interface CommentResponse {
-    profileId: string;
+    userId: string;
     text: string;
     postId: string;
     createdAt: string;
@@ -148,7 +148,7 @@ export interface PostResponse {
     viewerLiked?: boolean | undefined;
     viewerDisliked?: boolean | undefined;
 }
-export interface GetUserPostsRequest {
+export interface GetProfilePostsRequest {
     profileId: string;
     userId: string;
 }
@@ -176,14 +176,14 @@ export declare const Creator: MessageFns<Creator>;
 export declare const AddToPortfolioRequest: MessageFns<AddToPortfolioRequest>;
 export declare const RemoveFromPortfolioRequest: MessageFns<RemoveFromPortfolioRequest>;
 export declare const PostResponse: MessageFns<PostResponse>;
-export declare const GetUserPostsRequest: MessageFns<GetUserPostsRequest>;
+export declare const GetProfilePostsRequest: MessageFns<GetProfilePostsRequest>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
-    GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
+    GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
@@ -205,7 +205,7 @@ export declare class PostServiceClientImpl implements PostService {
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
-    GetUserPosts(request: GetUserPostsRequest): Promise<GetFeedResponse>;
+    GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;

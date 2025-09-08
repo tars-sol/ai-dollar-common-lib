@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostComment = void 0;
 const typeorm_1 = require("typeorm");
 const post_entity_1 = require("./post.entity");
-const profile_entity_1 = require("./profile.entity");
+const user_entity_1 = require("./user.entity");
 let PostComment = class PostComment {
 };
 exports.PostComment = PostComment;
@@ -31,15 +31,15 @@ __decorate([
     __metadata("design:type", String)
 ], PostComment.prototype, "postId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", profile_entity_1.Profile)
-], PostComment.prototype, "profile", void 0);
+    __metadata("design:type", user_entity_1.User)
+], PostComment.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], PostComment.prototype, "profileId", void 0);
+], PostComment.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)

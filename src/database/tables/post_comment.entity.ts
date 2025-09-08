@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Post } from './post.entity';
-import { Profile } from './profile.entity';
+import { User } from './user.entity';
 
 @Entity('post_comments')
 export class PostComment {
@@ -23,13 +23,13 @@ export class PostComment {
   @Column()
   postId: string;
 
-  @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn()
-  profile: Profile;
+  user: User;
 
   @Index()
   @Column()
-  profileId: string;
+  userId: string;
 
   @Column({ type: 'text' })
   text: string;

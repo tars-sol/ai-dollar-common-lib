@@ -5,7 +5,7 @@ package profile;
 service ProfileService {
   rpc Create (CreateProfileRequest) returns (ProfileResponse);
   rpc Update (UpdateProfileRequest) returns (ProfileResponse);
-  rpc GetByUserId (GetProfileByUserIdRequest) returns (ProfileResponse);
+  rpc GetProfileById (GetProfileByIdRequest) returns (ProfileResponse);
   rpc SubscribeProfile (SubscribeRequest) returns (ProfileResponse);
 }
 
@@ -67,6 +67,6 @@ message UpdateProfileRequest {
   optional string instagram=11;
 }
 
-message GetProfileByUserIdRequest {
-  string userId = 1;
+message GetProfileByIdRequest {
+  string profileId = 1;
 }

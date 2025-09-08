@@ -54,18 +54,18 @@ export interface UpdateProfileRequest {
     tiktok?: string | undefined;
     instagram?: string | undefined;
 }
-export interface GetProfileByUserIdRequest {
-    userId: string;
+export interface GetProfileByIdRequest {
+    profileId: string;
 }
 export declare const SubscribeRequest: MessageFns<SubscribeRequest>;
 export declare const ProfileResponse: MessageFns<ProfileResponse>;
 export declare const CreateProfileRequest: MessageFns<CreateProfileRequest>;
 export declare const UpdateProfileRequest: MessageFns<UpdateProfileRequest>;
-export declare const GetProfileByUserIdRequest: MessageFns<GetProfileByUserIdRequest>;
+export declare const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest>;
 export interface ProfileService {
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
-    GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
+    GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
     SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
 }
 export declare const ProfileServiceServiceName = "profile.ProfileService";
@@ -77,7 +77,7 @@ export declare class ProfileServiceClientImpl implements ProfileService {
     });
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
-    GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
+    GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
     SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
 }
 interface Rpc {

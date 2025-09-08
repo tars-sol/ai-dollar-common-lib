@@ -67,8 +67,8 @@ export interface UpdateProfileRequest {
   instagram?: string | undefined;
 }
 
-export interface GetProfileByUserIdRequest {
-  userId: string;
+export interface GetProfileByIdRequest {
+  profileId: string;
 }
 
 function createBaseSubscribeRequest(): SubscribeRequest {
@@ -1029,22 +1029,22 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
   },
 };
 
-function createBaseGetProfileByUserIdRequest(): GetProfileByUserIdRequest {
-  return { userId: "" };
+function createBaseGetProfileByIdRequest(): GetProfileByIdRequest {
+  return { profileId: "" };
 }
 
-export const GetProfileByUserIdRequest: MessageFns<GetProfileByUserIdRequest> = {
-  encode(message: GetProfileByUserIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
+  encode(message: GetProfileByIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetProfileByUserIdRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GetProfileByIdRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetProfileByUserIdRequest();
+    const message = createBaseGetProfileByIdRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1053,7 +1053,7 @@ export const GetProfileByUserIdRequest: MessageFns<GetProfileByUserIdRequest> = 
             break;
           }
 
-          message.userId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
       }
@@ -1065,24 +1065,24 @@ export const GetProfileByUserIdRequest: MessageFns<GetProfileByUserIdRequest> = 
     return message;
   },
 
-  fromJSON(object: any): GetProfileByUserIdRequest {
-    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+  fromJSON(object: any): GetProfileByIdRequest {
+    return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
   },
 
-  toJSON(message: GetProfileByUserIdRequest): unknown {
+  toJSON(message: GetProfileByIdRequest): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetProfileByUserIdRequest>, I>>(base?: I): GetProfileByUserIdRequest {
-    return GetProfileByUserIdRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GetProfileByIdRequest>, I>>(base?: I): GetProfileByIdRequest {
+    return GetProfileByIdRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetProfileByUserIdRequest>, I>>(object: I): GetProfileByUserIdRequest {
-    const message = createBaseGetProfileByUserIdRequest();
-    message.userId = object.userId ?? "";
+  fromPartial<I extends Exact<DeepPartial<GetProfileByIdRequest>, I>>(object: I): GetProfileByIdRequest {
+    const message = createBaseGetProfileByIdRequest();
+    message.profileId = object.profileId ?? "";
     return message;
   },
 };
@@ -1090,7 +1090,7 @@ export const GetProfileByUserIdRequest: MessageFns<GetProfileByUserIdRequest> = 
 export interface ProfileService {
   Create(request: CreateProfileRequest): Promise<ProfileResponse>;
   Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
-  GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse>;
+  GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
   SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
 }
 
@@ -1103,7 +1103,7 @@ export class ProfileServiceClientImpl implements ProfileService {
     this.rpc = rpc;
     this.Create = this.Create.bind(this);
     this.Update = this.Update.bind(this);
-    this.GetByUserId = this.GetByUserId.bind(this);
+    this.GetProfileById = this.GetProfileById.bind(this);
     this.SubscribeProfile = this.SubscribeProfile.bind(this);
   }
   Create(request: CreateProfileRequest): Promise<ProfileResponse> {
@@ -1118,9 +1118,9 @@ export class ProfileServiceClientImpl implements ProfileService {
     return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
   }
 
-  GetByUserId(request: GetProfileByUserIdRequest): Promise<ProfileResponse> {
-    const data = GetProfileByUserIdRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "GetByUserId", data);
+  GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse> {
+    const data = GetProfileByIdRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetProfileById", data);
     return promise.then((data) => ProfileResponse.decode(new BinaryReader(data)));
   }
 
