@@ -111,6 +111,7 @@ function createBaseProfileResponse() {
         updatedAt: "",
         jwtToken: undefined,
         refreshToken: undefined,
+        email: undefined,
         followersCount: "",
         followingCount: "",
         subscribersCount: "",
@@ -170,17 +171,20 @@ exports.ProfileResponse = {
         if (message.refreshToken !== undefined) {
             writer.uint32(138).string(message.refreshToken);
         }
+        if (message.email !== undefined) {
+            writer.uint32(146).string(message.email);
+        }
         if (message.followersCount !== "") {
-            writer.uint32(146).string(message.followersCount);
+            writer.uint32(154).string(message.followersCount);
         }
         if (message.followingCount !== "") {
-            writer.uint32(154).string(message.followingCount);
+            writer.uint32(162).string(message.followingCount);
         }
         if (message.subscribersCount !== "") {
-            writer.uint32(162).string(message.subscribersCount);
+            writer.uint32(170).string(message.subscribersCount);
         }
         if (message.subscriptionsCount !== "") {
-            writer.uint32(170).string(message.subscriptionsCount);
+            writer.uint32(178).string(message.subscriptionsCount);
         }
         return writer;
     },
@@ -314,25 +318,32 @@ exports.ProfileResponse = {
                     if (tag !== 146) {
                         break;
                     }
-                    message.followersCount = reader.string();
+                    message.email = reader.string();
                     continue;
                 }
                 case 19: {
                     if (tag !== 154) {
                         break;
                     }
-                    message.followingCount = reader.string();
+                    message.followersCount = reader.string();
                     continue;
                 }
                 case 20: {
                     if (tag !== 162) {
                         break;
                     }
-                    message.subscribersCount = reader.string();
+                    message.followingCount = reader.string();
                     continue;
                 }
                 case 21: {
                     if (tag !== 170) {
+                        break;
+                    }
+                    message.subscribersCount = reader.string();
+                    continue;
+                }
+                case 22: {
+                    if (tag !== 178) {
                         break;
                     }
                     message.subscriptionsCount = reader.string();
@@ -365,6 +376,7 @@ exports.ProfileResponse = {
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
             jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
             refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
+            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
             followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
             followingCount: isSet(object.followingCount) ? globalThis.String(object.followingCount) : "",
             subscribersCount: isSet(object.subscribersCount) ? globalThis.String(object.subscribersCount) : "",
@@ -424,6 +436,9 @@ exports.ProfileResponse = {
         if (message.refreshToken !== undefined) {
             obj.refreshToken = message.refreshToken;
         }
+        if (message.email !== undefined) {
+            obj.email = message.email;
+        }
         if (message.followersCount !== "") {
             obj.followersCount = message.followersCount;
         }
@@ -460,6 +475,7 @@ exports.ProfileResponse = {
         message.updatedAt = object.updatedAt ?? "";
         message.jwtToken = object.jwtToken ?? undefined;
         message.refreshToken = object.refreshToken ?? undefined;
+        message.email = object.email ?? undefined;
         message.followersCount = object.followersCount ?? "";
         message.followingCount = object.followingCount ?? "";
         message.subscribersCount = object.subscribersCount ?? "";
@@ -898,12 +914,15 @@ exports.UpdateProfileRequest = {
     },
 };
 function createBaseGetProfileByIdRequest() {
-    return { profileId: "" };
+    return { isPrivate: false, profileId: "" };
 }
 exports.GetProfileByIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.isPrivate !== false) {
+            writer.uint32(8).bool(message.isPrivate);
+        }
         if (message.profileId !== "") {
-            writer.uint32(10).string(message.profileId);
+            writer.uint32(18).string(message.profileId);
         }
         return writer;
     },
@@ -915,7 +934,14 @@ exports.GetProfileByIdRequest = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1: {
-                    if (tag !== 10) {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.isPrivate = reader.bool();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
                         break;
                     }
                     message.profileId = reader.string();
@@ -930,10 +956,16 @@ exports.GetProfileByIdRequest = {
         return message;
     },
     fromJSON(object) {
-        return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
+        return {
+            isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+        };
     },
     toJSON(message) {
         const obj = {};
+        if (message.isPrivate !== false) {
+            obj.isPrivate = message.isPrivate;
+        }
         if (message.profileId !== "") {
             obj.profileId = message.profileId;
         }
@@ -944,6 +976,7 @@ exports.GetProfileByIdRequest = {
     },
     fromPartial(object) {
         const message = createBaseGetProfileByIdRequest();
+        message.isPrivate = object.isPrivate ?? false;
         message.profileId = object.profileId ?? "";
         return message;
     },

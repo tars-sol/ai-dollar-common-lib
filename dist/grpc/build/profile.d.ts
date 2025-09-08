@@ -23,6 +23,7 @@ export interface ProfileResponse {
     updatedAt: string;
     jwtToken?: string | undefined;
     refreshToken?: string | undefined;
+    email?: string | undefined;
     followersCount: string;
     followingCount: string;
     subscribersCount: string;
@@ -55,6 +56,7 @@ export interface UpdateProfileRequest {
     instagram?: string | undefined;
 }
 export interface GetProfileByIdRequest {
+    isPrivate: boolean;
     profileId: string;
 }
 export declare const SubscribeRequest: MessageFns<SubscribeRequest>;

@@ -33,6 +33,7 @@ export interface ProfileResponse {
   updatedAt: string;
   jwtToken?: string | undefined;
   refreshToken?: string | undefined;
+  email?: string | undefined;
   followersCount: string;
   followingCount: string;
   subscribersCount: string;
@@ -68,6 +69,7 @@ export interface UpdateProfileRequest {
 }
 
 export interface GetProfileByIdRequest {
+  isPrivate: boolean;
   profileId: string;
 }
 
@@ -182,6 +184,7 @@ function createBaseProfileResponse(): ProfileResponse {
     updatedAt: "",
     jwtToken: undefined,
     refreshToken: undefined,
+    email: undefined,
     followersCount: "",
     followingCount: "",
     subscribersCount: "",
@@ -242,17 +245,20 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     if (message.refreshToken !== undefined) {
       writer.uint32(138).string(message.refreshToken);
     }
+    if (message.email !== undefined) {
+      writer.uint32(146).string(message.email);
+    }
     if (message.followersCount !== "") {
-      writer.uint32(146).string(message.followersCount);
+      writer.uint32(154).string(message.followersCount);
     }
     if (message.followingCount !== "") {
-      writer.uint32(154).string(message.followingCount);
+      writer.uint32(162).string(message.followingCount);
     }
     if (message.subscribersCount !== "") {
-      writer.uint32(162).string(message.subscribersCount);
+      writer.uint32(170).string(message.subscribersCount);
     }
     if (message.subscriptionsCount !== "") {
-      writer.uint32(170).string(message.subscriptionsCount);
+      writer.uint32(178).string(message.subscriptionsCount);
     }
     return writer;
   },
@@ -405,7 +411,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
             break;
           }
 
-          message.followersCount = reader.string();
+          message.email = reader.string();
           continue;
         }
         case 19: {
@@ -413,7 +419,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
             break;
           }
 
-          message.followingCount = reader.string();
+          message.followersCount = reader.string();
           continue;
         }
         case 20: {
@@ -421,11 +427,19 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
             break;
           }
 
-          message.subscribersCount = reader.string();
+          message.followingCount = reader.string();
           continue;
         }
         case 21: {
           if (tag !== 170) {
+            break;
+          }
+
+          message.subscribersCount = reader.string();
+          continue;
+        }
+        case 22: {
+          if (tag !== 178) {
             break;
           }
 
@@ -460,6 +474,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
       jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
       refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
       followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
       followingCount: isSet(object.followingCount) ? globalThis.String(object.followingCount) : "",
       subscribersCount: isSet(object.subscribersCount) ? globalThis.String(object.subscribersCount) : "",
@@ -520,6 +535,9 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     if (message.refreshToken !== undefined) {
       obj.refreshToken = message.refreshToken;
     }
+    if (message.email !== undefined) {
+      obj.email = message.email;
+    }
     if (message.followersCount !== "") {
       obj.followersCount = message.followersCount;
     }
@@ -557,6 +575,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     message.updatedAt = object.updatedAt ?? "";
     message.jwtToken = object.jwtToken ?? undefined;
     message.refreshToken = object.refreshToken ?? undefined;
+    message.email = object.email ?? undefined;
     message.followersCount = object.followersCount ?? "";
     message.followingCount = object.followingCount ?? "";
     message.subscribersCount = object.subscribersCount ?? "";
@@ -1030,13 +1049,16 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
 };
 
 function createBaseGetProfileByIdRequest(): GetProfileByIdRequest {
-  return { profileId: "" };
+  return { isPrivate: false, profileId: "" };
 }
 
 export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
   encode(message: GetProfileByIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.isPrivate !== false) {
+      writer.uint32(8).bool(message.isPrivate);
+    }
     if (message.profileId !== "") {
-      writer.uint32(10).string(message.profileId);
+      writer.uint32(18).string(message.profileId);
     }
     return writer;
   },
@@ -1049,7 +1071,15 @@ export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 10) {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.isPrivate = reader.bool();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
             break;
           }
 
@@ -1066,11 +1096,17 @@ export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
   },
 
   fromJSON(object: any): GetProfileByIdRequest {
-    return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
+    return {
+      isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+    };
   },
 
   toJSON(message: GetProfileByIdRequest): unknown {
     const obj: any = {};
+    if (message.isPrivate !== false) {
+      obj.isPrivate = message.isPrivate;
+    }
     if (message.profileId !== "") {
       obj.profileId = message.profileId;
     }
@@ -1082,6 +1118,7 @@ export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetProfileByIdRequest>, I>>(object: I): GetProfileByIdRequest {
     const message = createBaseGetProfileByIdRequest();
+    message.isPrivate = object.isPrivate ?? false;
     message.profileId = object.profileId ?? "";
     return message;
   },
