@@ -33,7 +33,6 @@ __exportStar(require("./post_reaction.entity"), exports);
 __exportStar(require("./user_follow.entity"), exports);
 __exportStar(require("./profile_campaign.entity"), exports);
 __exportStar(require("./profile_subscribe.entity"), exports);
-__exportStar(require("./profile_events.entity"), exports);
 __exportStar(require("./revoked_tokens.entity"), exports);
 __exportStar(require("./event_queue_user.entity"), exports);
 __exportStar(require("./event_queue_post.entity"), exports);
