@@ -20,7 +20,7 @@ export const Database = new DataSource({
   database,
   schema,
   synchronize: false,
-  migrationsRun: true,
+  migrationsRun: false,
   logging: false,
   entities: [
     __dirname + '/tables/**.entity.{js,ts}',

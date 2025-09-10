@@ -15,9 +15,10 @@
     "prepare": "npm run build:proto && husky install",
     "lint": "eslint --fix .",
     "typeorm": "ts-node ./node_modules/.bin/typeorm",
-    "migration:generate": "npm run typeorm -- migration:generate -d src/database src/database/migrations/$npm_config_name",
-    "migrate": "npm run typeorm -- migration:run -d src/database",
-    "migration:revert": "npm run typeorm -- migration:revert -d src/database"
+    "migration:generate": "npm run typeorm -- migration:generate -d src/database/datasource.ts src/database/migrations/$npm_config_name",
+    "migrate": "npm run typeorm -- migration:run -d src/database/datasource.ts",
+    "migration:revert": "npm run typeorm -- migration:revert -d src/database/datasource.ts",
+    "db:seed": "ts-node src/database/seed/run.ts"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^2.6.0",
