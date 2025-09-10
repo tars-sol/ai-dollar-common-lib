@@ -73,20 +73,24 @@ message CreateCommentRequest{
   string userId = 1;
   string text = 2;
   string postId = 3;
+  string role = 5;
 }
 message CommentResponse{
-  string userId = 1;
   string text = 2;
   string postId = 3;
   string createdAt=4;
   string updatedAt=5;
   string id = 6;
+  optional CommentCreator commentCreator = 7;
 }
 message GetCommentsRequest{
   string postId=1;
 }
 message GetPortfolioRequest{
-  string profileId=1;
+  string profileId = 1;
+  string userId = 2;
+  string role = 3;
+  string roleId = 4;
 }
 message GetCommentsResponse{
  repeated CommentResponse comments=1;
@@ -159,7 +163,14 @@ message RemoveFromPortfolioRequest{
   string profileId= 1;
   repeated string postIds= 2;
 }
-
+message CommentCreator{
+  string name = 1;
+  string image = 2;
+  bool isVerified = 3;
+  string roleId = 4;
+  string role = 5;
+  string userId = 6;
+}
 message PostResponse {
   string id = 1;
   string profileId = 2;

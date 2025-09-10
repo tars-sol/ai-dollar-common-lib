@@ -10,7 +10,17 @@ exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "campaign";
 function createBaseCreateCampaignRequest() {
-    return { brandId: "", amountToInvest: 0, startDate: "", endDate: "", tasks: [], name: "", description: "" };
+    return {
+        brandId: "",
+        amountToInvest: 0,
+        startDate: "",
+        endDate: "",
+        tasks: [],
+        name: "",
+        description: "",
+        profileIds: [],
+        isPrivate: false,
+    };
 }
 exports.CreateCampaignRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -34,6 +44,12 @@ exports.CreateCampaignRequest = {
         }
         if (message.description !== "") {
             writer.uint32(58).string(message.description);
+        }
+        for (const v of message.profileIds) {
+            writer.uint32(74).string(v);
+        }
+        if (message.isPrivate !== false) {
+            writer.uint32(80).bool(message.isPrivate);
         }
         return writer;
     },
@@ -93,6 +109,20 @@ exports.CreateCampaignRequest = {
                     message.description = reader.string();
                     continue;
                 }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.profileIds.push(reader.string());
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 80) {
+                        break;
+                    }
+                    message.isPrivate = reader.bool();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -110,6 +140,10 @@ exports.CreateCampaignRequest = {
             tasks: globalThis.Array.isArray(object?.tasks) ? object.tasks.map((e) => exports.TaskInput.fromJSON(e)) : [],
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
+            profileIds: globalThis.Array.isArray(object?.profileIds)
+                ? object.profileIds.map((e) => globalThis.String(e))
+                : [],
+            isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
         };
     },
     toJSON(message) {
@@ -135,6 +169,12 @@ exports.CreateCampaignRequest = {
         if (message.description !== "") {
             obj.description = message.description;
         }
+        if (message.profileIds?.length) {
+            obj.profileIds = message.profileIds;
+        }
+        if (message.isPrivate !== false) {
+            obj.isPrivate = message.isPrivate;
+        }
         return obj;
     },
     create(base) {
@@ -149,6 +189,8 @@ exports.CreateCampaignRequest = {
         message.tasks = object.tasks?.map((e) => exports.TaskInput.fromPartial(e)) || [];
         message.name = object.name ?? "";
         message.description = object.description ?? "";
+        message.profileIds = object.profileIds?.map((e) => e) || [];
+        message.isPrivate = object.isPrivate ?? false;
         return message;
     },
 };
@@ -826,12 +868,27 @@ exports.TaskResponse = {
     },
 };
 function createBaseGetCampaignsByBrandIdRequest() {
-    return { brandId: "" };
+    return { roleId: "", role: "", brandId: "", sortBy: "", sortOrder: "", filterByStatus: "" };
 }
 exports.GetCampaignsByBrandIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.roleId !== "") {
+            writer.uint32(10).string(message.roleId);
+        }
+        if (message.role !== "") {
+            writer.uint32(26).string(message.role);
+        }
         if (message.brandId !== "") {
-            writer.uint32(10).string(message.brandId);
+            writer.uint32(18).string(message.brandId);
+        }
+        if (message.sortBy !== "") {
+            writer.uint32(34).string(message.sortBy);
+        }
+        if (message.sortOrder !== "") {
+            writer.uint32(42).string(message.sortOrder);
+        }
+        if (message.filterByStatus !== "") {
+            writer.uint32(50).string(message.filterByStatus);
         }
         return writer;
     },
@@ -846,7 +903,42 @@ exports.GetCampaignsByBrandIdRequest = {
                     if (tag !== 10) {
                         break;
                     }
+                    message.roleId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
                     message.brandId = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.sortBy = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.sortOrder = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.filterByStatus = reader.string();
                     continue;
                 }
             }
@@ -858,12 +950,34 @@ exports.GetCampaignsByBrandIdRequest = {
         return message;
     },
     fromJSON(object) {
-        return { brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "" };
+        return {
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+            sortBy: isSet(object.sortBy) ? globalThis.String(object.sortBy) : "",
+            sortOrder: isSet(object.sortOrder) ? globalThis.String(object.sortOrder) : "",
+            filterByStatus: isSet(object.filterByStatus) ? globalThis.String(object.filterByStatus) : "",
+        };
     },
     toJSON(message) {
         const obj = {};
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
         if (message.brandId !== "") {
             obj.brandId = message.brandId;
+        }
+        if (message.sortBy !== "") {
+            obj.sortBy = message.sortBy;
+        }
+        if (message.sortOrder !== "") {
+            obj.sortOrder = message.sortOrder;
+        }
+        if (message.filterByStatus !== "") {
+            obj.filterByStatus = message.filterByStatus;
         }
         return obj;
     },
@@ -872,7 +986,12 @@ exports.GetCampaignsByBrandIdRequest = {
     },
     fromPartial(object) {
         const message = createBaseGetCampaignsByBrandIdRequest();
+        message.roleId = object.roleId ?? "";
+        message.role = object.role ?? "";
         message.brandId = object.brandId ?? "";
+        message.sortBy = object.sortBy ?? "";
+        message.sortOrder = object.sortOrder ?? "";
+        message.filterByStatus = object.filterByStatus ?? "";
         return message;
     },
 };

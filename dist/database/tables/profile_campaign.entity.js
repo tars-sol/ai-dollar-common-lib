@@ -9,41 +9,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserCampaign = void 0;
+exports.ProfileCampaign = void 0;
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
 const campaign_entity_1 = require("./campaign.entity");
-let UserCampaign = class UserCampaign {
+let ProfileCampaign = class ProfileCampaign {
 };
-exports.UserCampaign = UserCampaign;
+exports.ProfileCampaign = ProfileCampaign;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], UserCampaign.prototype, "id", void 0);
+], ProfileCampaign.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)({ name: 'userId' }),
+    (0, typeorm_1.JoinColumn)({ name: 'profileId' }),
     __metadata("design:type", profile_entity_1.Profile)
-], UserCampaign.prototype, "user", void 0);
+], ProfileCampaign.prototype, "profile", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], UserCampaign.prototype, "userId", void 0);
+], ProfileCampaign.prototype, "profileId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => campaign_entity_1.Campaign, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'campaignId' }),
     __metadata("design:type", campaign_entity_1.Campaign)
-], UserCampaign.prototype, "campaign", void 0);
+], ProfileCampaign.prototype, "campaign", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], UserCampaign.prototype, "campaignId", void 0);
+], ProfileCampaign.prototype, "campaignId", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], UserCampaign.prototype, "joinedAt", void 0);
-exports.UserCampaign = UserCampaign = __decorate([
-    (0, typeorm_1.Entity)('user_campaigns'),
-    (0, typeorm_1.Unique)(['userId', 'campaignId']) // prevent duplicate entries
-], UserCampaign);
-//# sourceMappingURL=user_campaign.entity.js.map
+], ProfileCampaign.prototype, "joinedAt", void 0);
+exports.ProfileCampaign = ProfileCampaign = __decorate([
+    (0, typeorm_1.Entity)('profile_campaigns'),
+    (0, typeorm_1.Unique)(['profileId', 'campaignId']) // prevent duplicate entries
+], ProfileCampaign);
+//# sourceMappingURL=profile_campaign.entity.js.map

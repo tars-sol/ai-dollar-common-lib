@@ -9,6 +9,8 @@ export interface CreateCampaignRequest {
     tasks: TaskInput[];
     name: string;
     description: string;
+    profileIds: string[];
+    isPrivate: boolean;
 }
 /** Single task input (part of the campaign) */
 export interface TaskInput {
@@ -55,7 +57,15 @@ export interface TaskResponse {
     updatedAt: string;
 }
 export interface GetCampaignsByBrandIdRequest {
+    roleId: string;
+    role: string;
     brandId: string;
+    /** e.g., "createdAt", "amountToInvest" */
+    sortBy: string;
+    /** "asc" or "desc" */
+    sortOrder: string;
+    /** e.g., "active", "completed" */
+    filterByStatus: string;
 }
 export interface CampaignsByIdRequest {
     id: string;

@@ -51,20 +51,24 @@ export interface CreateCommentRequest {
     userId: string;
     text: string;
     postId: string;
+    role: string;
 }
 export interface CommentResponse {
-    userId: string;
     text: string;
     postId: string;
     createdAt: string;
     updatedAt: string;
     id: string;
+    commentCreator?: CommentCreator | undefined;
 }
 export interface GetCommentsRequest {
     postId: string;
 }
 export interface GetPortfolioRequest {
     profileId: string;
+    userId: string;
+    role: string;
+    roleId: string;
 }
 export interface GetCommentsResponse {
     comments: CommentResponse[];
@@ -131,6 +135,14 @@ export interface RemoveFromPortfolioRequest {
     profileId: string;
     postIds: string[];
 }
+export interface CommentCreator {
+    name: string;
+    image: string;
+    isVerified: boolean;
+    roleId: string;
+    role: string;
+    userId: string;
+}
 export interface PostResponse {
     id: string;
     profileId: string;
@@ -176,6 +188,7 @@ export declare const PostReactionRequest: MessageFns<PostReactionRequest>;
 export declare const Creator: MessageFns<Creator>;
 export declare const AddToPortfolioRequest: MessageFns<AddToPortfolioRequest>;
 export declare const RemoveFromPortfolioRequest: MessageFns<RemoveFromPortfolioRequest>;
+export declare const CommentCreator: MessageFns<CommentCreator>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export declare const GetProfilePostsRequest: MessageFns<GetProfilePostsRequest>;
 export interface PostService {

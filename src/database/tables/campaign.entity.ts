@@ -12,6 +12,17 @@ import {
 import { Brand } from './brand.entity';
 import { Task } from './task.entity';
 import { Payment } from './payment.entity';
+export enum CampaignStatus {
+  DRAFT = 'DRAFT', // Campaign created but required fields are incomplete
+  AWAITING_PAYMENT = 'AWAITING_PAYMENT', // Details complete, Stripe session initiated but payment not received
+  FUNDED_PENDING_START = 'FUNDED_PENDING_START', // Fully paid, startDate is in the future
+  ACTIVE = 'ACTIVE', // startDate reached, campaign is live
+  ENDED_PENDING_PAYOUT = 'ENDED_PENDING_PAYOUT', // endDate passed, payouts not triggered yet
+  ENDED_PARTIALLY_PAID = 'ENDED_PARTIALLY_PAID', // Some payouts made, others pending
+  ENDED_PAID = 'ENDED_PAID', // All payouts successfully dispatched or refunded
+  EXPIRED_UNFUNDED = 'EXPIRED_UNFUNDED', // startDate passed but no payment received
+  CANCELLED = 'CANCELLED', // Campaign was cancelled
+}
 
 @Entity('campaigns')
 export class Campaign {
@@ -30,12 +41,19 @@ export class Campaign {
   description: string;
   @Column()
   brandId: string;
+  @Column({
+    type: 'enum',
+    enum: CampaignStatus,
+    default: CampaignStatus.DRAFT,
+  })
+  status: CampaignStatus;
 
   @OneToMany(() => Task, (task) => task.campaign, {
     cascade: true,
   })
   tasks: Task[];
-
+  @Column({ type: 'boolean', default: false })
+  isPrivate: boolean;
   @Column('numeric', { precision: 12, scale: 2 })
   amountToInvest: number;
   @Column({ type: 'timestamp' })

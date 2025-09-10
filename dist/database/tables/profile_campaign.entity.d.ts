@@ -1,9 +1,9 @@
 import { Profile } from './profile.entity';
 import { Campaign } from './campaign.entity';
-export declare class UserCampaign {
+export declare class ProfileCampaign {
     id: string;
-    user: Profile;
-    userId: string;
+    profile: Profile;
+    profileId: string;
     campaign: Campaign;
     campaignId: string;
     joinedAt: Date;

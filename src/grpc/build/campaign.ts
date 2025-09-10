@@ -18,6 +18,8 @@ export interface CreateCampaignRequest {
   tasks: TaskInput[];
   name: string;
   description: string;
+  profileIds: string[];
+  isPrivate: boolean;
 }
 
 /** Single task input (part of the campaign) */
@@ -70,7 +72,15 @@ export interface TaskResponse {
 }
 
 export interface GetCampaignsByBrandIdRequest {
+  roleId: string;
+  role: string;
   brandId: string;
+  /** e.g., "createdAt", "amountToInvest" */
+  sortBy: string;
+  /** "asc" or "desc" */
+  sortOrder: string;
+  /** e.g., "active", "completed" */
+  filterByStatus: string;
 }
 
 export interface CampaignsByIdRequest {
@@ -100,7 +110,17 @@ export interface GetCampaignsResponse {
 }
 
 function createBaseCreateCampaignRequest(): CreateCampaignRequest {
-  return { brandId: "", amountToInvest: 0, startDate: "", endDate: "", tasks: [], name: "", description: "" };
+  return {
+    brandId: "",
+    amountToInvest: 0,
+    startDate: "",
+    endDate: "",
+    tasks: [],
+    name: "",
+    description: "",
+    profileIds: [],
+    isPrivate: false,
+  };
 }
 
 export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
@@ -125,6 +145,12 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
     }
     if (message.description !== "") {
       writer.uint32(58).string(message.description);
+    }
+    for (const v of message.profileIds) {
+      writer.uint32(74).string(v!);
+    }
+    if (message.isPrivate !== false) {
+      writer.uint32(80).bool(message.isPrivate);
     }
     return writer;
   },
@@ -192,6 +218,22 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
           message.description = reader.string();
           continue;
         }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.profileIds.push(reader.string());
+          continue;
+        }
+        case 10: {
+          if (tag !== 80) {
+            break;
+          }
+
+          message.isPrivate = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -210,6 +252,10 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
       tasks: globalThis.Array.isArray(object?.tasks) ? object.tasks.map((e: any) => TaskInput.fromJSON(e)) : [],
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
+      profileIds: globalThis.Array.isArray(object?.profileIds)
+        ? object.profileIds.map((e: any) => globalThis.String(e))
+        : [],
+      isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
     };
   },
 
@@ -236,6 +282,12 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
     if (message.description !== "") {
       obj.description = message.description;
     }
+    if (message.profileIds?.length) {
+      obj.profileIds = message.profileIds;
+    }
+    if (message.isPrivate !== false) {
+      obj.isPrivate = message.isPrivate;
+    }
     return obj;
   },
 
@@ -251,6 +303,8 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
     message.tasks = object.tasks?.map((e) => TaskInput.fromPartial(e)) || [];
     message.name = object.name ?? "";
     message.description = object.description ?? "";
+    message.profileIds = object.profileIds?.map((e) => e) || [];
+    message.isPrivate = object.isPrivate ?? false;
     return message;
   },
 };
@@ -990,13 +1044,28 @@ export const TaskResponse: MessageFns<TaskResponse> = {
 };
 
 function createBaseGetCampaignsByBrandIdRequest(): GetCampaignsByBrandIdRequest {
-  return { brandId: "" };
+  return { roleId: "", role: "", brandId: "", sortBy: "", sortOrder: "", filterByStatus: "" };
 }
 
 export const GetCampaignsByBrandIdRequest: MessageFns<GetCampaignsByBrandIdRequest> = {
   encode(message: GetCampaignsByBrandIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.roleId !== "") {
+      writer.uint32(10).string(message.roleId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
     if (message.brandId !== "") {
-      writer.uint32(10).string(message.brandId);
+      writer.uint32(18).string(message.brandId);
+    }
+    if (message.sortBy !== "") {
+      writer.uint32(34).string(message.sortBy);
+    }
+    if (message.sortOrder !== "") {
+      writer.uint32(42).string(message.sortOrder);
+    }
+    if (message.filterByStatus !== "") {
+      writer.uint32(50).string(message.filterByStatus);
     }
     return writer;
   },
@@ -1013,7 +1082,47 @@ export const GetCampaignsByBrandIdRequest: MessageFns<GetCampaignsByBrandIdReque
             break;
           }
 
+          message.roleId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
           message.brandId = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.sortBy = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.sortOrder = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.filterByStatus = reader.string();
           continue;
         }
       }
@@ -1026,13 +1135,35 @@ export const GetCampaignsByBrandIdRequest: MessageFns<GetCampaignsByBrandIdReque
   },
 
   fromJSON(object: any): GetCampaignsByBrandIdRequest {
-    return { brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "" };
+    return {
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      sortBy: isSet(object.sortBy) ? globalThis.String(object.sortBy) : "",
+      sortOrder: isSet(object.sortOrder) ? globalThis.String(object.sortOrder) : "",
+      filterByStatus: isSet(object.filterByStatus) ? globalThis.String(object.filterByStatus) : "",
+    };
   },
 
   toJSON(message: GetCampaignsByBrandIdRequest): unknown {
     const obj: any = {};
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
     if (message.brandId !== "") {
       obj.brandId = message.brandId;
+    }
+    if (message.sortBy !== "") {
+      obj.sortBy = message.sortBy;
+    }
+    if (message.sortOrder !== "") {
+      obj.sortOrder = message.sortOrder;
+    }
+    if (message.filterByStatus !== "") {
+      obj.filterByStatus = message.filterByStatus;
     }
     return obj;
   },
@@ -1042,7 +1173,12 @@ export const GetCampaignsByBrandIdRequest: MessageFns<GetCampaignsByBrandIdReque
   },
   fromPartial<I extends Exact<DeepPartial<GetCampaignsByBrandIdRequest>, I>>(object: I): GetCampaignsByBrandIdRequest {
     const message = createBaseGetCampaignsByBrandIdRequest();
+    message.roleId = object.roleId ?? "";
+    message.role = object.role ?? "";
     message.brandId = object.brandId ?? "";
+    message.sortBy = object.sortBy ?? "";
+    message.sortOrder = object.sortOrder ?? "";
+    message.filterByStatus = object.filterByStatus ?? "";
     return message;
   },
 };

@@ -9,11 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Campaign = void 0;
+exports.Campaign = exports.CampaignStatus = void 0;
 const typeorm_1 = require("typeorm");
 const brand_entity_1 = require("./brand.entity");
 const task_entity_1 = require("./task.entity");
 const payment_entity_1 = require("./payment.entity");
+var CampaignStatus;
+(function (CampaignStatus) {
+    CampaignStatus["DRAFT"] = "DRAFT";
+    CampaignStatus["AWAITING_PAYMENT"] = "AWAITING_PAYMENT";
+    CampaignStatus["FUNDED_PENDING_START"] = "FUNDED_PENDING_START";
+    CampaignStatus["ACTIVE"] = "ACTIVE";
+    CampaignStatus["ENDED_PENDING_PAYOUT"] = "ENDED_PENDING_PAYOUT";
+    CampaignStatus["ENDED_PARTIALLY_PAID"] = "ENDED_PARTIALLY_PAID";
+    CampaignStatus["ENDED_PAID"] = "ENDED_PAID";
+    CampaignStatus["EXPIRED_UNFUNDED"] = "EXPIRED_UNFUNDED";
+    CampaignStatus["CANCELLED"] = "CANCELLED";
+})(CampaignStatus || (exports.CampaignStatus = CampaignStatus = {}));
 let Campaign = class Campaign {
 };
 exports.Campaign = Campaign;
@@ -42,11 +54,23 @@ __decorate([
     __metadata("design:type", String)
 ], Campaign.prototype, "brandId", void 0);
 __decorate([
+    (0, typeorm_1.Column)({
+        type: 'enum',
+        enum: CampaignStatus,
+        default: CampaignStatus.DRAFT,
+    }),
+    __metadata("design:type", String)
+], Campaign.prototype, "status", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => task_entity_1.Task, (task) => task.campaign, {
         cascade: true,
     }),
     __metadata("design:type", Array)
 ], Campaign.prototype, "tasks", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
+], Campaign.prototype, "isPrivate", void 0);
 __decorate([
     (0, typeorm_1.Column)('numeric', { precision: 12, scale: 2 }),
     __metadata("design:type", Number)

@@ -11,6 +11,8 @@ message CreateCampaignRequest {
   repeated TaskInput tasks = 5;
   string name = 6;
   string description = 7;
+  repeated string profileIds = 9;
+  bool isPrivate = 10;
 }
 
 // Single task input (part of the campaign)
@@ -40,6 +42,7 @@ message CampaignResponse {
   string name = 9;
   string description = 10;
 
+
 }
 message UpdateCampaignRequest {
   string id = 1;
@@ -63,7 +66,13 @@ message TaskResponse{
   string updatedAt = 6;
 }
 message GetCampaignsByBrandIdRequest{
-  string brandId = 1;
+  string roleId = 1;
+  string role = 3;
+  string brandId = 2;
+  string sortBy = 4; // e.g., "createdAt", "amountToInvest"
+  string sortOrder = 5; // "asc" or "desc"
+  string filterByStatus = 6; // e.g., "active", "completed"
+
 }
 message CampaignsByIdRequest{
   string id = 1;
