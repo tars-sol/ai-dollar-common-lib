@@ -1,9 +1,11 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "profile";
 export interface SubscribeRequest {
-    profileId: string;
     targetId: string;
     subscribe: boolean;
+    roleId: string;
+    userId: string;
+    role: string;
 }
 export interface ProfileResponse {
     id: string;
@@ -59,16 +61,20 @@ export interface GetProfileByIdRequest {
     isPrivate: boolean;
     profileId: string;
 }
+export interface SuccessResponse {
+    success: boolean;
+}
 export declare const SubscribeRequest: MessageFns<SubscribeRequest>;
 export declare const ProfileResponse: MessageFns<ProfileResponse>;
 export declare const CreateProfileRequest: MessageFns<CreateProfileRequest>;
 export declare const UpdateProfileRequest: MessageFns<UpdateProfileRequest>;
 export declare const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest>;
+export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export interface ProfileService {
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
     GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
-    SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
+    SubscribeProfile(request: SubscribeRequest): Promise<SuccessResponse>;
 }
 export declare const ProfileServiceServiceName = "profile.ProfileService";
 export declare class ProfileServiceClientImpl implements ProfileService {
@@ -80,7 +86,7 @@ export declare class ProfileServiceClientImpl implements ProfileService {
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
     GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
-    SubscribeProfile(request: SubscribeRequest): Promise<ProfileResponse>;
+    SubscribeProfile(request: SubscribeRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

@@ -5,23 +5,29 @@
 //   protoc               v3.21.12
 // source: profile.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.GetProfileByIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
+exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.SuccessResponse = exports.GetProfileByIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "profile";
 function createBaseSubscribeRequest() {
-    return { profileId: "", targetId: "", subscribe: false };
+    return { targetId: "", subscribe: false, roleId: "", userId: "", role: "" };
 }
 exports.SubscribeRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.profileId !== "") {
-            writer.uint32(10).string(message.profileId);
-        }
         if (message.targetId !== "") {
             writer.uint32(18).string(message.targetId);
         }
         if (message.subscribe !== false) {
             writer.uint32(24).bool(message.subscribe);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(34).string(message.roleId);
+        }
+        if (message.userId !== "") {
+            writer.uint32(42).string(message.userId);
+        }
+        if (message.role !== "") {
+            writer.uint32(50).string(message.role);
         }
         return writer;
     },
@@ -32,13 +38,6 @@ exports.SubscribeRequest = {
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
-                case 1: {
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.profileId = reader.string();
-                    continue;
-                }
                 case 2: {
                     if (tag !== 18) {
                         break;
@@ -53,6 +52,27 @@ exports.SubscribeRequest = {
                     message.subscribe = reader.bool();
                     continue;
                 }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -63,21 +83,29 @@ exports.SubscribeRequest = {
     },
     fromJSON(object) {
         return {
-            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             targetId: isSet(object.targetId) ? globalThis.String(object.targetId) : "",
             subscribe: isSet(object.subscribe) ? globalThis.Boolean(object.subscribe) : false,
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.profileId !== "") {
-            obj.profileId = message.profileId;
-        }
         if (message.targetId !== "") {
             obj.targetId = message.targetId;
         }
         if (message.subscribe !== false) {
             obj.subscribe = message.subscribe;
+        }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
         }
         return obj;
     },
@@ -86,9 +114,11 @@ exports.SubscribeRequest = {
     },
     fromPartial(object) {
         const message = createBaseSubscribeRequest();
-        message.profileId = object.profileId ?? "";
         message.targetId = object.targetId ?? "";
         message.subscribe = object.subscribe ?? false;
+        message.roleId = object.roleId ?? "";
+        message.userId = object.userId ?? "";
+        message.role = object.role ?? "";
         return message;
     },
 };
@@ -981,6 +1011,57 @@ exports.GetProfileByIdRequest = {
         return message;
     },
 };
+function createBaseSuccessResponse() {
+    return { success: false };
+}
+exports.SuccessResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.success !== false) {
+            writer.uint32(8).bool(message.success);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSuccessResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.success = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.success !== false) {
+            obj.success = message.success;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SuccessResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSuccessResponse();
+        message.success = object.success ?? false;
+        return message;
+    },
+};
 exports.ProfileServiceServiceName = "profile.ProfileService";
 class ProfileServiceClientImpl {
     constructor(rpc, opts) {
@@ -1009,7 +1090,7 @@ class ProfileServiceClientImpl {
     SubscribeProfile(request) {
         const data = exports.SubscribeRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "SubscribeProfile", data);
-        return promise.then((data) => exports.ProfileResponse.decode(new wire_1.BinaryReader(data)));
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.ProfileServiceClientImpl = ProfileServiceClientImpl;

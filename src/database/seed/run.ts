@@ -53,6 +53,7 @@ async function seedUserProfileAndPosts(tx: EntityManager) {
       isDeleted: false,
       role: Role.PROFILE,
       followersCount: 0,
+      subscriptionsCount:0,
       followingCount: 0,
     };
     user = userRepo.create(userData);
@@ -73,7 +74,6 @@ async function seedUserProfileAndPosts(tx: EntityManager) {
       bio: 'Demo profile seeded for local/dev.',
       isVerified: false,
       subscribersCount: 0,
-      subscriptionsCount: 0,
     };
     profile = profileRepo.create(profileData);
     profile = await profileRepo.save(profile);

@@ -14,6 +14,7 @@ export declare class User {
     role: Role;
     followersCount: number;
     followingCount: number;
+    subscriptionsCount: number;
     createdAt: Date;
     updatedAt: Date;
 }

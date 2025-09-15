@@ -41,6 +41,6 @@ __decorate([
     __metadata("design:type", Date)
 ], BrandBalance.prototype, "updatedAt", void 0);
 exports.BrandBalance = BrandBalance = __decorate([
-    (0, typeorm_1.Entity)('balances')
+    (0, typeorm_1.Entity)('brand_balances')
 ], BrandBalance);
 //# sourceMappingURL=brand_balance.entity.js.map

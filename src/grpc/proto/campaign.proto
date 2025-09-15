@@ -39,6 +39,8 @@ message CampaignResponse {
   string endDate = 5;
   string createdAt = 7;
   string updatedAt = 8;
+  string status = 11;
+  bool isPrivate = 12;
   string name = 9;
   string description = 10;
 
@@ -68,14 +70,21 @@ message TaskResponse{
 message GetCampaignsByBrandIdRequest{
   string roleId = 1;
   string role = 3;
-  string brandId = 2;
-  string sortBy = 4; // e.g., "createdAt", "amountToInvest"
-  string sortOrder = 5; // "asc" or "desc"
-  string filterByStatus = 6; // e.g., "active", "completed"
+  optional string brandId = 2;
+  optional string sortBy = 4; // e.g., "createdAt", "amountToInvest"
+  optional string sortOrder = 5; // "asc" or "desc"
+  optional string status = 6; // e.g., "active", "completed"
+
+  optional string startDateFrom=7; // e.g., "2023-01-01"
+  optional string startDateTo=8; // e.g., "2023-12-31"
+  optional string endDateFrom=9; // e.g., "2023-01-01"
+  optional string endDateTo=10; // e.g., "2023-12-31"
 
 }
 message CampaignsByIdRequest{
   string id = 1;
+  string roleId = 3;
+  string role = 4;
 }
 message DeleteTaskByIdRequest{
   string brandId = 2;

@@ -399,6 +399,8 @@ function createBaseCampaignResponse() {
         endDate: "",
         createdAt: "",
         updatedAt: "",
+        status: "",
+        isPrivate: false,
         name: "",
         description: "",
     };
@@ -425,6 +427,12 @@ exports.CampaignResponse = {
         }
         if (message.updatedAt !== "") {
             writer.uint32(66).string(message.updatedAt);
+        }
+        if (message.status !== "") {
+            writer.uint32(90).string(message.status);
+        }
+        if (message.isPrivate !== false) {
+            writer.uint32(96).bool(message.isPrivate);
         }
         if (message.name !== "") {
             writer.uint32(74).string(message.name);
@@ -490,6 +498,20 @@ exports.CampaignResponse = {
                     message.updatedAt = reader.string();
                     continue;
                 }
+                case 11: {
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.status = reader.string();
+                    continue;
+                }
+                case 12: {
+                    if (tag !== 96) {
+                        break;
+                    }
+                    message.isPrivate = reader.bool();
+                    continue;
+                }
                 case 9: {
                     if (tag !== 74) {
                         break;
@@ -521,6 +543,8 @@ exports.CampaignResponse = {
             endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+            status: isSet(object.status) ? globalThis.String(object.status) : "",
+            isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
         };
@@ -548,6 +572,12 @@ exports.CampaignResponse = {
         if (message.updatedAt !== "") {
             obj.updatedAt = message.updatedAt;
         }
+        if (message.status !== "") {
+            obj.status = message.status;
+        }
+        if (message.isPrivate !== false) {
+            obj.isPrivate = message.isPrivate;
+        }
         if (message.name !== "") {
             obj.name = message.name;
         }
@@ -568,6 +598,8 @@ exports.CampaignResponse = {
         message.endDate = object.endDate ?? "";
         message.createdAt = object.createdAt ?? "";
         message.updatedAt = object.updatedAt ?? "";
+        message.status = object.status ?? "";
+        message.isPrivate = object.isPrivate ?? false;
         message.name = object.name ?? "";
         message.description = object.description ?? "";
         return message;
@@ -868,7 +900,18 @@ exports.TaskResponse = {
     },
 };
 function createBaseGetCampaignsByBrandIdRequest() {
-    return { roleId: "", role: "", brandId: "", sortBy: "", sortOrder: "", filterByStatus: "" };
+    return {
+        roleId: "",
+        role: "",
+        brandId: undefined,
+        sortBy: undefined,
+        sortOrder: undefined,
+        status: undefined,
+        startDateFrom: undefined,
+        startDateTo: undefined,
+        endDateFrom: undefined,
+        endDateTo: undefined,
+    };
 }
 exports.GetCampaignsByBrandIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -878,17 +921,29 @@ exports.GetCampaignsByBrandIdRequest = {
         if (message.role !== "") {
             writer.uint32(26).string(message.role);
         }
-        if (message.brandId !== "") {
+        if (message.brandId !== undefined) {
             writer.uint32(18).string(message.brandId);
         }
-        if (message.sortBy !== "") {
+        if (message.sortBy !== undefined) {
             writer.uint32(34).string(message.sortBy);
         }
-        if (message.sortOrder !== "") {
+        if (message.sortOrder !== undefined) {
             writer.uint32(42).string(message.sortOrder);
         }
-        if (message.filterByStatus !== "") {
-            writer.uint32(50).string(message.filterByStatus);
+        if (message.status !== undefined) {
+            writer.uint32(50).string(message.status);
+        }
+        if (message.startDateFrom !== undefined) {
+            writer.uint32(58).string(message.startDateFrom);
+        }
+        if (message.startDateTo !== undefined) {
+            writer.uint32(66).string(message.startDateTo);
+        }
+        if (message.endDateFrom !== undefined) {
+            writer.uint32(74).string(message.endDateFrom);
+        }
+        if (message.endDateTo !== undefined) {
+            writer.uint32(82).string(message.endDateTo);
         }
         return writer;
     },
@@ -938,7 +993,35 @@ exports.GetCampaignsByBrandIdRequest = {
                     if (tag !== 50) {
                         break;
                     }
-                    message.filterByStatus = reader.string();
+                    message.status = reader.string();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.startDateFrom = reader.string();
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.startDateTo = reader.string();
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.endDateFrom = reader.string();
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.endDateTo = reader.string();
                     continue;
                 }
             }
@@ -953,10 +1036,14 @@ exports.GetCampaignsByBrandIdRequest = {
         return {
             roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
             role: isSet(object.role) ? globalThis.String(object.role) : "",
-            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
-            sortBy: isSet(object.sortBy) ? globalThis.String(object.sortBy) : "",
-            sortOrder: isSet(object.sortOrder) ? globalThis.String(object.sortOrder) : "",
-            filterByStatus: isSet(object.filterByStatus) ? globalThis.String(object.filterByStatus) : "",
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : undefined,
+            sortBy: isSet(object.sortBy) ? globalThis.String(object.sortBy) : undefined,
+            sortOrder: isSet(object.sortOrder) ? globalThis.String(object.sortOrder) : undefined,
+            status: isSet(object.status) ? globalThis.String(object.status) : undefined,
+            startDateFrom: isSet(object.startDateFrom) ? globalThis.String(object.startDateFrom) : undefined,
+            startDateTo: isSet(object.startDateTo) ? globalThis.String(object.startDateTo) : undefined,
+            endDateFrom: isSet(object.endDateFrom) ? globalThis.String(object.endDateFrom) : undefined,
+            endDateTo: isSet(object.endDateTo) ? globalThis.String(object.endDateTo) : undefined,
         };
     },
     toJSON(message) {
@@ -967,17 +1054,29 @@ exports.GetCampaignsByBrandIdRequest = {
         if (message.role !== "") {
             obj.role = message.role;
         }
-        if (message.brandId !== "") {
+        if (message.brandId !== undefined) {
             obj.brandId = message.brandId;
         }
-        if (message.sortBy !== "") {
+        if (message.sortBy !== undefined) {
             obj.sortBy = message.sortBy;
         }
-        if (message.sortOrder !== "") {
+        if (message.sortOrder !== undefined) {
             obj.sortOrder = message.sortOrder;
         }
-        if (message.filterByStatus !== "") {
-            obj.filterByStatus = message.filterByStatus;
+        if (message.status !== undefined) {
+            obj.status = message.status;
+        }
+        if (message.startDateFrom !== undefined) {
+            obj.startDateFrom = message.startDateFrom;
+        }
+        if (message.startDateTo !== undefined) {
+            obj.startDateTo = message.startDateTo;
+        }
+        if (message.endDateFrom !== undefined) {
+            obj.endDateFrom = message.endDateFrom;
+        }
+        if (message.endDateTo !== undefined) {
+            obj.endDateTo = message.endDateTo;
         }
         return obj;
     },
@@ -988,20 +1087,30 @@ exports.GetCampaignsByBrandIdRequest = {
         const message = createBaseGetCampaignsByBrandIdRequest();
         message.roleId = object.roleId ?? "";
         message.role = object.role ?? "";
-        message.brandId = object.brandId ?? "";
-        message.sortBy = object.sortBy ?? "";
-        message.sortOrder = object.sortOrder ?? "";
-        message.filterByStatus = object.filterByStatus ?? "";
+        message.brandId = object.brandId ?? undefined;
+        message.sortBy = object.sortBy ?? undefined;
+        message.sortOrder = object.sortOrder ?? undefined;
+        message.status = object.status ?? undefined;
+        message.startDateFrom = object.startDateFrom ?? undefined;
+        message.startDateTo = object.startDateTo ?? undefined;
+        message.endDateFrom = object.endDateFrom ?? undefined;
+        message.endDateTo = object.endDateTo ?? undefined;
         return message;
     },
 };
 function createBaseCampaignsByIdRequest() {
-    return { id: "" };
+    return { id: "", roleId: "", role: "" };
 }
 exports.CampaignsByIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(26).string(message.roleId);
+        }
+        if (message.role !== "") {
+            writer.uint32(34).string(message.role);
         }
         return writer;
     },
@@ -1019,6 +1128,20 @@ exports.CampaignsByIdRequest = {
                     message.id = reader.string();
                     continue;
                 }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1028,12 +1151,22 @@ exports.CampaignsByIdRequest = {
         return message;
     },
     fromJSON(object) {
-        return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.id !== "") {
             obj.id = message.id;
+        }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
         }
         return obj;
     },
@@ -1043,6 +1176,8 @@ exports.CampaignsByIdRequest = {
     fromPartial(object) {
         const message = createBaseCampaignsByIdRequest();
         message.id = object.id ?? "";
+        message.roleId = object.roleId ?? "";
+        message.role = object.role ?? "";
         return message;
     },
 };

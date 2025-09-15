@@ -22,7 +22,7 @@ message PaymentIntentResponse {
 }
 message PaymentIntentEvent {
   string id = 1;
-  int64 amount_received = 3;
+  string amount_received = 3;
   string currency = 4;
   string status = 5;
   optional string client_secret = 6;

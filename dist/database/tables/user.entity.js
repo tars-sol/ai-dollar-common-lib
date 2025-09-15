@@ -66,6 +66,10 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "followingCount", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
+], User.prototype, "subscriptionsCount", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);

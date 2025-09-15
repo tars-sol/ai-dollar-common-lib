@@ -6,13 +6,15 @@ service ProfileService {
   rpc Create (CreateProfileRequest) returns (ProfileResponse);
   rpc Update (UpdateProfileRequest) returns (ProfileResponse);
   rpc GetProfileById (GetProfileByIdRequest) returns (ProfileResponse);
-  rpc SubscribeProfile (SubscribeRequest) returns (ProfileResponse);
+  rpc SubscribeProfile (SubscribeRequest) returns (SuccessResponse);
 }
 
 message SubscribeRequest{
-  string profileId = 1;
   string targetId = 2;
   bool subscribe = 3;
+  string roleId = 4;
+  string userId = 5;
+  string role = 6;
 }
 message ProfileResponse {
   string id = 1;
@@ -71,4 +73,9 @@ message UpdateProfileRequest {
 message GetProfileByIdRequest {
   bool   isPrivate=1;
   string profileId = 2;
+
+}
+
+message SuccessResponse{
+  bool success = 1 ; 
 }

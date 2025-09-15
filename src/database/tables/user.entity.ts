@@ -44,6 +44,9 @@ export class User {
   followersCount: number;
   @Column({ type: 'int', default: 0 })
   followingCount: number;
+ 
+  @Column({ type: 'int', default: 0 })
+  subscriptionsCount: number;
   @CreateDateColumn()
   createdAt: Date;
 

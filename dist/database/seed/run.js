@@ -49,6 +49,7 @@ async function seedUserProfileAndPosts(tx) {
             isDeleted: false,
             role: user_entity_1.Role.PROFILE,
             followersCount: 0,
+            subscriptionsCount: 0,
             followingCount: 0,
         };
         user = userRepo.create(userData);
@@ -69,7 +70,6 @@ async function seedUserProfileAndPosts(tx) {
             bio: 'Demo profile seeded for local/dev.',
             isVerified: false,
             subscribersCount: 0,
-            subscriptionsCount: 0,
         };
         profile = profileRepo.create(profileData);
         profile = await profileRepo.save(profile);

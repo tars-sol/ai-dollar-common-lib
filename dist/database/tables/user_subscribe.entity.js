@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfileSubscription = exports.SubscriptionStatus = void 0;
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
+const user_entity_1 = require("./user.entity");
 // profiles/entities/profile-subscription.entity.ts
 var SubscriptionStatus;
 (function (SubscriptionStatus) {
@@ -37,9 +38,9 @@ __decorate([
     __metadata("design:type", String)
 ], ProfileSubscription.prototype, "creatorId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'subscriberId' }),
-    __metadata("design:type", profile_entity_1.Profile)
+    __metadata("design:type", user_entity_1.User)
 ], ProfileSubscription.prototype, "subscriber", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
@@ -67,4 +68,4 @@ exports.ProfileSubscription = ProfileSubscription = __decorate([
     (0, typeorm_1.Index)(['subscriberId', 'creatorId']),
     (0, typeorm_1.Check)(`"subscriberId" <> "creatorId"`) // no self-subscribe
 ], ProfileSubscription);
-//# sourceMappingURL=profile_subscribe.entity.js.map
+//# sourceMappingURL=user_subscribe.entity.js.map

@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Profile } from './profile.entity';
+import { User } from './user.entity';
 
 // profiles/entities/profile-subscription.entity.ts
 export enum SubscriptionStatus {
@@ -31,9 +32,9 @@ export class ProfileSubscription {
   @Column()
   creatorId: string; // Profile.id being supported
 
-  @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'subscriberId' })
-  subscriber: Profile;
+  subscriber: User;
 
   @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'creatorId' })

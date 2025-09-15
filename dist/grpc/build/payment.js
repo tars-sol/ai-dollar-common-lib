@@ -180,15 +180,15 @@ exports.PaymentIntentResponse = {
     },
 };
 function createBasePaymentIntentEvent() {
-    return { id: "", amountReceived: 0, currency: "", status: "", clientSecret: undefined, eventType: "", brandId: "" };
+    return { id: "", amountReceived: "", currency: "", status: "", clientSecret: undefined, eventType: "", brandId: "" };
 }
 exports.PaymentIntentEvent = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
-        if (message.amountReceived !== 0) {
-            writer.uint32(24).int64(message.amountReceived);
+        if (message.amountReceived !== "") {
+            writer.uint32(26).string(message.amountReceived);
         }
         if (message.currency !== "") {
             writer.uint32(34).string(message.currency);
@@ -222,10 +222,10 @@ exports.PaymentIntentEvent = {
                     continue;
                 }
                 case 3: {
-                    if (tag !== 24) {
+                    if (tag !== 26) {
                         break;
                     }
-                    message.amountReceived = longToNumber(reader.int64());
+                    message.amountReceived = reader.string();
                     continue;
                 }
                 case 4: {
@@ -274,7 +274,7 @@ exports.PaymentIntentEvent = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
-            amountReceived: isSet(object.amountReceived) ? globalThis.Number(object.amountReceived) : 0,
+            amountReceived: isSet(object.amountReceived) ? globalThis.String(object.amountReceived) : "",
             currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
             status: isSet(object.status) ? globalThis.String(object.status) : "",
             clientSecret: isSet(object.clientSecret) ? globalThis.String(object.clientSecret) : undefined,
@@ -287,8 +287,8 @@ exports.PaymentIntentEvent = {
         if (message.id !== "") {
             obj.id = message.id;
         }
-        if (message.amountReceived !== 0) {
-            obj.amountReceived = Math.round(message.amountReceived);
+        if (message.amountReceived !== "") {
+            obj.amountReceived = message.amountReceived;
         }
         if (message.currency !== "") {
             obj.currency = message.currency;
@@ -313,7 +313,7 @@ exports.PaymentIntentEvent = {
     fromPartial(object) {
         const message = createBasePaymentIntentEvent();
         message.id = object.id ?? "";
-        message.amountReceived = object.amountReceived ?? 0;
+        message.amountReceived = object.amountReceived ?? "";
         message.currency = object.currency ?? "";
         message.status = object.status ?? "";
         message.clientSecret = object.clientSecret ?? undefined;
@@ -577,16 +577,6 @@ class PaymentServiceClientImpl {
     }
 }
 exports.PaymentServiceClientImpl = PaymentServiceClientImpl;
-function longToNumber(int64) {
-    const num = globalThis.Number(int64.toString());
-    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
-        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-    }
-    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
-        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
-    }
-    return num;
-}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

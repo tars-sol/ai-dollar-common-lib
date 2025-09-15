@@ -15,7 +15,6 @@ export declare class Profile {
     instagram: string;
     isVerified: boolean;
     subscribersCount: number;
-    subscriptionsCount: number;
     createdAt: Date;
     updatedAt: Date;
 }

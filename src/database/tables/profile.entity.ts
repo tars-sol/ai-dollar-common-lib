@@ -58,8 +58,7 @@ export class Profile {
 
   @Column({ type: 'int', default: 0 })
   subscribersCount: number;
-  @Column({ type: 'int', default: 0 })
-  subscriptionsCount: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

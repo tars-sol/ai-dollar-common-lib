@@ -12,7 +12,7 @@ export interface PaymentIntentResponse {
 }
 export interface PaymentIntentEvent {
     id: string;
-    amountReceived: number;
+    amountReceived: string;
     currency: string;
     status: string;
     clientSecret?: string | undefined;

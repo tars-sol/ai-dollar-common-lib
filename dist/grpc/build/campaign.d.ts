@@ -34,6 +34,8 @@ export interface CampaignResponse {
     endDate: string;
     createdAt: string;
     updatedAt: string;
+    status: string;
+    isPrivate: boolean;
     name: string;
     description: string;
 }
@@ -59,16 +61,26 @@ export interface TaskResponse {
 export interface GetCampaignsByBrandIdRequest {
     roleId: string;
     role: string;
-    brandId: string;
+    brandId?: string | undefined;
     /** e.g., "createdAt", "amountToInvest" */
-    sortBy: string;
+    sortBy?: string | undefined;
     /** "asc" or "desc" */
-    sortOrder: string;
+    sortOrder?: string | undefined;
     /** e.g., "active", "completed" */
-    filterByStatus: string;
+    status?: string | undefined;
+    /** e.g., "2023-01-01" */
+    startDateFrom?: string | undefined;
+    /** e.g., "2023-12-31" */
+    startDateTo?: string | undefined;
+    /** e.g., "2023-01-01" */
+    endDateFrom?: string | undefined;
+    /** e.g., "2023-12-31" */
+    endDateTo?: string | undefined;
 }
 export interface CampaignsByIdRequest {
     id: string;
+    roleId: string;
+    role: string;
 }
 export interface DeleteTaskByIdRequest {
     brandId: string;

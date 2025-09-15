@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Brand } from './brand.entity';
 
-@Entity('balances')
+@Entity('brand_balances')
 export class BrandBalance {
   @PrimaryGeneratedColumn('uuid')
   id: string;
