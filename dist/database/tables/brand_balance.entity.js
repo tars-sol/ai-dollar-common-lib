@@ -29,9 +29,13 @@ __decorate([
     __metadata("design:type", String)
 ], BrandBalance.prototype, "brandId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'numeric', default: 0 }),
+    (0, typeorm_1.Column)({ type: 'decimal', precision: 12, scale: 2 }),
     __metadata("design:type", Number)
 ], BrandBalance.prototype, "available", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'decimal', precision: 12, scale: 2 }),
+    __metadata("design:type", Number)
+], BrandBalance.prototype, "totalFeesCollected", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

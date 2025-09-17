@@ -21,8 +21,10 @@ export class BrandBalance {
   @Column({ type: 'varchar' })
   brandId: string;
 
-  @Column({ type: 'numeric', default: 0 })
+  @Column({ type: 'decimal', precision: 12, scale: 2 })
   available: number;
+  @Column({ type: 'decimal', precision: 12, scale: 2 })
+  totalFeesCollected: number;
 
   @CreateDateColumn()
   createdAt: Date;

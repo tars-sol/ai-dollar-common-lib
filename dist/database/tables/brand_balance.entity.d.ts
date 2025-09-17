@@ -4,6 +4,7 @@ export declare class BrandBalance {
     brand: Brand;
     brandId: string;
     available: number;
+    totalFeesCollected: number;
     createdAt: Date;
     updatedAt: Date;
 }

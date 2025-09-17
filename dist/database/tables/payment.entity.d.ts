@@ -13,9 +13,11 @@ export declare class Payment {
     transactionId: string;
     status: PaymentStatus;
     brand: Brand;
+    fees: number;
     brandId: string;
     campaign: Campaign;
     campaignId: string;
+    paidOn: Date;
     createdAt: Date;
     updatedAt: Date;
 }

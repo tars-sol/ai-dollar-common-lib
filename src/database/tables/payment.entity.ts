@@ -45,10 +45,11 @@ export class Payment {
   })
   @JoinColumn({ name: 'brandId' })
   brand: Brand;
-
+  @Column({ nullable: false })
+  fees: number;
   @Column()
   brandId: string;
-    @ManyToOne(() => Campaign, (campaign) => campaign.payment, {
+  @ManyToOne(() => Campaign, (campaign) => campaign.payment, {
     onDelete: 'CASCADE',
     eager: false,
   })
@@ -57,7 +58,8 @@ export class Payment {
 
   @Column({ nullable: true })
   campaignId: string;
-
+  @Column({ nullable: true })
+  paidOn: Date;
 
   @CreateDateColumn()
   createdAt: Date;
