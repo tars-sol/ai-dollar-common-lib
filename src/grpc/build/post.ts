@@ -60,6 +60,13 @@ export interface GetFeedRequest {
   userId: string;
 }
 
+export interface GetPostRequest {
+  postId: string;
+  userId: string;
+  role: string;
+  roleId: string;
+}
+
 export interface GetFeedResponse {
   posts: PostResponse[];
 }
@@ -979,6 +986,114 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
     message.role = object.role ?? "";
     message.roleId = object.roleId ?? "";
     message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetPostRequest(): GetPostRequest {
+  return { postId: "", userId: "", role: "", roleId: "" };
+}
+
+export const GetPostRequest: MessageFns<GetPostRequest> = {
+  encode(message: GetPostRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(34).string(message.roleId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPostRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPostRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPostRequest {
+    return {
+      postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+    };
+  },
+
+  toJSON(message: GetPostRequest): unknown {
+    const obj: any = {};
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPostRequest>, I>>(base?: I): GetPostRequest {
+    return GetPostRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPostRequest>, I>>(object: I): GetPostRequest {
+    const message = createBaseGetPostRequest();
+    message.postId = object.postId ?? "";
+    message.userId = object.userId ?? "";
+    message.role = object.role ?? "";
+    message.roleId = object.roleId ?? "";
     return message;
   },
 };
@@ -3189,6 +3304,7 @@ export interface PostService {
   Update(request: UpdatePostRequest): Promise<PostResponse>;
   GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
   GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
+  GetPost(request: GetPostRequest): Promise<PostResponse>;
   VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
   GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
   PostReaction(request: PostReactionRequest): Promise<PostResponse>;
@@ -3212,6 +3328,7 @@ export class PostServiceClientImpl implements PostService {
     this.Update = this.Update.bind(this);
     this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
     this.GetFeed = this.GetFeed.bind(this);
+    this.GetPost = this.GetPost.bind(this);
     this.VoteOnPoll = this.VoteOnPoll.bind(this);
     this.GetProfilePosts = this.GetProfilePosts.bind(this);
     this.PostReaction = this.PostReaction.bind(this);
@@ -3245,6 +3362,12 @@ export class PostServiceClientImpl implements PostService {
     const data = GetFeedRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetFeed", data);
     return promise.then((data) => GetFeedResponse.decode(new BinaryReader(data)));
+  }
+
+  GetPost(request: GetPostRequest): Promise<PostResponse> {
+    const data = GetPostRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetPost", data);
+    return promise.then((data) => PostResponse.decode(new BinaryReader(data)));
   }
 
   VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse> {

@@ -44,6 +44,12 @@ export interface GetFeedRequest {
     roleId: string;
     userId: string;
 }
+export interface GetPostRequest {
+    postId: string;
+    userId: string;
+    role: string;
+    roleId: string;
+}
 export interface GetFeedResponse {
     posts: PostResponse[];
 }
@@ -172,6 +178,7 @@ export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;
 export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
 export declare const GetFeedRequest: MessageFns<GetFeedRequest>;
+export declare const GetPostRequest: MessageFns<GetPostRequest>;
 export declare const GetFeedResponse: MessageFns<GetFeedResponse>;
 export declare const CreateCommentRequest: MessageFns<CreateCommentRequest>;
 export declare const CommentResponse: MessageFns<CommentResponse>;
@@ -196,6 +203,7 @@ export interface PostService {
     Update(request: UpdatePostRequest): Promise<PostResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
+    GetPost(request: GetPostRequest): Promise<PostResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
@@ -218,6 +226,7 @@ export declare class PostServiceClientImpl implements PostService {
     Update(request: UpdatePostRequest): Promise<PostResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
+    GetPost(request: GetPostRequest): Promise<PostResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;

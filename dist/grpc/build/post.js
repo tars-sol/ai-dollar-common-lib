@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetProfilePostsRequest = exports.PostResponse = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetProfilePostsRequest = exports.PostResponse = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -719,6 +719,104 @@ exports.GetFeedRequest = {
         message.role = object.role ?? "";
         message.roleId = object.roleId ?? "";
         message.userId = object.userId ?? "";
+        return message;
+    },
+};
+function createBaseGetPostRequest() {
+    return { postId: "", userId: "", role: "", roleId: "" };
+}
+exports.GetPostRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.postId !== "") {
+            writer.uint32(10).string(message.postId);
+        }
+        if (message.userId !== "") {
+            writer.uint32(18).string(message.userId);
+        }
+        if (message.role !== "") {
+            writer.uint32(26).string(message.role);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(34).string(message.roleId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetPostRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.postId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.postId !== "") {
+            obj.postId = message.postId;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetPostRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetPostRequest();
+        message.postId = object.postId ?? "";
+        message.userId = object.userId ?? "";
+        message.role = object.role ?? "";
+        message.roleId = object.roleId ?? "";
         return message;
     },
 };
@@ -2735,6 +2833,7 @@ class PostServiceClientImpl {
         this.Update = this.Update.bind(this);
         this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
         this.GetFeed = this.GetFeed.bind(this);
+        this.GetPost = this.GetPost.bind(this);
         this.VoteOnPoll = this.VoteOnPoll.bind(this);
         this.GetProfilePosts = this.GetProfilePosts.bind(this);
         this.PostReaction = this.PostReaction.bind(this);
@@ -2765,6 +2864,11 @@ class PostServiceClientImpl {
         const data = exports.GetFeedRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetFeed", data);
         return promise.then((data) => exports.GetFeedResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetPost(request) {
+        const data = exports.GetPostRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetPost", data);
+        return promise.then((data) => exports.PostResponse.decode(new wire_1.BinaryReader(data)));
     }
     VoteOnPoll(request) {
         const data = exports.VoteOnPollRequest.encode(request).finish();

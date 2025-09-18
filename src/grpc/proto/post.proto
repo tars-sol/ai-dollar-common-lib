@@ -7,6 +7,7 @@ service PostService {
   rpc Update (UpdatePostRequest) returns (PostResponse);
   rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
   rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
+  rpc GetPost (GetPostRequest) returns (PostResponse);
   rpc VoteOnPoll (VoteOnPollRequest) returns (PostResponse);
   rpc GetProfilePosts(GetProfilePostsRequest) returns (GetFeedResponse);
   rpc PostReaction(PostReactionRequest) returns (PostResponse);
@@ -64,6 +65,13 @@ message GetFeedRequest {
   string role= 3;
   string roleId= 4;
   string userId= 5;
+}
+
+message GetPostRequest {
+  string postId = 1; 
+  string userId = 2;
+  string role   = 3;
+  string roleId = 4;
 }
 
 message GetFeedResponse {
