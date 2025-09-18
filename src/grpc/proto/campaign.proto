@@ -1,6 +1,18 @@
 syntax = "proto3";
 
 package campaign;
+// gRPC Service
+service CampaignService {
+  rpc CreateCampaign(CreateCampaignRequest) returns (CampaignResponse);
+  rpc GetCampaignsByBrandId(GetCampaignsByBrandIdRequest) returns (GetCampaignsResponse);
+  rpc GetCampaignById(CampaignsByIdRequest) returns (CampaignResponse);
+  rpc UpdateCampaign(UpdateCampaignRequest) returns (CampaignResponse);
+  rpc UpdateCampaignTasks(UpdateTaskRequest) returns (TaskResponse);
+  rpc GetTasksByCampaignId(GetTasksByCampaignIdRequest) returns (GetTasksResponse);
+  rpc DeleteCampaignById(CampaignsByIdRequest) returns (CampaignResponse);
+  rpc DeleteTaskById(DeleteTaskByIdRequest) returns (TaskResponse);
+  rpc JoinCampaign(JoinAndRemoveCampaignRequest) returns (SuccessResponse);
+}
 
 // Request message for creating a campaign
 message CreateCampaignRequest {
@@ -14,7 +26,9 @@ message CreateCampaignRequest {
   repeated string profileIds = 9;
   bool isPrivate = 10;
 }
-
+message SuccessResponse{
+  bool success = 1;
+}
 // Single task input (part of the campaign)
 message TaskInput {
   string title = 1;
@@ -27,6 +41,10 @@ message UpdateTaskRequest{
   string brandId = 5 ;
   optional string type = 3;
   string id = 4;
+}
+message JoinAndRemoveCampaignRequest{
+  string campaignId = 1;
+  string profileId = 2;
 }
 
 
@@ -103,15 +121,4 @@ message GetTasksResponse{
 }
 message GetCampaignsResponse{
   repeated CampaignResponse campaigns = 1;
-}
-// gRPC Service
-service CampaignService {
-  rpc CreateCampaign(CreateCampaignRequest) returns (CampaignResponse);
-  rpc GetCampaignsByBrandId(GetCampaignsByBrandIdRequest) returns (GetCampaignsResponse);
-  rpc GetCampaignById(CampaignsByIdRequest) returns (CampaignResponse);
-  rpc UpdateCampaign(UpdateCampaignRequest) returns (CampaignResponse);
-  rpc UpdateCampaignTasks(UpdateTaskRequest) returns (TaskResponse);
-  rpc GetTasksByCampaignId(GetTasksByCampaignIdRequest) returns (GetTasksResponse);
-  rpc DeleteCampaignById(CampaignsByIdRequest) returns (CampaignResponse);
-  rpc DeleteTaskById(DeleteTaskByIdRequest) returns (TaskResponse);
 }
