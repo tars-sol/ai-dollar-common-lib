@@ -11,6 +11,8 @@ export declare class Profile {
     twitter: string;
     facebook: string;
     youtube: string;
+    telegram: string;
+    discord: string;
     tiktok: string;
     instagram: string;
     isVerified: boolean;

@@ -27,6 +27,8 @@ message ProfileResponse {
   string twitter = 8;
   string facebook = 9;
   string youtube = 10;
+  string discord = 23;
+  string telegram = 24;
   string tiktok = 11;
   string instagram = 15;
   bool isVerified = 12;
@@ -50,6 +52,8 @@ message CreateProfileRequest {
   optional string bio = 5;
   optional string websiteUrl = 6;
   optional string twitter = 7;
+  optional string discord = 12;
+  optional string telegram = 13;
   optional string facebook = 8;
   optional string youtube = 9;
   optional string tiktok = 10;
@@ -65,6 +69,8 @@ message UpdateProfileRequest {
   optional string websiteUrl = 6;
   optional string twitter = 7;
   optional string facebook = 8;
+  optional string discord = 12;
+  optional string telegram = 13;
   optional string youtube = 9;
   optional string tiktok = 10;
   optional string instagram=11;

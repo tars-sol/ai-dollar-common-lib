@@ -18,6 +18,8 @@ export interface ProfileResponse {
     twitter: string;
     facebook: string;
     youtube: string;
+    discord: string;
+    telegram: string;
     tiktok: string;
     instagram: string;
     isVerified: boolean;
@@ -39,6 +41,8 @@ export interface CreateProfileRequest {
     bio?: string | undefined;
     websiteUrl?: string | undefined;
     twitter?: string | undefined;
+    discord?: string | undefined;
+    telegram?: string | undefined;
     facebook?: string | undefined;
     youtube?: string | undefined;
     tiktok?: string | undefined;
@@ -53,6 +57,8 @@ export interface UpdateProfileRequest {
     websiteUrl?: string | undefined;
     twitter?: string | undefined;
     facebook?: string | undefined;
+    discord?: string | undefined;
+    telegram?: string | undefined;
     youtube?: string | undefined;
     tiktok?: string | undefined;
     instagram?: string | undefined;

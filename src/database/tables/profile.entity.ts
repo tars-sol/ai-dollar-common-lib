@@ -47,7 +47,10 @@ export class Profile {
 
   @Column({ nullable: true })
   youtube: string;
-
+  @Column({ nullable: true })
+  telegram: string;
+  @Column({ nullable: true })
+  discord: string;
   @Column({ nullable: true })
   tiktok: string;
   @Column({ nullable: true })

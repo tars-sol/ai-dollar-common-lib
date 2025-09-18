@@ -65,6 +65,14 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
+], Profile.prototype, "telegram", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Profile.prototype, "discord", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
 ], Profile.prototype, "tiktok", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),

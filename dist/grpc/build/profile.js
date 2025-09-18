@@ -134,6 +134,8 @@ function createBaseProfileResponse() {
         twitter: "",
         facebook: "",
         youtube: "",
+        discord: "",
+        telegram: "",
         tiktok: "",
         instagram: "",
         isVerified: false,
@@ -179,6 +181,12 @@ exports.ProfileResponse = {
         }
         if (message.youtube !== "") {
             writer.uint32(82).string(message.youtube);
+        }
+        if (message.discord !== "") {
+            writer.uint32(186).string(message.discord);
+        }
+        if (message.telegram !== "") {
+            writer.uint32(194).string(message.telegram);
         }
         if (message.tiktok !== "") {
             writer.uint32(90).string(message.tiktok);
@@ -295,6 +303,20 @@ exports.ProfileResponse = {
                     message.youtube = reader.string();
                     continue;
                 }
+                case 23: {
+                    if (tag !== 186) {
+                        break;
+                    }
+                    message.discord = reader.string();
+                    continue;
+                }
+                case 24: {
+                    if (tag !== 194) {
+                        break;
+                    }
+                    message.telegram = reader.string();
+                    continue;
+                }
                 case 11: {
                     if (tag !== 90) {
                         break;
@@ -399,6 +421,8 @@ exports.ProfileResponse = {
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
             facebook: isSet(object.facebook) ? globalThis.String(object.facebook) : "",
             youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : "",
+            discord: isSet(object.discord) ? globalThis.String(object.discord) : "",
+            telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : "",
             tiktok: isSet(object.tiktok) ? globalThis.String(object.tiktok) : "",
             instagram: isSet(object.instagram) ? globalThis.String(object.instagram) : "",
             isVerified: isSet(object.isVerified) ? globalThis.Boolean(object.isVerified) : false,
@@ -444,6 +468,12 @@ exports.ProfileResponse = {
         }
         if (message.youtube !== "") {
             obj.youtube = message.youtube;
+        }
+        if (message.discord !== "") {
+            obj.discord = message.discord;
+        }
+        if (message.telegram !== "") {
+            obj.telegram = message.telegram;
         }
         if (message.tiktok !== "") {
             obj.tiktok = message.tiktok;
@@ -498,6 +528,8 @@ exports.ProfileResponse = {
         message.twitter = object.twitter ?? "";
         message.facebook = object.facebook ?? "";
         message.youtube = object.youtube ?? "";
+        message.discord = object.discord ?? "";
+        message.telegram = object.telegram ?? "";
         message.tiktok = object.tiktok ?? "";
         message.instagram = object.instagram ?? "";
         message.isVerified = object.isVerified ?? false;
@@ -522,6 +554,8 @@ function createBaseCreateProfileRequest() {
         bio: undefined,
         websiteUrl: undefined,
         twitter: undefined,
+        discord: undefined,
+        telegram: undefined,
         facebook: undefined,
         youtube: undefined,
         tiktok: undefined,
@@ -550,6 +584,12 @@ exports.CreateProfileRequest = {
         }
         if (message.twitter !== undefined) {
             writer.uint32(58).string(message.twitter);
+        }
+        if (message.discord !== undefined) {
+            writer.uint32(98).string(message.discord);
+        }
+        if (message.telegram !== undefined) {
+            writer.uint32(106).string(message.telegram);
         }
         if (message.facebook !== undefined) {
             writer.uint32(66).string(message.facebook);
@@ -619,6 +659,20 @@ exports.CreateProfileRequest = {
                         break;
                     }
                     message.twitter = reader.string();
+                    continue;
+                }
+                case 12: {
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.discord = reader.string();
+                    continue;
+                }
+                case 13: {
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.telegram = reader.string();
                     continue;
                 }
                 case 8: {
@@ -666,6 +720,8 @@ exports.CreateProfileRequest = {
             bio: isSet(object.bio) ? globalThis.String(object.bio) : undefined,
             websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
+            discord: isSet(object.discord) ? globalThis.String(object.discord) : undefined,
+            telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
             facebook: isSet(object.facebook) ? globalThis.String(object.facebook) : undefined,
             youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : undefined,
             tiktok: isSet(object.tiktok) ? globalThis.String(object.tiktok) : undefined,
@@ -695,6 +751,12 @@ exports.CreateProfileRequest = {
         if (message.twitter !== undefined) {
             obj.twitter = message.twitter;
         }
+        if (message.discord !== undefined) {
+            obj.discord = message.discord;
+        }
+        if (message.telegram !== undefined) {
+            obj.telegram = message.telegram;
+        }
         if (message.facebook !== undefined) {
             obj.facebook = message.facebook;
         }
@@ -721,6 +783,8 @@ exports.CreateProfileRequest = {
         message.bio = object.bio ?? undefined;
         message.websiteUrl = object.websiteUrl ?? undefined;
         message.twitter = object.twitter ?? undefined;
+        message.discord = object.discord ?? undefined;
+        message.telegram = object.telegram ?? undefined;
         message.facebook = object.facebook ?? undefined;
         message.youtube = object.youtube ?? undefined;
         message.tiktok = object.tiktok ?? undefined;
@@ -738,6 +802,8 @@ function createBaseUpdateProfileRequest() {
         websiteUrl: undefined,
         twitter: undefined,
         facebook: undefined,
+        discord: undefined,
+        telegram: undefined,
         youtube: undefined,
         tiktok: undefined,
         instagram: undefined,
@@ -768,6 +834,12 @@ exports.UpdateProfileRequest = {
         }
         if (message.facebook !== undefined) {
             writer.uint32(66).string(message.facebook);
+        }
+        if (message.discord !== undefined) {
+            writer.uint32(98).string(message.discord);
+        }
+        if (message.telegram !== undefined) {
+            writer.uint32(106).string(message.telegram);
         }
         if (message.youtube !== undefined) {
             writer.uint32(74).string(message.youtube);
@@ -843,6 +915,20 @@ exports.UpdateProfileRequest = {
                     message.facebook = reader.string();
                     continue;
                 }
+                case 12: {
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.discord = reader.string();
+                    continue;
+                }
+                case 13: {
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.telegram = reader.string();
+                    continue;
+                }
                 case 9: {
                     if (tag !== 74) {
                         break;
@@ -882,6 +968,8 @@ exports.UpdateProfileRequest = {
             websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
             facebook: isSet(object.facebook) ? globalThis.String(object.facebook) : undefined,
+            discord: isSet(object.discord) ? globalThis.String(object.discord) : undefined,
+            telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
             youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : undefined,
             tiktok: isSet(object.tiktok) ? globalThis.String(object.tiktok) : undefined,
             instagram: isSet(object.instagram) ? globalThis.String(object.instagram) : undefined,
@@ -913,6 +1001,12 @@ exports.UpdateProfileRequest = {
         if (message.facebook !== undefined) {
             obj.facebook = message.facebook;
         }
+        if (message.discord !== undefined) {
+            obj.discord = message.discord;
+        }
+        if (message.telegram !== undefined) {
+            obj.telegram = message.telegram;
+        }
         if (message.youtube !== undefined) {
             obj.youtube = message.youtube;
         }
@@ -937,6 +1031,8 @@ exports.UpdateProfileRequest = {
         message.websiteUrl = object.websiteUrl ?? undefined;
         message.twitter = object.twitter ?? undefined;
         message.facebook = object.facebook ?? undefined;
+        message.discord = object.discord ?? undefined;
+        message.telegram = object.telegram ?? undefined;
         message.youtube = object.youtube ?? undefined;
         message.tiktok = object.tiktok ?? undefined;
         message.instagram = object.instagram ?? undefined;
