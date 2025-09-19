@@ -5,24 +5,24 @@
 //   protoc               v3.21.12
 // source: brand.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BrandServiceClientImpl = exports.BrandServiceServiceName = exports.UpdateBrandRequest = exports.CreateBrandRequest = exports.BrandResponse = exports.BrandByUserIdRequest = exports.protobufPackage = void 0;
+exports.BrandServiceClientImpl = exports.BrandServiceServiceName = exports.UpdateBrandRequest = exports.CreateBrandRequest = exports.BrandResponse = exports.BrandByIdRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "brand";
-function createBaseBrandByUserIdRequest() {
-    return { userId: "" };
+function createBaseBrandByIdRequest() {
+    return { brandId: "" };
 }
-exports.BrandByUserIdRequest = {
+exports.BrandByIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.userId !== "") {
-            writer.uint32(10).string(message.userId);
+        if (message.brandId !== "") {
+            writer.uint32(10).string(message.brandId);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         const end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseBrandByUserIdRequest();
+        const message = createBaseBrandByIdRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -30,7 +30,7 @@ exports.BrandByUserIdRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.brandId = reader.string();
                     continue;
                 }
             }
@@ -42,21 +42,21 @@ exports.BrandByUserIdRequest = {
         return message;
     },
     fromJSON(object) {
-        return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+        return { brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "" };
     },
     toJSON(message) {
         const obj = {};
-        if (message.userId !== "") {
-            obj.userId = message.userId;
+        if (message.brandId !== "") {
+            obj.brandId = message.brandId;
         }
         return obj;
     },
     create(base) {
-        return exports.BrandByUserIdRequest.fromPartial(base ?? {});
+        return exports.BrandByIdRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseBrandByUserIdRequest();
-        message.userId = object.userId ?? "";
+        const message = createBaseBrandByIdRequest();
+        message.brandId = object.brandId ?? "";
         return message;
     },
 };
@@ -74,6 +74,12 @@ function createBaseBrandResponse() {
         refreshToken: undefined,
         followersCount: "",
         followingCount: "",
+        tags: [],
+        campaignCount: "",
+        tokenName: "",
+        discord: "",
+        twitter: "",
+        telegram: "",
     };
 }
 exports.BrandResponse = {
@@ -113,6 +119,24 @@ exports.BrandResponse = {
         }
         if (message.followingCount !== "") {
             writer.uint32(98).string(message.followingCount);
+        }
+        for (const v of message.tags) {
+            writer.uint32(106).string(v);
+        }
+        if (message.campaignCount !== "") {
+            writer.uint32(114).string(message.campaignCount);
+        }
+        if (message.tokenName !== "") {
+            writer.uint32(122).string(message.tokenName);
+        }
+        if (message.discord !== "") {
+            writer.uint32(130).string(message.discord);
+        }
+        if (message.twitter !== "") {
+            writer.uint32(138).string(message.twitter);
+        }
+        if (message.telegram !== "") {
+            writer.uint32(146).string(message.telegram);
         }
         return writer;
     },
@@ -207,6 +231,48 @@ exports.BrandResponse = {
                     message.followingCount = reader.string();
                     continue;
                 }
+                case 13: {
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.tags.push(reader.string());
+                    continue;
+                }
+                case 14: {
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.campaignCount = reader.string();
+                    continue;
+                }
+                case 15: {
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.tokenName = reader.string();
+                    continue;
+                }
+                case 16: {
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.discord = reader.string();
+                    continue;
+                }
+                case 17: {
+                    if (tag !== 138) {
+                        break;
+                    }
+                    message.twitter = reader.string();
+                    continue;
+                }
+                case 18: {
+                    if (tag !== 146) {
+                        break;
+                    }
+                    message.telegram = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -229,6 +295,12 @@ exports.BrandResponse = {
             refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
             followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
             followingCount: isSet(object.followingCount) ? globalThis.String(object.followingCount) : "",
+            tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e) => globalThis.String(e)) : [],
+            campaignCount: isSet(object.campaignCount) ? globalThis.String(object.campaignCount) : "",
+            tokenName: isSet(object.tokenName) ? globalThis.String(object.tokenName) : "",
+            discord: isSet(object.discord) ? globalThis.String(object.discord) : "",
+            twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
+            telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : "",
         };
     },
     toJSON(message) {
@@ -269,6 +341,24 @@ exports.BrandResponse = {
         if (message.followingCount !== "") {
             obj.followingCount = message.followingCount;
         }
+        if (message.tags?.length) {
+            obj.tags = message.tags;
+        }
+        if (message.campaignCount !== "") {
+            obj.campaignCount = message.campaignCount;
+        }
+        if (message.tokenName !== "") {
+            obj.tokenName = message.tokenName;
+        }
+        if (message.discord !== "") {
+            obj.discord = message.discord;
+        }
+        if (message.twitter !== "") {
+            obj.twitter = message.twitter;
+        }
+        if (message.telegram !== "") {
+            obj.telegram = message.telegram;
+        }
         return obj;
     },
     create(base) {
@@ -288,11 +378,28 @@ exports.BrandResponse = {
         message.refreshToken = object.refreshToken ?? undefined;
         message.followersCount = object.followersCount ?? "";
         message.followingCount = object.followingCount ?? "";
+        message.tags = object.tags?.map((e) => e) || [];
+        message.campaignCount = object.campaignCount ?? "";
+        message.tokenName = object.tokenName ?? "";
+        message.discord = object.discord ?? "";
+        message.twitter = object.twitter ?? "";
+        message.telegram = object.telegram ?? "";
         return message;
     },
 };
 function createBaseCreateBrandRequest() {
-    return { userId: "", name: "", description: undefined, logoUrl: undefined, websiteUrl: undefined };
+    return {
+        userId: "",
+        name: "",
+        description: undefined,
+        logoUrl: undefined,
+        websiteUrl: undefined,
+        tags: [],
+        discord: undefined,
+        twitter: undefined,
+        telegram: undefined,
+        tokenName: undefined,
+    };
 }
 exports.CreateBrandRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -311,6 +418,21 @@ exports.CreateBrandRequest = {
         if (message.websiteUrl !== undefined) {
             writer.uint32(42).string(message.websiteUrl);
         }
+        for (const v of message.tags) {
+            writer.uint32(50).string(v);
+        }
+        if (message.discord !== undefined) {
+            writer.uint32(58).string(message.discord);
+        }
+        if (message.twitter !== undefined) {
+            writer.uint32(66).string(message.twitter);
+        }
+        if (message.telegram !== undefined) {
+            writer.uint32(74).string(message.telegram);
+        }
+        if (message.tokenName !== undefined) {
+            writer.uint32(82).string(message.tokenName);
+        }
         return writer;
     },
     decode(input, length) {
@@ -355,6 +477,41 @@ exports.CreateBrandRequest = {
                     message.websiteUrl = reader.string();
                     continue;
                 }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.tags.push(reader.string());
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.discord = reader.string();
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.twitter = reader.string();
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.telegram = reader.string();
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.tokenName = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -370,6 +527,11 @@ exports.CreateBrandRequest = {
             description: isSet(object.description) ? globalThis.String(object.description) : undefined,
             logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : undefined,
             websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
+            tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e) => globalThis.String(e)) : [],
+            discord: isSet(object.discord) ? globalThis.String(object.discord) : undefined,
+            twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
+            telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
+            tokenName: isSet(object.tokenName) ? globalThis.String(object.tokenName) : undefined,
         };
     },
     toJSON(message) {
@@ -389,6 +551,21 @@ exports.CreateBrandRequest = {
         if (message.websiteUrl !== undefined) {
             obj.websiteUrl = message.websiteUrl;
         }
+        if (message.tags?.length) {
+            obj.tags = message.tags;
+        }
+        if (message.discord !== undefined) {
+            obj.discord = message.discord;
+        }
+        if (message.twitter !== undefined) {
+            obj.twitter = message.twitter;
+        }
+        if (message.telegram !== undefined) {
+            obj.telegram = message.telegram;
+        }
+        if (message.tokenName !== undefined) {
+            obj.tokenName = message.tokenName;
+        }
         return obj;
     },
     create(base) {
@@ -401,11 +578,27 @@ exports.CreateBrandRequest = {
         message.description = object.description ?? undefined;
         message.logoUrl = object.logoUrl ?? undefined;
         message.websiteUrl = object.websiteUrl ?? undefined;
+        message.tags = object.tags?.map((e) => e) || [];
+        message.discord = object.discord ?? undefined;
+        message.twitter = object.twitter ?? undefined;
+        message.telegram = object.telegram ?? undefined;
+        message.tokenName = object.tokenName ?? undefined;
         return message;
     },
 };
 function createBaseUpdateBrandRequest() {
-    return { userId: "", name: undefined, description: undefined, logoUrl: undefined, websiteUrl: undefined };
+    return {
+        userId: "",
+        name: undefined,
+        description: undefined,
+        logoUrl: undefined,
+        websiteUrl: undefined,
+        tags: [],
+        discord: undefined,
+        twitter: undefined,
+        telegram: undefined,
+        tokenName: undefined,
+    };
 }
 exports.UpdateBrandRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -423,6 +616,21 @@ exports.UpdateBrandRequest = {
         }
         if (message.websiteUrl !== undefined) {
             writer.uint32(42).string(message.websiteUrl);
+        }
+        for (const v of message.tags) {
+            writer.uint32(50).string(v);
+        }
+        if (message.discord !== undefined) {
+            writer.uint32(58).string(message.discord);
+        }
+        if (message.twitter !== undefined) {
+            writer.uint32(66).string(message.twitter);
+        }
+        if (message.telegram !== undefined) {
+            writer.uint32(74).string(message.telegram);
+        }
+        if (message.tokenName !== undefined) {
+            writer.uint32(82).string(message.tokenName);
         }
         return writer;
     },
@@ -468,6 +676,41 @@ exports.UpdateBrandRequest = {
                     message.websiteUrl = reader.string();
                     continue;
                 }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.tags.push(reader.string());
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.discord = reader.string();
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.twitter = reader.string();
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.telegram = reader.string();
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.tokenName = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -483,6 +726,11 @@ exports.UpdateBrandRequest = {
             description: isSet(object.description) ? globalThis.String(object.description) : undefined,
             logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : undefined,
             websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
+            tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e) => globalThis.String(e)) : [],
+            discord: isSet(object.discord) ? globalThis.String(object.discord) : undefined,
+            twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
+            telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
+            tokenName: isSet(object.tokenName) ? globalThis.String(object.tokenName) : undefined,
         };
     },
     toJSON(message) {
@@ -502,6 +750,21 @@ exports.UpdateBrandRequest = {
         if (message.websiteUrl !== undefined) {
             obj.websiteUrl = message.websiteUrl;
         }
+        if (message.tags?.length) {
+            obj.tags = message.tags;
+        }
+        if (message.discord !== undefined) {
+            obj.discord = message.discord;
+        }
+        if (message.twitter !== undefined) {
+            obj.twitter = message.twitter;
+        }
+        if (message.telegram !== undefined) {
+            obj.telegram = message.telegram;
+        }
+        if (message.tokenName !== undefined) {
+            obj.tokenName = message.tokenName;
+        }
         return obj;
     },
     create(base) {
@@ -514,6 +777,11 @@ exports.UpdateBrandRequest = {
         message.description = object.description ?? undefined;
         message.logoUrl = object.logoUrl ?? undefined;
         message.websiteUrl = object.websiteUrl ?? undefined;
+        message.tags = object.tags?.map((e) => e) || [];
+        message.discord = object.discord ?? undefined;
+        message.twitter = object.twitter ?? undefined;
+        message.telegram = object.telegram ?? undefined;
+        message.tokenName = object.tokenName ?? undefined;
         return message;
     },
 };
@@ -524,7 +792,7 @@ class BrandServiceClientImpl {
         this.rpc = rpc;
         this.Create = this.Create.bind(this);
         this.Update = this.Update.bind(this);
-        this.GetBrandByUserId = this.GetBrandByUserId.bind(this);
+        this.GetBrandById = this.GetBrandById.bind(this);
     }
     Create(request) {
         const data = exports.CreateBrandRequest.encode(request).finish();
@@ -536,9 +804,9 @@ class BrandServiceClientImpl {
         const promise = this.rpc.request(this.service, "Update", data);
         return promise.then((data) => exports.BrandResponse.decode(new wire_1.BinaryReader(data)));
     }
-    GetBrandByUserId(request) {
-        const data = exports.BrandByUserIdRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "GetBrandByUserId", data);
+    GetBrandById(request) {
+        const data = exports.BrandByIdRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetBrandById", data);
         return promise.then((data) => exports.BrandResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

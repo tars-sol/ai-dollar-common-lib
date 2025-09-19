@@ -50,6 +50,30 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
+], Brand.prototype, "discord", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", String)
+], Brand.prototype, "twitter", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", String)
+], Brand.prototype, "telegram", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', array: true, default: () => "'{}'::text[]" }),
+    __metadata("design:type", Array)
+], Brand.prototype, "tags", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', default: 0 }),
+    __metadata("design:type", Number)
+], Brand.prototype, "campaignCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", String)
+], Brand.prototype, "tokenName", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", String)
 ], Brand.prototype, "websiteUrl", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => payment_entity_1.Payment, (payment) => payment.brand),

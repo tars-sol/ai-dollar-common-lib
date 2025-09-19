@@ -36,6 +36,23 @@ export class Brand {
 
   @Column({ type: 'varchar', nullable: true })
   logoUrl: string;
+  @Column({ type: 'varchar', nullable: true })
+  discord: string;
+  @Column({ type: 'varchar', nullable: true })
+  twitter: string;
+  @Column({ type: 'varchar', nullable: true })
+  telegram: string;
+
+  //tags for brand
+  @Column({ type: 'text', array: true, default: () => "'{}'::text[]" })
+  tags: string[];
+
+  @Column({ type: 'numeric', default: 0 })
+  campaignCount: number;
+
+  //tokenName
+  @Column({ type: 'varchar', nullable: true })
+  tokenName: string;
 
   @Column({ type: 'varchar', nullable: true })
   websiteUrl: string;

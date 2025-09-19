@@ -41,9 +41,20 @@ export interface UpdateTaskRequest {
   id: string;
 }
 
-export interface JoinAndRemoveCampaignRequest {
+export interface JoinPublicCampaignRequest {
   campaignId: string;
   profileId: string;
+}
+
+export interface LeaveCampaignRequest {
+  campaignId: string;
+  profileId: string;
+}
+
+export interface UpdatePrivateCampaignProfilesRequest {
+  campaignId: string;
+  profileId: string;
+  brandId: string;
 }
 
 /** Response message after creating a campaign */
@@ -618,12 +629,12 @@ export const UpdateTaskRequest: MessageFns<UpdateTaskRequest> = {
   },
 };
 
-function createBaseJoinAndRemoveCampaignRequest(): JoinAndRemoveCampaignRequest {
+function createBaseJoinPublicCampaignRequest(): JoinPublicCampaignRequest {
   return { campaignId: "", profileId: "" };
 }
 
-export const JoinAndRemoveCampaignRequest: MessageFns<JoinAndRemoveCampaignRequest> = {
-  encode(message: JoinAndRemoveCampaignRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const JoinPublicCampaignRequest: MessageFns<JoinPublicCampaignRequest> = {
+  encode(message: JoinPublicCampaignRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.campaignId !== "") {
       writer.uint32(10).string(message.campaignId);
     }
@@ -633,10 +644,10 @@ export const JoinAndRemoveCampaignRequest: MessageFns<JoinAndRemoveCampaignReque
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): JoinAndRemoveCampaignRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): JoinPublicCampaignRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseJoinAndRemoveCampaignRequest();
+    const message = createBaseJoinPublicCampaignRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -665,14 +676,14 @@ export const JoinAndRemoveCampaignRequest: MessageFns<JoinAndRemoveCampaignReque
     return message;
   },
 
-  fromJSON(object: any): JoinAndRemoveCampaignRequest {
+  fromJSON(object: any): JoinPublicCampaignRequest {
     return {
       campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
       profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
     };
   },
 
-  toJSON(message: JoinAndRemoveCampaignRequest): unknown {
+  toJSON(message: JoinPublicCampaignRequest): unknown {
     const obj: any = {};
     if (message.campaignId !== "") {
       obj.campaignId = message.campaignId;
@@ -683,13 +694,185 @@ export const JoinAndRemoveCampaignRequest: MessageFns<JoinAndRemoveCampaignReque
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<JoinAndRemoveCampaignRequest>, I>>(base?: I): JoinAndRemoveCampaignRequest {
-    return JoinAndRemoveCampaignRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<JoinPublicCampaignRequest>, I>>(base?: I): JoinPublicCampaignRequest {
+    return JoinPublicCampaignRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<JoinAndRemoveCampaignRequest>, I>>(object: I): JoinAndRemoveCampaignRequest {
-    const message = createBaseJoinAndRemoveCampaignRequest();
+  fromPartial<I extends Exact<DeepPartial<JoinPublicCampaignRequest>, I>>(object: I): JoinPublicCampaignRequest {
+    const message = createBaseJoinPublicCampaignRequest();
     message.campaignId = object.campaignId ?? "";
     message.profileId = object.profileId ?? "";
+    return message;
+  },
+};
+
+function createBaseLeaveCampaignRequest(): LeaveCampaignRequest {
+  return { campaignId: "", profileId: "" };
+}
+
+export const LeaveCampaignRequest: MessageFns<LeaveCampaignRequest> = {
+  encode(message: LeaveCampaignRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.campaignId !== "") {
+      writer.uint32(10).string(message.campaignId);
+    }
+    if (message.profileId !== "") {
+      writer.uint32(18).string(message.profileId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LeaveCampaignRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLeaveCampaignRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LeaveCampaignRequest {
+    return {
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+    };
+  },
+
+  toJSON(message: LeaveCampaignRequest): unknown {
+    const obj: any = {};
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LeaveCampaignRequest>, I>>(base?: I): LeaveCampaignRequest {
+    return LeaveCampaignRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LeaveCampaignRequest>, I>>(object: I): LeaveCampaignRequest {
+    const message = createBaseLeaveCampaignRequest();
+    message.campaignId = object.campaignId ?? "";
+    message.profileId = object.profileId ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdatePrivateCampaignProfilesRequest(): UpdatePrivateCampaignProfilesRequest {
+  return { campaignId: "", profileId: "", brandId: "" };
+}
+
+export const UpdatePrivateCampaignProfilesRequest: MessageFns<UpdatePrivateCampaignProfilesRequest> = {
+  encode(message: UpdatePrivateCampaignProfilesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.campaignId !== "") {
+      writer.uint32(10).string(message.campaignId);
+    }
+    if (message.profileId !== "") {
+      writer.uint32(18).string(message.profileId);
+    }
+    if (message.brandId !== "") {
+      writer.uint32(26).string(message.brandId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdatePrivateCampaignProfilesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdatePrivateCampaignProfilesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdatePrivateCampaignProfilesRequest {
+    return {
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+    };
+  },
+
+  toJSON(message: UpdatePrivateCampaignProfilesRequest): unknown {
+    const obj: any = {};
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdatePrivateCampaignProfilesRequest>, I>>(
+    base?: I,
+  ): UpdatePrivateCampaignProfilesRequest {
+    return UpdatePrivateCampaignProfilesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdatePrivateCampaignProfilesRequest>, I>>(
+    object: I,
+  ): UpdatePrivateCampaignProfilesRequest {
+    const message = createBaseUpdatePrivateCampaignProfilesRequest();
+    message.campaignId = object.campaignId ?? "";
+    message.profileId = object.profileId ?? "";
+    message.brandId = object.brandId ?? "";
     return message;
   },
 };
@@ -1895,7 +2078,10 @@ export interface CampaignService {
   GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
   DeleteCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
   DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;
-  JoinCampaign(request: JoinAndRemoveCampaignRequest): Promise<SuccessResponse>;
+  AddProfileToCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
+  RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
+  JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse>;
+  LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
 }
 
 export const CampaignServiceServiceName = "campaign.CampaignService";
@@ -1913,7 +2099,10 @@ export class CampaignServiceClientImpl implements CampaignService {
     this.GetTasksByCampaignId = this.GetTasksByCampaignId.bind(this);
     this.DeleteCampaignById = this.DeleteCampaignById.bind(this);
     this.DeleteTaskById = this.DeleteTaskById.bind(this);
-    this.JoinCampaign = this.JoinCampaign.bind(this);
+    this.AddProfileToCampaign = this.AddProfileToCampaign.bind(this);
+    this.RemoveProfileFromCampaign = this.RemoveProfileFromCampaign.bind(this);
+    this.JoinPublicCampaign = this.JoinPublicCampaign.bind(this);
+    this.LeaveCampaign = this.LeaveCampaign.bind(this);
   }
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse> {
     const data = CreateCampaignRequest.encode(request).finish();
@@ -1963,9 +2152,27 @@ export class CampaignServiceClientImpl implements CampaignService {
     return promise.then((data) => TaskResponse.decode(new BinaryReader(data)));
   }
 
-  JoinCampaign(request: JoinAndRemoveCampaignRequest): Promise<SuccessResponse> {
-    const data = JoinAndRemoveCampaignRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "JoinCampaign", data);
+  AddProfileToCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse> {
+    const data = UpdatePrivateCampaignProfilesRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "AddProfileToCampaign", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse> {
+    const data = UpdatePrivateCampaignProfilesRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "RemoveProfileFromCampaign", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse> {
+    const data = JoinPublicCampaignRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "JoinPublicCampaign", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse> {
+    const data = LeaveCampaignRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "LeaveCampaign", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }

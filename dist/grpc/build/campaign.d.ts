@@ -28,9 +28,18 @@ export interface UpdateTaskRequest {
     type?: string | undefined;
     id: string;
 }
-export interface JoinAndRemoveCampaignRequest {
+export interface JoinPublicCampaignRequest {
     campaignId: string;
     profileId: string;
+}
+export interface LeaveCampaignRequest {
+    campaignId: string;
+    profileId: string;
+}
+export interface UpdatePrivateCampaignProfilesRequest {
+    campaignId: string;
+    profileId: string;
+    brandId: string;
 }
 /** Response message after creating a campaign */
 export interface CampaignResponse {
@@ -110,7 +119,9 @@ export declare const CreateCampaignRequest: MessageFns<CreateCampaignRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const TaskInput: MessageFns<TaskInput>;
 export declare const UpdateTaskRequest: MessageFns<UpdateTaskRequest>;
-export declare const JoinAndRemoveCampaignRequest: MessageFns<JoinAndRemoveCampaignRequest>;
+export declare const JoinPublicCampaignRequest: MessageFns<JoinPublicCampaignRequest>;
+export declare const LeaveCampaignRequest: MessageFns<LeaveCampaignRequest>;
+export declare const UpdatePrivateCampaignProfilesRequest: MessageFns<UpdatePrivateCampaignProfilesRequest>;
 export declare const CampaignResponse: MessageFns<CampaignResponse>;
 export declare const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest>;
 export declare const TaskResponse: MessageFns<TaskResponse>;
@@ -131,7 +142,10 @@ export interface CampaignService {
     GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
     DeleteCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
     DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;
-    JoinCampaign(request: JoinAndRemoveCampaignRequest): Promise<SuccessResponse>;
+    AddProfileToCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
+    RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
+    JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse>;
+    LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
 }
 export declare const CampaignServiceServiceName = "campaign.CampaignService";
 export declare class CampaignServiceClientImpl implements CampaignService {
@@ -148,7 +162,10 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
     DeleteCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
     DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;
-    JoinCampaign(request: JoinAndRemoveCampaignRequest): Promise<SuccessResponse>;
+    AddProfileToCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
+    RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
+    JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse>;
+    LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

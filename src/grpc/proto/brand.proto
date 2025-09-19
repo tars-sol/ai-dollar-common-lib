@@ -6,10 +6,10 @@ package brand;
 service BrandService {
   rpc Create (CreateBrandRequest) returns (BrandResponse);
   rpc Update (UpdateBrandRequest) returns (BrandResponse);
-  rpc GetBrandByUserId (BrandByUserIdRequest) returns (BrandResponse);
+  rpc GetBrandById (BrandByIdRequest) returns (BrandResponse);
 }
-message BrandByUserIdRequest {
-  string userId = 1;
+message BrandByIdRequest {
+  string brandId = 1;
 }
 
 // Response shape (same for both create and update)
@@ -26,6 +26,12 @@ message BrandResponse {
   optional string refreshToken=10;
   string followersCount = 11;
   string followingCount = 12;
+  repeated string tags = 13;
+  string campaignCount = 14;
+  string tokenName = 15;
+  string discord = 16;
+  string twitter = 17;
+  string telegram = 18;
 }
 
 // Request for creating a brand (userId comes from JWT in server)
@@ -35,6 +41,12 @@ message CreateBrandRequest {
   optional string description = 3;
   optional string logoUrl = 4;
   optional string websiteUrl = 5;
+  repeated string tags = 6;
+  optional string discord = 7;
+  optional string twitter = 8;
+  optional string telegram = 9;
+  optional string tokenName = 10;
+
 }
 
 // Request for updating a brand
@@ -44,4 +56,9 @@ message UpdateBrandRequest {
   optional string description = 3;
   optional string logoUrl = 4;
   optional string websiteUrl = 5;
+  repeated string tags = 6;
+  optional string discord = 7;
+  optional string twitter = 8;
+  optional string telegram = 9;
+  optional string tokenName = 10;
 }

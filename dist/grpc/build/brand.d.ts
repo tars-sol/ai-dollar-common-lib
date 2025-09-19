@@ -1,7 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "brand";
-export interface BrandByUserIdRequest {
-    userId: string;
+export interface BrandByIdRequest {
+    brandId: string;
 }
 /** Response shape (same for both create and update) */
 export interface BrandResponse {
@@ -17,6 +17,12 @@ export interface BrandResponse {
     refreshToken?: string | undefined;
     followersCount: string;
     followingCount: string;
+    tags: string[];
+    campaignCount: string;
+    tokenName: string;
+    discord: string;
+    twitter: string;
+    telegram: string;
 }
 /** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {
@@ -25,6 +31,11 @@ export interface CreateBrandRequest {
     description?: string | undefined;
     logoUrl?: string | undefined;
     websiteUrl?: string | undefined;
+    tags: string[];
+    discord?: string | undefined;
+    twitter?: string | undefined;
+    telegram?: string | undefined;
+    tokenName?: string | undefined;
 }
 /** Request for updating a brand */
 export interface UpdateBrandRequest {
@@ -33,8 +44,13 @@ export interface UpdateBrandRequest {
     description?: string | undefined;
     logoUrl?: string | undefined;
     websiteUrl?: string | undefined;
+    tags: string[];
+    discord?: string | undefined;
+    twitter?: string | undefined;
+    telegram?: string | undefined;
+    tokenName?: string | undefined;
 }
-export declare const BrandByUserIdRequest: MessageFns<BrandByUserIdRequest>;
+export declare const BrandByIdRequest: MessageFns<BrandByIdRequest>;
 export declare const BrandResponse: MessageFns<BrandResponse>;
 export declare const CreateBrandRequest: MessageFns<CreateBrandRequest>;
 export declare const UpdateBrandRequest: MessageFns<UpdateBrandRequest>;
@@ -42,7 +58,7 @@ export declare const UpdateBrandRequest: MessageFns<UpdateBrandRequest>;
 export interface BrandService {
     Create(request: CreateBrandRequest): Promise<BrandResponse>;
     Update(request: UpdateBrandRequest): Promise<BrandResponse>;
-    GetBrandByUserId(request: BrandByUserIdRequest): Promise<BrandResponse>;
+    GetBrandById(request: BrandByIdRequest): Promise<BrandResponse>;
 }
 export declare const BrandServiceServiceName = "brand.BrandService";
 export declare class BrandServiceClientImpl implements BrandService {
@@ -53,7 +69,7 @@ export declare class BrandServiceClientImpl implements BrandService {
     });
     Create(request: CreateBrandRequest): Promise<BrandResponse>;
     Update(request: UpdateBrandRequest): Promise<BrandResponse>;
-    GetBrandByUserId(request: BrandByUserIdRequest): Promise<BrandResponse>;
+    GetBrandById(request: BrandByIdRequest): Promise<BrandResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
