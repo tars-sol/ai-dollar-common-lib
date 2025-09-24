@@ -70,17 +70,41 @@ export interface GetProfileByIdRequest {
 export interface SuccessResponse {
     success: boolean;
 }
+export interface SearchProfilesRequest {
+    /** query text */
+    q: string;
+    /** default 1 (server-side) */
+    page: number;
+    /** default 10, cap 50 (server-side) */
+    limit: number;
+}
+export interface ProfileSearchItem {
+    id: string;
+    username: string;
+    name: string;
+    avatarUrl: string;
+    createdAt: string;
+    score: number;
+}
+export interface SearchProfilesResponse {
+    results: ProfileSearchItem[];
+    total: number;
+}
 export declare const SubscribeRequest: MessageFns<SubscribeRequest>;
 export declare const ProfileResponse: MessageFns<ProfileResponse>;
 export declare const CreateProfileRequest: MessageFns<CreateProfileRequest>;
 export declare const UpdateProfileRequest: MessageFns<UpdateProfileRequest>;
 export declare const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
+export declare const SearchProfilesRequest: MessageFns<SearchProfilesRequest>;
+export declare const ProfileSearchItem: MessageFns<ProfileSearchItem>;
+export declare const SearchProfilesResponse: MessageFns<SearchProfilesResponse>;
 export interface ProfileService {
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
     GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
     SubscribeProfile(request: SubscribeRequest): Promise<SuccessResponse>;
+    SearchProfiles(request: SearchProfilesRequest): Promise<SearchProfilesResponse>;
 }
 export declare const ProfileServiceServiceName = "profile.ProfileService";
 export declare class ProfileServiceClientImpl implements ProfileService {
@@ -93,6 +117,7 @@ export declare class ProfileServiceClientImpl implements ProfileService {
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
     GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
     SubscribeProfile(request: SubscribeRequest): Promise<SuccessResponse>;
+    SearchProfiles(request: SearchProfilesRequest): Promise<SearchProfilesResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

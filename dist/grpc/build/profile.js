@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: profile.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.SuccessResponse = exports.GetProfileByIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
+exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.SearchProfilesResponse = exports.ProfileSearchItem = exports.SearchProfilesRequest = exports.SuccessResponse = exports.GetProfileByIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "profile";
@@ -1158,6 +1158,287 @@ exports.SuccessResponse = {
         return message;
     },
 };
+function createBaseSearchProfilesRequest() {
+    return { q: "", page: 0, limit: 0 };
+}
+exports.SearchProfilesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.q !== "") {
+            writer.uint32(10).string(message.q);
+        }
+        if (message.page !== 0) {
+            writer.uint32(16).int32(message.page);
+        }
+        if (message.limit !== 0) {
+            writer.uint32(24).int32(message.limit);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchProfilesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.q = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.page = reader.int32();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.limit = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            q: isSet(object.q) ? globalThis.String(object.q) : "",
+            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.q !== "") {
+            obj.q = message.q;
+        }
+        if (message.page !== 0) {
+            obj.page = Math.round(message.page);
+        }
+        if (message.limit !== 0) {
+            obj.limit = Math.round(message.limit);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchProfilesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchProfilesRequest();
+        message.q = object.q ?? "";
+        message.page = object.page ?? 0;
+        message.limit = object.limit ?? 0;
+        return message;
+    },
+};
+function createBaseProfileSearchItem() {
+    return { id: "", username: "", name: "", avatarUrl: "", createdAt: "", score: 0 };
+}
+exports.ProfileSearchItem = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.username !== "") {
+            writer.uint32(18).string(message.username);
+        }
+        if (message.name !== "") {
+            writer.uint32(26).string(message.name);
+        }
+        if (message.avatarUrl !== "") {
+            writer.uint32(34).string(message.avatarUrl);
+        }
+        if (message.createdAt !== "") {
+            writer.uint32(42).string(message.createdAt);
+        }
+        if (message.score !== 0) {
+            writer.uint32(49).double(message.score);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseProfileSearchItem();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.avatarUrl = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.createdAt = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 49) {
+                        break;
+                    }
+                    message.score = reader.double();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
+            createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+            score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.username !== "") {
+            obj.username = message.username;
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.avatarUrl !== "") {
+            obj.avatarUrl = message.avatarUrl;
+        }
+        if (message.createdAt !== "") {
+            obj.createdAt = message.createdAt;
+        }
+        if (message.score !== 0) {
+            obj.score = message.score;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ProfileSearchItem.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseProfileSearchItem();
+        message.id = object.id ?? "";
+        message.username = object.username ?? "";
+        message.name = object.name ?? "";
+        message.avatarUrl = object.avatarUrl ?? "";
+        message.createdAt = object.createdAt ?? "";
+        message.score = object.score ?? 0;
+        return message;
+    },
+};
+function createBaseSearchProfilesResponse() {
+    return { results: [], total: 0 };
+}
+exports.SearchProfilesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.results) {
+            exports.ProfileSearchItem.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.total !== 0) {
+            writer.uint32(16).int32(message.total);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchProfilesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.results.push(exports.ProfileSearchItem.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.total = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            results: globalThis.Array.isArray(object?.results)
+                ? object.results.map((e) => exports.ProfileSearchItem.fromJSON(e))
+                : [],
+            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.results?.length) {
+            obj.results = message.results.map((e) => exports.ProfileSearchItem.toJSON(e));
+        }
+        if (message.total !== 0) {
+            obj.total = Math.round(message.total);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchProfilesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchProfilesResponse();
+        message.results = object.results?.map((e) => exports.ProfileSearchItem.fromPartial(e)) || [];
+        message.total = object.total ?? 0;
+        return message;
+    },
+};
 exports.ProfileServiceServiceName = "profile.ProfileService";
 class ProfileServiceClientImpl {
     constructor(rpc, opts) {
@@ -1167,6 +1448,7 @@ class ProfileServiceClientImpl {
         this.Update = this.Update.bind(this);
         this.GetProfileById = this.GetProfileById.bind(this);
         this.SubscribeProfile = this.SubscribeProfile.bind(this);
+        this.SearchProfiles = this.SearchProfiles.bind(this);
     }
     Create(request) {
         const data = exports.CreateProfileRequest.encode(request).finish();
@@ -1187,6 +1469,11 @@ class ProfileServiceClientImpl {
         const data = exports.SubscribeRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "SubscribeProfile", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    SearchProfiles(request) {
+        const data = exports.SearchProfilesRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "SearchProfiles", data);
+        return promise.then((data) => exports.SearchProfilesResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.ProfileServiceClientImpl = ProfileServiceClientImpl;

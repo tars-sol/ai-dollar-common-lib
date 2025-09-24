@@ -19,6 +19,7 @@ export const Database = new DataSource({
   password,
   database,
   schema,
+  migrationsTransactionMode:'each',
   synchronize: false,
   migrationsRun: false,
   logging: false,

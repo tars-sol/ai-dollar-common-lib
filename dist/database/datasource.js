@@ -52,6 +52,7 @@ exports.Database = new typeorm_1.DataSource({
     password,
     database,
     schema,
+    migrationsTransactionMode: 'each',
     synchronize: false,
     migrationsRun: false,
     logging: false,

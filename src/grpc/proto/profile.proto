@@ -7,6 +7,8 @@ service ProfileService {
   rpc Update (UpdateProfileRequest) returns (ProfileResponse);
   rpc GetProfileById (GetProfileByIdRequest) returns (ProfileResponse);
   rpc SubscribeProfile (SubscribeRequest) returns (SuccessResponse);
+  rpc SearchProfiles (SearchProfilesRequest) returns (SearchProfilesResponse);
+
 }
 
 message SubscribeRequest{
@@ -84,4 +86,25 @@ message GetProfileByIdRequest {
 
 message SuccessResponse{
   bool success = 1 ; 
+}
+
+
+message SearchProfilesRequest {
+  string q    = 1;  // query text
+  int32  page = 2;  // default 1 (server-side)
+  int32  limit = 3; // default 10, cap 50 (server-side)
+}
+
+message ProfileSearchItem {
+  string id        = 1;
+  string username  = 2;
+  string name      = 3;
+  string avatarUrl = 4;
+  string createdAt = 5;
+  double score     = 6;
+}
+
+message SearchProfilesResponse {
+  repeated ProfileSearchItem results = 1;
+  int32 total = 2;
 }
