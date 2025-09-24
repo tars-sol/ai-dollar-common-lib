@@ -3305,6 +3305,7 @@ export interface PostService {
   GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
   GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
   GetPost(request: GetPostRequest): Promise<PostResponse>;
+  PostClicked(request: GetPostRequest): Promise<SuccessResponse>;
   VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
   GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
   PostReaction(request: PostReactionRequest): Promise<PostResponse>;
@@ -3329,6 +3330,7 @@ export class PostServiceClientImpl implements PostService {
     this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
     this.GetFeed = this.GetFeed.bind(this);
     this.GetPost = this.GetPost.bind(this);
+    this.PostClicked = this.PostClicked.bind(this);
     this.VoteOnPoll = this.VoteOnPoll.bind(this);
     this.GetProfilePosts = this.GetProfilePosts.bind(this);
     this.PostReaction = this.PostReaction.bind(this);
@@ -3368,6 +3370,12 @@ export class PostServiceClientImpl implements PostService {
     const data = GetPostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetPost", data);
     return promise.then((data) => PostResponse.decode(new BinaryReader(data)));
+  }
+
+  PostClicked(request: GetPostRequest): Promise<SuccessResponse> {
+    const data = GetPostRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "PostClicked", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 
   VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse> {

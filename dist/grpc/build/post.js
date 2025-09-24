@@ -2834,6 +2834,7 @@ class PostServiceClientImpl {
         this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
         this.GetFeed = this.GetFeed.bind(this);
         this.GetPost = this.GetPost.bind(this);
+        this.PostClicked = this.PostClicked.bind(this);
         this.VoteOnPoll = this.VoteOnPoll.bind(this);
         this.GetProfilePosts = this.GetProfilePosts.bind(this);
         this.PostReaction = this.PostReaction.bind(this);
@@ -2869,6 +2870,11 @@ class PostServiceClientImpl {
         const data = exports.GetPostRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetPost", data);
         return promise.then((data) => exports.PostResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    PostClicked(request) {
+        const data = exports.GetPostRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "PostClicked", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
     VoteOnPoll(request) {
         const data = exports.VoteOnPollRequest.encode(request).finish();

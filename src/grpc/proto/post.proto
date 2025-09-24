@@ -8,6 +8,7 @@ service PostService {
   rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
   rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
   rpc GetPost (GetPostRequest) returns (PostResponse);
+  rpc PostClicked(GetPostRequest) returns (SuccessResponse);
   rpc VoteOnPoll (VoteOnPollRequest) returns (PostResponse);
   rpc GetProfilePosts(GetProfilePostsRequest) returns (GetFeedResponse);
   rpc PostReaction(PostReactionRequest) returns (PostResponse);

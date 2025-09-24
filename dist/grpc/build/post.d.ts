@@ -204,6 +204,7 @@ export interface PostService {
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     GetPost(request: GetPostRequest): Promise<PostResponse>;
+    PostClicked(request: GetPostRequest): Promise<SuccessResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
@@ -227,6 +228,7 @@ export declare class PostServiceClientImpl implements PostService {
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
     GetPost(request: GetPostRequest): Promise<PostResponse>;
+    PostClicked(request: GetPostRequest): Promise<SuccessResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
