@@ -10,7 +10,7 @@ const crypto_1 = require("crypto");
 const posts_1 = require("./posts");
 const SEED_EMAIL = 'seed.user@local.dev';
 const SEED_USERNAME = 'seed_demo';
-const DESIRED_POSTS = 30;
+const DESIRED_POSTS = 45;
 async function main() {
     if (process.env.NODE_ENV === 'production') {
         console.log('Seed skipped in production.');
