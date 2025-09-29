@@ -11,6 +11,8 @@ export const protobufPackage = "brand";
 
 export interface BrandByIdRequest {
   brandId: string;
+  /** ID of the user making the request (for auth, if needed) */
+  userId: string;
 }
 
 /** Response shape (same for both create and update) */
@@ -33,6 +35,7 @@ export interface BrandResponse {
   discord: string;
   twitter: string;
   telegram: string;
+  isFollowing?: boolean | undefined;
 }
 
 /** Request for creating a brand (userId comes from JWT in server) */
@@ -64,13 +67,16 @@ export interface UpdateBrandRequest {
 }
 
 function createBaseBrandByIdRequest(): BrandByIdRequest {
-  return { brandId: "" };
+  return { brandId: "", userId: "" };
 }
 
 export const BrandByIdRequest: MessageFns<BrandByIdRequest> = {
   encode(message: BrandByIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.brandId !== "") {
       writer.uint32(10).string(message.brandId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
     }
     return writer;
   },
@@ -90,6 +96,14 @@ export const BrandByIdRequest: MessageFns<BrandByIdRequest> = {
           message.brandId = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -100,13 +114,19 @@ export const BrandByIdRequest: MessageFns<BrandByIdRequest> = {
   },
 
   fromJSON(object: any): BrandByIdRequest {
-    return { brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "" };
+    return {
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+    };
   },
 
   toJSON(message: BrandByIdRequest): unknown {
     const obj: any = {};
     if (message.brandId !== "") {
       obj.brandId = message.brandId;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
     }
     return obj;
   },
@@ -117,6 +137,7 @@ export const BrandByIdRequest: MessageFns<BrandByIdRequest> = {
   fromPartial<I extends Exact<DeepPartial<BrandByIdRequest>, I>>(object: I): BrandByIdRequest {
     const message = createBaseBrandByIdRequest();
     message.brandId = object.brandId ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -141,6 +162,7 @@ function createBaseBrandResponse(): BrandResponse {
     discord: "",
     twitter: "",
     telegram: "",
+    isFollowing: undefined,
   };
 }
 
@@ -199,6 +221,9 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     }
     if (message.telegram !== "") {
       writer.uint32(146).string(message.telegram);
+    }
+    if (message.isFollowing !== undefined) {
+      writer.uint32(152).bool(message.isFollowing);
     }
     return writer;
   },
@@ -354,6 +379,14 @@ export const BrandResponse: MessageFns<BrandResponse> = {
           message.telegram = reader.string();
           continue;
         }
+        case 19: {
+          if (tag !== 152) {
+            break;
+          }
+
+          message.isFollowing = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -383,6 +416,7 @@ export const BrandResponse: MessageFns<BrandResponse> = {
       discord: isSet(object.discord) ? globalThis.String(object.discord) : "",
       twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
       telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : "",
+      isFollowing: isSet(object.isFollowing) ? globalThis.Boolean(object.isFollowing) : undefined,
     };
   },
 
@@ -442,6 +476,9 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     if (message.telegram !== "") {
       obj.telegram = message.telegram;
     }
+    if (message.isFollowing !== undefined) {
+      obj.isFollowing = message.isFollowing;
+    }
     return obj;
   },
 
@@ -468,6 +505,7 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     message.discord = object.discord ?? "";
     message.twitter = object.twitter ?? "";
     message.telegram = object.telegram ?? "";
+    message.isFollowing = object.isFollowing ?? undefined;
     return message;
   },
 };

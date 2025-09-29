@@ -2,6 +2,8 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "brand";
 export interface BrandByIdRequest {
     brandId: string;
+    /** ID of the user making the request (for auth, if needed) */
+    userId: string;
 }
 /** Response shape (same for both create and update) */
 export interface BrandResponse {
@@ -23,6 +25,7 @@ export interface BrandResponse {
     discord: string;
     twitter: string;
     telegram: string;
+    isFollowing?: boolean | undefined;
 }
 /** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {

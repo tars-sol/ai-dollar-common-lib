@@ -10,6 +10,7 @@ service BrandService {
 }
 message BrandByIdRequest {
   string brandId = 1;
+  string userId = 2; // ID of the user making the request (for auth, if needed)
 }
 
 // Response shape (same for both create and update)
@@ -32,6 +33,7 @@ message BrandResponse {
   string discord = 16;
   string twitter = 17;
   string telegram = 18;
+  optional bool isFollowing = 19;
 }
 
 // Request for creating a brand (userId comes from JWT in server)

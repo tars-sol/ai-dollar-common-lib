@@ -10,12 +10,15 @@ exports.BrandServiceClientImpl = exports.BrandServiceServiceName = exports.Updat
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "brand";
 function createBaseBrandByIdRequest() {
-    return { brandId: "" };
+    return { brandId: "", userId: "" };
 }
 exports.BrandByIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.brandId !== "") {
             writer.uint32(10).string(message.brandId);
+        }
+        if (message.userId !== "") {
+            writer.uint32(18).string(message.userId);
         }
         return writer;
     },
@@ -33,6 +36,13 @@ exports.BrandByIdRequest = {
                     message.brandId = reader.string();
                     continue;
                 }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -42,12 +52,18 @@ exports.BrandByIdRequest = {
         return message;
     },
     fromJSON(object) {
-        return { brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "" };
+        return {
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.brandId !== "") {
             obj.brandId = message.brandId;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
         }
         return obj;
     },
@@ -57,6 +73,7 @@ exports.BrandByIdRequest = {
     fromPartial(object) {
         const message = createBaseBrandByIdRequest();
         message.brandId = object.brandId ?? "";
+        message.userId = object.userId ?? "";
         return message;
     },
 };
@@ -80,6 +97,7 @@ function createBaseBrandResponse() {
         discord: "",
         twitter: "",
         telegram: "",
+        isFollowing: undefined,
     };
 }
 exports.BrandResponse = {
@@ -137,6 +155,9 @@ exports.BrandResponse = {
         }
         if (message.telegram !== "") {
             writer.uint32(146).string(message.telegram);
+        }
+        if (message.isFollowing !== undefined) {
+            writer.uint32(152).bool(message.isFollowing);
         }
         return writer;
     },
@@ -273,6 +294,13 @@ exports.BrandResponse = {
                     message.telegram = reader.string();
                     continue;
                 }
+                case 19: {
+                    if (tag !== 152) {
+                        break;
+                    }
+                    message.isFollowing = reader.bool();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -301,6 +329,7 @@ exports.BrandResponse = {
             discord: isSet(object.discord) ? globalThis.String(object.discord) : "",
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
             telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : "",
+            isFollowing: isSet(object.isFollowing) ? globalThis.Boolean(object.isFollowing) : undefined,
         };
     },
     toJSON(message) {
@@ -359,6 +388,9 @@ exports.BrandResponse = {
         if (message.telegram !== "") {
             obj.telegram = message.telegram;
         }
+        if (message.isFollowing !== undefined) {
+            obj.isFollowing = message.isFollowing;
+        }
         return obj;
     },
     create(base) {
@@ -384,6 +416,7 @@ exports.BrandResponse = {
         message.discord = object.discord ?? "";
         message.twitter = object.twitter ?? "";
         message.telegram = object.telegram ?? "";
+        message.isFollowing = object.isFollowing ?? undefined;
         return message;
     },
 };
