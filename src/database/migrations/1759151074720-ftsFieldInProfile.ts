@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class FtsFieldInProfile1759148872568 implements MigrationInterface {
-    name = 'FtsFieldInProfile1759148872568'
+export class FtsFieldInProfile1759151074720 implements MigrationInterface {
+    name = 'FtsFieldInProfile1759151074720'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "profiles" ADD "fts" tsvector GENERATED ALWAYS AS (

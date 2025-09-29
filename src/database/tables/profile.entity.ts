@@ -62,6 +62,7 @@ export class Profile {
   @Column({ type: 'int', default: 0 })
   subscribersCount: number;
 
+  @Index('idx_profiles_fts', { synchronize: false })
   @Column({
     type: 'tsvector',
     asExpression: `

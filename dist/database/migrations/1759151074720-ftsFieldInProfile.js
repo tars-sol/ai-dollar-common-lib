@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FtsFieldInProfile1759148872568 = void 0;
-class FtsFieldInProfile1759148872568 {
+exports.FtsFieldInProfile1759151074720 = void 0;
+class FtsFieldInProfile1759151074720 {
     constructor() {
-        this.name = 'FtsFieldInProfile1759148872568';
+        this.name = 'FtsFieldInProfile1759151074720';
     }
     async up(queryRunner) {
         await queryRunner.query(`ALTER TABLE "profiles" ADD "fts" tsvector GENERATED ALWAYS AS (
@@ -21,5 +21,5 @@ class FtsFieldInProfile1759148872568 {
         await queryRunner.query(`ALTER TABLE "profiles" DROP COLUMN "fts"`);
     }
 }
-exports.FtsFieldInProfile1759148872568 = FtsFieldInProfile1759148872568;
-//# sourceMappingURL=1759148872568-ftsFieldInProfile.js.map
+exports.FtsFieldInProfile1759151074720 = FtsFieldInProfile1759151074720;
+//# sourceMappingURL=1759151074720-ftsFieldInProfile.js.map

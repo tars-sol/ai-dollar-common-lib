@@ -87,6 +87,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Profile.prototype, "subscribersCount", void 0);
 __decorate([
+    (0, typeorm_1.Index)('idx_profiles_fts', { synchronize: false }),
     (0, typeorm_1.Column)({
         type: 'tsvector',
         asExpression: `
