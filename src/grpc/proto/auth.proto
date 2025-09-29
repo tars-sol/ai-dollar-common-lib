@@ -15,6 +15,8 @@ service AuthService {
   rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
   rpc Health(google.protobuf.Empty) returns (HealthResponse);
   rpc FollowUser (FollowRequest) returns (SuccessResponse);
+  rpc ListOnboardingTopics (google.protobuf.Empty) returns (OnboardingTopicsResponse);
+  rpc SubmitOnboardingTopics (SubmitOnboardingTopicsRequest) returns (SuccessResponse);
 }
 message SuccessResponse{
   bool success = 1 ; 
@@ -94,4 +96,18 @@ message AuthResponse {
   string token = 1;
   string refreshToken = 2;
   UserRequest user = 3;
+}
+
+message Topic {
+  string id   = 1; // slug/ID (e.g., "lifestyle")
+  string name = 2; // display label (e.g., "Lifestyle")
+}
+
+message OnboardingTopicsResponse {
+  repeated Topic topics = 1;
+}
+
+message SubmitOnboardingTopicsRequest {
+  string userId = 1;
+  repeated string topicIds = 2; // e.g., ["technology","ai-ml","beginner-friendly"]
 }

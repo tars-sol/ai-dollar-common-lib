@@ -72,6 +72,20 @@ export interface AuthResponse {
     refreshToken: string;
     user: UserRequest | undefined;
 }
+export interface Topic {
+    /** slug/ID (e.g., "lifestyle") */
+    id: string;
+    /** display label (e.g., "Lifestyle") */
+    name: string;
+}
+export interface OnboardingTopicsResponse {
+    topics: Topic[];
+}
+export interface SubmitOnboardingTopicsRequest {
+    userId: string;
+    /** e.g., ["technology","ai-ml","beginner-friendly"] */
+    topicIds: string[];
+}
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const FollowRequest: MessageFns<FollowRequest>;
 export declare const RevokeTokenRequest: MessageFns<RevokeTokenRequest>;
@@ -89,6 +103,9 @@ export declare const LinkWalletRequest: MessageFns<LinkWalletRequest>;
 export declare const RefreshTokenRequest: MessageFns<RefreshTokenRequest>;
 export declare const UserRequest: MessageFns<UserRequest>;
 export declare const AuthResponse: MessageFns<AuthResponse>;
+export declare const Topic: MessageFns<Topic>;
+export declare const OnboardingTopicsResponse: MessageFns<OnboardingTopicsResponse>;
+export declare const SubmitOnboardingTopicsRequest: MessageFns<SubmitOnboardingTopicsRequest>;
 export interface AuthService {
     Register(request: RegisterRequest): Promise<AuthResponse>;
     Login(request: LoginRequest): Promise<AuthResponse>;
@@ -101,6 +118,8 @@ export interface AuthService {
     ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
     Health(request: Empty): Promise<HealthResponse>;
     FollowUser(request: FollowRequest): Promise<SuccessResponse>;
+    ListOnboardingTopics(request: Empty): Promise<OnboardingTopicsResponse>;
+    SubmitOnboardingTopics(request: SubmitOnboardingTopicsRequest): Promise<SuccessResponse>;
 }
 export declare const AuthServiceServiceName = "auth.AuthService";
 export declare class AuthServiceClientImpl implements AuthService {
@@ -120,6 +139,8 @@ export declare class AuthServiceClientImpl implements AuthService {
     ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
     Health(request: Empty): Promise<HealthResponse>;
     FollowUser(request: FollowRequest): Promise<SuccessResponse>;
+    ListOnboardingTopics(request: Empty): Promise<OnboardingTopicsResponse>;
+    SubmitOnboardingTopics(request: SubmitOnboardingTopicsRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

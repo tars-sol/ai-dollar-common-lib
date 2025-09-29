@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: auth.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.HealthResponse = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.FollowRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
+exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.SubmitOnboardingTopicsRequest = exports.OnboardingTopicsResponse = exports.Topic = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.HealthResponse = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.FollowRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -1197,6 +1197,193 @@ exports.AuthResponse = {
         return message;
     },
 };
+function createBaseTopic() {
+    return { id: "", name: "" };
+}
+exports.Topic = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.name !== "") {
+            writer.uint32(18).string(message.name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTopic();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.Topic.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTopic();
+        message.id = object.id ?? "";
+        message.name = object.name ?? "";
+        return message;
+    },
+};
+function createBaseOnboardingTopicsResponse() {
+    return { topics: [] };
+}
+exports.OnboardingTopicsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.topics) {
+            exports.Topic.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseOnboardingTopicsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.topics.push(exports.Topic.decode(reader, reader.uint32()));
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { topics: globalThis.Array.isArray(object?.topics) ? object.topics.map((e) => exports.Topic.fromJSON(e)) : [] };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.topics?.length) {
+            obj.topics = message.topics.map((e) => exports.Topic.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.OnboardingTopicsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseOnboardingTopicsResponse();
+        message.topics = object.topics?.map((e) => exports.Topic.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseSubmitOnboardingTopicsRequest() {
+    return { userId: "", topicIds: [] };
+}
+exports.SubmitOnboardingTopicsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        for (const v of message.topicIds) {
+            writer.uint32(18).string(v);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSubmitOnboardingTopicsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.topicIds.push(reader.string());
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            topicIds: globalThis.Array.isArray(object?.topicIds) ? object.topicIds.map((e) => globalThis.String(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.topicIds?.length) {
+            obj.topicIds = message.topicIds;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SubmitOnboardingTopicsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSubmitOnboardingTopicsRequest();
+        message.userId = object.userId ?? "";
+        message.topicIds = object.topicIds?.map((e) => e) || [];
+        return message;
+    },
+};
 exports.AuthServiceServiceName = "auth.AuthService";
 class AuthServiceClientImpl {
     constructor(rpc, opts) {
@@ -1213,6 +1400,8 @@ class AuthServiceClientImpl {
         this.ValidateToken = this.ValidateToken.bind(this);
         this.Health = this.Health.bind(this);
         this.FollowUser = this.FollowUser.bind(this);
+        this.ListOnboardingTopics = this.ListOnboardingTopics.bind(this);
+        this.SubmitOnboardingTopics = this.SubmitOnboardingTopics.bind(this);
     }
     Register(request) {
         const data = exports.RegisterRequest.encode(request).finish();
@@ -1267,6 +1456,16 @@ class AuthServiceClientImpl {
     FollowUser(request) {
         const data = exports.FollowRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "FollowUser", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    ListOnboardingTopics(request) {
+        const data = empty_1.Empty.encode(request).finish();
+        const promise = this.rpc.request(this.service, "ListOnboardingTopics", data);
+        return promise.then((data) => exports.OnboardingTopicsResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    SubmitOnboardingTopics(request) {
+        const data = exports.SubmitOnboardingTopicsRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "SubmitOnboardingTopics", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

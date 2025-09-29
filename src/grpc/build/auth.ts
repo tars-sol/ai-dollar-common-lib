@@ -98,6 +98,23 @@ export interface AuthResponse {
   user: UserRequest | undefined;
 }
 
+export interface Topic {
+  /** slug/ID (e.g., "lifestyle") */
+  id: string;
+  /** display label (e.g., "Lifestyle") */
+  name: string;
+}
+
+export interface OnboardingTopicsResponse {
+  topics: Topic[];
+}
+
+export interface SubmitOnboardingTopicsRequest {
+  userId: string;
+  /** e.g., ["technology","ai-ml","beginner-friendly"] */
+  topicIds: string[];
+}
+
 function createBaseSuccessResponse(): SuccessResponse {
   return { success: false };
 }
@@ -1424,6 +1441,218 @@ export const AuthResponse: MessageFns<AuthResponse> = {
   },
 };
 
+function createBaseTopic(): Topic {
+  return { id: "", name: "" };
+}
+
+export const Topic: MessageFns<Topic> = {
+  encode(message: Topic, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Topic {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTopic();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Topic {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+    };
+  },
+
+  toJSON(message: Topic): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Topic>, I>>(base?: I): Topic {
+    return Topic.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<Topic>, I>>(object: I): Topic {
+    const message = createBaseTopic();
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseOnboardingTopicsResponse(): OnboardingTopicsResponse {
+  return { topics: [] };
+}
+
+export const OnboardingTopicsResponse: MessageFns<OnboardingTopicsResponse> = {
+  encode(message: OnboardingTopicsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.topics) {
+      Topic.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): OnboardingTopicsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOnboardingTopicsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.topics.push(Topic.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OnboardingTopicsResponse {
+    return { topics: globalThis.Array.isArray(object?.topics) ? object.topics.map((e: any) => Topic.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: OnboardingTopicsResponse): unknown {
+    const obj: any = {};
+    if (message.topics?.length) {
+      obj.topics = message.topics.map((e) => Topic.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<OnboardingTopicsResponse>, I>>(base?: I): OnboardingTopicsResponse {
+    return OnboardingTopicsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<OnboardingTopicsResponse>, I>>(object: I): OnboardingTopicsResponse {
+    const message = createBaseOnboardingTopicsResponse();
+    message.topics = object.topics?.map((e) => Topic.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSubmitOnboardingTopicsRequest(): SubmitOnboardingTopicsRequest {
+  return { userId: "", topicIds: [] };
+}
+
+export const SubmitOnboardingTopicsRequest: MessageFns<SubmitOnboardingTopicsRequest> = {
+  encode(message: SubmitOnboardingTopicsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    for (const v of message.topicIds) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SubmitOnboardingTopicsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSubmitOnboardingTopicsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.topicIds.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SubmitOnboardingTopicsRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      topicIds: globalThis.Array.isArray(object?.topicIds) ? object.topicIds.map((e: any) => globalThis.String(e)) : [],
+    };
+  },
+
+  toJSON(message: SubmitOnboardingTopicsRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.topicIds?.length) {
+      obj.topicIds = message.topicIds;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SubmitOnboardingTopicsRequest>, I>>(base?: I): SubmitOnboardingTopicsRequest {
+    return SubmitOnboardingTopicsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SubmitOnboardingTopicsRequest>, I>>(
+    object: I,
+  ): SubmitOnboardingTopicsRequest {
+    const message = createBaseSubmitOnboardingTopicsRequest();
+    message.userId = object.userId ?? "";
+    message.topicIds = object.topicIds?.map((e) => e) || [];
+    return message;
+  },
+};
+
 export interface AuthService {
   Register(request: RegisterRequest): Promise<AuthResponse>;
   Login(request: LoginRequest): Promise<AuthResponse>;
@@ -1436,6 +1665,8 @@ export interface AuthService {
   ValidateToken(request: ValidateTokenRequest): Promise<ValidateTokenResponse>;
   Health(request: Empty): Promise<HealthResponse>;
   FollowUser(request: FollowRequest): Promise<SuccessResponse>;
+  ListOnboardingTopics(request: Empty): Promise<OnboardingTopicsResponse>;
+  SubmitOnboardingTopics(request: SubmitOnboardingTopicsRequest): Promise<SuccessResponse>;
 }
 
 export const AuthServiceServiceName = "auth.AuthService";
@@ -1456,6 +1687,8 @@ export class AuthServiceClientImpl implements AuthService {
     this.ValidateToken = this.ValidateToken.bind(this);
     this.Health = this.Health.bind(this);
     this.FollowUser = this.FollowUser.bind(this);
+    this.ListOnboardingTopics = this.ListOnboardingTopics.bind(this);
+    this.SubmitOnboardingTopics = this.SubmitOnboardingTopics.bind(this);
   }
   Register(request: RegisterRequest): Promise<AuthResponse> {
     const data = RegisterRequest.encode(request).finish();
@@ -1520,6 +1753,18 @@ export class AuthServiceClientImpl implements AuthService {
   FollowUser(request: FollowRequest): Promise<SuccessResponse> {
     const data = FollowRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FollowUser", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  ListOnboardingTopics(request: Empty): Promise<OnboardingTopicsResponse> {
+    const data = Empty.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListOnboardingTopics", data);
+    return promise.then((data) => OnboardingTopicsResponse.decode(new BinaryReader(data)));
+  }
+
+  SubmitOnboardingTopics(request: SubmitOnboardingTopicsRequest): Promise<SuccessResponse> {
+    const data = SubmitOnboardingTopicsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SubmitOnboardingTopics", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }
