@@ -1,0 +1,1 @@
+{"version":3,"file":"fix-migration.js","sourceRoot":"","sources":["../../../src/database/migrations/fix-migration.ts"],"names":[],"mappings":";;;AAEA,MAAa,2CAA2C;IAC/C,KAAK,CAAC,EAAE,CAAC,WAAwB;QACtC,MAAM,WAAW,CAAC,KAAK,CAAC;;;;;;;;;KASvB,CAAC,CAAC;IACL,CAAC;IACM,KAAK,CAAC,IAAI;QACf,gDAAgD;IAClD,CAAC;CACF;AAhBD,kGAgBC"}

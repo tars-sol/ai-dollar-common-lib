@@ -1,17 +1,18 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   Unique,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Profile } from './profile.entity';
 import { Task } from './task.entity';
-@Entity('user_task_progress')
+import { ProfileCampaign } from './profile_campaign.entity';
+@Entity('profile_task_progress')
 @Unique(['userId', 'taskId']) // one progress per user per task
-export class UserTaskProgress {
+export class ProfileTaskProgress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -28,9 +29,17 @@ export class UserTaskProgress {
 
   @Column()
   taskId: string;
+  @ManyToOne(() => ProfileCampaign, (profileCampaign) => profileCampaign.tasks, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'campaignId' })
+  profileCampaign: ProfileCampaign;
 
-  @Column({ default: false })
-  isCompletedByUser: boolean;
+  @Column()
+  profileCampaignId: string;
+
+  // @Column({ default: false })
+  // isCompletedByUser: boolean;
 
   @Column({ default: false })
   isMarkedDoneByBrand: boolean;
@@ -38,6 +47,6 @@ export class UserTaskProgress {
   @Column({ type: 'text', nullable: true })
   brandComment?: string;
 
-  @CreateDateColumn()
+  @UpdateDateColumn()
   updatedAt: Date;
 }

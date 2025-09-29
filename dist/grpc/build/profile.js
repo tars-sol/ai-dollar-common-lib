@@ -142,6 +142,7 @@ function createBaseProfileResponse() {
         createdAt: "",
         updatedAt: "",
         jwtToken: undefined,
+        isFollowing: undefined,
         refreshToken: undefined,
         email: undefined,
         followersCount: "",
@@ -205,6 +206,9 @@ exports.ProfileResponse = {
         }
         if (message.jwtToken !== undefined) {
             writer.uint32(130).string(message.jwtToken);
+        }
+        if (message.isFollowing !== undefined) {
+            writer.uint32(200).bool(message.isFollowing);
         }
         if (message.refreshToken !== undefined) {
             writer.uint32(138).string(message.refreshToken);
@@ -359,6 +363,13 @@ exports.ProfileResponse = {
                     message.jwtToken = reader.string();
                     continue;
                 }
+                case 25: {
+                    if (tag !== 200) {
+                        break;
+                    }
+                    message.isFollowing = reader.bool();
+                    continue;
+                }
                 case 17: {
                     if (tag !== 138) {
                         break;
@@ -429,6 +440,7 @@ exports.ProfileResponse = {
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
             jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
+            isFollowing: isSet(object.isFollowing) ? globalThis.Boolean(object.isFollowing) : undefined,
             refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
             email: isSet(object.email) ? globalThis.String(object.email) : undefined,
             followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
@@ -493,6 +505,9 @@ exports.ProfileResponse = {
         if (message.jwtToken !== undefined) {
             obj.jwtToken = message.jwtToken;
         }
+        if (message.isFollowing !== undefined) {
+            obj.isFollowing = message.isFollowing;
+        }
         if (message.refreshToken !== undefined) {
             obj.refreshToken = message.refreshToken;
         }
@@ -536,6 +551,7 @@ exports.ProfileResponse = {
         message.createdAt = object.createdAt ?? "";
         message.updatedAt = object.updatedAt ?? "";
         message.jwtToken = object.jwtToken ?? undefined;
+        message.isFollowing = object.isFollowing ?? undefined;
         message.refreshToken = object.refreshToken ?? undefined;
         message.email = object.email ?? undefined;
         message.followersCount = object.followersCount ?? "";
@@ -1040,7 +1056,7 @@ exports.UpdateProfileRequest = {
     },
 };
 function createBaseGetProfileByIdRequest() {
-    return { isPrivate: false, profileId: "" };
+    return { isPrivate: false, profileId: "", roleId: "", userId: "", role: "" };
 }
 exports.GetProfileByIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1049,6 +1065,15 @@ exports.GetProfileByIdRequest = {
         }
         if (message.profileId !== "") {
             writer.uint32(18).string(message.profileId);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(26).string(message.roleId);
+        }
+        if (message.userId !== "") {
+            writer.uint32(34).string(message.userId);
+        }
+        if (message.role !== "") {
+            writer.uint32(42).string(message.role);
         }
         return writer;
     },
@@ -1073,6 +1098,27 @@ exports.GetProfileByIdRequest = {
                     message.profileId = reader.string();
                     continue;
                 }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1085,6 +1131,9 @@ exports.GetProfileByIdRequest = {
         return {
             isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
             profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
         };
     },
     toJSON(message) {
@@ -1095,6 +1144,15 @@ exports.GetProfileByIdRequest = {
         if (message.profileId !== "") {
             obj.profileId = message.profileId;
         }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
         return obj;
     },
     create(base) {
@@ -1104,6 +1162,9 @@ exports.GetProfileByIdRequest = {
         const message = createBaseGetProfileByIdRequest();
         message.isPrivate = object.isPrivate ?? false;
         message.profileId = object.profileId ?? "";
+        message.roleId = object.roleId ?? "";
+        message.userId = object.userId ?? "";
+        message.role = object.role ?? "";
         return message;
     },
 };

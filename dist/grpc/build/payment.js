@@ -391,12 +391,15 @@ exports.StripeResponse = {
     },
 };
 function createBaseConnectedAccountRequest() {
-    return { email: "" };
+    return { email: "", profileId: "" };
 }
 exports.ConnectedAccountRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.email !== "") {
             writer.uint32(10).string(message.email);
+        }
+        if (message.profileId !== "") {
+            writer.uint32(18).string(message.profileId);
         }
         return writer;
     },
@@ -414,6 +417,13 @@ exports.ConnectedAccountRequest = {
                     message.email = reader.string();
                     continue;
                 }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -423,12 +433,18 @@ exports.ConnectedAccountRequest = {
         return message;
     },
     fromJSON(object) {
-        return { email: isSet(object.email) ? globalThis.String(object.email) : "" };
+        return {
+            email: isSet(object.email) ? globalThis.String(object.email) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.email !== "") {
             obj.email = message.email;
+        }
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
         }
         return obj;
     },
@@ -438,6 +454,7 @@ exports.ConnectedAccountRequest = {
     fromPartial(object) {
         const message = createBaseConnectedAccountRequest();
         message.email = object.email ?? "";
+        message.profileId = object.profileId ?? "";
         return message;
     },
 };

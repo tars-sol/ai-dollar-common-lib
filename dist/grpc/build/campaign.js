@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: campaign.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
+exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "campaign";
@@ -1169,6 +1169,104 @@ exports.TaskResponse = {
         return message;
     },
 };
+function createBaseTaskCompletedResponse() {
+    return { campaignId: "", taskId: "", profileId: "", brandId: "" };
+}
+exports.TaskCompletedResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.campaignId !== "") {
+            writer.uint32(10).string(message.campaignId);
+        }
+        if (message.taskId !== "") {
+            writer.uint32(18).string(message.taskId);
+        }
+        if (message.profileId !== "") {
+            writer.uint32(26).string(message.profileId);
+        }
+        if (message.brandId !== "") {
+            writer.uint32(34).string(message.brandId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTaskCompletedResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.campaignId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.taskId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.brandId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+            taskId: isSet(object.taskId) ? globalThis.String(object.taskId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.campaignId !== "") {
+            obj.campaignId = message.campaignId;
+        }
+        if (message.taskId !== "") {
+            obj.taskId = message.taskId;
+        }
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        if (message.brandId !== "") {
+            obj.brandId = message.brandId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TaskCompletedResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTaskCompletedResponse();
+        message.campaignId = object.campaignId ?? "";
+        message.taskId = object.taskId ?? "";
+        message.profileId = object.profileId ?? "";
+        message.brandId = object.brandId ?? "";
+        return message;
+    },
+};
 function createBaseGetCampaignsByBrandIdRequest() {
     return {
         roleId: "",
@@ -1763,6 +1861,7 @@ class CampaignServiceClientImpl {
         this.RemoveProfileFromCampaign = this.RemoveProfileFromCampaign.bind(this);
         this.JoinPublicCampaign = this.JoinPublicCampaign.bind(this);
         this.LeaveCampaign = this.LeaveCampaign.bind(this);
+        this.MarkTaskAsCompleted = this.MarkTaskAsCompleted.bind(this);
     }
     CreateCampaign(request) {
         const data = exports.CreateCampaignRequest.encode(request).finish();
@@ -1822,6 +1921,11 @@ class CampaignServiceClientImpl {
     LeaveCampaign(request) {
         const data = exports.LeaveCampaignRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "LeaveCampaign", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    MarkTaskAsCompleted(request) {
+        const data = exports.TaskCompletedResponse.encode(request).finish();
+        const promise = this.rpc.request(this.service, "MarkTaskAsCompleted", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

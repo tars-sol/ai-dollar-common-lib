@@ -74,6 +74,12 @@ export interface TaskResponse {
     createdAt: string;
     updatedAt: string;
 }
+export interface TaskCompletedResponse {
+    campaignId: string;
+    taskId: string;
+    profileId: string;
+    brandId: string;
+}
 export interface GetCampaignsByBrandIdRequest {
     roleId: string;
     role: string;
@@ -125,6 +131,7 @@ export declare const UpdatePrivateCampaignProfilesRequest: MessageFns<UpdatePriv
 export declare const CampaignResponse: MessageFns<CampaignResponse>;
 export declare const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest>;
 export declare const TaskResponse: MessageFns<TaskResponse>;
+export declare const TaskCompletedResponse: MessageFns<TaskCompletedResponse>;
 export declare const GetCampaignsByBrandIdRequest: MessageFns<GetCampaignsByBrandIdRequest>;
 export declare const CampaignsByIdRequest: MessageFns<CampaignsByIdRequest>;
 export declare const DeleteTaskByIdRequest: MessageFns<DeleteTaskByIdRequest>;
@@ -146,6 +153,7 @@ export interface CampaignService {
     RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
     JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse>;
     LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
+    MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
 }
 export declare const CampaignServiceServiceName = "campaign.CampaignService";
 export declare class CampaignServiceClientImpl implements CampaignService {
@@ -166,6 +174,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
     JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse>;
     LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
+    MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

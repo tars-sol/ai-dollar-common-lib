@@ -36,4 +36,6 @@ __exportStar(require("./user_subscribe.entity"), exports);
 __exportStar(require("./revoked_tokens.entity"), exports);
 __exportStar(require("./event_queue_user.entity"), exports);
 __exportStar(require("./event_queue_post.entity"), exports);
+__exportStar(require("./profile_campaign.entity"), exports);
+__exportStar(require("./profile_task_progress.entity"), exports);
 //# sourceMappingURL=index.js.map

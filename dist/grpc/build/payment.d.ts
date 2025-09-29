@@ -25,6 +25,7 @@ export interface StripeResponse {
 }
 export interface ConnectedAccountRequest {
     email: string;
+    profileId: string;
 }
 export interface ConnectAccountResponse {
     accountId: string;

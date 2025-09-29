@@ -39,6 +39,7 @@ export interface StripeResponse {
 
 export interface ConnectedAccountRequest {
   email: string;
+  profileId: string;
 }
 
 export interface ConnectAccountResponse {
@@ -473,13 +474,16 @@ export const StripeResponse: MessageFns<StripeResponse> = {
 };
 
 function createBaseConnectedAccountRequest(): ConnectedAccountRequest {
-  return { email: "" };
+  return { email: "", profileId: "" };
 }
 
 export const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest> = {
   encode(message: ConnectedAccountRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.email !== "") {
       writer.uint32(10).string(message.email);
+    }
+    if (message.profileId !== "") {
+      writer.uint32(18).string(message.profileId);
     }
     return writer;
   },
@@ -499,6 +503,14 @@ export const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest> = {
           message.email = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -509,13 +521,19 @@ export const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest> = {
   },
 
   fromJSON(object: any): ConnectedAccountRequest {
-    return { email: isSet(object.email) ? globalThis.String(object.email) : "" };
+    return {
+      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+    };
   },
 
   toJSON(message: ConnectedAccountRequest): unknown {
     const obj: any = {};
     if (message.email !== "") {
       obj.email = message.email;
+    }
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
     }
     return obj;
   },
@@ -526,6 +544,7 @@ export const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest> = {
   fromPartial<I extends Exact<DeepPartial<ConnectedAccountRequest>, I>>(object: I): ConnectedAccountRequest {
     const message = createBaseConnectedAccountRequest();
     message.email = object.email ?? "";
+    message.profileId = object.profileId ?? "";
     return message;
   },
 };

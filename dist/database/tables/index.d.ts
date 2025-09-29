@@ -20,3 +20,5 @@ export * from './user_subscribe.entity';
 export * from './revoked_tokens.entity';
 export * from './event_queue_user.entity';
 export * from './event_queue_post.entity';
+export * from './profile_campaign.entity';
+export * from './profile_task_progress.entity';

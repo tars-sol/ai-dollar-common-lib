@@ -1,12 +1,14 @@
 import { Profile } from './profile.entity';
 import { Task } from './task.entity';
-export declare class UserTaskProgress {
+import { ProfileCampaign } from './profile_campaign.entity';
+export declare class ProfileTaskProgress {
     id: string;
     user: Profile;
     userId: string;
     task: Task;
     taskId: string;
-    isCompletedByUser: boolean;
+    profileCampaign: ProfileCampaign;
+    profileCampaignId: string;
     isMarkedDoneByBrand: boolean;
     brandComment?: string;
     updatedAt: Date;

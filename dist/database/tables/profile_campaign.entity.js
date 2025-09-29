@@ -13,6 +13,7 @@ exports.ProfileCampaign = void 0;
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
 const campaign_entity_1 = require("./campaign.entity");
+const profile_task_progress_entity_1 = require("./profile_task_progress.entity");
 let ProfileCampaign = class ProfileCampaign {
 };
 exports.ProfileCampaign = ProfileCampaign;
@@ -34,6 +35,12 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'campaignId' }),
     __metadata("design:type", campaign_entity_1.Campaign)
 ], ProfileCampaign.prototype, "campaign", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => profile_task_progress_entity_1.ProfileTaskProgress, (task) => task.profileCampaign, {
+        cascade: true,
+    }),
+    __metadata("design:type", Array)
+], ProfileCampaign.prototype, "tasks", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)

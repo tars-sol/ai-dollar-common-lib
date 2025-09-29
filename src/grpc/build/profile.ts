@@ -36,6 +36,7 @@ export interface ProfileResponse {
   createdAt: string;
   updatedAt: string;
   jwtToken?: string | undefined;
+  isFollowing?: boolean | undefined;
   refreshToken?: string | undefined;
   email?: string | undefined;
   followersCount: string;
@@ -79,6 +80,9 @@ export interface UpdateProfileRequest {
 export interface GetProfileByIdRequest {
   isPrivate: boolean;
   profileId: string;
+  roleId: string;
+  userId: string;
+  role: string;
 }
 
 export interface SuccessResponse {
@@ -252,6 +256,7 @@ function createBaseProfileResponse(): ProfileResponse {
     createdAt: "",
     updatedAt: "",
     jwtToken: undefined,
+    isFollowing: undefined,
     refreshToken: undefined,
     email: undefined,
     followersCount: "",
@@ -316,6 +321,9 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     }
     if (message.jwtToken !== undefined) {
       writer.uint32(130).string(message.jwtToken);
+    }
+    if (message.isFollowing !== undefined) {
+      writer.uint32(200).bool(message.isFollowing);
     }
     if (message.refreshToken !== undefined) {
       writer.uint32(138).string(message.refreshToken);
@@ -489,6 +497,14 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
           message.jwtToken = reader.string();
           continue;
         }
+        case 25: {
+          if (tag !== 200) {
+            break;
+          }
+
+          message.isFollowing = reader.bool();
+          continue;
+        }
         case 17: {
           if (tag !== 138) {
             break;
@@ -566,6 +582,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
       jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
+      isFollowing: isSet(object.isFollowing) ? globalThis.Boolean(object.isFollowing) : undefined,
       refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
       email: isSet(object.email) ? globalThis.String(object.email) : undefined,
       followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
@@ -631,6 +648,9 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     if (message.jwtToken !== undefined) {
       obj.jwtToken = message.jwtToken;
     }
+    if (message.isFollowing !== undefined) {
+      obj.isFollowing = message.isFollowing;
+    }
     if (message.refreshToken !== undefined) {
       obj.refreshToken = message.refreshToken;
     }
@@ -675,6 +695,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";
     message.jwtToken = object.jwtToken ?? undefined;
+    message.isFollowing = object.isFollowing ?? undefined;
     message.refreshToken = object.refreshToken ?? undefined;
     message.email = object.email ?? undefined;
     message.followersCount = object.followersCount ?? "";
@@ -1218,7 +1239,7 @@ export const UpdateProfileRequest: MessageFns<UpdateProfileRequest> = {
 };
 
 function createBaseGetProfileByIdRequest(): GetProfileByIdRequest {
-  return { isPrivate: false, profileId: "" };
+  return { isPrivate: false, profileId: "", roleId: "", userId: "", role: "" };
 }
 
 export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
@@ -1228,6 +1249,15 @@ export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
     }
     if (message.profileId !== "") {
       writer.uint32(18).string(message.profileId);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(26).string(message.roleId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(34).string(message.userId);
+    }
+    if (message.role !== "") {
+      writer.uint32(42).string(message.role);
     }
     return writer;
   },
@@ -1255,6 +1285,30 @@ export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
           message.profileId = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1268,6 +1322,9 @@ export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
     return {
       isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
       profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
     };
   },
 
@@ -1279,6 +1336,15 @@ export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
     if (message.profileId !== "") {
       obj.profileId = message.profileId;
     }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
     return obj;
   },
 
@@ -1289,6 +1355,9 @@ export const GetProfileByIdRequest: MessageFns<GetProfileByIdRequest> = {
     const message = createBaseGetProfileByIdRequest();
     message.isPrivate = object.isPrivate ?? false;
     message.profileId = object.profileId ?? "";
+    message.roleId = object.roleId ?? "";
+    message.userId = object.userId ?? "";
+    message.role = object.role ?? "";
     return message;
   },
 };

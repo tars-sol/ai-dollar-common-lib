@@ -15,6 +15,7 @@ service CampaignService {
   rpc RemoveProfileFromCampaign(UpdatePrivateCampaignProfilesRequest) returns (SuccessResponse);
   rpc JoinPublicCampaign(JoinPublicCampaignRequest) returns (SuccessResponse);
   rpc LeaveCampaign(LeaveCampaignRequest) returns (SuccessResponse);
+  rpc MarkTaskAsCompleted(TaskCompletedResponse) returns (SuccessResponse);
 }
 
 // Request message for creating a campaign
@@ -95,6 +96,12 @@ message TaskResponse{
   string type = 8;
   string createdAt = 5;
   string updatedAt = 6;
+}
+message TaskCompletedResponse{
+  string campaignId = 1;
+  string taskId = 2;
+  string profileId = 3;
+  string brandId = 4;
 }
 message GetCampaignsByBrandIdRequest{
   string roleId = 1;

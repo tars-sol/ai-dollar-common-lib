@@ -26,6 +26,7 @@ export interface ProfileResponse {
     createdAt: string;
     updatedAt: string;
     jwtToken?: string | undefined;
+    isFollowing?: boolean | undefined;
     refreshToken?: string | undefined;
     email?: string | undefined;
     followersCount: string;
@@ -66,6 +67,9 @@ export interface UpdateProfileRequest {
 export interface GetProfileByIdRequest {
     isPrivate: boolean;
     profileId: string;
+    roleId: string;
+    userId: string;
+    role: string;
 }
 export interface SuccessResponse {
     success: boolean;

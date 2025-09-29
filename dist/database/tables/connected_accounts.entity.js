@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConnectedAccounts = void 0;
 const typeorm_1 = require("typeorm");
+const profile_entity_1 = require("./profile.entity");
 let ConnectedAccounts = class ConnectedAccounts {
 };
 exports.ConnectedAccounts = ConnectedAccounts;
@@ -31,6 +32,15 @@ __decorate([
     __metadata("design:type", Boolean)
 ], ConnectedAccounts.prototype, "isActive", void 0);
 __decorate([
+    (0, typeorm_1.OneToOne)(() => profile_entity_1.Profile, { eager: true, onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", profile_entity_1.Profile)
+], ConnectedAccounts.prototype, "profile", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar' }),
+    __metadata("design:type", String)
+], ConnectedAccounts.prototype, "profileId", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], ConnectedAccounts.prototype, "onBoardingUrl", void 0);
@@ -43,6 +53,6 @@ __decorate([
     __metadata("design:type", Date)
 ], ConnectedAccounts.prototype, "updatedAt", void 0);
 exports.ConnectedAccounts = ConnectedAccounts = __decorate([
-    (0, typeorm_1.Entity)({ name: 'connectedAccounts' })
+    (0, typeorm_1.Entity)({ name: 'connected_Accounts' })
 ], ConnectedAccounts);
 //# sourceMappingURL=connected_accounts.entity.js.map

@@ -4,9 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Profile } from './profile.entity';
 
-@Entity({ name: 'connectedAccounts' })
+@Entity({ name: 'connected_Accounts' })
 export class ConnectedAccounts {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -19,6 +22,13 @@ export class ConnectedAccounts {
 
   @Column()
   isActive: boolean;
+
+  @OneToOne(() => Profile, { eager: true, onDelete: 'CASCADE' })
+  @JoinColumn()
+  profile: Profile;
+
+  @Column({ type: 'varchar' })
+  profileId: string;
 
   @Column()
   onBoardingUrl: string;
