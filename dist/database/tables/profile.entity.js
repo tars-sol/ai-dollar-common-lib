@@ -87,6 +87,19 @@ __decorate([
     __metadata("design:type", Number)
 ], Profile.prototype, "subscribersCount", void 0);
 __decorate([
+    (0, typeorm_1.Column)({
+        type: 'tsvector',
+        asExpression: `
+    setweight(to_tsvector('simple_unaccent', coalesce(username, '')), 'A') ||
+    setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'B')
+  `,
+        generatedType: 'STORED',
+        nullable: true,
+        select: false,
+    }),
+    __metadata("design:type", String)
+], Profile.prototype, "fts", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Profile.prototype, "createdAt", void 0);

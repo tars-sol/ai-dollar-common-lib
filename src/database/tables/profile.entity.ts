@@ -62,6 +62,18 @@ export class Profile {
   @Column({ type: 'int', default: 0 })
   subscribersCount: number;
 
+  @Column({
+    type: 'tsvector',
+    asExpression: `
+    setweight(to_tsvector('simple_unaccent', coalesce(username, '')), 'A') ||
+    setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'B')
+  `,
+    generatedType: 'STORED',
+    nullable: true,
+    select: false,
+  })
+  fts!: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
