@@ -64,3 +64,22 @@ message UpdateBrandRequest {
   optional string telegram = 9;
   optional string tokenName = 10;
 }
+
+message SearchBrandsRequest {
+  string q    = 1;  
+  int32  page = 2;  
+  int32  limit = 3;
+}
+
+message BrandSearchItem {
+  string id        = 1;
+  string name      = 2;
+  string logoUrl   = 3;
+  string createdAt = 4;
+  double score     = 5;
+}
+
+message SearchBrandsResponse {
+  repeated BrandSearchItem results = 1;
+  int32 total = 2;
+}

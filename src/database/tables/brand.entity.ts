@@ -58,6 +58,19 @@ export class Brand {
   websiteUrl: string;
   @OneToMany(() => Payment, (payment) => payment.brand)
   payments: Payment[];
+
+  @Index('idx_brands_fts', { synchronize: false })
+  @Column({
+    type: 'tsvector',
+    asExpression: `
+      setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'A')
+    `,
+    generatedType: 'STORED',
+    nullable: true,
+    select: false,
+  })
+  fts!: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

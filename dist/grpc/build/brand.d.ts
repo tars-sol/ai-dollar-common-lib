@@ -53,10 +53,29 @@ export interface UpdateBrandRequest {
     telegram?: string | undefined;
     tokenName?: string | undefined;
 }
+export interface SearchBrandsRequest {
+    q: string;
+    page: number;
+    limit: number;
+}
+export interface BrandSearchItem {
+    id: string;
+    name: string;
+    logoUrl: string;
+    createdAt: string;
+    score: number;
+}
+export interface SearchBrandsResponse {
+    results: BrandSearchItem[];
+    total: number;
+}
 export declare const BrandByIdRequest: MessageFns<BrandByIdRequest>;
 export declare const BrandResponse: MessageFns<BrandResponse>;
 export declare const CreateBrandRequest: MessageFns<CreateBrandRequest>;
 export declare const UpdateBrandRequest: MessageFns<UpdateBrandRequest>;
+export declare const SearchBrandsRequest: MessageFns<SearchBrandsRequest>;
+export declare const BrandSearchItem: MessageFns<BrandSearchItem>;
+export declare const SearchBrandsResponse: MessageFns<SearchBrandsResponse>;
 /** gRPC Brand Service */
 export interface BrandService {
     Create(request: CreateBrandRequest): Promise<BrandResponse>;

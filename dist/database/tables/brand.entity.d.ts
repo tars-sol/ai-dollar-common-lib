@@ -17,6 +17,7 @@ export declare class Brand {
     tokenName: string;
     websiteUrl: string;
     payments: Payment[];
+    fts: string;
     createdAt: Date;
     updatedAt: Date;
 }

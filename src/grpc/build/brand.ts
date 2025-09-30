@@ -66,6 +66,25 @@ export interface UpdateBrandRequest {
   tokenName?: string | undefined;
 }
 
+export interface SearchBrandsRequest {
+  q: string;
+  page: number;
+  limit: number;
+}
+
+export interface BrandSearchItem {
+  id: string;
+  name: string;
+  logoUrl: string;
+  createdAt: string;
+  score: number;
+}
+
+export interface SearchBrandsResponse {
+  results: BrandSearchItem[];
+  total: number;
+}
+
 function createBaseBrandByIdRequest(): BrandByIdRequest {
   return { brandId: "", userId: "" };
 }
@@ -936,6 +955,300 @@ export const UpdateBrandRequest: MessageFns<UpdateBrandRequest> = {
     message.twitter = object.twitter ?? undefined;
     message.telegram = object.telegram ?? undefined;
     message.tokenName = object.tokenName ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSearchBrandsRequest(): SearchBrandsRequest {
+  return { q: "", page: 0, limit: 0 };
+}
+
+export const SearchBrandsRequest: MessageFns<SearchBrandsRequest> = {
+  encode(message: SearchBrandsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.q !== "") {
+      writer.uint32(10).string(message.q);
+    }
+    if (message.page !== 0) {
+      writer.uint32(16).int32(message.page);
+    }
+    if (message.limit !== 0) {
+      writer.uint32(24).int32(message.limit);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchBrandsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchBrandsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.q = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.page = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchBrandsRequest {
+    return {
+      q: isSet(object.q) ? globalThis.String(object.q) : "",
+      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+    };
+  },
+
+  toJSON(message: SearchBrandsRequest): unknown {
+    const obj: any = {};
+    if (message.q !== "") {
+      obj.q = message.q;
+    }
+    if (message.page !== 0) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchBrandsRequest>, I>>(base?: I): SearchBrandsRequest {
+    return SearchBrandsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchBrandsRequest>, I>>(object: I): SearchBrandsRequest {
+    const message = createBaseSearchBrandsRequest();
+    message.q = object.q ?? "";
+    message.page = object.page ?? 0;
+    message.limit = object.limit ?? 0;
+    return message;
+  },
+};
+
+function createBaseBrandSearchItem(): BrandSearchItem {
+  return { id: "", name: "", logoUrl: "", createdAt: "", score: 0 };
+}
+
+export const BrandSearchItem: MessageFns<BrandSearchItem> = {
+  encode(message: BrandSearchItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.logoUrl !== "") {
+      writer.uint32(26).string(message.logoUrl);
+    }
+    if (message.createdAt !== "") {
+      writer.uint32(34).string(message.createdAt);
+    }
+    if (message.score !== 0) {
+      writer.uint32(41).double(message.score);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BrandSearchItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBrandSearchItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.logoUrl = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.createdAt = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 41) {
+            break;
+          }
+
+          message.score = reader.double();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BrandSearchItem {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : "",
+      createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+      score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+    };
+  },
+
+  toJSON(message: BrandSearchItem): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.logoUrl !== "") {
+      obj.logoUrl = message.logoUrl;
+    }
+    if (message.createdAt !== "") {
+      obj.createdAt = message.createdAt;
+    }
+    if (message.score !== 0) {
+      obj.score = message.score;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<BrandSearchItem>, I>>(base?: I): BrandSearchItem {
+    return BrandSearchItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<BrandSearchItem>, I>>(object: I): BrandSearchItem {
+    const message = createBaseBrandSearchItem();
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
+    message.logoUrl = object.logoUrl ?? "";
+    message.createdAt = object.createdAt ?? "";
+    message.score = object.score ?? 0;
+    return message;
+  },
+};
+
+function createBaseSearchBrandsResponse(): SearchBrandsResponse {
+  return { results: [], total: 0 };
+}
+
+export const SearchBrandsResponse: MessageFns<SearchBrandsResponse> = {
+  encode(message: SearchBrandsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.results) {
+      BrandSearchItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.total !== 0) {
+      writer.uint32(16).int32(message.total);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchBrandsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchBrandsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.results.push(BrandSearchItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchBrandsResponse {
+    return {
+      results: globalThis.Array.isArray(object?.results)
+        ? object.results.map((e: any) => BrandSearchItem.fromJSON(e))
+        : [],
+      total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+    };
+  },
+
+  toJSON(message: SearchBrandsResponse): unknown {
+    const obj: any = {};
+    if (message.results?.length) {
+      obj.results = message.results.map((e) => BrandSearchItem.toJSON(e));
+    }
+    if (message.total !== 0) {
+      obj.total = Math.round(message.total);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchBrandsResponse>, I>>(base?: I): SearchBrandsResponse {
+    return SearchBrandsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchBrandsResponse>, I>>(object: I): SearchBrandsResponse {
+    const message = createBaseSearchBrandsResponse();
+    message.results = object.results?.map((e) => BrandSearchItem.fromPartial(e)) || [];
+    message.total = object.total ?? 0;
     return message;
   },
 };

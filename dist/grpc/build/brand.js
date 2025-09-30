@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: brand.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BrandServiceClientImpl = exports.BrandServiceServiceName = exports.UpdateBrandRequest = exports.CreateBrandRequest = exports.BrandResponse = exports.BrandByIdRequest = exports.protobufPackage = void 0;
+exports.BrandServiceClientImpl = exports.BrandServiceServiceName = exports.SearchBrandsResponse = exports.BrandSearchItem = exports.SearchBrandsRequest = exports.UpdateBrandRequest = exports.CreateBrandRequest = exports.BrandResponse = exports.BrandByIdRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "brand";
@@ -815,6 +815,272 @@ exports.UpdateBrandRequest = {
         message.twitter = object.twitter ?? undefined;
         message.telegram = object.telegram ?? undefined;
         message.tokenName = object.tokenName ?? undefined;
+        return message;
+    },
+};
+function createBaseSearchBrandsRequest() {
+    return { q: "", page: 0, limit: 0 };
+}
+exports.SearchBrandsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.q !== "") {
+            writer.uint32(10).string(message.q);
+        }
+        if (message.page !== 0) {
+            writer.uint32(16).int32(message.page);
+        }
+        if (message.limit !== 0) {
+            writer.uint32(24).int32(message.limit);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchBrandsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.q = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.page = reader.int32();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.limit = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            q: isSet(object.q) ? globalThis.String(object.q) : "",
+            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.q !== "") {
+            obj.q = message.q;
+        }
+        if (message.page !== 0) {
+            obj.page = Math.round(message.page);
+        }
+        if (message.limit !== 0) {
+            obj.limit = Math.round(message.limit);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchBrandsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchBrandsRequest();
+        message.q = object.q ?? "";
+        message.page = object.page ?? 0;
+        message.limit = object.limit ?? 0;
+        return message;
+    },
+};
+function createBaseBrandSearchItem() {
+    return { id: "", name: "", logoUrl: "", createdAt: "", score: 0 };
+}
+exports.BrandSearchItem = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.name !== "") {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.logoUrl !== "") {
+            writer.uint32(26).string(message.logoUrl);
+        }
+        if (message.createdAt !== "") {
+            writer.uint32(34).string(message.createdAt);
+        }
+        if (message.score !== 0) {
+            writer.uint32(41).double(message.score);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseBrandSearchItem();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.logoUrl = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.createdAt = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 41) {
+                        break;
+                    }
+                    message.score = reader.double();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : "",
+            createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+            score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.logoUrl !== "") {
+            obj.logoUrl = message.logoUrl;
+        }
+        if (message.createdAt !== "") {
+            obj.createdAt = message.createdAt;
+        }
+        if (message.score !== 0) {
+            obj.score = message.score;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.BrandSearchItem.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseBrandSearchItem();
+        message.id = object.id ?? "";
+        message.name = object.name ?? "";
+        message.logoUrl = object.logoUrl ?? "";
+        message.createdAt = object.createdAt ?? "";
+        message.score = object.score ?? 0;
+        return message;
+    },
+};
+function createBaseSearchBrandsResponse() {
+    return { results: [], total: 0 };
+}
+exports.SearchBrandsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.results) {
+            exports.BrandSearchItem.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.total !== 0) {
+            writer.uint32(16).int32(message.total);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchBrandsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.results.push(exports.BrandSearchItem.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.total = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            results: globalThis.Array.isArray(object?.results)
+                ? object.results.map((e) => exports.BrandSearchItem.fromJSON(e))
+                : [],
+            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.results?.length) {
+            obj.results = message.results.map((e) => exports.BrandSearchItem.toJSON(e));
+        }
+        if (message.total !== 0) {
+            obj.total = Math.round(message.total);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchBrandsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchBrandsResponse();
+        message.results = object.results?.map((e) => exports.BrandSearchItem.fromPartial(e)) || [];
+        message.total = object.total ?? 0;
         return message;
     },
 };

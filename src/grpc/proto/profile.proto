@@ -94,9 +94,9 @@ message SuccessResponse{
 
 
 message SearchProfilesRequest {
-  string q    = 1;  // query text
-  int32  page = 2;  // default 1 (server-side)
-  int32  limit = 3; // default 10, cap 50 (server-side)
+  string q    = 1;  
+  int32  page = 2;  
+  int32  limit = 3; 
 }
 
 message ProfileSearchItem {

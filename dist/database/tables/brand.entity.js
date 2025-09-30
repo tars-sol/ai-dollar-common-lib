@@ -80,6 +80,19 @@ __decorate([
     __metadata("design:type", Array)
 ], Brand.prototype, "payments", void 0);
 __decorate([
+    (0, typeorm_1.Index)('idx_brands_fts', { synchronize: false }),
+    (0, typeorm_1.Column)({
+        type: 'tsvector',
+        asExpression: `
+      setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'A')
+    `,
+        generatedType: 'STORED',
+        nullable: true,
+        select: false,
+    }),
+    __metadata("design:type", String)
+], Brand.prototype, "fts", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Brand.prototype, "createdAt", void 0);

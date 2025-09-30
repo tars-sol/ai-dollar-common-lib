@@ -90,11 +90,8 @@ export interface SuccessResponse {
 }
 
 export interface SearchProfilesRequest {
-  /** query text */
   q: string;
-  /** default 1 (server-side) */
   page: number;
-  /** default 10, cap 50 (server-side) */
   limit: number;
 }
 
