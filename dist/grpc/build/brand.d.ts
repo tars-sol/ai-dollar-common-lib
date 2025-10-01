@@ -81,6 +81,7 @@ export interface BrandService {
     Create(request: CreateBrandRequest): Promise<BrandResponse>;
     Update(request: UpdateBrandRequest): Promise<BrandResponse>;
     GetBrandById(request: BrandByIdRequest): Promise<BrandResponse>;
+    SearchBrands(request: SearchBrandsRequest): Promise<SearchBrandsResponse>;
 }
 export declare const BrandServiceServiceName = "brand.BrandService";
 export declare class BrandServiceClientImpl implements BrandService {
@@ -92,6 +93,7 @@ export declare class BrandServiceClientImpl implements BrandService {
     Create(request: CreateBrandRequest): Promise<BrandResponse>;
     Update(request: UpdateBrandRequest): Promise<BrandResponse>;
     GetBrandById(request: BrandByIdRequest): Promise<BrandResponse>;
+    SearchBrands(request: SearchBrandsRequest): Promise<SearchBrandsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

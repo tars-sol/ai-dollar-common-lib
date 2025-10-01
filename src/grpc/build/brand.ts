@@ -1258,6 +1258,7 @@ export interface BrandService {
   Create(request: CreateBrandRequest): Promise<BrandResponse>;
   Update(request: UpdateBrandRequest): Promise<BrandResponse>;
   GetBrandById(request: BrandByIdRequest): Promise<BrandResponse>;
+  SearchBrands(request: SearchBrandsRequest): Promise<SearchBrandsResponse>;
 }
 
 export const BrandServiceServiceName = "brand.BrandService";
@@ -1270,6 +1271,7 @@ export class BrandServiceClientImpl implements BrandService {
     this.Create = this.Create.bind(this);
     this.Update = this.Update.bind(this);
     this.GetBrandById = this.GetBrandById.bind(this);
+    this.SearchBrands = this.SearchBrands.bind(this);
   }
   Create(request: CreateBrandRequest): Promise<BrandResponse> {
     const data = CreateBrandRequest.encode(request).finish();
@@ -1287,6 +1289,12 @@ export class BrandServiceClientImpl implements BrandService {
     const data = BrandByIdRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetBrandById", data);
     return promise.then((data) => BrandResponse.decode(new BinaryReader(data)));
+  }
+
+  SearchBrands(request: SearchBrandsRequest): Promise<SearchBrandsResponse> {
+    const data = SearchBrandsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SearchBrands", data);
+    return promise.then((data) => SearchBrandsResponse.decode(new BinaryReader(data)));
   }
 }
 

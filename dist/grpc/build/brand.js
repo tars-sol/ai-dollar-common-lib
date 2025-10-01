@@ -1092,6 +1092,7 @@ class BrandServiceClientImpl {
         this.Create = this.Create.bind(this);
         this.Update = this.Update.bind(this);
         this.GetBrandById = this.GetBrandById.bind(this);
+        this.SearchBrands = this.SearchBrands.bind(this);
     }
     Create(request) {
         const data = exports.CreateBrandRequest.encode(request).finish();
@@ -1107,6 +1108,11 @@ class BrandServiceClientImpl {
         const data = exports.BrandByIdRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetBrandById", data);
         return promise.then((data) => exports.BrandResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    SearchBrands(request) {
+        const data = exports.SearchBrandsRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "SearchBrands", data);
+        return promise.then((data) => exports.SearchBrandsResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.BrandServiceClientImpl = BrandServiceClientImpl;
