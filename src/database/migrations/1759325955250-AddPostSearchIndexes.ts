@@ -1,6 +1,6 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class AddPostSearchIndexes1759325000000 implements MigrationInterface {
+export class AddPostSearchIndexes1759325955250 implements MigrationInterface {
   public readonly transaction = false;
 
   public async up(q: QueryRunner): Promise<void> {

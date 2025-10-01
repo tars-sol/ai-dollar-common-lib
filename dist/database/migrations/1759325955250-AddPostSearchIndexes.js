@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddPostSearchIndexes1759325000000 = void 0;
-class AddPostSearchIndexes1759325000000 {
+exports.AddPostSearchIndexes1759325955250 = void 0;
+class AddPostSearchIndexes1759325955250 {
     constructor() {
         this.transaction = false;
     }
@@ -20,5 +20,5 @@ class AddPostSearchIndexes1759325000000 {
         await q.query(`DROP INDEX CONCURRENTLY IF EXISTS idx_posts_fts`);
     }
 }
-exports.AddPostSearchIndexes1759325000000 = AddPostSearchIndexes1759325000000;
+exports.AddPostSearchIndexes1759325955250 = AddPostSearchIndexes1759325955250;
 //# sourceMappingURL=1759325955250-AddPostSearchIndexes.js.map
