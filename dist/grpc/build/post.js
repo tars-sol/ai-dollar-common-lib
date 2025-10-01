@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetProfilePostsRequest = exports.PostResponse = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -2824,6 +2824,272 @@ exports.GetProfilePostsRequest = {
         return message;
     },
 };
+function createBaseSearchPostsRequest() {
+    return { q: "", page: 0, limit: 0 };
+}
+exports.SearchPostsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.q !== "") {
+            writer.uint32(10).string(message.q);
+        }
+        if (message.page !== 0) {
+            writer.uint32(16).int32(message.page);
+        }
+        if (message.limit !== 0) {
+            writer.uint32(24).int32(message.limit);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchPostsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.q = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.page = reader.int32();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.limit = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            q: isSet(object.q) ? globalThis.String(object.q) : "",
+            page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+            limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.q !== "") {
+            obj.q = message.q;
+        }
+        if (message.page !== 0) {
+            obj.page = Math.round(message.page);
+        }
+        if (message.limit !== 0) {
+            obj.limit = Math.round(message.limit);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchPostsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchPostsRequest();
+        message.q = object.q ?? "";
+        message.page = object.page ?? 0;
+        message.limit = object.limit ?? 0;
+        return message;
+    },
+};
+function createBasePostSearchItem() {
+    return { id: "", profileId: "", caption: "", createdAt: "", score: 0 };
+}
+exports.PostSearchItem = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.profileId !== "") {
+            writer.uint32(18).string(message.profileId);
+        }
+        if (message.caption !== "") {
+            writer.uint32(26).string(message.caption);
+        }
+        if (message.createdAt !== "") {
+            writer.uint32(34).string(message.createdAt);
+        }
+        if (message.score !== 0) {
+            writer.uint32(41).double(message.score);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePostSearchItem();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.caption = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.createdAt = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 41) {
+                        break;
+                    }
+                    message.score = reader.double();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
+            createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+            score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        if (message.caption !== "") {
+            obj.caption = message.caption;
+        }
+        if (message.createdAt !== "") {
+            obj.createdAt = message.createdAt;
+        }
+        if (message.score !== 0) {
+            obj.score = message.score;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PostSearchItem.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePostSearchItem();
+        message.id = object.id ?? "";
+        message.profileId = object.profileId ?? "";
+        message.caption = object.caption ?? "";
+        message.createdAt = object.createdAt ?? "";
+        message.score = object.score ?? 0;
+        return message;
+    },
+};
+function createBaseSearchPostsResponse() {
+    return { results: [], total: 0 };
+}
+exports.SearchPostsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.results) {
+            exports.PostSearchItem.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.total !== 0) {
+            writer.uint32(16).int32(message.total);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSearchPostsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.results.push(exports.PostSearchItem.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.total = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            results: globalThis.Array.isArray(object?.results)
+                ? object.results.map((e) => exports.PostSearchItem.fromJSON(e))
+                : [],
+            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.results?.length) {
+            obj.results = message.results.map((e) => exports.PostSearchItem.toJSON(e));
+        }
+        if (message.total !== 0) {
+            obj.total = Math.round(message.total);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SearchPostsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSearchPostsResponse();
+        message.results = object.results?.map((e) => exports.PostSearchItem.fromPartial(e)) || [];
+        message.total = object.total ?? 0;
+        return message;
+    },
+};
 exports.PostServiceServiceName = "post.PostService";
 class PostServiceClientImpl {
     constructor(rpc, opts) {
@@ -2845,6 +3111,7 @@ class PostServiceClientImpl {
         this.RemoveFromPortfolio = this.RemoveFromPortfolio.bind(this);
         this.GetPortfolio = this.GetPortfolio.bind(this);
         this.Health = this.Health.bind(this);
+        this.SearchPosts = this.SearchPosts.bind(this);
     }
     Create(request) {
         const data = exports.CreatePostRequest.encode(request).finish();
@@ -2925,6 +3192,11 @@ class PostServiceClientImpl {
         const data = empty_1.Empty.encode(request).finish();
         const promise = this.rpc.request(this.service, "Health", data);
         return promise.then((data) => exports.HealthResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    SearchPosts(request) {
+        const data = exports.SearchPostsRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "SearchPosts", data);
+        return promise.then((data) => exports.SearchPostsResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.PostServiceClientImpl = PostServiceClientImpl;

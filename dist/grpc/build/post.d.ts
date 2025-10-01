@@ -171,6 +171,22 @@ export interface GetProfilePostsRequest {
     profileId: string;
     userId: string;
 }
+export interface SearchPostsRequest {
+    q: string;
+    page: number;
+    limit: number;
+}
+export interface PostSearchItem {
+    id: string;
+    profileId: string;
+    caption: string;
+    createdAt: string;
+    score: number;
+}
+export interface SearchPostsResponse {
+    results: PostSearchItem[];
+    total: number;
+}
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const DeletePostRequest: MessageFns<DeletePostRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
@@ -198,6 +214,9 @@ export declare const RemoveFromPortfolioRequest: MessageFns<RemoveFromPortfolioR
 export declare const CommentCreator: MessageFns<CommentCreator>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export declare const GetProfilePostsRequest: MessageFns<GetProfilePostsRequest>;
+export declare const SearchPostsRequest: MessageFns<SearchPostsRequest>;
+export declare const PostSearchItem: MessageFns<PostSearchItem>;
+export declare const SearchPostsResponse: MessageFns<SearchPostsResponse>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
@@ -215,6 +234,7 @@ export interface PostService {
     RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
     GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
     Health(request: Empty): Promise<HealthResponse>;
+    SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -239,6 +259,7 @@ export declare class PostServiceClientImpl implements PostService {
     RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
     GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
     Health(request: Empty): Promise<HealthResponse>;
+    SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

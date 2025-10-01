@@ -46,6 +46,21 @@ export class Post {
   @Column({ type: 'text', nullable: true })
   caption?: string;
 
+  @Column({ type: 'text', nullable: true })
+  hashtagsText?: string;
+
+  @Index('idx_posts_fts', { synchronize: false })
+  @Column({
+    type: 'tsvector',
+    asExpression: `
+      setweight(to_tsvector('english_unaccent', coalesce("hashtagsText", '')), 'A')
+    `,
+    generatedType: 'STORED',
+    nullable: true,
+    select: false,
+  })
+  fts!: string;
+
   @Column({ type: 'enum', enum: AccessType, default: AccessType.PUBLIC })
   accessType: AccessType;
 

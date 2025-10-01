@@ -207,6 +207,25 @@ export interface GetProfilePostsRequest {
   userId: string;
 }
 
+export interface SearchPostsRequest {
+  q: string;
+  page: number;
+  limit: number;
+}
+
+export interface PostSearchItem {
+  id: string;
+  profileId: string;
+  caption: string;
+  createdAt: string;
+  score: number;
+}
+
+export interface SearchPostsResponse {
+  results: PostSearchItem[];
+  total: number;
+}
+
 function createBaseCreatePostRequest(): CreatePostRequest {
   return {
     profileId: "",
@@ -3299,6 +3318,300 @@ export const GetProfilePostsRequest: MessageFns<GetProfilePostsRequest> = {
   },
 };
 
+function createBaseSearchPostsRequest(): SearchPostsRequest {
+  return { q: "", page: 0, limit: 0 };
+}
+
+export const SearchPostsRequest: MessageFns<SearchPostsRequest> = {
+  encode(message: SearchPostsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.q !== "") {
+      writer.uint32(10).string(message.q);
+    }
+    if (message.page !== 0) {
+      writer.uint32(16).int32(message.page);
+    }
+    if (message.limit !== 0) {
+      writer.uint32(24).int32(message.limit);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchPostsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchPostsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.q = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.page = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchPostsRequest {
+    return {
+      q: isSet(object.q) ? globalThis.String(object.q) : "",
+      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+    };
+  },
+
+  toJSON(message: SearchPostsRequest): unknown {
+    const obj: any = {};
+    if (message.q !== "") {
+      obj.q = message.q;
+    }
+    if (message.page !== 0) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchPostsRequest>, I>>(base?: I): SearchPostsRequest {
+    return SearchPostsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchPostsRequest>, I>>(object: I): SearchPostsRequest {
+    const message = createBaseSearchPostsRequest();
+    message.q = object.q ?? "";
+    message.page = object.page ?? 0;
+    message.limit = object.limit ?? 0;
+    return message;
+  },
+};
+
+function createBasePostSearchItem(): PostSearchItem {
+  return { id: "", profileId: "", caption: "", createdAt: "", score: 0 };
+}
+
+export const PostSearchItem: MessageFns<PostSearchItem> = {
+  encode(message: PostSearchItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.profileId !== "") {
+      writer.uint32(18).string(message.profileId);
+    }
+    if (message.caption !== "") {
+      writer.uint32(26).string(message.caption);
+    }
+    if (message.createdAt !== "") {
+      writer.uint32(34).string(message.createdAt);
+    }
+    if (message.score !== 0) {
+      writer.uint32(41).double(message.score);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PostSearchItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePostSearchItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.caption = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.createdAt = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 41) {
+            break;
+          }
+
+          message.score = reader.double();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PostSearchItem {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
+      createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+      score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+    };
+  },
+
+  toJSON(message: PostSearchItem): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.caption !== "") {
+      obj.caption = message.caption;
+    }
+    if (message.createdAt !== "") {
+      obj.createdAt = message.createdAt;
+    }
+    if (message.score !== 0) {
+      obj.score = message.score;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostSearchItem>, I>>(base?: I): PostSearchItem {
+    return PostSearchItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PostSearchItem>, I>>(object: I): PostSearchItem {
+    const message = createBasePostSearchItem();
+    message.id = object.id ?? "";
+    message.profileId = object.profileId ?? "";
+    message.caption = object.caption ?? "";
+    message.createdAt = object.createdAt ?? "";
+    message.score = object.score ?? 0;
+    return message;
+  },
+};
+
+function createBaseSearchPostsResponse(): SearchPostsResponse {
+  return { results: [], total: 0 };
+}
+
+export const SearchPostsResponse: MessageFns<SearchPostsResponse> = {
+  encode(message: SearchPostsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.results) {
+      PostSearchItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.total !== 0) {
+      writer.uint32(16).int32(message.total);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchPostsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchPostsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.results.push(PostSearchItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchPostsResponse {
+    return {
+      results: globalThis.Array.isArray(object?.results)
+        ? object.results.map((e: any) => PostSearchItem.fromJSON(e))
+        : [],
+      total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+    };
+  },
+
+  toJSON(message: SearchPostsResponse): unknown {
+    const obj: any = {};
+    if (message.results?.length) {
+      obj.results = message.results.map((e) => PostSearchItem.toJSON(e));
+    }
+    if (message.total !== 0) {
+      obj.total = Math.round(message.total);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchPostsResponse>, I>>(base?: I): SearchPostsResponse {
+    return SearchPostsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchPostsResponse>, I>>(object: I): SearchPostsResponse {
+    const message = createBaseSearchPostsResponse();
+    message.results = object.results?.map((e) => PostSearchItem.fromPartial(e)) || [];
+    message.total = object.total ?? 0;
+    return message;
+  },
+};
+
 export interface PostService {
   Create(request: CreatePostRequest): Promise<PostResponse>;
   Update(request: UpdatePostRequest): Promise<PostResponse>;
@@ -3316,6 +3629,7 @@ export interface PostService {
   RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
   GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
   Health(request: Empty): Promise<HealthResponse>;
+  SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -3341,6 +3655,7 @@ export class PostServiceClientImpl implements PostService {
     this.RemoveFromPortfolio = this.RemoveFromPortfolio.bind(this);
     this.GetPortfolio = this.GetPortfolio.bind(this);
     this.Health = this.Health.bind(this);
+    this.SearchPosts = this.SearchPosts.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -3436,6 +3751,12 @@ export class PostServiceClientImpl implements PostService {
     const data = Empty.encode(request).finish();
     const promise = this.rpc.request(this.service, "Health", data);
     return promise.then((data) => HealthResponse.decode(new BinaryReader(data)));
+  }
+
+  SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse> {
+    const data = SearchPostsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SearchPosts", data);
+    return promise.then((data) => SearchPostsResponse.decode(new BinaryReader(data)));
   }
 }
 

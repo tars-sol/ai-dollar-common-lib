@@ -19,6 +19,8 @@ export declare class Post {
     profile: Profile;
     profileId: string;
     caption?: string;
+    hashtagsText?: string;
+    fts: string;
     accessType: AccessType;
     type: PostType;
     inPortfolio: boolean;

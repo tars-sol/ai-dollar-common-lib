@@ -52,6 +52,23 @@ __decorate([
     __metadata("design:type", String)
 ], Post.prototype, "caption", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], Post.prototype, "hashtagsText", void 0);
+__decorate([
+    (0, typeorm_1.Index)('idx_posts_fts', { synchronize: false }),
+    (0, typeorm_1.Column)({
+        type: 'tsvector',
+        asExpression: `
+      setweight(to_tsvector('english_unaccent', coalesce("hashtagsText", '')), 'A')
+    `,
+        generatedType: 'STORED',
+        nullable: true,
+        select: false,
+    }),
+    __metadata("design:type", String)
+], Post.prototype, "fts", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'enum', enum: AccessType, default: AccessType.PUBLIC }),
     __metadata("design:type", String)
 ], Post.prototype, "accessType", void 0);
