@@ -22,6 +22,9 @@ export declare class Campaign {
     tasks: Task[];
     isPrivate: boolean;
     amountToInvest: number;
+    availableBudget: number;
+    amountPaid: number;
+    totalParticipants: number;
     startDate: Date;
     endDate: Date;
     payment: Payment;

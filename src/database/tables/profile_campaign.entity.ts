@@ -34,6 +34,14 @@ export class ProfileCampaign {
   tasks: ProfileTaskProgress[];
   @Column()
   campaignId: string;
+  @Column({ default: false })
+  completed: boolean;
+  @Column({ type: 'timestamp', nullable: true })
+  completedAt: Date | null;
+  @Column({default: false})
+  rewarded: boolean;
+  @Column({ type: 'timestamp', nullable: true })
+  rewardedAt: Date | null;
 
   @CreateDateColumn()
   joinedAt: Date;

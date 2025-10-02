@@ -38,4 +38,5 @@ __exportStar(require("./event_queue_user.entity"), exports);
 __exportStar(require("./event_queue_post.entity"), exports);
 __exportStar(require("./profile_campaign.entity"), exports);
 __exportStar(require("./profile_task_progress.entity"), exports);
+__exportStar(require("./payout.entity"), exports);
 //# sourceMappingURL=index.js.map

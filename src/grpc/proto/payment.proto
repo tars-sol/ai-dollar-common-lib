@@ -7,9 +7,21 @@ service PaymentService {
   rpc HandlePaymentIntent (PaymentIntentEvent) returns (StripeResponse); 
   rpc CreateConnectedAccount (ConnectedAccountRequest) returns (ConnectAccountResponse);
   rpc GetConnectedAccount (ConnectedAccountRequest) returns (ConnectAccountResponse);
-  rpc test(TestResponse) returns (TestResponse);
+  rpc SendPayout (PayoutRequest) returns (SuccessResponse);
+  rpc test(SuccessResponse) returns (SuccessResponse);
 }
-message TestResponse {
+message PayoutRequest{
+  string brandId = 1;
+  string campaignId = 2;
+  repeated PayoutAmount payoutAmounts = 3;
+  bool isEqual = 4;
+}
+message PayoutAmount{
+  string profileId = 1;
+  optional string amount = 2;
+}
+
+message SuccessResponse {
   bool success = 1;
 }
 message CreatePaymentIntentRequest {

@@ -46,6 +46,22 @@ __decorate([
     __metadata("design:type", String)
 ], ProfileCampaign.prototype, "campaignId", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], ProfileCampaign.prototype, "completed", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    __metadata("design:type", Object)
+], ProfileCampaign.prototype, "completedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], ProfileCampaign.prototype, "rewarded", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    __metadata("design:type", Object)
+], ProfileCampaign.prototype, "rewardedAt", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], ProfileCampaign.prototype, "joinedAt", void 0);

@@ -76,6 +76,18 @@ __decorate([
     __metadata("design:type", Number)
 ], Campaign.prototype, "amountToInvest", void 0);
 __decorate([
+    (0, typeorm_1.Column)('numeric', { precision: 12, scale: 2 }),
+    __metadata("design:type", Number)
+], Campaign.prototype, "availableBudget", void 0);
+__decorate([
+    (0, typeorm_1.Column)('numeric', { precision: 12, scale: 2 }),
+    __metadata("design:type", Number)
+], Campaign.prototype, "amountPaid", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', nullable: true }),
+    __metadata("design:type", Number)
+], Campaign.prototype, "totalParticipants", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'timestamp' }),
     __metadata("design:type", Date)
 ], Campaign.prototype, "startDate", void 0);

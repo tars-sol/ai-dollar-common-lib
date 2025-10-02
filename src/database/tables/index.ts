@@ -22,3 +22,4 @@ export * from './event_queue_user.entity';
 export * from './event_queue_post.entity';
 export * from './profile_campaign.entity';
 export * from './profile_task_progress.entity';
+export * from './payout.entity';

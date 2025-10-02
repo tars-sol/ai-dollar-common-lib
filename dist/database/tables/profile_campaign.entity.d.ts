@@ -8,5 +8,9 @@ export declare class ProfileCampaign {
     campaign: Campaign;
     tasks: ProfileTaskProgress[];
     campaignId: string;
+    completed: boolean;
+    completedAt: Date | null;
+    rewarded: boolean;
+    rewardedAt: Date | null;
     joinedAt: Date;
 }

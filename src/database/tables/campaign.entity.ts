@@ -56,6 +56,12 @@ export class Campaign {
   isPrivate: boolean;
   @Column('numeric', { precision: 12, scale: 2 })
   amountToInvest: number;
+  @Column('numeric', { precision: 12, scale: 2 })
+  availableBudget: number;
+  @Column('numeric', { precision: 12, scale: 2 })
+  amountPaid: number;
+  @Column({ type: 'numeric', nullable: true })
+  totalParticipants: number;
   @Column({ type: 'timestamp' })
   startDate: Date;
   @Column({ type: 'timestamp' })

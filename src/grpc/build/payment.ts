@@ -9,7 +9,19 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "payment";
 
-export interface TestResponse {
+export interface PayoutRequest {
+  brandId: string;
+  campaignId: string;
+  payoutAmounts: PayoutAmount[];
+  isEqual: boolean;
+}
+
+export interface PayoutAmount {
+  profileId: string;
+  amount?: string | undefined;
+}
+
+export interface SuccessResponse {
   success: boolean;
 }
 
@@ -49,22 +61,208 @@ export interface ConnectAccountResponse {
   onBoardingUrl: string;
 }
 
-function createBaseTestResponse(): TestResponse {
+function createBasePayoutRequest(): PayoutRequest {
+  return { brandId: "", campaignId: "", payoutAmounts: [], isEqual: false };
+}
+
+export const PayoutRequest: MessageFns<PayoutRequest> = {
+  encode(message: PayoutRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.brandId !== "") {
+      writer.uint32(10).string(message.brandId);
+    }
+    if (message.campaignId !== "") {
+      writer.uint32(18).string(message.campaignId);
+    }
+    for (const v of message.payoutAmounts) {
+      PayoutAmount.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.isEqual !== false) {
+      writer.uint32(32).bool(message.isEqual);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PayoutRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePayoutRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.payoutAmounts.push(PayoutAmount.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.isEqual = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PayoutRequest {
+    return {
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+      payoutAmounts: globalThis.Array.isArray(object?.payoutAmounts)
+        ? object.payoutAmounts.map((e: any) => PayoutAmount.fromJSON(e))
+        : [],
+      isEqual: isSet(object.isEqual) ? globalThis.Boolean(object.isEqual) : false,
+    };
+  },
+
+  toJSON(message: PayoutRequest): unknown {
+    const obj: any = {};
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    if (message.payoutAmounts?.length) {
+      obj.payoutAmounts = message.payoutAmounts.map((e) => PayoutAmount.toJSON(e));
+    }
+    if (message.isEqual !== false) {
+      obj.isEqual = message.isEqual;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PayoutRequest>, I>>(base?: I): PayoutRequest {
+    return PayoutRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PayoutRequest>, I>>(object: I): PayoutRequest {
+    const message = createBasePayoutRequest();
+    message.brandId = object.brandId ?? "";
+    message.campaignId = object.campaignId ?? "";
+    message.payoutAmounts = object.payoutAmounts?.map((e) => PayoutAmount.fromPartial(e)) || [];
+    message.isEqual = object.isEqual ?? false;
+    return message;
+  },
+};
+
+function createBasePayoutAmount(): PayoutAmount {
+  return { profileId: "", amount: undefined };
+}
+
+export const PayoutAmount: MessageFns<PayoutAmount> = {
+  encode(message: PayoutAmount, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    if (message.amount !== undefined) {
+      writer.uint32(18).string(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PayoutAmount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePayoutAmount();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.amount = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PayoutAmount {
+    return {
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      amount: isSet(object.amount) ? globalThis.String(object.amount) : undefined,
+    };
+  },
+
+  toJSON(message: PayoutAmount): unknown {
+    const obj: any = {};
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.amount !== undefined) {
+      obj.amount = message.amount;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PayoutAmount>, I>>(base?: I): PayoutAmount {
+    return PayoutAmount.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PayoutAmount>, I>>(object: I): PayoutAmount {
+    const message = createBasePayoutAmount();
+    message.profileId = object.profileId ?? "";
+    message.amount = object.amount ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSuccessResponse(): SuccessResponse {
   return { success: false };
 }
 
-export const TestResponse: MessageFns<TestResponse> = {
-  encode(message: TestResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const SuccessResponse: MessageFns<SuccessResponse> = {
+  encode(message: SuccessResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.success !== false) {
       writer.uint32(8).bool(message.success);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): TestResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): SuccessResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTestResponse();
+    const message = createBaseSuccessResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -85,11 +283,11 @@ export const TestResponse: MessageFns<TestResponse> = {
     return message;
   },
 
-  fromJSON(object: any): TestResponse {
+  fromJSON(object: any): SuccessResponse {
     return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
   },
 
-  toJSON(message: TestResponse): unknown {
+  toJSON(message: SuccessResponse): unknown {
     const obj: any = {};
     if (message.success !== false) {
       obj.success = message.success;
@@ -97,11 +295,11 @@ export const TestResponse: MessageFns<TestResponse> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<TestResponse>, I>>(base?: I): TestResponse {
-    return TestResponse.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<SuccessResponse>, I>>(base?: I): SuccessResponse {
+    return SuccessResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<TestResponse>, I>>(object: I): TestResponse {
-    const message = createBaseTestResponse();
+  fromPartial<I extends Exact<DeepPartial<SuccessResponse>, I>>(object: I): SuccessResponse {
+    const message = createBaseSuccessResponse();
     message.success = object.success ?? false;
     return message;
   },
@@ -662,7 +860,8 @@ export interface PaymentService {
   HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
   CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
   GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
-  test(request: TestResponse): Promise<TestResponse>;
+  SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
+  test(request: SuccessResponse): Promise<SuccessResponse>;
 }
 
 export const PaymentServiceServiceName = "payment.PaymentService";
@@ -676,6 +875,7 @@ export class PaymentServiceClientImpl implements PaymentService {
     this.HandlePaymentIntent = this.HandlePaymentIntent.bind(this);
     this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
     this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
+    this.SendPayout = this.SendPayout.bind(this);
     this.test = this.test.bind(this);
   }
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {
@@ -702,10 +902,16 @@ export class PaymentServiceClientImpl implements PaymentService {
     return promise.then((data) => ConnectAccountResponse.decode(new BinaryReader(data)));
   }
 
-  test(request: TestResponse): Promise<TestResponse> {
-    const data = TestResponse.encode(request).finish();
+  SendPayout(request: PayoutRequest): Promise<SuccessResponse> {
+    const data = PayoutRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SendPayout", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  test(request: SuccessResponse): Promise<SuccessResponse> {
+    const data = SuccessResponse.encode(request).finish();
     const promise = this.rpc.request(this.service, "test", data);
-    return promise.then((data) => TestResponse.decode(new BinaryReader(data)));
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }
 

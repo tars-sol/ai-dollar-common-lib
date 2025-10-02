@@ -1,6 +1,16 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "payment";
-export interface TestResponse {
+export interface PayoutRequest {
+    brandId: string;
+    campaignId: string;
+    payoutAmounts: PayoutAmount[];
+    isEqual: boolean;
+}
+export interface PayoutAmount {
+    profileId: string;
+    amount?: string | undefined;
+}
+export interface SuccessResponse {
     success: boolean;
 }
 export interface CreatePaymentIntentRequest {
@@ -33,7 +43,9 @@ export interface ConnectAccountResponse {
     isActive: boolean;
     onBoardingUrl: string;
 }
-export declare const TestResponse: MessageFns<TestResponse>;
+export declare const PayoutRequest: MessageFns<PayoutRequest>;
+export declare const PayoutAmount: MessageFns<PayoutAmount>;
+export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest>;
 export declare const PaymentIntentResponse: MessageFns<PaymentIntentResponse>;
 export declare const PaymentIntentEvent: MessageFns<PaymentIntentEvent>;
@@ -45,7 +57,8 @@ export interface PaymentService {
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
     CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
-    test(request: TestResponse): Promise<TestResponse>;
+    SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
+    test(request: SuccessResponse): Promise<SuccessResponse>;
 }
 export declare const PaymentServiceServiceName = "payment.PaymentService";
 export declare class PaymentServiceClientImpl implements PaymentService {
@@ -58,7 +71,8 @@ export declare class PaymentServiceClientImpl implements PaymentService {
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
     CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
-    test(request: TestResponse): Promise<TestResponse>;
+    SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
+    test(request: SuccessResponse): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

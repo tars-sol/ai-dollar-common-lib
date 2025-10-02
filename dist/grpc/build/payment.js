@@ -5,14 +5,182 @@
 //   protoc               v3.21.12
 // source: payment.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.TestResponse = exports.protobufPackage = void 0;
+exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.SuccessResponse = exports.PayoutAmount = exports.PayoutRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "payment";
-function createBaseTestResponse() {
+function createBasePayoutRequest() {
+    return { brandId: "", campaignId: "", payoutAmounts: [], isEqual: false };
+}
+exports.PayoutRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.brandId !== "") {
+            writer.uint32(10).string(message.brandId);
+        }
+        if (message.campaignId !== "") {
+            writer.uint32(18).string(message.campaignId);
+        }
+        for (const v of message.payoutAmounts) {
+            exports.PayoutAmount.encode(v, writer.uint32(26).fork()).join();
+        }
+        if (message.isEqual !== false) {
+            writer.uint32(32).bool(message.isEqual);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePayoutRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.brandId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.campaignId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.payoutAmounts.push(exports.PayoutAmount.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.isEqual = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+            campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+            payoutAmounts: globalThis.Array.isArray(object?.payoutAmounts)
+                ? object.payoutAmounts.map((e) => exports.PayoutAmount.fromJSON(e))
+                : [],
+            isEqual: isSet(object.isEqual) ? globalThis.Boolean(object.isEqual) : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.brandId !== "") {
+            obj.brandId = message.brandId;
+        }
+        if (message.campaignId !== "") {
+            obj.campaignId = message.campaignId;
+        }
+        if (message.payoutAmounts?.length) {
+            obj.payoutAmounts = message.payoutAmounts.map((e) => exports.PayoutAmount.toJSON(e));
+        }
+        if (message.isEqual !== false) {
+            obj.isEqual = message.isEqual;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PayoutRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePayoutRequest();
+        message.brandId = object.brandId ?? "";
+        message.campaignId = object.campaignId ?? "";
+        message.payoutAmounts = object.payoutAmounts?.map((e) => exports.PayoutAmount.fromPartial(e)) || [];
+        message.isEqual = object.isEqual ?? false;
+        return message;
+    },
+};
+function createBasePayoutAmount() {
+    return { profileId: "", amount: undefined };
+}
+exports.PayoutAmount = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
+        }
+        if (message.amount !== undefined) {
+            writer.uint32(18).string(message.amount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePayoutAmount();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.amount = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            amount: isSet(object.amount) ? globalThis.String(object.amount) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        if (message.amount !== undefined) {
+            obj.amount = message.amount;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PayoutAmount.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePayoutAmount();
+        message.profileId = object.profileId ?? "";
+        message.amount = object.amount ?? undefined;
+        return message;
+    },
+};
+function createBaseSuccessResponse() {
     return { success: false };
 }
-exports.TestResponse = {
+exports.SuccessResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.success !== false) {
             writer.uint32(8).bool(message.success);
@@ -22,7 +190,7 @@ exports.TestResponse = {
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         const end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseTestResponse();
+        const message = createBaseSuccessResponse();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -52,10 +220,10 @@ exports.TestResponse = {
         return obj;
     },
     create(base) {
-        return exports.TestResponse.fromPartial(base ?? {});
+        return exports.SuccessResponse.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseTestResponse();
+        const message = createBaseSuccessResponse();
         message.success = object.success ?? false;
         return message;
     },
@@ -565,6 +733,7 @@ class PaymentServiceClientImpl {
         this.HandlePaymentIntent = this.HandlePaymentIntent.bind(this);
         this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
         this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
+        this.SendPayout = this.SendPayout.bind(this);
         this.test = this.test.bind(this);
     }
     CreatePaymentIntent(request) {
@@ -587,10 +756,15 @@ class PaymentServiceClientImpl {
         const promise = this.rpc.request(this.service, "GetConnectedAccount", data);
         return promise.then((data) => exports.ConnectAccountResponse.decode(new wire_1.BinaryReader(data)));
     }
+    SendPayout(request) {
+        const data = exports.PayoutRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "SendPayout", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
     test(request) {
-        const data = exports.TestResponse.encode(request).finish();
+        const data = exports.SuccessResponse.encode(request).finish();
         const promise = this.rpc.request(this.service, "test", data);
-        return promise.then((data) => exports.TestResponse.decode(new wire_1.BinaryReader(data)));
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.PaymentServiceClientImpl = PaymentServiceClientImpl;
