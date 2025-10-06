@@ -28,6 +28,7 @@ export declare class Campaign {
     startDate: Date;
     endDate: Date;
     payment: Payment;
+    fts: string;
     createdAt: Date;
     updatedAt: Date;
 }

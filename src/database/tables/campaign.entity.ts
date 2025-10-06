@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
   OneToMany,
   OneToOne,
+  Index,
 } from 'typeorm';
 import { Brand } from './brand.entity';
 import { Task } from './task.entity';
@@ -68,6 +69,18 @@ export class Campaign {
   endDate: Date;
   @OneToOne(() => Payment, (payment) => payment.campaign)
   payment: Payment;
+
+  @Index('idx_campaigns_fts', { synchronize: false })
+  @Column({
+    type: 'tsvector',
+    asExpression: `
+      setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'A')
+    `,
+    generatedType: 'STORED',
+    nullable: true,
+    select: false,
+  })
+  fts!: string;
 
   @CreateDateColumn()
   createdAt: Date;
