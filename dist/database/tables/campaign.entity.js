@@ -100,6 +100,19 @@ __decorate([
     __metadata("design:type", payment_entity_1.Payment)
 ], Campaign.prototype, "payment", void 0);
 __decorate([
+    (0, typeorm_1.Index)('idx_campaigns_fts', { synchronize: false }),
+    (0, typeorm_1.Column)({
+        type: 'tsvector',
+        asExpression: `
+      setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'A')
+    `,
+        generatedType: 'STORED',
+        nullable: true,
+        select: false,
+    }),
+    __metadata("design:type", String)
+], Campaign.prototype, "fts", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Campaign.prototype, "createdAt", void 0);

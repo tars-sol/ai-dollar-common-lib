@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "campaign";
 
@@ -160,6 +161,25 @@ export interface GetTasksResponse {
 
 export interface GetCampaignsResponse {
   campaigns: CampaignResponse[];
+}
+
+export interface SearchCampaignsRequest {
+  q: string;
+  page: number;
+  limit: number;
+}
+
+export interface CampaignSearchItem {
+  id: string;
+  name: string;
+  brandId: string;
+  createdAt: string;
+  score: number;
+}
+
+export interface SearchCampaignsResponse {
+  results: CampaignSearchItem[];
+  total: number;
 }
 
 function createBaseCreateCampaignRequest(): CreateCampaignRequest {
@@ -2183,6 +2203,300 @@ export const GetCampaignsResponse: MessageFns<GetCampaignsResponse> = {
   },
 };
 
+function createBaseSearchCampaignsRequest(): SearchCampaignsRequest {
+  return { q: "", page: 0, limit: 0 };
+}
+
+export const SearchCampaignsRequest: MessageFns<SearchCampaignsRequest> = {
+  encode(message: SearchCampaignsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.q !== "") {
+      writer.uint32(10).string(message.q);
+    }
+    if (message.page !== 0) {
+      writer.uint32(16).int32(message.page);
+    }
+    if (message.limit !== 0) {
+      writer.uint32(24).int32(message.limit);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchCampaignsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchCampaignsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.q = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.page = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchCampaignsRequest {
+    return {
+      q: isSet(object.q) ? globalThis.String(object.q) : "",
+      page: isSet(object.page) ? globalThis.Number(object.page) : 0,
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+    };
+  },
+
+  toJSON(message: SearchCampaignsRequest): unknown {
+    const obj: any = {};
+    if (message.q !== "") {
+      obj.q = message.q;
+    }
+    if (message.page !== 0) {
+      obj.page = Math.round(message.page);
+    }
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchCampaignsRequest>, I>>(base?: I): SearchCampaignsRequest {
+    return SearchCampaignsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchCampaignsRequest>, I>>(object: I): SearchCampaignsRequest {
+    const message = createBaseSearchCampaignsRequest();
+    message.q = object.q ?? "";
+    message.page = object.page ?? 0;
+    message.limit = object.limit ?? 0;
+    return message;
+  },
+};
+
+function createBaseCampaignSearchItem(): CampaignSearchItem {
+  return { id: "", name: "", brandId: "", createdAt: "", score: 0 };
+}
+
+export const CampaignSearchItem: MessageFns<CampaignSearchItem> = {
+  encode(message: CampaignSearchItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.brandId !== "") {
+      writer.uint32(26).string(message.brandId);
+    }
+    if (message.createdAt !== "") {
+      writer.uint32(34).string(message.createdAt);
+    }
+    if (message.score !== 0) {
+      writer.uint32(41).double(message.score);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CampaignSearchItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCampaignSearchItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.createdAt = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 41) {
+            break;
+          }
+
+          message.score = reader.double();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CampaignSearchItem {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+      score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+    };
+  },
+
+  toJSON(message: CampaignSearchItem): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    if (message.createdAt !== "") {
+      obj.createdAt = message.createdAt;
+    }
+    if (message.score !== 0) {
+      obj.score = message.score;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CampaignSearchItem>, I>>(base?: I): CampaignSearchItem {
+    return CampaignSearchItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CampaignSearchItem>, I>>(object: I): CampaignSearchItem {
+    const message = createBaseCampaignSearchItem();
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
+    message.brandId = object.brandId ?? "";
+    message.createdAt = object.createdAt ?? "";
+    message.score = object.score ?? 0;
+    return message;
+  },
+};
+
+function createBaseSearchCampaignsResponse(): SearchCampaignsResponse {
+  return { results: [], total: 0 };
+}
+
+export const SearchCampaignsResponse: MessageFns<SearchCampaignsResponse> = {
+  encode(message: SearchCampaignsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.results) {
+      CampaignSearchItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.total !== 0) {
+      writer.uint32(16).int32(message.total);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SearchCampaignsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSearchCampaignsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.results.push(CampaignSearchItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SearchCampaignsResponse {
+    return {
+      results: globalThis.Array.isArray(object?.results)
+        ? object.results.map((e: any) => CampaignSearchItem.fromJSON(e))
+        : [],
+      total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+    };
+  },
+
+  toJSON(message: SearchCampaignsResponse): unknown {
+    const obj: any = {};
+    if (message.results?.length) {
+      obj.results = message.results.map((e) => CampaignSearchItem.toJSON(e));
+    }
+    if (message.total !== 0) {
+      obj.total = Math.round(message.total);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchCampaignsResponse>, I>>(base?: I): SearchCampaignsResponse {
+    return SearchCampaignsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SearchCampaignsResponse>, I>>(object: I): SearchCampaignsResponse {
+    const message = createBaseSearchCampaignsResponse();
+    message.results = object.results?.map((e) => CampaignSearchItem.fromPartial(e)) || [];
+    message.total = object.total ?? 0;
+    return message;
+  },
+};
+
 /** gRPC Service */
 export interface CampaignService {
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
@@ -2198,6 +2512,8 @@ export interface CampaignService {
   JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse>;
   LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
   MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
+  Health(request: Empty): Promise<SuccessResponse>;
+  SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
 }
 
 export const CampaignServiceServiceName = "campaign.CampaignService";
@@ -2220,6 +2536,8 @@ export class CampaignServiceClientImpl implements CampaignService {
     this.JoinPublicCampaign = this.JoinPublicCampaign.bind(this);
     this.LeaveCampaign = this.LeaveCampaign.bind(this);
     this.MarkTaskAsCompleted = this.MarkTaskAsCompleted.bind(this);
+    this.Health = this.Health.bind(this);
+    this.SearchCampaigns = this.SearchCampaigns.bind(this);
   }
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse> {
     const data = CreateCampaignRequest.encode(request).finish();
@@ -2297,6 +2615,18 @@ export class CampaignServiceClientImpl implements CampaignService {
     const data = TaskCompletedResponse.encode(request).finish();
     const promise = this.rpc.request(this.service, "MarkTaskAsCompleted", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  Health(request: Empty): Promise<SuccessResponse> {
+    const data = Empty.encode(request).finish();
+    const promise = this.rpc.request(this.service, "Health", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse> {
+    const data = SearchCampaignsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SearchCampaigns", data);
+    return promise.then((data) => SearchCampaignsResponse.decode(new BinaryReader(data)));
   }
 }
 

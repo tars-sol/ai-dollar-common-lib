@@ -122,6 +122,22 @@ export interface GetTasksResponse {
 export interface GetCampaignsResponse {
     campaigns: CampaignResponse[];
 }
+export interface SearchCampaignsRequest {
+    q: string;
+    page: number;
+    limit: number;
+}
+export interface CampaignSearchItem {
+    id: string;
+    name: string;
+    brandId: string;
+    createdAt: string;
+    score: number;
+}
+export interface SearchCampaignsResponse {
+    results: CampaignSearchItem[];
+    total: number;
+}
 export declare const CreateCampaignRequest: MessageFns<CreateCampaignRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const TaskInput: MessageFns<TaskInput>;
@@ -140,6 +156,9 @@ export declare const DeleteCampaignByIdRequest: MessageFns<DeleteCampaignByIdReq
 export declare const GetTasksByCampaignIdRequest: MessageFns<GetTasksByCampaignIdRequest>;
 export declare const GetTasksResponse: MessageFns<GetTasksResponse>;
 export declare const GetCampaignsResponse: MessageFns<GetCampaignsResponse>;
+export declare const SearchCampaignsRequest: MessageFns<SearchCampaignsRequest>;
+export declare const CampaignSearchItem: MessageFns<CampaignSearchItem>;
+export declare const SearchCampaignsResponse: MessageFns<SearchCampaignsResponse>;
 /** gRPC Service */
 export interface CampaignService {
     CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
@@ -156,6 +175,7 @@ export interface CampaignService {
     LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
     MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
+    SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
 }
 export declare const CampaignServiceServiceName = "campaign.CampaignService";
 export declare class CampaignServiceClientImpl implements CampaignService {
@@ -178,6 +198,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
     MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
+    SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

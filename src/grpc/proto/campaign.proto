@@ -19,6 +19,7 @@ service CampaignService {
   rpc LeaveCampaign(LeaveCampaignRequest) returns (SuccessResponse);
   rpc MarkTaskAsCompleted(TaskCompletedResponse) returns (SuccessResponse);
   rpc Health(google.protobuf.Empty) returns (SuccessResponse);
+  rpc SearchCampaigns (SearchCampaignsRequest) returns (SearchCampaignsResponse);
 
 }
 
@@ -143,4 +144,23 @@ message GetTasksResponse{
 }
 message GetCampaignsResponse{
   repeated CampaignResponse campaigns = 1;
+}
+
+message SearchCampaignsRequest {
+  string q    = 1;
+  int32  page = 2;  
+  int32  limit = 3;  
+}
+
+message CampaignSearchItem {
+  string id        = 1;
+  string name      = 2;
+  string brandId   = 3;
+  string createdAt = 4;
+  double score     = 5;
+}
+
+message SearchCampaignsResponse {
+  repeated CampaignSearchItem results = 1;
+  int32 total = 2;
 }
