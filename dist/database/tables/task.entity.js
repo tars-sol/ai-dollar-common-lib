@@ -60,7 +60,7 @@ __decorate([
     __metadata("design:type", String)
 ], Task.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'jsonb' }),
+    (0, typeorm_1.Column)({ type: 'jsonb', default: {} }),
     __metadata("design:type", Object)
 ], Task.prototype, "rule", void 0);
 __decorate([

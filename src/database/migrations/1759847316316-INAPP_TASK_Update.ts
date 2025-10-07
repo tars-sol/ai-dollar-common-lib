@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class INAPPTasksUpdate1759762290258 implements MigrationInterface {
-    name = 'INAPPTasksUpdate1759762290258'
+export class INAPPTASKUpdate1759847316316 implements MigrationInterface {
+    name = 'INAPPTASKUpdate1759847316316'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "profile_task_progress" DROP CONSTRAINT "FK_7878421463d66fd7f96a2433bc2"`);
         await queryRunner.query(`ALTER TABLE "profile_task_progress" DROP COLUMN "campaignId"`);
-        await queryRunner.query(`ALTER TABLE "tasks" ADD "rule" jsonb NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "tasks" ADD "rule" jsonb NOT NULL DEFAULT '{}'`);
         await queryRunner.query(`ALTER TABLE "profile_task_progress" ADD "progressCount" integer NOT NULL DEFAULT '0'`);
         await queryRunner.query(`ALTER TABLE "profile_task_progress" ADD "isCompletedByServer" boolean NOT NULL DEFAULT false`);
         await queryRunner.query(`ALTER TABLE "profile_task_progress" ADD "completedAt" TIMESTAMP`);

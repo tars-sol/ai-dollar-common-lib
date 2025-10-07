@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.INAPPTasksUpdate1759762290258 = void 0;
-class INAPPTasksUpdate1759762290258 {
+exports.INAPPTASKUpdate1759847316316 = void 0;
+class INAPPTASKUpdate1759847316316 {
     constructor() {
-        this.name = 'INAPPTasksUpdate1759762290258';
+        this.name = 'INAPPTASKUpdate1759847316316';
     }
     async up(queryRunner) {
         await queryRunner.query(`ALTER TABLE "profile_task_progress" DROP CONSTRAINT "FK_7878421463d66fd7f96a2433bc2"`);
         await queryRunner.query(`ALTER TABLE "profile_task_progress" DROP COLUMN "campaignId"`);
-        await queryRunner.query(`ALTER TABLE "tasks" ADD "rule" jsonb NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "tasks" ADD "rule" jsonb NOT NULL DEFAULT '{}'`);
         await queryRunner.query(`ALTER TABLE "profile_task_progress" ADD "progressCount" integer NOT NULL DEFAULT '0'`);
         await queryRunner.query(`ALTER TABLE "profile_task_progress" ADD "isCompletedByServer" boolean NOT NULL DEFAULT false`);
         await queryRunner.query(`ALTER TABLE "profile_task_progress" ADD "completedAt" TIMESTAMP`);
@@ -40,5 +40,5 @@ class INAPPTasksUpdate1759762290258 {
         await queryRunner.query(`ALTER TABLE "profile_task_progress" ADD CONSTRAINT "FK_7878421463d66fd7f96a2433bc2" FOREIGN KEY ("campaignId") REFERENCES "profile_campaigns"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
     }
 }
-exports.INAPPTasksUpdate1759762290258 = INAPPTasksUpdate1759762290258;
-//# sourceMappingURL=1759762290258-IN_APPTasksUpdate.js.map
+exports.INAPPTASKUpdate1759847316316 = INAPPTASKUpdate1759847316316;
+//# sourceMappingURL=1759847316316-INAPP_TASK_Update.js.map

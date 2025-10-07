@@ -80,7 +80,7 @@ export class Task {
   description: string;
 
   // NEW: precise machine-understandable rule
-  @Column({ type: 'jsonb' })
+  @Column({ type: 'jsonb',default: {} })
   rule: TaskRule;
 
   @CreateDateColumn()
