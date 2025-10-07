@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -10,8 +11,26 @@ import {
 import { Profile } from './profile.entity';
 import { Task } from './task.entity';
 import { ProfileCampaign } from './profile_campaign.entity';
+
+export interface EvidenceItem {
+  eventId: string;
+  eventType: string;
+  targetId?: string;
+  postId?: string;
+  commentId?: string;
+  snippet?: string;
+  at: string; // ISO timestamp
+}
+
+// profile_task_progress.entity.ts
+export enum ProgressComputedBy {
+  SERVER = 'SERVER',
+  BRAND = 'BRAND',
+  MIXED = 'MIXED',
+}
+
 @Entity('profile_task_progress')
-@Unique(['userId', 'taskId']) // one progress per user per task
+@Unique(['userId', 'taskId']) // good, 1 progress per user per task
 export class ProfileTaskProgress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -29,23 +48,46 @@ export class ProfileTaskProgress {
 
   @Column()
   taskId: string;
-  @ManyToOne(() => ProfileCampaign, (profileCampaign) => profileCampaign.tasks, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'campaignId' })
+
+  @ManyToOne(() => ProfileCampaign, (pc) => pc.tasks, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'profileCampaignId' })
   profileCampaign: ProfileCampaign;
 
   @Column()
   profileCampaignId: string;
 
-  // @Column({ default: false })
-  // isCompletedByUser: boolean;
+  // NEW: server-tracked count (e.g., comments posted so far)
+  @Column({ type: 'integer', default: 0 })
+  progressCount: number;
 
+  // NEW: completion marker + who completed it
+  @Column({ type: 'boolean', default: false })
+  isCompletedByServer: boolean;
+
+  @Column({ type: 'timestamp', nullable: true })
+  completedAt: Date | null;
+
+  @Column({
+    type: 'enum',
+    enum: ProgressComputedBy,
+    default: ProgressComputedBy.SERVER,
+  })
+  computedBy: ProgressComputedBy;
+
+  // Keep your manual override flags
   @Column({ default: false })
   isMarkedDoneByBrand: boolean;
 
   @Column({ type: 'text', nullable: true })
   brandComment?: string;
+
+  // NEW: store qualifying events to prove completion (idempotency too)
+  // Each evidence item: { eventId, eventType, targetId?, postId?, commentId?, snippet?, at }
+  @Column({ type: 'jsonb', default: () => `'[]'` })
+  evidence: EvidenceItem[];
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;

@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const empty_1 = require("./google/protobuf/empty");
 exports.protobufPackage = "campaign";
 function createBaseCreateCampaignRequest() {
     return {
@@ -1862,6 +1863,7 @@ class CampaignServiceClientImpl {
         this.JoinPublicCampaign = this.JoinPublicCampaign.bind(this);
         this.LeaveCampaign = this.LeaveCampaign.bind(this);
         this.MarkTaskAsCompleted = this.MarkTaskAsCompleted.bind(this);
+        this.Health = this.Health.bind(this);
     }
     CreateCampaign(request) {
         const data = exports.CreateCampaignRequest.encode(request).finish();
@@ -1926,6 +1928,11 @@ class CampaignServiceClientImpl {
     MarkTaskAsCompleted(request) {
         const data = exports.TaskCompletedResponse.encode(request).finish();
         const promise = this.rpc.request(this.service, "MarkTaskAsCompleted", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    Health(request) {
+        const data = empty_1.Empty.encode(request).finish();
+        const promise = this.rpc.request(this.service, "Health", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

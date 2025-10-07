@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "campaign";
 /** Request message for creating a campaign */
 export interface CreateCampaignRequest {
@@ -154,6 +155,7 @@ export interface CampaignService {
     JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse>;
     LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
     MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
+    Health(request: Empty): Promise<SuccessResponse>;
 }
 export declare const CampaignServiceServiceName = "campaign.CampaignService";
 export declare class CampaignServiceClientImpl implements CampaignService {
@@ -175,6 +177,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     JoinPublicCampaign(request: JoinPublicCampaignRequest): Promise<SuccessResponse>;
     LeaveCampaign(request: LeaveCampaignRequest): Promise<SuccessResponse>;
     MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
+    Health(request: Empty): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

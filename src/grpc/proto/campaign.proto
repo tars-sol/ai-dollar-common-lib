@@ -1,6 +1,8 @@
 syntax = "proto3";
 
 package campaign;
+import "google/protobuf/empty.proto";
+
 // gRPC Service
 service CampaignService {
   rpc CreateCampaign(CreateCampaignRequest) returns (CampaignResponse);
@@ -16,6 +18,8 @@ service CampaignService {
   rpc JoinPublicCampaign(JoinPublicCampaignRequest) returns (SuccessResponse);
   rpc LeaveCampaign(LeaveCampaignRequest) returns (SuccessResponse);
   rpc MarkTaskAsCompleted(TaskCompletedResponse) returns (SuccessResponse);
+  rpc Health(google.protobuf.Empty) returns (SuccessResponse);
+
 }
 
 // Request message for creating a campaign
