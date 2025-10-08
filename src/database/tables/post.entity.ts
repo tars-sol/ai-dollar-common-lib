@@ -25,9 +25,10 @@ export enum AccessType {
 
 export enum PostType {
   TEXT = 'TEXT',
-  MEDIA = 'MEDIA', // image/video/gif gallery
+  MEDIA = 'MEDIA',
   POLL = 'POLL',
   FILE = 'FILE',
+  ARTICLE = 'ARTICLE'
 }
 
 @Entity('posts')

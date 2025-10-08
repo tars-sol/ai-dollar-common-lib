@@ -29,6 +29,7 @@ var PostType;
     PostType["MEDIA"] = "MEDIA";
     PostType["POLL"] = "POLL";
     PostType["FILE"] = "FILE";
+    PostType["ARTICLE"] = "ARTICLE";
 })(PostType || (exports.PostType = PostType = {}));
 let Post = class Post {
 };

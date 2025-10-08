@@ -10,9 +10,10 @@ export declare enum AccessType {
 }
 export declare enum PostType {
     TEXT = "TEXT",
-    MEDIA = "MEDIA",// image/video/gif gallery
+    MEDIA = "MEDIA",
     POLL = "POLL",
-    FILE = "FILE"
+    FILE = "FILE",
+    ARTICLE = "ARTICLE"
 }
 export declare class Post {
     id: string;
