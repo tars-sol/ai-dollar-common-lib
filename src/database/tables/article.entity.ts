@@ -9,7 +9,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Post } from './post.entity';
-import { AccessType } from './post.entity';
 
 export enum ArticleStatus {
   DRAFT = 'DRAFT',
@@ -37,8 +36,12 @@ export class Article {
   @Column({ type: 'enum', enum: ArticleStatus, default: ArticleStatus.DRAFT })
   status: ArticleStatus;
 
-  @Column({ type: 'enum', enum: AccessType, default: AccessType.PUBLIC })
-  accessType: AccessType;
+  @Column({
+    type: 'jsonb',
+    nullable: false,
+    default: () => `'{"version":"1.0","blocks":[]}'`,
+  })
+  contentJson: Record<string, unknown>;
 
   @Column({ type: 'varchar', length: 5, default: 'en' })
   language: string;

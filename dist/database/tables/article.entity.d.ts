@@ -1,5 +1,4 @@
 import { Post } from './post.entity';
-import { AccessType } from './post.entity';
 export declare enum ArticleStatus {
     DRAFT = "DRAFT",
     REVIEW = "REVIEW",
@@ -12,7 +11,7 @@ export declare class Article {
     postId: string;
     title: string;
     status: ArticleStatus;
-    accessType: AccessType;
+    contentJson: Record<string, unknown>;
     language: string;
     createdAt: Date;
     updatedAt: Date;

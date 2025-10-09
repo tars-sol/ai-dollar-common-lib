@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Article = exports.ArticleStatus = void 0;
 const typeorm_1 = require("typeorm");
 const post_entity_1 = require("./post.entity");
-const post_entity_2 = require("./post.entity");
 var ArticleStatus;
 (function (ArticleStatus) {
     ArticleStatus["DRAFT"] = "DRAFT";
@@ -46,9 +45,13 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: post_entity_2.AccessType, default: post_entity_2.AccessType.PUBLIC }),
-    __metadata("design:type", String)
-], Article.prototype, "accessType", void 0);
+    (0, typeorm_1.Column)({
+        type: 'jsonb',
+        nullable: false,
+        default: () => `'{"version":"1.0","blocks":[]}'`,
+    }),
+    __metadata("design:type", Object)
+], Article.prototype, "contentJson", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 5, default: 'en' }),
     __metadata("design:type", String)
