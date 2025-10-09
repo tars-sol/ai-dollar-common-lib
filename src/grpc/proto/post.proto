@@ -1,7 +1,10 @@
 syntax = "proto3";
 
 package post;
+
 import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+
 service PostService {
   rpc Create (CreatePostRequest) returns (PostResponse);
   rpc Update (UpdatePostRequest) returns (PostResponse);
@@ -20,7 +23,8 @@ service PostService {
   rpc GetPortfolio(GetPortfolioRequest) returns (GetFeedResponse);
   rpc Health(google.protobuf.Empty) returns (HealthResponse);
   rpc SearchPosts (SearchPostsRequest) returns (SearchPostsResponse);
-
+  rpc CreateArticle (CreateArticleRequest) returns (Article);
+  rpc GetArticle (GetArticleRequest) returns (Article);             
 }
 
 message CreatePostRequest {
@@ -199,6 +203,7 @@ message PostResponse {
   optional Creator creator = 14;
   optional bool viewerLiked = 15;
   optional bool viewerDisliked = 16;
+  optional Article article = 17;
 }
 message GetProfilePostsRequest{
   string profileId = 1;
@@ -222,4 +227,26 @@ message PostSearchItem {
 message SearchPostsResponse {
   repeated PostSearchItem results = 1;
   int32 total = 2;
+}
+
+message Article {
+  string id = 1;
+  string postId = 2;
+  string title = 3;
+  string status = 4;     
+  string language = 5; 
+  google.protobuf.Struct contentJson = 6;
+  string createdAt = 7;
+  string updatedAt = 8;
+}
+
+message CreateArticleRequest {
+  string postId = 1;                          
+  string title = 2;
+  google.protobuf.Struct contentJson = 3;      
+  string language = 4; 
+}
+
+message GetArticleRequest {
+  string postId = 1;
 }

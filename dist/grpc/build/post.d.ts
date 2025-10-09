@@ -166,6 +166,7 @@ export interface PostResponse {
     creator?: Creator | undefined;
     viewerLiked?: boolean | undefined;
     viewerDisliked?: boolean | undefined;
+    article?: Article | undefined;
 }
 export interface GetProfilePostsRequest {
     profileId: string;
@@ -186,6 +187,29 @@ export interface PostSearchItem {
 export interface SearchPostsResponse {
     results: PostSearchItem[];
     total: number;
+}
+export interface Article {
+    id: string;
+    postId: string;
+    title: string;
+    status: string;
+    language: string;
+    contentJson: {
+        [key: string]: any;
+    } | undefined;
+    createdAt: string;
+    updatedAt: string;
+}
+export interface CreateArticleRequest {
+    postId: string;
+    title: string;
+    contentJson: {
+        [key: string]: any;
+    } | undefined;
+    language: string;
+}
+export interface GetArticleRequest {
+    postId: string;
 }
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const DeletePostRequest: MessageFns<DeletePostRequest>;
@@ -217,6 +241,9 @@ export declare const GetProfilePostsRequest: MessageFns<GetProfilePostsRequest>;
 export declare const SearchPostsRequest: MessageFns<SearchPostsRequest>;
 export declare const PostSearchItem: MessageFns<PostSearchItem>;
 export declare const SearchPostsResponse: MessageFns<SearchPostsResponse>;
+export declare const Article: MessageFns<Article>;
+export declare const CreateArticleRequest: MessageFns<CreateArticleRequest>;
+export declare const GetArticleRequest: MessageFns<GetArticleRequest>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
@@ -235,6 +262,8 @@ export interface PostService {
     GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
     Health(request: Empty): Promise<HealthResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
+    CreateArticle(request: CreateArticleRequest): Promise<Article>;
+    GetArticle(request: GetArticleRequest): Promise<Article>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -260,6 +289,8 @@ export declare class PostServiceClientImpl implements PostService {
     GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
     Health(request: Empty): Promise<HealthResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
+    CreateArticle(request: CreateArticleRequest): Promise<Article>;
+    GetArticle(request: GetArticleRequest): Promise<Article>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

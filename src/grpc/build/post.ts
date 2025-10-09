@@ -7,6 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Empty } from "./google/protobuf/empty";
+import { Struct } from "./google/protobuf/struct";
 
 export const protobufPackage = "post";
 
@@ -200,6 +201,7 @@ export interface PostResponse {
   creator?: Creator | undefined;
   viewerLiked?: boolean | undefined;
   viewerDisliked?: boolean | undefined;
+  article?: Article | undefined;
 }
 
 export interface GetProfilePostsRequest {
@@ -224,6 +226,28 @@ export interface PostSearchItem {
 export interface SearchPostsResponse {
   results: PostSearchItem[];
   total: number;
+}
+
+export interface Article {
+  id: string;
+  postId: string;
+  title: string;
+  status: string;
+  language: string;
+  contentJson: { [key: string]: any } | undefined;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateArticleRequest {
+  postId: string;
+  title: string;
+  contentJson: { [key: string]: any } | undefined;
+  language: string;
+}
+
+export interface GetArticleRequest {
+  postId: string;
 }
 
 function createBaseCreatePostRequest(): CreatePostRequest {
@@ -2935,6 +2959,7 @@ function createBasePostResponse(): PostResponse {
     creator: undefined,
     viewerLiked: undefined,
     viewerDisliked: undefined,
+    article: undefined,
   };
 }
 
@@ -2987,6 +3012,9 @@ export const PostResponse: MessageFns<PostResponse> = {
     }
     if (message.viewerDisliked !== undefined) {
       writer.uint32(128).bool(message.viewerDisliked);
+    }
+    if (message.article !== undefined) {
+      Article.encode(message.article, writer.uint32(138).fork()).join();
     }
     return writer;
   },
@@ -3126,6 +3154,14 @@ export const PostResponse: MessageFns<PostResponse> = {
           message.viewerDisliked = reader.bool();
           continue;
         }
+        case 17: {
+          if (tag !== 138) {
+            break;
+          }
+
+          message.article = Article.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3153,6 +3189,7 @@ export const PostResponse: MessageFns<PostResponse> = {
       creator: isSet(object.creator) ? Creator.fromJSON(object.creator) : undefined,
       viewerLiked: isSet(object.viewerLiked) ? globalThis.Boolean(object.viewerLiked) : undefined,
       viewerDisliked: isSet(object.viewerDisliked) ? globalThis.Boolean(object.viewerDisliked) : undefined,
+      article: isSet(object.article) ? Article.fromJSON(object.article) : undefined,
     };
   },
 
@@ -3206,6 +3243,9 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.viewerDisliked !== undefined) {
       obj.viewerDisliked = message.viewerDisliked;
     }
+    if (message.article !== undefined) {
+      obj.article = Article.toJSON(message.article);
+    }
     return obj;
   },
 
@@ -3238,6 +3278,9 @@ export const PostResponse: MessageFns<PostResponse> = {
       : undefined;
     message.viewerLiked = object.viewerLiked ?? undefined;
     message.viewerDisliked = object.viewerDisliked ?? undefined;
+    message.article = (object.article !== undefined && object.article !== null)
+      ? Article.fromPartial(object.article)
+      : undefined;
     return message;
   },
 };
@@ -3612,6 +3655,353 @@ export const SearchPostsResponse: MessageFns<SearchPostsResponse> = {
   },
 };
 
+function createBaseArticle(): Article {
+  return {
+    id: "",
+    postId: "",
+    title: "",
+    status: "",
+    language: "",
+    contentJson: undefined,
+    createdAt: "",
+    updatedAt: "",
+  };
+}
+
+export const Article: MessageFns<Article> = {
+  encode(message: Article, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.postId !== "") {
+      writer.uint32(18).string(message.postId);
+    }
+    if (message.title !== "") {
+      writer.uint32(26).string(message.title);
+    }
+    if (message.status !== "") {
+      writer.uint32(34).string(message.status);
+    }
+    if (message.language !== "") {
+      writer.uint32(42).string(message.language);
+    }
+    if (message.contentJson !== undefined) {
+      Struct.encode(Struct.wrap(message.contentJson), writer.uint32(50).fork()).join();
+    }
+    if (message.createdAt !== "") {
+      writer.uint32(58).string(message.createdAt);
+    }
+    if (message.updatedAt !== "") {
+      writer.uint32(66).string(message.updatedAt);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Article {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseArticle();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.language = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.contentJson = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.createdAt = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.updatedAt = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Article {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+      language: isSet(object.language) ? globalThis.String(object.language) : "",
+      contentJson: isObject(object.contentJson) ? object.contentJson : undefined,
+      createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+      updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+    };
+  },
+
+  toJSON(message: Article): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    if (message.title !== "") {
+      obj.title = message.title;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.language !== "") {
+      obj.language = message.language;
+    }
+    if (message.contentJson !== undefined) {
+      obj.contentJson = message.contentJson;
+    }
+    if (message.createdAt !== "") {
+      obj.createdAt = message.createdAt;
+    }
+    if (message.updatedAt !== "") {
+      obj.updatedAt = message.updatedAt;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Article>, I>>(base?: I): Article {
+    return Article.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<Article>, I>>(object: I): Article {
+    const message = createBaseArticle();
+    message.id = object.id ?? "";
+    message.postId = object.postId ?? "";
+    message.title = object.title ?? "";
+    message.status = object.status ?? "";
+    message.language = object.language ?? "";
+    message.contentJson = object.contentJson ?? undefined;
+    message.createdAt = object.createdAt ?? "";
+    message.updatedAt = object.updatedAt ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateArticleRequest(): CreateArticleRequest {
+  return { postId: "", title: "", contentJson: undefined, language: "" };
+}
+
+export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
+  encode(message: CreateArticleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
+    }
+    if (message.title !== "") {
+      writer.uint32(18).string(message.title);
+    }
+    if (message.contentJson !== undefined) {
+      Struct.encode(Struct.wrap(message.contentJson), writer.uint32(26).fork()).join();
+    }
+    if (message.language !== "") {
+      writer.uint32(34).string(message.language);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateArticleRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateArticleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.contentJson = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.language = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateArticleRequest {
+    return {
+      postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+      title: isSet(object.title) ? globalThis.String(object.title) : "",
+      contentJson: isObject(object.contentJson) ? object.contentJson : undefined,
+      language: isSet(object.language) ? globalThis.String(object.language) : "",
+    };
+  },
+
+  toJSON(message: CreateArticleRequest): unknown {
+    const obj: any = {};
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    if (message.title !== "") {
+      obj.title = message.title;
+    }
+    if (message.contentJson !== undefined) {
+      obj.contentJson = message.contentJson;
+    }
+    if (message.language !== "") {
+      obj.language = message.language;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateArticleRequest>, I>>(base?: I): CreateArticleRequest {
+    return CreateArticleRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateArticleRequest>, I>>(object: I): CreateArticleRequest {
+    const message = createBaseCreateArticleRequest();
+    message.postId = object.postId ?? "";
+    message.title = object.title ?? "";
+    message.contentJson = object.contentJson ?? undefined;
+    message.language = object.language ?? "";
+    return message;
+  },
+};
+
+function createBaseGetArticleRequest(): GetArticleRequest {
+  return { postId: "" };
+}
+
+export const GetArticleRequest: MessageFns<GetArticleRequest> = {
+  encode(message: GetArticleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetArticleRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetArticleRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.postId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetArticleRequest {
+    return { postId: isSet(object.postId) ? globalThis.String(object.postId) : "" };
+  },
+
+  toJSON(message: GetArticleRequest): unknown {
+    const obj: any = {};
+    if (message.postId !== "") {
+      obj.postId = message.postId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetArticleRequest>, I>>(base?: I): GetArticleRequest {
+    return GetArticleRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetArticleRequest>, I>>(object: I): GetArticleRequest {
+    const message = createBaseGetArticleRequest();
+    message.postId = object.postId ?? "";
+    return message;
+  },
+};
+
 export interface PostService {
   Create(request: CreatePostRequest): Promise<PostResponse>;
   Update(request: UpdatePostRequest): Promise<PostResponse>;
@@ -3630,6 +4020,8 @@ export interface PostService {
   GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
   Health(request: Empty): Promise<HealthResponse>;
   SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
+  CreateArticle(request: CreateArticleRequest): Promise<Article>;
+  GetArticle(request: GetArticleRequest): Promise<Article>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -3656,6 +4048,8 @@ export class PostServiceClientImpl implements PostService {
     this.GetPortfolio = this.GetPortfolio.bind(this);
     this.Health = this.Health.bind(this);
     this.SearchPosts = this.SearchPosts.bind(this);
+    this.CreateArticle = this.CreateArticle.bind(this);
+    this.GetArticle = this.GetArticle.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -3758,6 +4152,18 @@ export class PostServiceClientImpl implements PostService {
     const promise = this.rpc.request(this.service, "SearchPosts", data);
     return promise.then((data) => SearchPostsResponse.decode(new BinaryReader(data)));
   }
+
+  CreateArticle(request: CreateArticleRequest): Promise<Article> {
+    const data = CreateArticleRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateArticle", data);
+    return promise.then((data) => Article.decode(new BinaryReader(data)));
+  }
+
+  GetArticle(request: GetArticleRequest): Promise<Article> {
+    const data = GetArticleRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetArticle", data);
+    return promise.then((data) => Article.decode(new BinaryReader(data)));
+  }
 }
 
 interface Rpc {
@@ -3775,6 +4181,10 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
