@@ -36,6 +36,7 @@ export interface BrandResponse {
   twitter: string;
   telegram: string;
   isFollowing?: boolean | undefined;
+  username: string;
 }
 
 /** Request for creating a brand (userId comes from JWT in server) */
@@ -50,6 +51,7 @@ export interface CreateBrandRequest {
   twitter?: string | undefined;
   telegram?: string | undefined;
   tokenName?: string | undefined;
+  username: string;
 }
 
 /** Request for updating a brand */
@@ -64,6 +66,7 @@ export interface UpdateBrandRequest {
   twitter?: string | undefined;
   telegram?: string | undefined;
   tokenName?: string | undefined;
+  username?: string | undefined;
 }
 
 export interface SearchBrandsRequest {
@@ -182,6 +185,7 @@ function createBaseBrandResponse(): BrandResponse {
     twitter: "",
     telegram: "",
     isFollowing: undefined,
+    username: "",
   };
 }
 
@@ -243,6 +247,9 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     }
     if (message.isFollowing !== undefined) {
       writer.uint32(152).bool(message.isFollowing);
+    }
+    if (message.username !== "") {
+      writer.uint32(162).string(message.username);
     }
     return writer;
   },
@@ -406,6 +413,14 @@ export const BrandResponse: MessageFns<BrandResponse> = {
           message.isFollowing = reader.bool();
           continue;
         }
+        case 20: {
+          if (tag !== 162) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -436,6 +451,7 @@ export const BrandResponse: MessageFns<BrandResponse> = {
       twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
       telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : "",
       isFollowing: isSet(object.isFollowing) ? globalThis.Boolean(object.isFollowing) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
     };
   },
 
@@ -498,6 +514,9 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     if (message.isFollowing !== undefined) {
       obj.isFollowing = message.isFollowing;
     }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
     return obj;
   },
 
@@ -525,6 +544,7 @@ export const BrandResponse: MessageFns<BrandResponse> = {
     message.twitter = object.twitter ?? "";
     message.telegram = object.telegram ?? "";
     message.isFollowing = object.isFollowing ?? undefined;
+    message.username = object.username ?? "";
     return message;
   },
 };
@@ -541,6 +561,7 @@ function createBaseCreateBrandRequest(): CreateBrandRequest {
     twitter: undefined,
     telegram: undefined,
     tokenName: undefined,
+    username: "",
   };
 }
 
@@ -575,6 +596,9 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
     }
     if (message.tokenName !== undefined) {
       writer.uint32(82).string(message.tokenName);
+    }
+    if (message.username !== "") {
+      writer.uint32(90).string(message.username);
     }
     return writer;
   },
@@ -666,6 +690,14 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
           message.tokenName = reader.string();
           continue;
         }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -687,6 +719,7 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
       twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
       telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
       tokenName: isSet(object.tokenName) ? globalThis.String(object.tokenName) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
     };
   },
 
@@ -722,6 +755,9 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
     if (message.tokenName !== undefined) {
       obj.tokenName = message.tokenName;
     }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
     return obj;
   },
 
@@ -740,6 +776,7 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
     message.twitter = object.twitter ?? undefined;
     message.telegram = object.telegram ?? undefined;
     message.tokenName = object.tokenName ?? undefined;
+    message.username = object.username ?? "";
     return message;
   },
 };
@@ -756,6 +793,7 @@ function createBaseUpdateBrandRequest(): UpdateBrandRequest {
     twitter: undefined,
     telegram: undefined,
     tokenName: undefined,
+    username: undefined,
   };
 }
 
@@ -790,6 +828,9 @@ export const UpdateBrandRequest: MessageFns<UpdateBrandRequest> = {
     }
     if (message.tokenName !== undefined) {
       writer.uint32(82).string(message.tokenName);
+    }
+    if (message.username !== undefined) {
+      writer.uint32(90).string(message.username);
     }
     return writer;
   },
@@ -881,6 +922,14 @@ export const UpdateBrandRequest: MessageFns<UpdateBrandRequest> = {
           message.tokenName = reader.string();
           continue;
         }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -902,6 +951,7 @@ export const UpdateBrandRequest: MessageFns<UpdateBrandRequest> = {
       twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
       telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
       tokenName: isSet(object.tokenName) ? globalThis.String(object.tokenName) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
     };
   },
 
@@ -937,6 +987,9 @@ export const UpdateBrandRequest: MessageFns<UpdateBrandRequest> = {
     if (message.tokenName !== undefined) {
       obj.tokenName = message.tokenName;
     }
+    if (message.username !== undefined) {
+      obj.username = message.username;
+    }
     return obj;
   },
 
@@ -955,6 +1008,7 @@ export const UpdateBrandRequest: MessageFns<UpdateBrandRequest> = {
     message.twitter = object.twitter ?? undefined;
     message.telegram = object.telegram ?? undefined;
     message.tokenName = object.tokenName ?? undefined;
+    message.username = object.username ?? undefined;
     return message;
   },
 };

@@ -26,6 +26,7 @@ export interface BrandResponse {
     twitter: string;
     telegram: string;
     isFollowing?: boolean | undefined;
+    username: string;
 }
 /** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {
@@ -39,6 +40,7 @@ export interface CreateBrandRequest {
     twitter?: string | undefined;
     telegram?: string | undefined;
     tokenName?: string | undefined;
+    username: string;
 }
 /** Request for updating a brand */
 export interface UpdateBrandRequest {
@@ -52,6 +54,7 @@ export interface UpdateBrandRequest {
     twitter?: string | undefined;
     telegram?: string | undefined;
     tokenName?: string | undefined;
+    username?: string | undefined;
 }
 export interface SearchBrandsRequest {
     q: string;

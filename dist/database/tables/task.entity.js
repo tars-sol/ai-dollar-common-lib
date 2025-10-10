@@ -39,7 +39,9 @@ __decorate([
     __metadata("design:type", String)
 ], Task.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => campaign_entity_1.Campaign, (campaign) => campaign.tasks, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.ManyToOne)(() => campaign_entity_1.Campaign, (campaign) => campaign.tasks, {
+        onDelete: 'CASCADE',
+    }),
     (0, typeorm_1.JoinColumn)({ name: 'campaignId' }),
     __metadata("design:type", campaign_entity_1.Campaign)
 ], Task.prototype, "campaign", void 0);
@@ -60,7 +62,7 @@ __decorate([
     __metadata("design:type", String)
 ], Task.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'jsonb', default: {} }),
+    (0, typeorm_1.Column)({ type: 'jsonb', nullable: true }),
     __metadata("design:type", Object)
 ], Task.prototype, "rule", void 0);
 __decorate([

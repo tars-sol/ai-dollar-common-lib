@@ -32,6 +32,23 @@ export interface TaskInput {
   title: string;
   description: string;
   type: string;
+  rule?: inAppTaskRule | undefined;
+}
+
+export interface inAppTaskRule {
+  action: string;
+  targets: TaskTargets[];
+  countRequired: string;
+  content?: TaskContent | undefined;
+}
+
+export interface TaskTargets {
+  targetType: string;
+  targetId: string;
+}
+
+export interface TaskContent {
+  requireMention?: boolean | undefined;
 }
 
 export interface UpdateTaskRequest {
@@ -441,7 +458,7 @@ export const SuccessResponse: MessageFns<SuccessResponse> = {
 };
 
 function createBaseTaskInput(): TaskInput {
-  return { title: "", description: "", type: "" };
+  return { title: "", description: "", type: "", rule: undefined };
 }
 
 export const TaskInput: MessageFns<TaskInput> = {
@@ -454,6 +471,9 @@ export const TaskInput: MessageFns<TaskInput> = {
     }
     if (message.type !== "") {
       writer.uint32(34).string(message.type);
+    }
+    if (message.rule !== undefined) {
+      inAppTaskRule.encode(message.rule, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -489,6 +509,14 @@ export const TaskInput: MessageFns<TaskInput> = {
           message.type = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.rule = inAppTaskRule.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -503,6 +531,7 @@ export const TaskInput: MessageFns<TaskInput> = {
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       type: isSet(object.type) ? globalThis.String(object.type) : "",
+      rule: isSet(object.rule) ? inAppTaskRule.fromJSON(object.rule) : undefined,
     };
   },
 
@@ -517,6 +546,9 @@ export const TaskInput: MessageFns<TaskInput> = {
     if (message.type !== "") {
       obj.type = message.type;
     }
+    if (message.rule !== undefined) {
+      obj.rule = inAppTaskRule.toJSON(message.rule);
+    }
     return obj;
   },
 
@@ -528,6 +560,253 @@ export const TaskInput: MessageFns<TaskInput> = {
     message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.type = object.type ?? "";
+    message.rule = (object.rule !== undefined && object.rule !== null)
+      ? inAppTaskRule.fromPartial(object.rule)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseinAppTaskRule(): inAppTaskRule {
+  return { action: "", targets: [], countRequired: "", content: undefined };
+}
+
+export const inAppTaskRule: MessageFns<inAppTaskRule> = {
+  encode(message: inAppTaskRule, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.action !== "") {
+      writer.uint32(10).string(message.action);
+    }
+    for (const v of message.targets) {
+      TaskTargets.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.countRequired !== "") {
+      writer.uint32(26).string(message.countRequired);
+    }
+    if (message.content !== undefined) {
+      TaskContent.encode(message.content, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): inAppTaskRule {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseinAppTaskRule();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.action = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.targets.push(TaskTargets.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.countRequired = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.content = TaskContent.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): inAppTaskRule {
+    return {
+      action: isSet(object.action) ? globalThis.String(object.action) : "",
+      targets: globalThis.Array.isArray(object?.targets) ? object.targets.map((e: any) => TaskTargets.fromJSON(e)) : [],
+      countRequired: isSet(object.countRequired) ? globalThis.String(object.countRequired) : "",
+      content: isSet(object.content) ? TaskContent.fromJSON(object.content) : undefined,
+    };
+  },
+
+  toJSON(message: inAppTaskRule): unknown {
+    const obj: any = {};
+    if (message.action !== "") {
+      obj.action = message.action;
+    }
+    if (message.targets?.length) {
+      obj.targets = message.targets.map((e) => TaskTargets.toJSON(e));
+    }
+    if (message.countRequired !== "") {
+      obj.countRequired = message.countRequired;
+    }
+    if (message.content !== undefined) {
+      obj.content = TaskContent.toJSON(message.content);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<inAppTaskRule>, I>>(base?: I): inAppTaskRule {
+    return inAppTaskRule.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<inAppTaskRule>, I>>(object: I): inAppTaskRule {
+    const message = createBaseinAppTaskRule();
+    message.action = object.action ?? "";
+    message.targets = object.targets?.map((e) => TaskTargets.fromPartial(e)) || [];
+    message.countRequired = object.countRequired ?? "";
+    message.content = (object.content !== undefined && object.content !== null)
+      ? TaskContent.fromPartial(object.content)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseTaskTargets(): TaskTargets {
+  return { targetType: "", targetId: "" };
+}
+
+export const TaskTargets: MessageFns<TaskTargets> = {
+  encode(message: TaskTargets, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.targetType !== "") {
+      writer.uint32(10).string(message.targetType);
+    }
+    if (message.targetId !== "") {
+      writer.uint32(18).string(message.targetId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TaskTargets {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTaskTargets();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.targetType = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.targetId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TaskTargets {
+    return {
+      targetType: isSet(object.targetType) ? globalThis.String(object.targetType) : "",
+      targetId: isSet(object.targetId) ? globalThis.String(object.targetId) : "",
+    };
+  },
+
+  toJSON(message: TaskTargets): unknown {
+    const obj: any = {};
+    if (message.targetType !== "") {
+      obj.targetType = message.targetType;
+    }
+    if (message.targetId !== "") {
+      obj.targetId = message.targetId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TaskTargets>, I>>(base?: I): TaskTargets {
+    return TaskTargets.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TaskTargets>, I>>(object: I): TaskTargets {
+    const message = createBaseTaskTargets();
+    message.targetType = object.targetType ?? "";
+    message.targetId = object.targetId ?? "";
+    return message;
+  },
+};
+
+function createBaseTaskContent(): TaskContent {
+  return { requireMention: undefined };
+}
+
+export const TaskContent: MessageFns<TaskContent> = {
+  encode(message: TaskContent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.requireMention !== undefined) {
+      writer.uint32(8).bool(message.requireMention);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TaskContent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTaskContent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.requireMention = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TaskContent {
+    return { requireMention: isSet(object.requireMention) ? globalThis.Boolean(object.requireMention) : undefined };
+  },
+
+  toJSON(message: TaskContent): unknown {
+    const obj: any = {};
+    if (message.requireMention !== undefined) {
+      obj.requireMention = message.requireMention;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TaskContent>, I>>(base?: I): TaskContent {
+    return TaskContent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TaskContent>, I>>(object: I): TaskContent {
+    const message = createBaseTaskContent();
+    message.requireMention = object.requireMention ?? undefined;
     return message;
   },
 };

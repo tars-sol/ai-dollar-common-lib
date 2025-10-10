@@ -27,6 +27,7 @@ export interface ProfileResponse {
     updatedAt: string;
     jwtToken?: string | undefined;
     isFollowing?: boolean | undefined;
+    isSubscribed?: boolean | undefined;
     refreshToken?: string | undefined;
     email?: string | undefined;
     followersCount: string;

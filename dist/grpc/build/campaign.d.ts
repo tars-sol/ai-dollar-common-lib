@@ -21,6 +21,20 @@ export interface TaskInput {
     title: string;
     description: string;
     type: string;
+    rule?: inAppTaskRule | undefined;
+}
+export interface inAppTaskRule {
+    action: string;
+    targets: TaskTargets[];
+    countRequired: string;
+    content?: TaskContent | undefined;
+}
+export interface TaskTargets {
+    targetType: string;
+    targetId: string;
+}
+export interface TaskContent {
+    requireMention?: boolean | undefined;
 }
 export interface UpdateTaskRequest {
     title?: string | undefined;
@@ -141,6 +155,9 @@ export interface SearchCampaignsResponse {
 export declare const CreateCampaignRequest: MessageFns<CreateCampaignRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const TaskInput: MessageFns<TaskInput>;
+export declare const inAppTaskRule: MessageFns<inAppTaskRule>;
+export declare const TaskTargets: MessageFns<TaskTargets>;
+export declare const TaskContent: MessageFns<TaskContent>;
 export declare const UpdateTaskRequest: MessageFns<UpdateTaskRequest>;
 export declare const JoinPublicCampaignRequest: MessageFns<JoinPublicCampaignRequest>;
 export declare const LeaveCampaignRequest: MessageFns<LeaveCampaignRequest>;

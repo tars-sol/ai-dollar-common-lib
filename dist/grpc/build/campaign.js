@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: campaign.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
+exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -247,7 +247,7 @@ exports.SuccessResponse = {
     },
 };
 function createBaseTaskInput() {
-    return { title: "", description: "", type: "" };
+    return { title: "", description: "", type: "", rule: undefined };
 }
 exports.TaskInput = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -259,6 +259,9 @@ exports.TaskInput = {
         }
         if (message.type !== "") {
             writer.uint32(34).string(message.type);
+        }
+        if (message.rule !== undefined) {
+            exports.inAppTaskRule.encode(message.rule, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -290,6 +293,13 @@ exports.TaskInput = {
                     message.type = reader.string();
                     continue;
                 }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.rule = exports.inAppTaskRule.decode(reader, reader.uint32());
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -303,6 +313,7 @@ exports.TaskInput = {
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             type: isSet(object.type) ? globalThis.String(object.type) : "",
+            rule: isSet(object.rule) ? exports.inAppTaskRule.fromJSON(object.rule) : undefined,
         };
     },
     toJSON(message) {
@@ -316,6 +327,9 @@ exports.TaskInput = {
         if (message.type !== "") {
             obj.type = message.type;
         }
+        if (message.rule !== undefined) {
+            obj.rule = exports.inAppTaskRule.toJSON(message.rule);
+        }
         return obj;
     },
     create(base) {
@@ -326,6 +340,228 @@ exports.TaskInput = {
         message.title = object.title ?? "";
         message.description = object.description ?? "";
         message.type = object.type ?? "";
+        message.rule = (object.rule !== undefined && object.rule !== null)
+            ? exports.inAppTaskRule.fromPartial(object.rule)
+            : undefined;
+        return message;
+    },
+};
+function createBaseinAppTaskRule() {
+    return { action: "", targets: [], countRequired: "", content: undefined };
+}
+exports.inAppTaskRule = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.action !== "") {
+            writer.uint32(10).string(message.action);
+        }
+        for (const v of message.targets) {
+            exports.TaskTargets.encode(v, writer.uint32(18).fork()).join();
+        }
+        if (message.countRequired !== "") {
+            writer.uint32(26).string(message.countRequired);
+        }
+        if (message.content !== undefined) {
+            exports.TaskContent.encode(message.content, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseinAppTaskRule();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.action = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.targets.push(exports.TaskTargets.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.countRequired = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.content = exports.TaskContent.decode(reader, reader.uint32());
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            action: isSet(object.action) ? globalThis.String(object.action) : "",
+            targets: globalThis.Array.isArray(object?.targets) ? object.targets.map((e) => exports.TaskTargets.fromJSON(e)) : [],
+            countRequired: isSet(object.countRequired) ? globalThis.String(object.countRequired) : "",
+            content: isSet(object.content) ? exports.TaskContent.fromJSON(object.content) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.action !== "") {
+            obj.action = message.action;
+        }
+        if (message.targets?.length) {
+            obj.targets = message.targets.map((e) => exports.TaskTargets.toJSON(e));
+        }
+        if (message.countRequired !== "") {
+            obj.countRequired = message.countRequired;
+        }
+        if (message.content !== undefined) {
+            obj.content = exports.TaskContent.toJSON(message.content);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.inAppTaskRule.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseinAppTaskRule();
+        message.action = object.action ?? "";
+        message.targets = object.targets?.map((e) => exports.TaskTargets.fromPartial(e)) || [];
+        message.countRequired = object.countRequired ?? "";
+        message.content = (object.content !== undefined && object.content !== null)
+            ? exports.TaskContent.fromPartial(object.content)
+            : undefined;
+        return message;
+    },
+};
+function createBaseTaskTargets() {
+    return { targetType: "", targetId: "" };
+}
+exports.TaskTargets = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.targetType !== "") {
+            writer.uint32(10).string(message.targetType);
+        }
+        if (message.targetId !== "") {
+            writer.uint32(18).string(message.targetId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTaskTargets();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.targetType = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.targetId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            targetType: isSet(object.targetType) ? globalThis.String(object.targetType) : "",
+            targetId: isSet(object.targetId) ? globalThis.String(object.targetId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.targetType !== "") {
+            obj.targetType = message.targetType;
+        }
+        if (message.targetId !== "") {
+            obj.targetId = message.targetId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TaskTargets.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTaskTargets();
+        message.targetType = object.targetType ?? "";
+        message.targetId = object.targetId ?? "";
+        return message;
+    },
+};
+function createBaseTaskContent() {
+    return { requireMention: undefined };
+}
+exports.TaskContent = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.requireMention !== undefined) {
+            writer.uint32(8).bool(message.requireMention);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTaskContent();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.requireMention = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { requireMention: isSet(object.requireMention) ? globalThis.Boolean(object.requireMention) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.requireMention !== undefined) {
+            obj.requireMention = message.requireMention;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TaskContent.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTaskContent();
+        message.requireMention = object.requireMention ?? undefined;
         return message;
     },
 };

@@ -98,6 +98,7 @@ function createBaseBrandResponse() {
         twitter: "",
         telegram: "",
         isFollowing: undefined,
+        username: "",
     };
 }
 exports.BrandResponse = {
@@ -158,6 +159,9 @@ exports.BrandResponse = {
         }
         if (message.isFollowing !== undefined) {
             writer.uint32(152).bool(message.isFollowing);
+        }
+        if (message.username !== "") {
+            writer.uint32(162).string(message.username);
         }
         return writer;
     },
@@ -301,6 +305,13 @@ exports.BrandResponse = {
                     message.isFollowing = reader.bool();
                     continue;
                 }
+                case 20: {
+                    if (tag !== 162) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -330,6 +341,7 @@ exports.BrandResponse = {
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : "",
             telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : "",
             isFollowing: isSet(object.isFollowing) ? globalThis.Boolean(object.isFollowing) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
         };
     },
     toJSON(message) {
@@ -391,6 +403,9 @@ exports.BrandResponse = {
         if (message.isFollowing !== undefined) {
             obj.isFollowing = message.isFollowing;
         }
+        if (message.username !== "") {
+            obj.username = message.username;
+        }
         return obj;
     },
     create(base) {
@@ -417,6 +432,7 @@ exports.BrandResponse = {
         message.twitter = object.twitter ?? "";
         message.telegram = object.telegram ?? "";
         message.isFollowing = object.isFollowing ?? undefined;
+        message.username = object.username ?? "";
         return message;
     },
 };
@@ -432,6 +448,7 @@ function createBaseCreateBrandRequest() {
         twitter: undefined,
         telegram: undefined,
         tokenName: undefined,
+        username: "",
     };
 }
 exports.CreateBrandRequest = {
@@ -466,6 +483,9 @@ exports.CreateBrandRequest = {
         if (message.tokenName !== undefined) {
             writer.uint32(82).string(message.tokenName);
         }
+        if (message.username !== "") {
+            writer.uint32(90).string(message.username);
+        }
         return writer;
     },
     decode(input, length) {
@@ -545,6 +565,13 @@ exports.CreateBrandRequest = {
                     message.tokenName = reader.string();
                     continue;
                 }
+                case 11: {
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -565,6 +592,7 @@ exports.CreateBrandRequest = {
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
             telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
             tokenName: isSet(object.tokenName) ? globalThis.String(object.tokenName) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
         };
     },
     toJSON(message) {
@@ -599,6 +627,9 @@ exports.CreateBrandRequest = {
         if (message.tokenName !== undefined) {
             obj.tokenName = message.tokenName;
         }
+        if (message.username !== "") {
+            obj.username = message.username;
+        }
         return obj;
     },
     create(base) {
@@ -616,6 +647,7 @@ exports.CreateBrandRequest = {
         message.twitter = object.twitter ?? undefined;
         message.telegram = object.telegram ?? undefined;
         message.tokenName = object.tokenName ?? undefined;
+        message.username = object.username ?? "";
         return message;
     },
 };
@@ -631,6 +663,7 @@ function createBaseUpdateBrandRequest() {
         twitter: undefined,
         telegram: undefined,
         tokenName: undefined,
+        username: undefined,
     };
 }
 exports.UpdateBrandRequest = {
@@ -664,6 +697,9 @@ exports.UpdateBrandRequest = {
         }
         if (message.tokenName !== undefined) {
             writer.uint32(82).string(message.tokenName);
+        }
+        if (message.username !== undefined) {
+            writer.uint32(90).string(message.username);
         }
         return writer;
     },
@@ -744,6 +780,13 @@ exports.UpdateBrandRequest = {
                     message.tokenName = reader.string();
                     continue;
                 }
+                case 11: {
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -764,6 +807,7 @@ exports.UpdateBrandRequest = {
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
             telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
             tokenName: isSet(object.tokenName) ? globalThis.String(object.tokenName) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
         };
     },
     toJSON(message) {
@@ -798,6 +842,9 @@ exports.UpdateBrandRequest = {
         if (message.tokenName !== undefined) {
             obj.tokenName = message.tokenName;
         }
+        if (message.username !== undefined) {
+            obj.username = message.username;
+        }
         return obj;
     },
     create(base) {
@@ -815,6 +862,7 @@ exports.UpdateBrandRequest = {
         message.twitter = object.twitter ?? undefined;
         message.telegram = object.telegram ?? undefined;
         message.tokenName = object.tokenName ?? undefined;
+        message.username = object.username ?? undefined;
         return message;
     },
 };

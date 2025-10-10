@@ -38,6 +38,7 @@ message ProfileResponse {
   string updatedAt = 14;
   optional string jwtToken = 16;
   optional bool isFollowing = 25;
+  optional bool isSubscribed = 26;
   optional string refreshToken = 17;
   optional string email=18;
   string followersCount = 19;

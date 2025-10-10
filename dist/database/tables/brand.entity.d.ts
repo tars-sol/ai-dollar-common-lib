@@ -7,6 +7,7 @@ export declare class Brand {
     campaigns: Campaign[];
     userId: string;
     name: string;
+    username: string;
     description: string;
     logoUrl: string;
     discord: string;

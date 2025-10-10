@@ -37,6 +37,7 @@ export interface ProfileResponse {
   updatedAt: string;
   jwtToken?: string | undefined;
   isFollowing?: boolean | undefined;
+  isSubscribed?: boolean | undefined;
   refreshToken?: string | undefined;
   email?: string | undefined;
   followersCount: string;
@@ -254,6 +255,7 @@ function createBaseProfileResponse(): ProfileResponse {
     updatedAt: "",
     jwtToken: undefined,
     isFollowing: undefined,
+    isSubscribed: undefined,
     refreshToken: undefined,
     email: undefined,
     followersCount: "",
@@ -321,6 +323,9 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     }
     if (message.isFollowing !== undefined) {
       writer.uint32(200).bool(message.isFollowing);
+    }
+    if (message.isSubscribed !== undefined) {
+      writer.uint32(208).bool(message.isSubscribed);
     }
     if (message.refreshToken !== undefined) {
       writer.uint32(138).string(message.refreshToken);
@@ -502,6 +507,14 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
           message.isFollowing = reader.bool();
           continue;
         }
+        case 26: {
+          if (tag !== 208) {
+            break;
+          }
+
+          message.isSubscribed = reader.bool();
+          continue;
+        }
         case 17: {
           if (tag !== 138) {
             break;
@@ -580,6 +593,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
       jwtToken: isSet(object.jwtToken) ? globalThis.String(object.jwtToken) : undefined,
       isFollowing: isSet(object.isFollowing) ? globalThis.Boolean(object.isFollowing) : undefined,
+      isSubscribed: isSet(object.isSubscribed) ? globalThis.Boolean(object.isSubscribed) : undefined,
       refreshToken: isSet(object.refreshToken) ? globalThis.String(object.refreshToken) : undefined,
       email: isSet(object.email) ? globalThis.String(object.email) : undefined,
       followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
@@ -648,6 +662,9 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     if (message.isFollowing !== undefined) {
       obj.isFollowing = message.isFollowing;
     }
+    if (message.isSubscribed !== undefined) {
+      obj.isSubscribed = message.isSubscribed;
+    }
     if (message.refreshToken !== undefined) {
       obj.refreshToken = message.refreshToken;
     }
@@ -693,6 +710,7 @@ export const ProfileResponse: MessageFns<ProfileResponse> = {
     message.updatedAt = object.updatedAt ?? "";
     message.jwtToken = object.jwtToken ?? undefined;
     message.isFollowing = object.isFollowing ?? undefined;
+    message.isSubscribed = object.isSubscribed ?? undefined;
     message.refreshToken = object.refreshToken ?? undefined;
     message.email = object.email ?? undefined;
     message.followersCount = object.followersCount ?? "";

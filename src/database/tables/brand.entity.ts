@@ -30,6 +30,8 @@ export class Brand {
 
   @Column({ length: 64 })
   name: string;
+  @Column({ type: 'varchar', unique: true })
+  username: string;
 
   @Column({ type: 'text', nullable: true })
   description: string;

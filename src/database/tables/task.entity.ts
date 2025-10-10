@@ -63,7 +63,9 @@ export class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Campaign, (campaign) => campaign.tasks, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Campaign, (campaign) => campaign.tasks, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'campaignId' })
   campaign: Campaign;
 
@@ -80,7 +82,7 @@ export class Task {
   description: string;
 
   // NEW: precise machine-understandable rule
-  @Column({ type: 'jsonb',default: {} })
+  @Column({ type: 'jsonb', nullable: true })
   rule: TaskRule;
 
   @CreateDateColumn()
@@ -89,4 +91,3 @@ export class Task {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-
