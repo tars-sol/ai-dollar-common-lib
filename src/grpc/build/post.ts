@@ -240,14 +240,16 @@ export interface Article {
 }
 
 export interface CreateArticleRequest {
-  postId: string;
+  profileId: string;
+  accessType: string;
+  caption: string;
+  s3Key: string;
+  mimeType: string;
+  originalFileName: string;
   title: string;
   contentJson: { [key: string]: any } | undefined;
   language: string;
-}
-
-export interface GetArticleRequest {
-  postId: string;
+  status: string;
 }
 
 function createBaseCreatePostRequest(): CreatePostRequest {
@@ -3837,22 +3839,51 @@ export const Article: MessageFns<Article> = {
 };
 
 function createBaseCreateArticleRequest(): CreateArticleRequest {
-  return { postId: "", title: "", contentJson: undefined, language: "" };
+  return {
+    profileId: "",
+    accessType: "",
+    caption: "",
+    s3Key: "",
+    mimeType: "",
+    originalFileName: "",
+    title: "",
+    contentJson: undefined,
+    language: "",
+    status: "",
+  };
 }
 
 export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
   encode(message: CreateArticleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.postId !== "") {
-      writer.uint32(10).string(message.postId);
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    if (message.accessType !== "") {
+      writer.uint32(18).string(message.accessType);
+    }
+    if (message.caption !== "") {
+      writer.uint32(26).string(message.caption);
+    }
+    if (message.s3Key !== "") {
+      writer.uint32(34).string(message.s3Key);
+    }
+    if (message.mimeType !== "") {
+      writer.uint32(42).string(message.mimeType);
+    }
+    if (message.originalFileName !== "") {
+      writer.uint32(50).string(message.originalFileName);
     }
     if (message.title !== "") {
-      writer.uint32(18).string(message.title);
+      writer.uint32(58).string(message.title);
     }
     if (message.contentJson !== undefined) {
-      Struct.encode(Struct.wrap(message.contentJson), writer.uint32(26).fork()).join();
+      Struct.encode(Struct.wrap(message.contentJson), writer.uint32(66).fork()).join();
     }
     if (message.language !== "") {
-      writer.uint32(34).string(message.language);
+      writer.uint32(74).string(message.language);
+    }
+    if (message.status !== "") {
+      writer.uint32(82).string(message.status);
     }
     return writer;
   },
@@ -3869,7 +3900,7 @@ export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
             break;
           }
 
-          message.postId = reader.string();
+          message.profileId = reader.string();
           continue;
         }
         case 2: {
@@ -3877,7 +3908,7 @@ export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
             break;
           }
 
-          message.title = reader.string();
+          message.accessType = reader.string();
           continue;
         }
         case 3: {
@@ -3885,7 +3916,7 @@ export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
             break;
           }
 
-          message.contentJson = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+          message.caption = reader.string();
           continue;
         }
         case 4: {
@@ -3893,7 +3924,55 @@ export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
             break;
           }
 
+          message.s3Key = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.mimeType = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.originalFileName = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.contentJson = Struct.unwrap(Struct.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
           message.language = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.status = reader.string();
           continue;
         }
       }
@@ -3907,17 +3986,38 @@ export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
 
   fromJSON(object: any): CreateArticleRequest {
     return {
-      postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
+      caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
+      s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
+      mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : "",
+      originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
       title: isSet(object.title) ? globalThis.String(object.title) : "",
       contentJson: isObject(object.contentJson) ? object.contentJson : undefined,
       language: isSet(object.language) ? globalThis.String(object.language) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
     };
   },
 
   toJSON(message: CreateArticleRequest): unknown {
     const obj: any = {};
-    if (message.postId !== "") {
-      obj.postId = message.postId;
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.accessType !== "") {
+      obj.accessType = message.accessType;
+    }
+    if (message.caption !== "") {
+      obj.caption = message.caption;
+    }
+    if (message.s3Key !== "") {
+      obj.s3Key = message.s3Key;
+    }
+    if (message.mimeType !== "") {
+      obj.mimeType = message.mimeType;
+    }
+    if (message.originalFileName !== "") {
+      obj.originalFileName = message.originalFileName;
     }
     if (message.title !== "") {
       obj.title = message.title;
@@ -3928,6 +4028,9 @@ export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
     if (message.language !== "") {
       obj.language = message.language;
     }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
     return obj;
   },
 
@@ -3936,68 +4039,16 @@ export const CreateArticleRequest: MessageFns<CreateArticleRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<CreateArticleRequest>, I>>(object: I): CreateArticleRequest {
     const message = createBaseCreateArticleRequest();
-    message.postId = object.postId ?? "";
+    message.profileId = object.profileId ?? "";
+    message.accessType = object.accessType ?? "";
+    message.caption = object.caption ?? "";
+    message.s3Key = object.s3Key ?? "";
+    message.mimeType = object.mimeType ?? "";
+    message.originalFileName = object.originalFileName ?? "";
     message.title = object.title ?? "";
     message.contentJson = object.contentJson ?? undefined;
     message.language = object.language ?? "";
-    return message;
-  },
-};
-
-function createBaseGetArticleRequest(): GetArticleRequest {
-  return { postId: "" };
-}
-
-export const GetArticleRequest: MessageFns<GetArticleRequest> = {
-  encode(message: GetArticleRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.postId !== "") {
-      writer.uint32(10).string(message.postId);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetArticleRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetArticleRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.postId = reader.string();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetArticleRequest {
-    return { postId: isSet(object.postId) ? globalThis.String(object.postId) : "" };
-  },
-
-  toJSON(message: GetArticleRequest): unknown {
-    const obj: any = {};
-    if (message.postId !== "") {
-      obj.postId = message.postId;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetArticleRequest>, I>>(base?: I): GetArticleRequest {
-    return GetArticleRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetArticleRequest>, I>>(object: I): GetArticleRequest {
-    const message = createBaseGetArticleRequest();
-    message.postId = object.postId ?? "";
+    message.status = object.status ?? "";
     return message;
   },
 };
@@ -4021,7 +4072,6 @@ export interface PostService {
   Health(request: Empty): Promise<HealthResponse>;
   SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
   CreateArticle(request: CreateArticleRequest): Promise<Article>;
-  GetArticle(request: GetArticleRequest): Promise<Article>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -4049,7 +4099,6 @@ export class PostServiceClientImpl implements PostService {
     this.Health = this.Health.bind(this);
     this.SearchPosts = this.SearchPosts.bind(this);
     this.CreateArticle = this.CreateArticle.bind(this);
-    this.GetArticle = this.GetArticle.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -4156,12 +4205,6 @@ export class PostServiceClientImpl implements PostService {
   CreateArticle(request: CreateArticleRequest): Promise<Article> {
     const data = CreateArticleRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateArticle", data);
-    return promise.then((data) => Article.decode(new BinaryReader(data)));
-  }
-
-  GetArticle(request: GetArticleRequest): Promise<Article> {
-    const data = GetArticleRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "GetArticle", data);
     return promise.then((data) => Article.decode(new BinaryReader(data)));
   }
 }

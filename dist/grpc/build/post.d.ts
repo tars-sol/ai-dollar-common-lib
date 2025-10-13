@@ -201,15 +201,18 @@ export interface Article {
     updatedAt: string;
 }
 export interface CreateArticleRequest {
-    postId: string;
+    profileId: string;
+    accessType: string;
+    caption: string;
+    s3Key: string;
+    mimeType: string;
+    originalFileName: string;
     title: string;
     contentJson: {
         [key: string]: any;
     } | undefined;
     language: string;
-}
-export interface GetArticleRequest {
-    postId: string;
+    status: string;
 }
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const DeletePostRequest: MessageFns<DeletePostRequest>;
@@ -243,7 +246,6 @@ export declare const PostSearchItem: MessageFns<PostSearchItem>;
 export declare const SearchPostsResponse: MessageFns<SearchPostsResponse>;
 export declare const Article: MessageFns<Article>;
 export declare const CreateArticleRequest: MessageFns<CreateArticleRequest>;
-export declare const GetArticleRequest: MessageFns<GetArticleRequest>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
@@ -263,7 +265,6 @@ export interface PostService {
     Health(request: Empty): Promise<HealthResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
     CreateArticle(request: CreateArticleRequest): Promise<Article>;
-    GetArticle(request: GetArticleRequest): Promise<Article>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -290,7 +291,6 @@ export declare class PostServiceClientImpl implements PostService {
     Health(request: Empty): Promise<HealthResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
     CreateArticle(request: CreateArticleRequest): Promise<Article>;
-    GetArticle(request: GetArticleRequest): Promise<Article>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

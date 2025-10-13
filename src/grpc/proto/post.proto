@@ -24,7 +24,6 @@ service PostService {
   rpc Health(google.protobuf.Empty) returns (HealthResponse);
   rpc SearchPosts (SearchPostsRequest) returns (SearchPostsResponse);
   rpc CreateArticle (CreateArticleRequest) returns (Article);
-  rpc GetArticle (GetArticleRequest) returns (Article);             
 }
 
 message CreatePostRequest {
@@ -241,12 +240,16 @@ message Article {
 }
 
 message CreateArticleRequest {
-  string postId = 1;                          
-  string title = 2;
-  google.protobuf.Struct contentJson = 3;      
-  string language = 4; 
+  string profileId = 1;                            
+  string accessType = 2;                           
+  string caption = 3;                              
+  string s3Key = 4;                                
+  string mimeType = 5;                             
+  string originalFileName = 6;                     
+  string title = 7;                                
+  google.protobuf.Struct contentJson = 8;          
+  string language = 9;                             
+  string status = 10;                            
 }
 
-message GetArticleRequest {
-  string postId = 1;
-}
+

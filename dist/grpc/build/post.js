@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.GetArticleRequest = exports.CreateArticleRequest = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.CreateArticleRequest = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -3277,21 +3277,50 @@ exports.Article = {
     },
 };
 function createBaseCreateArticleRequest() {
-    return { postId: "", title: "", contentJson: undefined, language: "" };
+    return {
+        profileId: "",
+        accessType: "",
+        caption: "",
+        s3Key: "",
+        mimeType: "",
+        originalFileName: "",
+        title: "",
+        contentJson: undefined,
+        language: "",
+        status: "",
+    };
 }
 exports.CreateArticleRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.postId !== "") {
-            writer.uint32(10).string(message.postId);
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
+        }
+        if (message.accessType !== "") {
+            writer.uint32(18).string(message.accessType);
+        }
+        if (message.caption !== "") {
+            writer.uint32(26).string(message.caption);
+        }
+        if (message.s3Key !== "") {
+            writer.uint32(34).string(message.s3Key);
+        }
+        if (message.mimeType !== "") {
+            writer.uint32(42).string(message.mimeType);
+        }
+        if (message.originalFileName !== "") {
+            writer.uint32(50).string(message.originalFileName);
         }
         if (message.title !== "") {
-            writer.uint32(18).string(message.title);
+            writer.uint32(58).string(message.title);
         }
         if (message.contentJson !== undefined) {
-            struct_1.Struct.encode(struct_1.Struct.wrap(message.contentJson), writer.uint32(26).fork()).join();
+            struct_1.Struct.encode(struct_1.Struct.wrap(message.contentJson), writer.uint32(66).fork()).join();
         }
         if (message.language !== "") {
-            writer.uint32(34).string(message.language);
+            writer.uint32(74).string(message.language);
+        }
+        if (message.status !== "") {
+            writer.uint32(82).string(message.status);
         }
         return writer;
     },
@@ -3306,28 +3335,70 @@ exports.CreateArticleRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.postId = reader.string();
+                    message.profileId = reader.string();
                     continue;
                 }
                 case 2: {
                     if (tag !== 18) {
                         break;
                     }
-                    message.title = reader.string();
+                    message.accessType = reader.string();
                     continue;
                 }
                 case 3: {
                     if (tag !== 26) {
                         break;
                     }
-                    message.contentJson = struct_1.Struct.unwrap(struct_1.Struct.decode(reader, reader.uint32()));
+                    message.caption = reader.string();
                     continue;
                 }
                 case 4: {
                     if (tag !== 34) {
                         break;
                     }
+                    message.s3Key = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.mimeType = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.originalFileName = reader.string();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.contentJson = struct_1.Struct.unwrap(struct_1.Struct.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
                     message.language = reader.string();
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.status = reader.string();
                     continue;
                 }
             }
@@ -3340,16 +3411,37 @@ exports.CreateArticleRequest = {
     },
     fromJSON(object) {
         return {
-            postId: isSet(object.postId) ? globalThis.String(object.postId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : "",
+            caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
+            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : "",
+            mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : "",
+            originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : "",
             title: isSet(object.title) ? globalThis.String(object.title) : "",
             contentJson: isObject(object.contentJson) ? object.contentJson : undefined,
             language: isSet(object.language) ? globalThis.String(object.language) : "",
+            status: isSet(object.status) ? globalThis.String(object.status) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.postId !== "") {
-            obj.postId = message.postId;
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        if (message.accessType !== "") {
+            obj.accessType = message.accessType;
+        }
+        if (message.caption !== "") {
+            obj.caption = message.caption;
+        }
+        if (message.s3Key !== "") {
+            obj.s3Key = message.s3Key;
+        }
+        if (message.mimeType !== "") {
+            obj.mimeType = message.mimeType;
+        }
+        if (message.originalFileName !== "") {
+            obj.originalFileName = message.originalFileName;
         }
         if (message.title !== "") {
             obj.title = message.title;
@@ -3360,6 +3452,9 @@ exports.CreateArticleRequest = {
         if (message.language !== "") {
             obj.language = message.language;
         }
+        if (message.status !== "") {
+            obj.status = message.status;
+        }
         return obj;
     },
     create(base) {
@@ -3367,61 +3462,16 @@ exports.CreateArticleRequest = {
     },
     fromPartial(object) {
         const message = createBaseCreateArticleRequest();
-        message.postId = object.postId ?? "";
+        message.profileId = object.profileId ?? "";
+        message.accessType = object.accessType ?? "";
+        message.caption = object.caption ?? "";
+        message.s3Key = object.s3Key ?? "";
+        message.mimeType = object.mimeType ?? "";
+        message.originalFileName = object.originalFileName ?? "";
         message.title = object.title ?? "";
         message.contentJson = object.contentJson ?? undefined;
         message.language = object.language ?? "";
-        return message;
-    },
-};
-function createBaseGetArticleRequest() {
-    return { postId: "" };
-}
-exports.GetArticleRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.postId !== "") {
-            writer.uint32(10).string(message.postId);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        const end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetArticleRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1: {
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.postId = reader.string();
-                    continue;
-                }
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { postId: isSet(object.postId) ? globalThis.String(object.postId) : "" };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.postId !== "") {
-            obj.postId = message.postId;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.GetArticleRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseGetArticleRequest();
-        message.postId = object.postId ?? "";
+        message.status = object.status ?? "";
         return message;
     },
 };
@@ -3448,7 +3498,6 @@ class PostServiceClientImpl {
         this.Health = this.Health.bind(this);
         this.SearchPosts = this.SearchPosts.bind(this);
         this.CreateArticle = this.CreateArticle.bind(this);
-        this.GetArticle = this.GetArticle.bind(this);
     }
     Create(request) {
         const data = exports.CreatePostRequest.encode(request).finish();
@@ -3538,11 +3587,6 @@ class PostServiceClientImpl {
     CreateArticle(request) {
         const data = exports.CreateArticleRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "CreateArticle", data);
-        return promise.then((data) => exports.Article.decode(new wire_1.BinaryReader(data)));
-    }
-    GetArticle(request) {
-        const data = exports.GetArticleRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "GetArticle", data);
         return promise.then((data) => exports.Article.decode(new wire_1.BinaryReader(data)));
     }
 }
