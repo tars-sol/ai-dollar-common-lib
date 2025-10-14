@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index, CreateDateColumn } from 'typeorm';
-import { AccessType, PostType } from './post.entity';
 
 @Entity('posts_deleted')
 export class PostDeleted {
@@ -20,23 +19,8 @@ export class PostDeleted {
   @Column({ type: 'text', nullable: true })
   hashtagsText?: string;
 
-  @Column({ type: 'enum', enum: AccessType })
-  accessType: AccessType;
-
-  @Column({ type: 'enum', enum: PostType })
-  type: PostType;
-
   @Column({ type: 'boolean', default: false })
-  inPortfolio: boolean;
-
-  @Column({ type: 'int', default: 0 })
-  likeCount: number;
-
-  @Column({ type: 'int', default: 0 })
-  dislikeCount: number;
-
-  @Column({ type: 'int', default: 0 })
-  commentCount: number;
+  inPortfolio: boolean; 
 
   @Column({ type: 'timestamptz' })
   createdAt: Date;
@@ -46,4 +30,18 @@ export class PostDeleted {
 
   @CreateDateColumn({ type: 'timestamptz' })
   deletedAt: Date;
+
+  @Index()
+  @Column({ type: 'boolean', default: true })
+  typesenseNeedsDelete: boolean; 
+
+  @Column({ type: 'int', default: 0 })
+  typesenseAttempts: number;
+
+  @Column({ type: 'text', nullable: true })
+  typesenseLastError?: string;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  typesenseDeletedAt?: Date;
+
 }

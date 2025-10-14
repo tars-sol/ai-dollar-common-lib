@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostDeleted = void 0;
 const typeorm_1 = require("typeorm");
-const post_entity_1 = require("./post.entity");
 let PostDeleted = class PostDeleted {
 };
 exports.PostDeleted = PostDeleted;
@@ -38,29 +37,9 @@ __decorate([
     __metadata("design:type", String)
 ], PostDeleted.prototype, "hashtagsText", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: post_entity_1.AccessType }),
-    __metadata("design:type", String)
-], PostDeleted.prototype, "accessType", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: post_entity_1.PostType }),
-    __metadata("design:type", String)
-], PostDeleted.prototype, "type", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'boolean', default: false }),
     __metadata("design:type", Boolean)
 ], PostDeleted.prototype, "inPortfolio", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
-    __metadata("design:type", Number)
-], PostDeleted.prototype, "likeCount", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
-    __metadata("design:type", Number)
-], PostDeleted.prototype, "dislikeCount", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
-    __metadata("design:type", Number)
-], PostDeleted.prototype, "commentCount", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'timestamptz' }),
     __metadata("design:type", Date)
@@ -73,6 +52,23 @@ __decorate([
     (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz' }),
     __metadata("design:type", Date)
 ], PostDeleted.prototype, "deletedAt", void 0);
+__decorate([
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.Column)({ type: 'boolean', default: true }),
+    __metadata("design:type", Boolean)
+], PostDeleted.prototype, "typesenseNeedsDelete", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
+], PostDeleted.prototype, "typesenseAttempts", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], PostDeleted.prototype, "typesenseLastError", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
+    __metadata("design:type", Date)
+], PostDeleted.prototype, "typesenseDeletedAt", void 0);
 exports.PostDeleted = PostDeleted = __decorate([
     (0, typeorm_1.Entity)('posts_deleted')
 ], PostDeleted);
