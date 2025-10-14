@@ -1,17 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostDeleteTrigger1760452262823 = void 0;
-class PostDeleteTrigger1760452262823 {
-    constructor() {
-        this.name = 'PostDeleteTrigger1760452262823';
-    }
-    async up(queryRunner) {
-        await queryRunner.query(`
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class PostDeleteTrigger1760454761781 implements MigrationInterface {
+  name = "PostDeleteTrigger1760454761781";
+
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    // Keep your existing default value fixes
+    await queryRunner.query(`
       ALTER TABLE "brands" ALTER COLUMN "tags" SET DEFAULT '{}'::text[];
       ALTER TABLE "post_poll" ALTER COLUMN "votedProfilePics" SET DEFAULT '{}'::text[];
       ALTER TABLE "articles" ALTER COLUMN "contentJson" SET DEFAULT '{"version":"1.0","blocks":[]}';
     `);
-        await queryRunner.query(`
+
+    // Create trigger function — no accessType or type fields
+    await queryRunner.query(`
       CREATE OR REPLACE FUNCTION trg_posts_archive_and_flag_typesense()
       RETURNS TRIGGER
       LANGUAGE plpgsql
@@ -22,8 +23,6 @@ class PostDeleteTrigger1760452262823 {
           "profileId",
           "caption",
           "hashtagsText",
-          "accessType",
-          "type",
           "inPortfolio",
           "createdAt",
           "updatedAt",
@@ -38,8 +37,6 @@ class PostDeleteTrigger1760452262823 {
           OLD."profileId",
           OLD."caption",
           OLD."hashtagsText",
-          OLD."accessType",
-          OLD."type",
           OLD."inPortfolio",
           OLD."createdAt",
           OLD."updatedAt",
@@ -54,25 +51,29 @@ class PostDeleteTrigger1760452262823 {
       END;
       $$;
     `);
-        await queryRunner.query(`
+
+    // Bind the trigger to posts table
+    await queryRunner.query(`
       DROP TRIGGER IF EXISTS posts_archive_and_flag_typesense_trg ON "posts";
       CREATE TRIGGER posts_archive_and_flag_typesense_trg
       AFTER DELETE ON "posts"
       FOR EACH ROW
       EXECUTE FUNCTION trg_posts_archive_and_flag_typesense();
     `);
-    }
-    async down(queryRunner) {
-        await queryRunner.query(`
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    // Drop trigger and function
+    await queryRunner.query(`
       DROP TRIGGER IF EXISTS posts_archive_and_flag_typesense_trg ON "posts";
       DROP FUNCTION IF EXISTS trg_posts_archive_and_flag_typesense();
     `);
-        await queryRunner.query(`
+
+    // Revert defaults
+    await queryRunner.query(`
       ALTER TABLE "articles" ALTER COLUMN "contentJson" SET DEFAULT '{"blocks": [], "version": "1.0"}';
       ALTER TABLE "post_poll" ALTER COLUMN "votedProfilePics" SET DEFAULT '{}';
       ALTER TABLE "brands" ALTER COLUMN "tags" SET DEFAULT '{}';
     `);
-    }
+  }
 }
-exports.PostDeleteTrigger1760452262823 = PostDeleteTrigger1760452262823;
-//# sourceMappingURL=1760452262823-PostDeleteTrigger.js.map
