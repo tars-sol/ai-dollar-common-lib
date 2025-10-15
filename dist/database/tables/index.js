@@ -41,4 +41,5 @@ __exportStar(require("./profile_task_progress.entity"), exports);
 __exportStar(require("./payout.entity"), exports);
 __exportStar(require("./article.entity"), exports);
 __exportStar(require("./post_deleted.entity"), exports);
+__exportStar(require("./mention.entity"), exports);
 //# sourceMappingURL=index.js.map

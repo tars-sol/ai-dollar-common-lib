@@ -25,3 +25,4 @@ export * from './profile_task_progress.entity';
 export * from './payout.entity';
 export * from './article.entity';
 export * from './post_deleted.entity';
+export * from './mention.entity';
