@@ -68,4 +68,4 @@ exports.ProfileSubscription = ProfileSubscription = __decorate([
     (0, typeorm_1.Index)(['subscriberId', 'creatorId']),
     (0, typeorm_1.Check)(`"subscriberId" <> "creatorId"`) // no self-subscribe
 ], ProfileSubscription);
-//# sourceMappingURL=user_subscribe.entity.js.map
+//# sourceMappingURL=profile_subscribe.entity.js.map

@@ -1,0 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RMQ_CLIENT = void 0;
+exports.RMQ_CLIENT = {
+    USER_CLIENT: 'USER_CLIENT',
+};
+//# sourceMappingURL=constant.js.map

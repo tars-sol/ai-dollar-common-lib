@@ -30,13 +30,13 @@ __decorate([
 ], ProfileTaskProgress.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)({ name: 'userId' }),
+    (0, typeorm_1.JoinColumn)({ name: 'profileId' }),
     __metadata("design:type", profile_entity_1.Profile)
-], ProfileTaskProgress.prototype, "user", void 0);
+], ProfileTaskProgress.prototype, "profile", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], ProfileTaskProgress.prototype, "userId", void 0);
+], ProfileTaskProgress.prototype, "profileId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => task_entity_1.Task, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'taskId' }),
@@ -97,6 +97,6 @@ __decorate([
 ], ProfileTaskProgress.prototype, "updatedAt", void 0);
 exports.ProfileTaskProgress = ProfileTaskProgress = __decorate([
     (0, typeorm_1.Entity)('profile_task_progress'),
-    (0, typeorm_1.Unique)(['userId', 'taskId']) // good, 1 progress per user per task
+    (0, typeorm_1.Unique)(['profileId', 'taskId']) // 1 progress per profile per task
 ], ProfileTaskProgress);
 //# sourceMappingURL=profile_task_progress.entity.js.map

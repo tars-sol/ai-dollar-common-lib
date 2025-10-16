@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.SuccessResponse = exports.PayoutAmount = exports.PayoutRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const empty_1 = require("./google/protobuf/empty");
 exports.protobufPackage = "payment";
 function createBasePayoutRequest() {
     return { brandId: "", campaignId: "", payoutAmounts: [], isEqual: false };
@@ -734,7 +735,7 @@ class PaymentServiceClientImpl {
         this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
         this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
         this.SendPayout = this.SendPayout.bind(this);
-        this.test = this.test.bind(this);
+        this.Health = this.Health.bind(this);
     }
     CreatePaymentIntent(request) {
         const data = exports.CreatePaymentIntentRequest.encode(request).finish();
@@ -761,9 +762,9 @@ class PaymentServiceClientImpl {
         const promise = this.rpc.request(this.service, "SendPayout", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
-    test(request) {
-        const data = exports.SuccessResponse.encode(request).finish();
-        const promise = this.rpc.request(this.service, "test", data);
+    Health(request) {
+        const data = empty_1.Empty.encode(request).finish();
+        const promise = this.rpc.request(this.service, "Health", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

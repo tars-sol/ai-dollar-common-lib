@@ -30,17 +30,17 @@ export enum ProgressComputedBy {
 }
 
 @Entity('profile_task_progress')
-@Unique(['userId', 'taskId']) // good, 1 progress per user per task
+@Unique(['profileId', 'taskId']) // 1 progress per profile per task
 export class ProfileTaskProgress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
-  user: Profile;
+  @JoinColumn({ name: 'profileId' })
+  profile: Profile;
 
   @Column()
-  userId: string;
+  profileId: string;
 
   @ManyToOne(() => Task, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'taskId' })

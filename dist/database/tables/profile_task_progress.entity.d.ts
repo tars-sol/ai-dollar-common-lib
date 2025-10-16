@@ -17,8 +17,8 @@ export declare enum ProgressComputedBy {
 }
 export declare class ProfileTaskProgress {
     id: string;
-    user: Profile;
-    userId: string;
+    profile: Profile;
+    profileId: string;
     task: Task;
     taskId: string;
     profileCampaign: ProfileCampaign;

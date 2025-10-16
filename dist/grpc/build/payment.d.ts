@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "payment";
 export interface PayoutRequest {
     brandId: string;
@@ -58,7 +59,7 @@ export interface PaymentService {
     CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
-    test(request: SuccessResponse): Promise<SuccessResponse>;
+    Health(request: Empty): Promise<SuccessResponse>;
 }
 export declare const PaymentServiceServiceName = "payment.PaymentService";
 export declare class PaymentServiceClientImpl implements PaymentService {
@@ -72,7 +73,7 @@ export declare class PaymentServiceClientImpl implements PaymentService {
     CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
-    test(request: SuccessResponse): Promise<SuccessResponse>;
+    Health(request: Empty): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

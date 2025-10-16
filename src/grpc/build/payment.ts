@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "payment";
 
@@ -861,7 +862,7 @@ export interface PaymentService {
   CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
   GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
   SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
-  test(request: SuccessResponse): Promise<SuccessResponse>;
+  Health(request: Empty): Promise<SuccessResponse>;
 }
 
 export const PaymentServiceServiceName = "payment.PaymentService";
@@ -876,7 +877,7 @@ export class PaymentServiceClientImpl implements PaymentService {
     this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
     this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
     this.SendPayout = this.SendPayout.bind(this);
-    this.test = this.test.bind(this);
+    this.Health = this.Health.bind(this);
   }
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {
     const data = CreatePaymentIntentRequest.encode(request).finish();
@@ -908,9 +909,9 @@ export class PaymentServiceClientImpl implements PaymentService {
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 
-  test(request: SuccessResponse): Promise<SuccessResponse> {
-    const data = SuccessResponse.encode(request).finish();
-    const promise = this.rpc.request(this.service, "test", data);
+  Health(request: Empty): Promise<SuccessResponse> {
+    const data = Empty.encode(request).finish();
+    const promise = this.rpc.request(this.service, "Health", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }
