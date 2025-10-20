@@ -3,8 +3,6 @@ export declare class Profile {
     id: string;
     user: User;
     userId: string;
-    username: string;
-    name: string;
     avatarUrl: string;
     bio: string;
     websiteUrl: string;
@@ -17,7 +15,6 @@ export declare class Profile {
     instagram: string;
     isVerified: boolean;
     subscribersCount: number;
-    fts: string;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -6,8 +6,6 @@ export declare class Brand {
     user: User;
     campaigns: Campaign[];
     userId: string;
-    name: string;
-    username: string;
     description: string;
     logoUrl: string;
     discord: string;
@@ -18,7 +16,6 @@ export declare class Brand {
     tokenName: string;
     websiteUrl: string;
     payments: Payment[];
-    fts: string;
     createdAt: Date;
     updatedAt: Date;
 }

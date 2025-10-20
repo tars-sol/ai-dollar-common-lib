@@ -36,14 +36,6 @@ __decorate([
     __metadata("design:type", String)
 ], Brand.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 64 }),
-    __metadata("design:type", String)
-], Brand.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', unique: true }),
-    __metadata("design:type", String)
-], Brand.prototype, "username", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
 ], Brand.prototype, "description", void 0);
@@ -83,19 +75,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => payment_entity_1.Payment, (payment) => payment.brand),
     __metadata("design:type", Array)
 ], Brand.prototype, "payments", void 0);
-__decorate([
-    (0, typeorm_1.Index)('idx_brands_fts', { synchronize: false }),
-    (0, typeorm_1.Column)({
-        type: 'tsvector',
-        asExpression: `
-      setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'A')
-    `,
-        generatedType: 'STORED',
-        nullable: true,
-        select: false,
-    }),
-    __metadata("design:type", String)
-], Brand.prototype, "fts", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

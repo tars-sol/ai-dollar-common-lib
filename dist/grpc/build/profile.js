@@ -580,18 +580,16 @@ exports.ProfileResponse = {
 function createBaseCreateProfileRequest() {
     return {
         userId: "",
-        username: "",
-        name: undefined,
         avatarUrl: undefined,
         bio: undefined,
         websiteUrl: undefined,
         twitter: undefined,
-        discord: undefined,
-        telegram: undefined,
         facebook: undefined,
         youtube: undefined,
         tiktok: undefined,
         instagram: undefined,
+        discord: undefined,
+        telegram: undefined,
     };
 }
 exports.CreateProfileRequest = {
@@ -599,41 +597,35 @@ exports.CreateProfileRequest = {
         if (message.userId !== "") {
             writer.uint32(10).string(message.userId);
         }
-        if (message.username !== "") {
-            writer.uint32(18).string(message.username);
-        }
-        if (message.name !== undefined) {
-            writer.uint32(26).string(message.name);
-        }
         if (message.avatarUrl !== undefined) {
-            writer.uint32(34).string(message.avatarUrl);
+            writer.uint32(18).string(message.avatarUrl);
         }
         if (message.bio !== undefined) {
-            writer.uint32(42).string(message.bio);
+            writer.uint32(26).string(message.bio);
         }
         if (message.websiteUrl !== undefined) {
-            writer.uint32(50).string(message.websiteUrl);
+            writer.uint32(34).string(message.websiteUrl);
         }
         if (message.twitter !== undefined) {
-            writer.uint32(58).string(message.twitter);
-        }
-        if (message.discord !== undefined) {
-            writer.uint32(98).string(message.discord);
-        }
-        if (message.telegram !== undefined) {
-            writer.uint32(106).string(message.telegram);
+            writer.uint32(42).string(message.twitter);
         }
         if (message.facebook !== undefined) {
-            writer.uint32(66).string(message.facebook);
+            writer.uint32(50).string(message.facebook);
         }
         if (message.youtube !== undefined) {
-            writer.uint32(74).string(message.youtube);
+            writer.uint32(58).string(message.youtube);
         }
         if (message.tiktok !== undefined) {
-            writer.uint32(82).string(message.tiktok);
+            writer.uint32(66).string(message.tiktok);
         }
         if (message.instagram !== undefined) {
-            writer.uint32(90).string(message.instagram);
+            writer.uint32(74).string(message.instagram);
+        }
+        if (message.discord !== undefined) {
+            writer.uint32(82).string(message.discord);
+        }
+        if (message.telegram !== undefined) {
+            writer.uint32(90).string(message.telegram);
         }
         return writer;
     },
@@ -655,84 +647,70 @@ exports.CreateProfileRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.username = reader.string();
+                    message.avatarUrl = reader.string();
                     continue;
                 }
                 case 3: {
                     if (tag !== 26) {
                         break;
                     }
-                    message.name = reader.string();
+                    message.bio = reader.string();
                     continue;
                 }
                 case 4: {
                     if (tag !== 34) {
                         break;
                     }
-                    message.avatarUrl = reader.string();
+                    message.websiteUrl = reader.string();
                     continue;
                 }
                 case 5: {
                     if (tag !== 42) {
                         break;
                     }
-                    message.bio = reader.string();
+                    message.twitter = reader.string();
                     continue;
                 }
                 case 6: {
                     if (tag !== 50) {
                         break;
                     }
-                    message.websiteUrl = reader.string();
+                    message.facebook = reader.string();
                     continue;
                 }
                 case 7: {
                     if (tag !== 58) {
                         break;
                     }
-                    message.twitter = reader.string();
-                    continue;
-                }
-                case 12: {
-                    if (tag !== 98) {
-                        break;
-                    }
-                    message.discord = reader.string();
-                    continue;
-                }
-                case 13: {
-                    if (tag !== 106) {
-                        break;
-                    }
-                    message.telegram = reader.string();
+                    message.youtube = reader.string();
                     continue;
                 }
                 case 8: {
                     if (tag !== 66) {
                         break;
                     }
-                    message.facebook = reader.string();
+                    message.tiktok = reader.string();
                     continue;
                 }
                 case 9: {
                     if (tag !== 74) {
                         break;
                     }
-                    message.youtube = reader.string();
+                    message.instagram = reader.string();
                     continue;
                 }
                 case 10: {
                     if (tag !== 82) {
                         break;
                     }
-                    message.tiktok = reader.string();
+                    message.discord = reader.string();
                     continue;
                 }
                 case 11: {
                     if (tag !== 90) {
                         break;
                     }
-                    message.instagram = reader.string();
+                    message.telegram = reader.string();
                     continue;
                 }
             }
@@ -746,30 +724,22 @@ exports.CreateProfileRequest = {
     fromJSON(object) {
         return {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-            username: isSet(object.username) ? globalThis.String(object.username) : "",
-            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : undefined,
             bio: isSet(object.bio) ? globalThis.String(object.bio) : undefined,
             websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
-            discord: isSet(object.discord) ? globalThis.String(object.discord) : undefined,
-            telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
             facebook: isSet(object.facebook) ? globalThis.String(object.facebook) : undefined,
             youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : undefined,
             tiktok: isSet(object.tiktok) ? globalThis.String(object.tiktok) : undefined,
             instagram: isSet(object.instagram) ? globalThis.String(object.instagram) : undefined,
+            discord: isSet(object.discord) ? globalThis.String(object.discord) : undefined,
+            telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.userId !== "") {
             obj.userId = message.userId;
-        }
-        if (message.username !== "") {
-            obj.username = message.username;
-        }
-        if (message.name !== undefined) {
-            obj.name = message.name;
         }
         if (message.avatarUrl !== undefined) {
             obj.avatarUrl = message.avatarUrl;
@@ -783,12 +753,6 @@ exports.CreateProfileRequest = {
         if (message.twitter !== undefined) {
             obj.twitter = message.twitter;
         }
-        if (message.discord !== undefined) {
-            obj.discord = message.discord;
-        }
-        if (message.telegram !== undefined) {
-            obj.telegram = message.telegram;
-        }
         if (message.facebook !== undefined) {
             obj.facebook = message.facebook;
         }
@@ -801,6 +765,12 @@ exports.CreateProfileRequest = {
         if (message.instagram !== undefined) {
             obj.instagram = message.instagram;
         }
+        if (message.discord !== undefined) {
+            obj.discord = message.discord;
+        }
+        if (message.telegram !== undefined) {
+            obj.telegram = message.telegram;
+        }
         return obj;
     },
     create(base) {
@@ -809,18 +779,16 @@ exports.CreateProfileRequest = {
     fromPartial(object) {
         const message = createBaseCreateProfileRequest();
         message.userId = object.userId ?? "";
-        message.username = object.username ?? "";
-        message.name = object.name ?? undefined;
         message.avatarUrl = object.avatarUrl ?? undefined;
         message.bio = object.bio ?? undefined;
         message.websiteUrl = object.websiteUrl ?? undefined;
         message.twitter = object.twitter ?? undefined;
-        message.discord = object.discord ?? undefined;
-        message.telegram = object.telegram ?? undefined;
         message.facebook = object.facebook ?? undefined;
         message.youtube = object.youtube ?? undefined;
         message.tiktok = object.tiktok ?? undefined;
         message.instagram = object.instagram ?? undefined;
+        message.discord = object.discord ?? undefined;
+        message.telegram = object.telegram ?? undefined;
         return message;
     },
 };

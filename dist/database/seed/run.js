@@ -42,12 +42,13 @@ async function seedUserProfileAndPosts(tx) {
     const profileRepo = tx.getRepository(profile_entity_1.Profile);
     const postRepo = tx.getRepository(post_entity_1.Post);
     const eventRepo = tx.getRepository(event_queue_post_entity_1.EventQueuePost);
-    // 1) User (idempotent by email)
     let user = await userRepo.findOne({ where: { email: SEED_EMAIL } });
     if (!user) {
         const userData = {
             email: SEED_EMAIL,
             password: undefined,
+            name: 'Seed Demo',
+            username: SEED_USERNAME,
             walletAddress: undefined,
             walletNonce: undefined,
             refreshToken: undefined,
@@ -64,15 +65,12 @@ async function seedUserProfileAndPosts(tx) {
     else {
         console.log(`👤 Reusing existing user ${user.id}`);
     }
-    // 2) Profile (idempotent by userId/username)
     let profile = await profileRepo.findOne({
-        where: [{ userId: user.id }, { username: SEED_USERNAME }],
+        where: [{ userId: user.id }],
     });
     if (!profile) {
         const profileData = {
-            userId: user.id, // FK only, no relation object needed
-            username: SEED_USERNAME,
-            name: 'Seed Demo',
+            userId: user.id,
             bio: 'Demo profile seeded for local/dev.',
             isVerified: false,
             subscribersCount: 0,

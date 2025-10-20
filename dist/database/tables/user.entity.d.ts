@@ -7,6 +7,9 @@ export declare class User {
     email: string;
     password: string;
     walletAddress: string;
+    username: string;
+    name: string;
+    fts: string;
     walletNonce: string;
     refreshToken: string;
     isBanned: boolean;

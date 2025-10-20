@@ -37,18 +37,16 @@ export interface ProfileResponse {
 }
 export interface CreateProfileRequest {
     userId: string;
-    username: string;
-    name?: string | undefined;
     avatarUrl?: string | undefined;
     bio?: string | undefined;
     websiteUrl?: string | undefined;
     twitter?: string | undefined;
-    discord?: string | undefined;
-    telegram?: string | undefined;
     facebook?: string | undefined;
     youtube?: string | undefined;
     tiktok?: string | undefined;
     instagram?: string | undefined;
+    discord?: string | undefined;
+    telegram?: string | undefined;
 }
 export interface UpdateProfileRequest {
     userId: string;

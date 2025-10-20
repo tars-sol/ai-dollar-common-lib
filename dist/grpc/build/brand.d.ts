@@ -31,7 +31,6 @@ export interface BrandResponse {
 /** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {
     userId: string;
-    name: string;
     description?: string | undefined;
     logoUrl?: string | undefined;
     websiteUrl?: string | undefined;
@@ -40,7 +39,6 @@ export interface CreateBrandRequest {
     twitter?: string | undefined;
     telegram?: string | undefined;
     tokenName?: string | undefined;
-    username: string;
 }
 /** Request for updating a brand */
 export interface UpdateBrandRequest {
@@ -63,6 +61,7 @@ export interface SearchBrandsRequest {
 }
 export interface BrandSearchItem {
     id: string;
+    username: string;
     name: string;
     logoUrl: string;
     createdAt: string;

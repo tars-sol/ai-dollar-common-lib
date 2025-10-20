@@ -21,6 +21,7 @@ export class Brand {
   @OneToOne(() => User, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
+
   @OneToMany(() => Campaign, (campaign) => campaign.brand)
   campaigns: Campaign[];
 
@@ -28,50 +29,35 @@ export class Brand {
   @Column()
   userId: string;
 
-  @Column({ length: 64 })
-  name: string;
-  @Column({ type: 'varchar', unique: true })
-  username: string;
-
   @Column({ type: 'text', nullable: true })
   description: string;
 
   @Column({ type: 'varchar', nullable: true })
   logoUrl: string;
+
   @Column({ type: 'varchar', nullable: true })
   discord: string;
+
   @Column({ type: 'varchar', nullable: true })
   twitter: string;
+
   @Column({ type: 'varchar', nullable: true })
   telegram: string;
 
-  //tags for brand
   @Column({ type: 'text', array: true, default: () => "'{}'::text[]" })
   tags: string[];
 
   @Column({ type: 'numeric', default: 0 })
   campaignCount: number;
 
-  //tokenName
   @Column({ type: 'varchar', nullable: true })
   tokenName: string;
 
   @Column({ type: 'varchar', nullable: true })
   websiteUrl: string;
+
   @OneToMany(() => Payment, (payment) => payment.brand)
   payments: Payment[];
-
-  @Index('idx_brands_fts', { synchronize: false })
-  @Column({
-    type: 'tsvector',
-    asExpression: `
-      setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'A')
-    `,
-    generatedType: 'STORED',
-    nullable: true,
-    select: false,
-  })
-  fts!: string;
 
   @CreateDateColumn()
   createdAt: Date;

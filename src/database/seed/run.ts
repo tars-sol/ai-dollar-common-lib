@@ -10,7 +10,6 @@ import { randomUUID } from 'crypto';
 
 import { POST_CAPTIONS } from './posts';
 
-
 const SEED_EMAIL = 'seed.user@local.dev';
 const SEED_USERNAME = 'seed_demo';
 const DESIRED_POSTS = 45;
@@ -49,12 +48,13 @@ async function seedUserProfileAndPosts(tx: EntityManager) {
   const postRepo = tx.getRepository(Post);
   const eventRepo = tx.getRepository(EventQueuePost);
 
-  // 1) User (idempotent by email)
   let user = await userRepo.findOne({ where: { email: SEED_EMAIL } });
   if (!user) {
     const userData: DeepPartial<User> = {
       email: SEED_EMAIL,
       password: undefined,
+      name: 'Seed Demo',
+      username: SEED_USERNAME,
       walletAddress: undefined,
       walletNonce: undefined,
       refreshToken: undefined,
@@ -62,7 +62,7 @@ async function seedUserProfileAndPosts(tx: EntityManager) {
       isDeleted: false,
       role: Role.PROFILE,
       followersCount: 0,
-      subscriptionsCount:0,
+      subscriptionsCount: 0,
       followingCount: 0,
     };
     user = await userRepo.save(userRepo.create(userData));
@@ -71,15 +71,12 @@ async function seedUserProfileAndPosts(tx: EntityManager) {
     console.log(`👤 Reusing existing user ${user.id}`);
   }
 
-  // 2) Profile (idempotent by userId/username)
   let profile = await profileRepo.findOne({
-    where: [{ userId: user.id }, { username: SEED_USERNAME }],
+    where: [{ userId: user.id }],
   });
   if (!profile) {
     const profileData: DeepPartial<Profile> = {
-      userId: user.id, // FK only, no relation object needed
-      username: SEED_USERNAME,
-      name: 'Seed Demo',
+      userId: user.id, 
       bio: 'Demo profile seeded for local/dev.',
       isVerified: false,
       subscribersCount: 0,

@@ -30,15 +30,6 @@ __decorate([
     __metadata("design:type", String)
 ], Profile.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.Index)({ unique: true }),
-    (0, typeorm_1.Column)({ type: 'varchar', length: 32 }),
-    __metadata("design:type", String)
-], Profile.prototype, "username", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 64, nullable: true }),
-    __metadata("design:type", String)
-], Profile.prototype, "name", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
 ], Profile.prototype, "avatarUrl", void 0);
@@ -86,20 +77,6 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'int', default: 0 }),
     __metadata("design:type", Number)
 ], Profile.prototype, "subscribersCount", void 0);
-__decorate([
-    (0, typeorm_1.Index)('idx_profiles_fts', { synchronize: false }),
-    (0, typeorm_1.Column)({
-        type: 'tsvector',
-        asExpression: `
-    setweight(to_tsvector('simple_unaccent', coalesce(username, '')), 'A') ||
-    setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'B')
-  `,
-        generatedType: 'STORED',
-        nullable: true,
-        select: false,
-    }),
-    __metadata("design:type", String)
-], Profile.prototype, "fts", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

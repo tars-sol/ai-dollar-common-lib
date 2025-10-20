@@ -439,7 +439,6 @@ exports.BrandResponse = {
 function createBaseCreateBrandRequest() {
     return {
         userId: "",
-        name: "",
         description: undefined,
         logoUrl: undefined,
         websiteUrl: undefined,
@@ -448,7 +447,6 @@ function createBaseCreateBrandRequest() {
         twitter: undefined,
         telegram: undefined,
         tokenName: undefined,
-        username: "",
     };
 }
 exports.CreateBrandRequest = {
@@ -456,35 +454,29 @@ exports.CreateBrandRequest = {
         if (message.userId !== "") {
             writer.uint32(10).string(message.userId);
         }
-        if (message.name !== "") {
-            writer.uint32(18).string(message.name);
-        }
         if (message.description !== undefined) {
-            writer.uint32(26).string(message.description);
+            writer.uint32(18).string(message.description);
         }
         if (message.logoUrl !== undefined) {
-            writer.uint32(34).string(message.logoUrl);
+            writer.uint32(26).string(message.logoUrl);
         }
         if (message.websiteUrl !== undefined) {
-            writer.uint32(42).string(message.websiteUrl);
+            writer.uint32(34).string(message.websiteUrl);
         }
         for (const v of message.tags) {
-            writer.uint32(50).string(v);
+            writer.uint32(42).string(v);
         }
         if (message.discord !== undefined) {
-            writer.uint32(58).string(message.discord);
+            writer.uint32(50).string(message.discord);
         }
         if (message.twitter !== undefined) {
-            writer.uint32(66).string(message.twitter);
+            writer.uint32(58).string(message.twitter);
         }
         if (message.telegram !== undefined) {
-            writer.uint32(74).string(message.telegram);
+            writer.uint32(66).string(message.telegram);
         }
         if (message.tokenName !== undefined) {
-            writer.uint32(82).string(message.tokenName);
-        }
-        if (message.username !== "") {
-            writer.uint32(90).string(message.username);
+            writer.uint32(74).string(message.tokenName);
         }
         return writer;
     },
@@ -506,70 +498,56 @@ exports.CreateBrandRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.name = reader.string();
+                    message.description = reader.string();
                     continue;
                 }
                 case 3: {
                     if (tag !== 26) {
                         break;
                     }
-                    message.description = reader.string();
+                    message.logoUrl = reader.string();
                     continue;
                 }
                 case 4: {
                     if (tag !== 34) {
                         break;
                     }
-                    message.logoUrl = reader.string();
+                    message.websiteUrl = reader.string();
                     continue;
                 }
                 case 5: {
                     if (tag !== 42) {
                         break;
                     }
-                    message.websiteUrl = reader.string();
+                    message.tags.push(reader.string());
                     continue;
                 }
                 case 6: {
                     if (tag !== 50) {
                         break;
                     }
-                    message.tags.push(reader.string());
+                    message.discord = reader.string();
                     continue;
                 }
                 case 7: {
                     if (tag !== 58) {
                         break;
                     }
-                    message.discord = reader.string();
+                    message.twitter = reader.string();
                     continue;
                 }
                 case 8: {
                     if (tag !== 66) {
                         break;
                     }
-                    message.twitter = reader.string();
+                    message.telegram = reader.string();
                     continue;
                 }
                 case 9: {
                     if (tag !== 74) {
                         break;
                     }
-                    message.telegram = reader.string();
-                    continue;
-                }
-                case 10: {
-                    if (tag !== 82) {
-                        break;
-                    }
                     message.tokenName = reader.string();
-                    continue;
-                }
-                case 11: {
-                    if (tag !== 90) {
-                        break;
-                    }
-                    message.username = reader.string();
                     continue;
                 }
             }
@@ -583,7 +561,6 @@ exports.CreateBrandRequest = {
     fromJSON(object) {
         return {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
-            name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : undefined,
             logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : undefined,
             websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
@@ -592,16 +569,12 @@ exports.CreateBrandRequest = {
             twitter: isSet(object.twitter) ? globalThis.String(object.twitter) : undefined,
             telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
             tokenName: isSet(object.tokenName) ? globalThis.String(object.tokenName) : undefined,
-            username: isSet(object.username) ? globalThis.String(object.username) : "",
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.userId !== "") {
             obj.userId = message.userId;
-        }
-        if (message.name !== "") {
-            obj.name = message.name;
         }
         if (message.description !== undefined) {
             obj.description = message.description;
@@ -627,9 +600,6 @@ exports.CreateBrandRequest = {
         if (message.tokenName !== undefined) {
             obj.tokenName = message.tokenName;
         }
-        if (message.username !== "") {
-            obj.username = message.username;
-        }
         return obj;
     },
     create(base) {
@@ -638,7 +608,6 @@ exports.CreateBrandRequest = {
     fromPartial(object) {
         const message = createBaseCreateBrandRequest();
         message.userId = object.userId ?? "";
-        message.name = object.name ?? "";
         message.description = object.description ?? undefined;
         message.logoUrl = object.logoUrl ?? undefined;
         message.websiteUrl = object.websiteUrl ?? undefined;
@@ -647,7 +616,6 @@ exports.CreateBrandRequest = {
         message.twitter = object.twitter ?? undefined;
         message.telegram = object.telegram ?? undefined;
         message.tokenName = object.tokenName ?? undefined;
-        message.username = object.username ?? "";
         return message;
     },
 };
@@ -950,24 +918,27 @@ exports.SearchBrandsRequest = {
     },
 };
 function createBaseBrandSearchItem() {
-    return { id: "", name: "", logoUrl: "", createdAt: "", score: 0 };
+    return { id: "", username: "", name: "", logoUrl: "", createdAt: "", score: 0 };
 }
 exports.BrandSearchItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== "") {
             writer.uint32(10).string(message.id);
         }
+        if (message.username !== "") {
+            writer.uint32(18).string(message.username);
+        }
         if (message.name !== "") {
-            writer.uint32(18).string(message.name);
+            writer.uint32(26).string(message.name);
         }
         if (message.logoUrl !== "") {
-            writer.uint32(26).string(message.logoUrl);
+            writer.uint32(34).string(message.logoUrl);
         }
         if (message.createdAt !== "") {
-            writer.uint32(34).string(message.createdAt);
+            writer.uint32(42).string(message.createdAt);
         }
         if (message.score !== 0) {
-            writer.uint32(41).double(message.score);
+            writer.uint32(49).double(message.score);
         }
         return writer;
     },
@@ -989,25 +960,32 @@ exports.BrandSearchItem = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.name = reader.string();
+                    message.username = reader.string();
                     continue;
                 }
                 case 3: {
                     if (tag !== 26) {
                         break;
                     }
-                    message.logoUrl = reader.string();
+                    message.name = reader.string();
                     continue;
                 }
                 case 4: {
                     if (tag !== 34) {
                         break;
                     }
-                    message.createdAt = reader.string();
+                    message.logoUrl = reader.string();
                     continue;
                 }
                 case 5: {
-                    if (tag !== 41) {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.createdAt = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 49) {
                         break;
                     }
                     message.score = reader.double();
@@ -1024,6 +1002,7 @@ exports.BrandSearchItem = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? globalThis.String(object.id) : "",
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : "",
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
@@ -1034,6 +1013,9 @@ exports.BrandSearchItem = {
         const obj = {};
         if (message.id !== "") {
             obj.id = message.id;
+        }
+        if (message.username !== "") {
+            obj.username = message.username;
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -1055,6 +1037,7 @@ exports.BrandSearchItem = {
     fromPartial(object) {
         const message = createBaseBrandSearchItem();
         message.id = object.id ?? "";
+        message.username = object.username ?? "";
         message.name = object.name ?? "";
         message.logoUrl = object.logoUrl ?? "";
         message.createdAt = object.createdAt ?? "";

@@ -38,6 +38,28 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "walletAddress", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 32, nullable: false }),
+    __metadata("design:type", String)
+], User.prototype, "username", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 64, nullable: false }),
+    __metadata("design:type", String)
+], User.prototype, "name", void 0);
+__decorate([
+    (0, typeorm_1.Index)('idx_users_fts', { synchronize: false }),
+    (0, typeorm_1.Column)({
+        type: 'tsvector',
+        asExpression: `
+      setweight(to_tsvector('simple_unaccent', coalesce(username, '')), 'A') ||
+      setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'B')
+    `,
+        generatedType: 'STORED',
+        nullable: true,
+        select: false,
+    }),
+    __metadata("design:type", String)
+], User.prototype, "fts", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "walletNonce", void 0);
