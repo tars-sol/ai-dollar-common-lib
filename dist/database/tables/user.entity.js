@@ -54,8 +54,9 @@ __decorate([
       setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'B')
     `,
         generatedType: 'STORED',
-        nullable: true,
         select: false,
+        insert: false,
+        update: false,
     }),
     __metadata("design:type", String)
 ], User.prototype, "fts", void 0);

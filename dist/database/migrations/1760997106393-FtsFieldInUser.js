@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FtsFieldInUser1760635248635 = void 0;
-class FtsFieldInUser1760635248635 {
+exports.FtsFieldInUser1760997106393 = void 0;
+class FtsFieldInUser1760997106393 {
     constructor() {
-        this.name = 'FtsFieldInUser1760635248635';
+        this.name = 'FtsFieldInUser1760997106393';
     }
     async up(queryRunner) {
         await queryRunner.query(`ALTER TABLE "users" ADD "fts" tsvector GENERATED ALWAYS AS (
       setweight(to_tsvector('simple_unaccent', coalesce(username, '')), 'A') ||
       setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'B')
-    ) STORED`);
+    ) STORED NOT NULL`);
         await queryRunner.query(`INSERT INTO "typeorm_metadata"("database", "schema", "table", "type", "name", "value") VALUES ($1, $2, $3, $4, $5, $6)`, ["aidollar", "public", "users", "GENERATED_COLUMN", "fts", "\n      setweight(to_tsvector('simple_unaccent', coalesce(username, '')), 'A') ||\n      setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'B')\n    "]);
         await queryRunner.query(`ALTER TABLE "brands" ALTER COLUMN "tags" SET DEFAULT '{}'::text[]`);
         await queryRunner.query(`ALTER TABLE "post_poll" ALTER COLUMN "votedProfilePics" SET DEFAULT '{}'::text[]`);
@@ -23,5 +23,5 @@ class FtsFieldInUser1760635248635 {
         await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "fts"`);
     }
 }
-exports.FtsFieldInUser1760635248635 = FtsFieldInUser1760635248635;
-//# sourceMappingURL=1760635248635-FtsFieldInUser.js.map
+exports.FtsFieldInUser1760997106393 = FtsFieldInUser1760997106393;
+//# sourceMappingURL=1760997106393-FtsFieldInUser.js.map

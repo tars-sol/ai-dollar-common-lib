@@ -32,7 +32,7 @@ export class User {
   username: string;
 
   @Column({ type: 'varchar', length: 64, nullable: false })
-  name: string ;
+  name: string;
 
   @Index('idx_users_fts', { synchronize: false })
   @Column({
@@ -42,8 +42,9 @@ export class User {
       setweight(to_tsvector('english_unaccent', coalesce(name, '')), 'B')
     `,
     generatedType: 'STORED',
-    nullable: true,
     select: false,
+    insert: false,
+    update: false,
   })
   fts!: string;
 
