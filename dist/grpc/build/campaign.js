@@ -1516,6 +1516,8 @@ function createBaseGetCampaignsByBrandIdRequest() {
         startDateTo: undefined,
         endDateFrom: undefined,
         endDateTo: undefined,
+        page: undefined,
+        limit: undefined,
     };
 }
 exports.GetCampaignsByBrandIdRequest = {
@@ -1549,6 +1551,12 @@ exports.GetCampaignsByBrandIdRequest = {
         }
         if (message.endDateTo !== undefined) {
             writer.uint32(82).string(message.endDateTo);
+        }
+        if (message.page !== undefined) {
+            writer.uint32(90).string(message.page);
+        }
+        if (message.limit !== undefined) {
+            writer.uint32(98).string(message.limit);
         }
         return writer;
     },
@@ -1629,6 +1637,20 @@ exports.GetCampaignsByBrandIdRequest = {
                     message.endDateTo = reader.string();
                     continue;
                 }
+                case 11: {
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.page = reader.string();
+                    continue;
+                }
+                case 12: {
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.limit = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1649,6 +1671,8 @@ exports.GetCampaignsByBrandIdRequest = {
             startDateTo: isSet(object.startDateTo) ? globalThis.String(object.startDateTo) : undefined,
             endDateFrom: isSet(object.endDateFrom) ? globalThis.String(object.endDateFrom) : undefined,
             endDateTo: isSet(object.endDateTo) ? globalThis.String(object.endDateTo) : undefined,
+            page: isSet(object.page) ? globalThis.String(object.page) : undefined,
+            limit: isSet(object.limit) ? globalThis.String(object.limit) : undefined,
         };
     },
     toJSON(message) {
@@ -1683,6 +1707,12 @@ exports.GetCampaignsByBrandIdRequest = {
         if (message.endDateTo !== undefined) {
             obj.endDateTo = message.endDateTo;
         }
+        if (message.page !== undefined) {
+            obj.page = message.page;
+        }
+        if (message.limit !== undefined) {
+            obj.limit = message.limit;
+        }
         return obj;
     },
     create(base) {
@@ -1700,6 +1730,8 @@ exports.GetCampaignsByBrandIdRequest = {
         message.startDateTo = object.startDateTo ?? undefined;
         message.endDateFrom = object.endDateFrom ?? undefined;
         message.endDateTo = object.endDateTo ?? undefined;
+        message.page = object.page ?? undefined;
+        message.limit = object.limit ?? undefined;
         return message;
     },
 };

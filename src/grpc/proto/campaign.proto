@@ -134,6 +134,8 @@ message GetCampaignsByBrandIdRequest{
   optional string startDateTo=8; // e.g., "2023-12-31"
   optional string endDateFrom=9; // e.g., "2023-01-01"
   optional string endDateTo=10; // e.g., "2023-12-31"
+  optional string page=11;
+  optional string limit=12;
 
 }
 message CampaignsByIdRequest{

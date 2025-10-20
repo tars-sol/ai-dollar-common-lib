@@ -113,6 +113,8 @@ export interface GetCampaignsByBrandIdRequest {
     endDateFrom?: string | undefined;
     /** e.g., "2023-12-31" */
     endDateTo?: string | undefined;
+    page?: string | undefined;
+    limit?: string | undefined;
 }
 export interface CampaignsByIdRequest {
     id: string;
