@@ -39,17 +39,18 @@ message BrandResponse {
 
 }
 
-// Request for creating a brand (userId comes from JWT in server)
 message CreateBrandRequest {
   string userId = 1;
-  optional string description = 2;
-  optional string logoUrl = 3;
-  optional string websiteUrl = 4;
-  repeated string tags = 5;
-  optional string discord = 6;
-  optional string twitter = 7;
-  optional string telegram = 8;
-  optional string tokenName = 9;
+  optional string name = 2;
+  optional string username = 3;
+  optional string description = 4;
+  optional string logoUrl = 5;
+  optional string websiteUrl = 6;
+  repeated string tags = 7;
+  optional string discord = 8;
+  optional string twitter = 9;
+  optional string telegram = 10;
+  optional string tokenName = 11;
 }
 
 // Request for updating a brand

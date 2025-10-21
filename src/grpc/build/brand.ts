@@ -39,9 +39,10 @@ export interface BrandResponse {
   username: string;
 }
 
-/** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {
   userId: string;
+  name?: string | undefined;
+  username?: string | undefined;
   description?: string | undefined;
   logoUrl?: string | undefined;
   websiteUrl?: string | undefined;
@@ -551,6 +552,8 @@ export const BrandResponse: MessageFns<BrandResponse> = {
 function createBaseCreateBrandRequest(): CreateBrandRequest {
   return {
     userId: "",
+    name: undefined,
+    username: undefined,
     description: undefined,
     logoUrl: undefined,
     websiteUrl: undefined,
@@ -567,29 +570,35 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
     if (message.userId !== "") {
       writer.uint32(10).string(message.userId);
     }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.username !== undefined) {
+      writer.uint32(26).string(message.username);
+    }
     if (message.description !== undefined) {
-      writer.uint32(18).string(message.description);
+      writer.uint32(34).string(message.description);
     }
     if (message.logoUrl !== undefined) {
-      writer.uint32(26).string(message.logoUrl);
+      writer.uint32(42).string(message.logoUrl);
     }
     if (message.websiteUrl !== undefined) {
-      writer.uint32(34).string(message.websiteUrl);
+      writer.uint32(50).string(message.websiteUrl);
     }
     for (const v of message.tags) {
-      writer.uint32(42).string(v!);
+      writer.uint32(58).string(v!);
     }
     if (message.discord !== undefined) {
-      writer.uint32(50).string(message.discord);
+      writer.uint32(66).string(message.discord);
     }
     if (message.twitter !== undefined) {
-      writer.uint32(58).string(message.twitter);
+      writer.uint32(74).string(message.twitter);
     }
     if (message.telegram !== undefined) {
-      writer.uint32(66).string(message.telegram);
+      writer.uint32(82).string(message.telegram);
     }
     if (message.tokenName !== undefined) {
-      writer.uint32(74).string(message.tokenName);
+      writer.uint32(90).string(message.tokenName);
     }
     return writer;
   },
@@ -614,7 +623,7 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
             break;
           }
 
-          message.description = reader.string();
+          message.name = reader.string();
           continue;
         }
         case 3: {
@@ -622,7 +631,7 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
             break;
           }
 
-          message.logoUrl = reader.string();
+          message.username = reader.string();
           continue;
         }
         case 4: {
@@ -630,7 +639,7 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
             break;
           }
 
-          message.websiteUrl = reader.string();
+          message.description = reader.string();
           continue;
         }
         case 5: {
@@ -638,7 +647,7 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
             break;
           }
 
-          message.tags.push(reader.string());
+          message.logoUrl = reader.string();
           continue;
         }
         case 6: {
@@ -646,7 +655,7 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
             break;
           }
 
-          message.discord = reader.string();
+          message.websiteUrl = reader.string();
           continue;
         }
         case 7: {
@@ -654,7 +663,7 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
             break;
           }
 
-          message.twitter = reader.string();
+          message.tags.push(reader.string());
           continue;
         }
         case 8: {
@@ -662,11 +671,27 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
             break;
           }
 
-          message.telegram = reader.string();
+          message.discord = reader.string();
           continue;
         }
         case 9: {
           if (tag !== 74) {
+            break;
+          }
+
+          message.twitter = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.telegram = reader.string();
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
             break;
           }
 
@@ -685,6 +710,8 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
   fromJSON(object: any): CreateBrandRequest {
     return {
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : undefined,
       logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : undefined,
       websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
@@ -700,6 +727,12 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
     const obj: any = {};
     if (message.userId !== "") {
       obj.userId = message.userId;
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.username !== undefined) {
+      obj.username = message.username;
     }
     if (message.description !== undefined) {
       obj.description = message.description;
@@ -734,6 +767,8 @@ export const CreateBrandRequest: MessageFns<CreateBrandRequest> = {
   fromPartial<I extends Exact<DeepPartial<CreateBrandRequest>, I>>(object: I): CreateBrandRequest {
     const message = createBaseCreateBrandRequest();
     message.userId = object.userId ?? "";
+    message.name = object.name ?? undefined;
+    message.username = object.username ?? undefined;
     message.description = object.description ?? undefined;
     message.logoUrl = object.logoUrl ?? undefined;
     message.websiteUrl = object.websiteUrl ?? undefined;

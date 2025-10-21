@@ -439,6 +439,8 @@ exports.BrandResponse = {
 function createBaseCreateBrandRequest() {
     return {
         userId: "",
+        name: undefined,
+        username: undefined,
         description: undefined,
         logoUrl: undefined,
         websiteUrl: undefined,
@@ -454,29 +456,35 @@ exports.CreateBrandRequest = {
         if (message.userId !== "") {
             writer.uint32(10).string(message.userId);
         }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.username !== undefined) {
+            writer.uint32(26).string(message.username);
+        }
         if (message.description !== undefined) {
-            writer.uint32(18).string(message.description);
+            writer.uint32(34).string(message.description);
         }
         if (message.logoUrl !== undefined) {
-            writer.uint32(26).string(message.logoUrl);
+            writer.uint32(42).string(message.logoUrl);
         }
         if (message.websiteUrl !== undefined) {
-            writer.uint32(34).string(message.websiteUrl);
+            writer.uint32(50).string(message.websiteUrl);
         }
         for (const v of message.tags) {
-            writer.uint32(42).string(v);
+            writer.uint32(58).string(v);
         }
         if (message.discord !== undefined) {
-            writer.uint32(50).string(message.discord);
+            writer.uint32(66).string(message.discord);
         }
         if (message.twitter !== undefined) {
-            writer.uint32(58).string(message.twitter);
+            writer.uint32(74).string(message.twitter);
         }
         if (message.telegram !== undefined) {
-            writer.uint32(66).string(message.telegram);
+            writer.uint32(82).string(message.telegram);
         }
         if (message.tokenName !== undefined) {
-            writer.uint32(74).string(message.tokenName);
+            writer.uint32(90).string(message.tokenName);
         }
         return writer;
     },
@@ -498,53 +506,67 @@ exports.CreateBrandRequest = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.description = reader.string();
+                    message.name = reader.string();
                     continue;
                 }
                 case 3: {
                     if (tag !== 26) {
                         break;
                     }
-                    message.logoUrl = reader.string();
+                    message.username = reader.string();
                     continue;
                 }
                 case 4: {
                     if (tag !== 34) {
                         break;
                     }
-                    message.websiteUrl = reader.string();
+                    message.description = reader.string();
                     continue;
                 }
                 case 5: {
                     if (tag !== 42) {
                         break;
                     }
-                    message.tags.push(reader.string());
+                    message.logoUrl = reader.string();
                     continue;
                 }
                 case 6: {
                     if (tag !== 50) {
                         break;
                     }
-                    message.discord = reader.string();
+                    message.websiteUrl = reader.string();
                     continue;
                 }
                 case 7: {
                     if (tag !== 58) {
                         break;
                     }
-                    message.twitter = reader.string();
+                    message.tags.push(reader.string());
                     continue;
                 }
                 case 8: {
                     if (tag !== 66) {
                         break;
                     }
-                    message.telegram = reader.string();
+                    message.discord = reader.string();
                     continue;
                 }
                 case 9: {
                     if (tag !== 74) {
+                        break;
+                    }
+                    message.twitter = reader.string();
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.telegram = reader.string();
+                    continue;
+                }
+                case 11: {
+                    if (tag !== 90) {
                         break;
                     }
                     message.tokenName = reader.string();
@@ -561,6 +583,8 @@ exports.CreateBrandRequest = {
     fromJSON(object) {
         return {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            username: isSet(object.username) ? globalThis.String(object.username) : undefined,
             description: isSet(object.description) ? globalThis.String(object.description) : undefined,
             logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : undefined,
             websiteUrl: isSet(object.websiteUrl) ? globalThis.String(object.websiteUrl) : undefined,
@@ -575,6 +599,12 @@ exports.CreateBrandRequest = {
         const obj = {};
         if (message.userId !== "") {
             obj.userId = message.userId;
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.username !== undefined) {
+            obj.username = message.username;
         }
         if (message.description !== undefined) {
             obj.description = message.description;
@@ -608,6 +638,8 @@ exports.CreateBrandRequest = {
     fromPartial(object) {
         const message = createBaseCreateBrandRequest();
         message.userId = object.userId ?? "";
+        message.name = object.name ?? undefined;
+        message.username = object.username ?? undefined;
         message.description = object.description ?? undefined;
         message.logoUrl = object.logoUrl ?? undefined;
         message.websiteUrl = object.websiteUrl ?? undefined;

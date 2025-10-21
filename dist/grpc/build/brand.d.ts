@@ -28,9 +28,10 @@ export interface BrandResponse {
     isFollowing?: boolean | undefined;
     username: string;
 }
-/** Request for creating a brand (userId comes from JWT in server) */
 export interface CreateBrandRequest {
     userId: string;
+    name?: string | undefined;
+    username?: string | undefined;
     description?: string | undefined;
     logoUrl?: string | undefined;
     websiteUrl?: string | undefined;
