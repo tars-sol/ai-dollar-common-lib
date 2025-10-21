@@ -91,6 +91,8 @@ export interface UserRequest {
   walletAddress: string;
   role: string;
   roleId: string;
+  name: string;
+  username: string;
 }
 
 export interface AuthResponse {
@@ -1241,7 +1243,7 @@ export const RefreshTokenRequest: MessageFns<RefreshTokenRequest> = {
 };
 
 function createBaseUserRequest(): UserRequest {
-  return { id: "", email: "", walletAddress: "", role: "", roleId: "" };
+  return { id: "", email: "", walletAddress: "", role: "", roleId: "", name: "", username: "" };
 }
 
 export const UserRequest: MessageFns<UserRequest> = {
@@ -1260,6 +1262,12 @@ export const UserRequest: MessageFns<UserRequest> = {
     }
     if (message.roleId !== "") {
       writer.uint32(42).string(message.roleId);
+    }
+    if (message.name !== "") {
+      writer.uint32(50).string(message.name);
+    }
+    if (message.username !== "") {
+      writer.uint32(58).string(message.username);
     }
     return writer;
   },
@@ -1311,6 +1319,22 @@ export const UserRequest: MessageFns<UserRequest> = {
           message.roleId = reader.string();
           continue;
         }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1327,6 +1351,8 @@ export const UserRequest: MessageFns<UserRequest> = {
       walletAddress: isSet(object.walletAddress) ? globalThis.String(object.walletAddress) : "",
       role: isSet(object.role) ? globalThis.String(object.role) : "",
       roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
     };
   },
 
@@ -1347,6 +1373,12 @@ export const UserRequest: MessageFns<UserRequest> = {
     if (message.roleId !== "") {
       obj.roleId = message.roleId;
     }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
     return obj;
   },
 
@@ -1360,6 +1392,8 @@ export const UserRequest: MessageFns<UserRequest> = {
     message.walletAddress = object.walletAddress ?? "";
     message.role = object.role ?? "";
     message.roleId = object.roleId ?? "";
+    message.name = object.name ?? "";
+    message.username = object.username ?? "";
     return message;
   },
 };

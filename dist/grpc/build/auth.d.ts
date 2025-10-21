@@ -67,6 +67,8 @@ export interface UserRequest {
     walletAddress: string;
     role: string;
     roleId: string;
+    name: string;
+    username: string;
 }
 export interface AuthResponse {
     token: string;

@@ -91,6 +91,8 @@ message UserRequest {
   string walletAddress = 3;
   string role = 4;
   string roleId = 5;
+  string name = 6;
+  string username = 7;
 }
 
 message AuthResponse {
