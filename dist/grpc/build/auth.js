@@ -396,7 +396,7 @@ exports.RevokeTokenResponse = {
     },
 };
 function createBaseRegisterRequest() {
-    return { email: "", password: "", name: "" };
+    return { email: "", password: "", username: "", name: "" };
 }
 exports.RegisterRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -406,8 +406,11 @@ exports.RegisterRequest = {
         if (message.password !== "") {
             writer.uint32(18).string(message.password);
         }
+        if (message.username !== "") {
+            writer.uint32(26).string(message.username);
+        }
         if (message.name !== "") {
-            writer.uint32(26).string(message.name);
+            writer.uint32(34).string(message.name);
         }
         return writer;
     },
@@ -436,6 +439,13 @@ exports.RegisterRequest = {
                     if (tag !== 26) {
                         break;
                     }
+                    message.username = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
                     message.name = reader.string();
                     continue;
                 }
@@ -451,6 +461,7 @@ exports.RegisterRequest = {
         return {
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             password: isSet(object.password) ? globalThis.String(object.password) : "",
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
             name: isSet(object.name) ? globalThis.String(object.name) : "",
         };
     },
@@ -461,6 +472,9 @@ exports.RegisterRequest = {
         }
         if (message.password !== "") {
             obj.password = message.password;
+        }
+        if (message.username !== "") {
+            obj.username = message.username;
         }
         if (message.name !== "") {
             obj.name = message.name;
@@ -474,6 +488,7 @@ exports.RegisterRequest = {
         const message = createBaseRegisterRequest();
         message.email = object.email ?? "";
         message.password = object.password ?? "";
+        message.username = object.username ?? "";
         message.name = object.name ?? "";
         return message;
     },

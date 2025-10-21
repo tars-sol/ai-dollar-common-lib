@@ -42,6 +42,7 @@ export interface RevokeTokenResponse {
 export interface RegisterRequest {
   email: string;
   password: string;
+  username: string;
   name: string;
 }
 
@@ -548,7 +549,7 @@ export const RevokeTokenResponse: MessageFns<RevokeTokenResponse> = {
 };
 
 function createBaseRegisterRequest(): RegisterRequest {
-  return { email: "", password: "", name: "" };
+  return { email: "", password: "", username: "", name: "" };
 }
 
 export const RegisterRequest: MessageFns<RegisterRequest> = {
@@ -559,8 +560,11 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     if (message.password !== "") {
       writer.uint32(18).string(message.password);
     }
+    if (message.username !== "") {
+      writer.uint32(26).string(message.username);
+    }
     if (message.name !== "") {
-      writer.uint32(26).string(message.name);
+      writer.uint32(34).string(message.name);
     }
     return writer;
   },
@@ -593,6 +597,14 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
             break;
           }
 
+          message.username = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
           message.name = reader.string();
           continue;
         }
@@ -609,6 +621,7 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     return {
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       password: isSet(object.password) ? globalThis.String(object.password) : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
     };
   },
@@ -620,6 +633,9 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     }
     if (message.password !== "") {
       obj.password = message.password;
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -634,6 +650,7 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     const message = createBaseRegisterRequest();
     message.email = object.email ?? "";
     message.password = object.password ?? "";
+    message.username = object.username ?? "";
     message.name = object.name ?? "";
     return message;
   },
