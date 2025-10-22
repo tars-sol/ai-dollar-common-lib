@@ -96,6 +96,7 @@ message CommentResponse{
   string updatedAt=5;
   string id = 6;
   optional CommentCreator commentCreator = 7;
+  repeated Mention mentions = 8;
 }
 message GetCommentsRequest{
   string postId=1;
@@ -185,6 +186,13 @@ message CommentCreator{
   string role = 5;
   string userId = 6;
 }
+
+message Mention {
+  string username = 1;
+  string role = 2;     // "profile" | "brand"
+  string roleId = 3;
+}
+
 message PostResponse {
   string id = 1;
   string profileId = 2;
@@ -203,6 +211,8 @@ message PostResponse {
   optional bool viewerLiked = 15;
   optional bool viewerDisliked = 16;
   optional Article article = 17;
+  repeated Mention mentions = 18;
+
 }
 message GetProfilePostsRequest{
   string profileId = 1;

@@ -66,6 +66,7 @@ export interface CommentResponse {
     updatedAt: string;
     id: string;
     commentCreator?: CommentCreator | undefined;
+    mentions: Mention[];
 }
 export interface GetCommentsRequest {
     postId: string;
@@ -149,6 +150,12 @@ export interface CommentCreator {
     role: string;
     userId: string;
 }
+export interface Mention {
+    username: string;
+    /** "profile" | "brand" */
+    role: string;
+    roleId: string;
+}
 export interface PostResponse {
     id: string;
     profileId: string;
@@ -167,6 +174,7 @@ export interface PostResponse {
     viewerLiked?: boolean | undefined;
     viewerDisliked?: boolean | undefined;
     article?: Article | undefined;
+    mentions: Mention[];
 }
 export interface GetProfilePostsRequest {
     profileId: string;
@@ -239,6 +247,7 @@ export declare const Creator: MessageFns<Creator>;
 export declare const AddToPortfolioRequest: MessageFns<AddToPortfolioRequest>;
 export declare const RemoveFromPortfolioRequest: MessageFns<RemoveFromPortfolioRequest>;
 export declare const CommentCreator: MessageFns<CommentCreator>;
+export declare const Mention: MessageFns<Mention>;
 export declare const PostResponse: MessageFns<PostResponse>;
 export declare const GetProfilePostsRequest: MessageFns<GetProfilePostsRequest>;
 export declare const SearchPostsRequest: MessageFns<SearchPostsRequest>;

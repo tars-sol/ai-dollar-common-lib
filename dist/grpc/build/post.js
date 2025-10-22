@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.CreateArticleRequest = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.CreateArticleRequest = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -973,7 +973,7 @@ exports.CreateCommentRequest = {
     },
 };
 function createBaseCommentResponse() {
-    return { text: "", postId: "", createdAt: "", updatedAt: "", id: "", commentCreator: undefined };
+    return { text: "", postId: "", createdAt: "", updatedAt: "", id: "", commentCreator: undefined, mentions: [] };
 }
 exports.CommentResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -994,6 +994,9 @@ exports.CommentResponse = {
         }
         if (message.commentCreator !== undefined) {
             exports.CommentCreator.encode(message.commentCreator, writer.uint32(58).fork()).join();
+        }
+        for (const v of message.mentions) {
+            exports.Mention.encode(v, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -1046,6 +1049,13 @@ exports.CommentResponse = {
                     message.commentCreator = exports.CommentCreator.decode(reader, reader.uint32());
                     continue;
                 }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.mentions.push(exports.Mention.decode(reader, reader.uint32()));
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1062,6 +1072,7 @@ exports.CommentResponse = {
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
             id: isSet(object.id) ? globalThis.String(object.id) : "",
             commentCreator: isSet(object.commentCreator) ? exports.CommentCreator.fromJSON(object.commentCreator) : undefined,
+            mentions: globalThis.Array.isArray(object?.mentions) ? object.mentions.map((e) => exports.Mention.fromJSON(e)) : [],
         };
     },
     toJSON(message) {
@@ -1084,6 +1095,9 @@ exports.CommentResponse = {
         if (message.commentCreator !== undefined) {
             obj.commentCreator = exports.CommentCreator.toJSON(message.commentCreator);
         }
+        if (message.mentions?.length) {
+            obj.mentions = message.mentions.map((e) => exports.Mention.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -1099,6 +1113,7 @@ exports.CommentResponse = {
         message.commentCreator = (object.commentCreator !== undefined && object.commentCreator !== null)
             ? exports.CommentCreator.fromPartial(object.commentCreator)
             : undefined;
+        message.mentions = object.mentions?.map((e) => exports.Mention.fromPartial(e)) || [];
         return message;
     },
 };
@@ -2454,6 +2469,89 @@ exports.CommentCreator = {
         return message;
     },
 };
+function createBaseMention() {
+    return { username: "", role: "", roleId: "" };
+}
+exports.Mention = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.username !== "") {
+            writer.uint32(10).string(message.username);
+        }
+        if (message.role !== "") {
+            writer.uint32(18).string(message.role);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(26).string(message.roleId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseMention();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.username !== "") {
+            obj.username = message.username;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.Mention.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseMention();
+        message.username = object.username ?? "";
+        message.role = object.role ?? "";
+        message.roleId = object.roleId ?? "";
+        return message;
+    },
+};
 function createBasePostResponse() {
     return {
         id: "",
@@ -2473,6 +2571,7 @@ function createBasePostResponse() {
         viewerLiked: undefined,
         viewerDisliked: undefined,
         article: undefined,
+        mentions: [],
     };
 }
 exports.PostResponse = {
@@ -2527,6 +2626,9 @@ exports.PostResponse = {
         }
         if (message.article !== undefined) {
             exports.Article.encode(message.article, writer.uint32(138).fork()).join();
+        }
+        for (const v of message.mentions) {
+            exports.Mention.encode(v, writer.uint32(146).fork()).join();
         }
         return writer;
     },
@@ -2656,6 +2758,13 @@ exports.PostResponse = {
                     message.article = exports.Article.decode(reader, reader.uint32());
                     continue;
                 }
+                case 18: {
+                    if (tag !== 146) {
+                        break;
+                    }
+                    message.mentions.push(exports.Mention.decode(reader, reader.uint32()));
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2683,6 +2792,7 @@ exports.PostResponse = {
             viewerLiked: isSet(object.viewerLiked) ? globalThis.Boolean(object.viewerLiked) : undefined,
             viewerDisliked: isSet(object.viewerDisliked) ? globalThis.Boolean(object.viewerDisliked) : undefined,
             article: isSet(object.article) ? exports.Article.fromJSON(object.article) : undefined,
+            mentions: globalThis.Array.isArray(object?.mentions) ? object.mentions.map((e) => exports.Mention.fromJSON(e)) : [],
         };
     },
     toJSON(message) {
@@ -2738,6 +2848,9 @@ exports.PostResponse = {
         if (message.article !== undefined) {
             obj.article = exports.Article.toJSON(message.article);
         }
+        if (message.mentions?.length) {
+            obj.mentions = message.mentions.map((e) => exports.Mention.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -2772,6 +2885,7 @@ exports.PostResponse = {
         message.article = (object.article !== undefined && object.article !== null)
             ? exports.Article.fromPartial(object.article)
             : undefined;
+        message.mentions = object.mentions?.map((e) => exports.Mention.fromPartial(e)) || [];
         return message;
     },
 };

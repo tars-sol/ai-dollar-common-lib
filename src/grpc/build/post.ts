@@ -86,6 +86,7 @@ export interface CommentResponse {
   updatedAt: string;
   id: string;
   commentCreator?: CommentCreator | undefined;
+  mentions: Mention[];
 }
 
 export interface GetCommentsRequest {
@@ -184,6 +185,13 @@ export interface CommentCreator {
   userId: string;
 }
 
+export interface Mention {
+  username: string;
+  /** "profile" | "brand" */
+  role: string;
+  roleId: string;
+}
+
 export interface PostResponse {
   id: string;
   profileId: string;
@@ -202,6 +210,7 @@ export interface PostResponse {
   viewerLiked?: boolean | undefined;
   viewerDisliked?: boolean | undefined;
   article?: Article | undefined;
+  mentions: Mention[];
 }
 
 export interface GetProfilePostsRequest {
@@ -1312,7 +1321,7 @@ export const CreateCommentRequest: MessageFns<CreateCommentRequest> = {
 };
 
 function createBaseCommentResponse(): CommentResponse {
-  return { text: "", postId: "", createdAt: "", updatedAt: "", id: "", commentCreator: undefined };
+  return { text: "", postId: "", createdAt: "", updatedAt: "", id: "", commentCreator: undefined, mentions: [] };
 }
 
 export const CommentResponse: MessageFns<CommentResponse> = {
@@ -1334,6 +1343,9 @@ export const CommentResponse: MessageFns<CommentResponse> = {
     }
     if (message.commentCreator !== undefined) {
       CommentCreator.encode(message.commentCreator, writer.uint32(58).fork()).join();
+    }
+    for (const v of message.mentions) {
+      Mention.encode(v!, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -1393,6 +1405,14 @@ export const CommentResponse: MessageFns<CommentResponse> = {
           message.commentCreator = CommentCreator.decode(reader, reader.uint32());
           continue;
         }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.mentions.push(Mention.decode(reader, reader.uint32()));
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1410,6 +1430,7 @@ export const CommentResponse: MessageFns<CommentResponse> = {
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       commentCreator: isSet(object.commentCreator) ? CommentCreator.fromJSON(object.commentCreator) : undefined,
+      mentions: globalThis.Array.isArray(object?.mentions) ? object.mentions.map((e: any) => Mention.fromJSON(e)) : [],
     };
   },
 
@@ -1433,6 +1454,9 @@ export const CommentResponse: MessageFns<CommentResponse> = {
     if (message.commentCreator !== undefined) {
       obj.commentCreator = CommentCreator.toJSON(message.commentCreator);
     }
+    if (message.mentions?.length) {
+      obj.mentions = message.mentions.map((e) => Mention.toJSON(e));
+    }
     return obj;
   },
 
@@ -1449,6 +1473,7 @@ export const CommentResponse: MessageFns<CommentResponse> = {
     message.commentCreator = (object.commentCreator !== undefined && object.commentCreator !== null)
       ? CommentCreator.fromPartial(object.commentCreator)
       : undefined;
+    message.mentions = object.mentions?.map((e) => Mention.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2943,6 +2968,98 @@ export const CommentCreator: MessageFns<CommentCreator> = {
   },
 };
 
+function createBaseMention(): Mention {
+  return { username: "", role: "", roleId: "" };
+}
+
+export const Mention: MessageFns<Mention> = {
+  encode(message: Mention, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.username !== "") {
+      writer.uint32(10).string(message.username);
+    }
+    if (message.role !== "") {
+      writer.uint32(18).string(message.role);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(26).string(message.roleId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Mention {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMention();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Mention {
+    return {
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+    };
+  },
+
+  toJSON(message: Mention): unknown {
+    const obj: any = {};
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Mention>, I>>(base?: I): Mention {
+    return Mention.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<Mention>, I>>(object: I): Mention {
+    const message = createBaseMention();
+    message.username = object.username ?? "";
+    message.role = object.role ?? "";
+    message.roleId = object.roleId ?? "";
+    return message;
+  },
+};
+
 function createBasePostResponse(): PostResponse {
   return {
     id: "",
@@ -2962,6 +3079,7 @@ function createBasePostResponse(): PostResponse {
     viewerLiked: undefined,
     viewerDisliked: undefined,
     article: undefined,
+    mentions: [],
   };
 }
 
@@ -3017,6 +3135,9 @@ export const PostResponse: MessageFns<PostResponse> = {
     }
     if (message.article !== undefined) {
       Article.encode(message.article, writer.uint32(138).fork()).join();
+    }
+    for (const v of message.mentions) {
+      Mention.encode(v!, writer.uint32(146).fork()).join();
     }
     return writer;
   },
@@ -3164,6 +3285,14 @@ export const PostResponse: MessageFns<PostResponse> = {
           message.article = Article.decode(reader, reader.uint32());
           continue;
         }
+        case 18: {
+          if (tag !== 146) {
+            break;
+          }
+
+          message.mentions.push(Mention.decode(reader, reader.uint32()));
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3192,6 +3321,7 @@ export const PostResponse: MessageFns<PostResponse> = {
       viewerLiked: isSet(object.viewerLiked) ? globalThis.Boolean(object.viewerLiked) : undefined,
       viewerDisliked: isSet(object.viewerDisliked) ? globalThis.Boolean(object.viewerDisliked) : undefined,
       article: isSet(object.article) ? Article.fromJSON(object.article) : undefined,
+      mentions: globalThis.Array.isArray(object?.mentions) ? object.mentions.map((e: any) => Mention.fromJSON(e)) : [],
     };
   },
 
@@ -3248,6 +3378,9 @@ export const PostResponse: MessageFns<PostResponse> = {
     if (message.article !== undefined) {
       obj.article = Article.toJSON(message.article);
     }
+    if (message.mentions?.length) {
+      obj.mentions = message.mentions.map((e) => Mention.toJSON(e));
+    }
     return obj;
   },
 
@@ -3283,6 +3416,7 @@ export const PostResponse: MessageFns<PostResponse> = {
     message.article = (object.article !== undefined && object.article !== null)
       ? Article.fromPartial(object.article)
       : undefined;
+    message.mentions = object.mentions?.map((e) => Mention.fromPartial(e)) || [];
     return message;
   },
 };
