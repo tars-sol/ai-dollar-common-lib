@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const brand_entity_1 = require("./brand.entity");
 const campaign_entity_1 = require("./campaign.entity");
 const profile_entity_1 = require("./profile.entity");
+const profile_campaign_entity_1 = require("./profile_campaign.entity");
 var PayoutStatus;
 (function (PayoutStatus) {
     PayoutStatus["PENDING"] = "pending";
@@ -79,6 +80,12 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Payout.prototype, "profileId", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => profile_campaign_entity_1.ProfileCampaign, (pc) => pc.payout, {
+        nullable: true,
+    }),
+    __metadata("design:type", Object)
+], Payout.prototype, "profileCampaign", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Date)

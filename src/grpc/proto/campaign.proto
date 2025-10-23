@@ -34,6 +34,7 @@ message CreateCampaignRequest {
   string description = 7;
   repeated string profileIds = 9;
   bool isPrivate = 10;
+
 }
 message SuccessResponse{
   bool success = 1;
@@ -92,8 +93,25 @@ message CampaignResponse {
   bool isPrivate = 12;
   string name = 9;
   string description = 10;
+  string totalParticipants = 14;
 
 
+}
+message CampaignByIdResponse {
+  string id = 1;
+  string brandId = 2;
+  double amountToInvest = 3;
+  string startDate = 4;
+  string endDate = 5;
+  string createdAt = 7;
+  string updatedAt = 8;
+  string status = 11;
+  bool isPrivate = 12;
+  string name = 9;
+  string description = 10;
+  repeated TaskResponse tasks = 13;
+  string brandUsername = 14;
+  string totalParticipants = 15;
 }
 message UpdateCampaignRequest {
   string id = 1;

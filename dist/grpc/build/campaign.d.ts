@@ -69,6 +69,23 @@ export interface CampaignResponse {
     isPrivate: boolean;
     name: string;
     description: string;
+    totalParticipants: string;
+}
+export interface CampaignByIdResponse {
+    id: string;
+    brandId: string;
+    amountToInvest: number;
+    startDate: string;
+    endDate: string;
+    createdAt: string;
+    updatedAt: string;
+    status: string;
+    isPrivate: boolean;
+    name: string;
+    description: string;
+    tasks: TaskResponse[];
+    brandUsername: string;
+    totalParticipants: string;
 }
 export interface UpdateCampaignRequest {
     id: string;
@@ -165,6 +182,7 @@ export declare const JoinPublicCampaignRequest: MessageFns<JoinPublicCampaignReq
 export declare const LeaveCampaignRequest: MessageFns<LeaveCampaignRequest>;
 export declare const UpdatePrivateCampaignProfilesRequest: MessageFns<UpdatePrivateCampaignProfilesRequest>;
 export declare const CampaignResponse: MessageFns<CampaignResponse>;
+export declare const CampaignByIdResponse: MessageFns<CampaignByIdResponse>;
 export declare const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest>;
 export declare const TaskResponse: MessageFns<TaskResponse>;
 export declare const TaskCompletedResponse: MessageFns<TaskCompletedResponse>;

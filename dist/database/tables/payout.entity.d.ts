@@ -1,6 +1,7 @@
 import { Brand } from './brand.entity';
 import { Campaign } from './campaign.entity';
 import { Profile } from './profile.entity';
+import { ProfileCampaign } from './profile_campaign.entity';
 export declare enum PayoutStatus {
     PENDING = "pending",
     SUCCEEDED = "succeeded",
@@ -18,6 +19,7 @@ export declare class Payout {
     campaignId: string;
     profile: Profile;
     profileId: string;
+    profileCampaign: ProfileCampaign | null;
     paidOn: Date;
     createdAt: Date;
     updatedAt: Date;

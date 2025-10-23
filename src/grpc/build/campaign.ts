@@ -88,6 +88,24 @@ export interface CampaignResponse {
   isPrivate: boolean;
   name: string;
   description: string;
+  totalParticipants: string;
+}
+
+export interface CampaignByIdResponse {
+  id: string;
+  brandId: string;
+  amountToInvest: number;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  isPrivate: boolean;
+  name: string;
+  description: string;
+  tasks: TaskResponse[];
+  brandUsername: string;
+  totalParticipants: string;
 }
 
 export interface UpdateCampaignRequest {
@@ -1198,6 +1216,7 @@ function createBaseCampaignResponse(): CampaignResponse {
     isPrivate: false,
     name: "",
     description: "",
+    totalParticipants: "",
   };
 }
 
@@ -1235,6 +1254,9 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     }
     if (message.description !== "") {
       writer.uint32(82).string(message.description);
+    }
+    if (message.totalParticipants !== "") {
+      writer.uint32(114).string(message.totalParticipants);
     }
     return writer;
   },
@@ -1334,6 +1356,14 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
           message.description = reader.string();
           continue;
         }
+        case 14: {
+          if (tag !== 114) {
+            break;
+          }
+
+          message.totalParticipants = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1356,6 +1386,7 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
       isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
+      totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
     };
   },
 
@@ -1394,6 +1425,9 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     if (message.description !== "") {
       obj.description = message.description;
     }
+    if (message.totalParticipants !== "") {
+      obj.totalParticipants = message.totalParticipants;
+    }
     return obj;
   },
 
@@ -1413,6 +1447,290 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     message.isPrivate = object.isPrivate ?? false;
     message.name = object.name ?? "";
     message.description = object.description ?? "";
+    message.totalParticipants = object.totalParticipants ?? "";
+    return message;
+  },
+};
+
+function createBaseCampaignByIdResponse(): CampaignByIdResponse {
+  return {
+    id: "",
+    brandId: "",
+    amountToInvest: 0,
+    startDate: "",
+    endDate: "",
+    createdAt: "",
+    updatedAt: "",
+    status: "",
+    isPrivate: false,
+    name: "",
+    description: "",
+    tasks: [],
+    brandUsername: "",
+    totalParticipants: "",
+  };
+}
+
+export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
+  encode(message: CampaignByIdResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.brandId !== "") {
+      writer.uint32(18).string(message.brandId);
+    }
+    if (message.amountToInvest !== 0) {
+      writer.uint32(25).double(message.amountToInvest);
+    }
+    if (message.startDate !== "") {
+      writer.uint32(34).string(message.startDate);
+    }
+    if (message.endDate !== "") {
+      writer.uint32(42).string(message.endDate);
+    }
+    if (message.createdAt !== "") {
+      writer.uint32(58).string(message.createdAt);
+    }
+    if (message.updatedAt !== "") {
+      writer.uint32(66).string(message.updatedAt);
+    }
+    if (message.status !== "") {
+      writer.uint32(90).string(message.status);
+    }
+    if (message.isPrivate !== false) {
+      writer.uint32(96).bool(message.isPrivate);
+    }
+    if (message.name !== "") {
+      writer.uint32(74).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(82).string(message.description);
+    }
+    for (const v of message.tasks) {
+      TaskResponse.encode(v!, writer.uint32(106).fork()).join();
+    }
+    if (message.brandUsername !== "") {
+      writer.uint32(114).string(message.brandUsername);
+    }
+    if (message.totalParticipants !== "") {
+      writer.uint32(122).string(message.totalParticipants);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CampaignByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCampaignByIdResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 25) {
+            break;
+          }
+
+          message.amountToInvest = reader.double();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.startDate = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.endDate = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.createdAt = reader.string();
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.updatedAt = reader.string();
+          continue;
+        }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+        case 12: {
+          if (tag !== 96) {
+            break;
+          }
+
+          message.isPrivate = reader.bool();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        }
+        case 13: {
+          if (tag !== 106) {
+            break;
+          }
+
+          message.tasks.push(TaskResponse.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 14: {
+          if (tag !== 114) {
+            break;
+          }
+
+          message.brandUsername = reader.string();
+          continue;
+        }
+        case 15: {
+          if (tag !== 122) {
+            break;
+          }
+
+          message.totalParticipants = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CampaignByIdResponse {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      amountToInvest: isSet(object.amountToInvest) ? globalThis.Number(object.amountToInvest) : 0,
+      startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
+      endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
+      createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
+      updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+      isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      tasks: globalThis.Array.isArray(object?.tasks) ? object.tasks.map((e: any) => TaskResponse.fromJSON(e)) : [],
+      brandUsername: isSet(object.brandUsername) ? globalThis.String(object.brandUsername) : "",
+      totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
+    };
+  },
+
+  toJSON(message: CampaignByIdResponse): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    if (message.amountToInvest !== 0) {
+      obj.amountToInvest = message.amountToInvest;
+    }
+    if (message.startDate !== "") {
+      obj.startDate = message.startDate;
+    }
+    if (message.endDate !== "") {
+      obj.endDate = message.endDate;
+    }
+    if (message.createdAt !== "") {
+      obj.createdAt = message.createdAt;
+    }
+    if (message.updatedAt !== "") {
+      obj.updatedAt = message.updatedAt;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.isPrivate !== false) {
+      obj.isPrivate = message.isPrivate;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.tasks?.length) {
+      obj.tasks = message.tasks.map((e) => TaskResponse.toJSON(e));
+    }
+    if (message.brandUsername !== "") {
+      obj.brandUsername = message.brandUsername;
+    }
+    if (message.totalParticipants !== "") {
+      obj.totalParticipants = message.totalParticipants;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CampaignByIdResponse>, I>>(base?: I): CampaignByIdResponse {
+    return CampaignByIdResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CampaignByIdResponse>, I>>(object: I): CampaignByIdResponse {
+    const message = createBaseCampaignByIdResponse();
+    message.id = object.id ?? "";
+    message.brandId = object.brandId ?? "";
+    message.amountToInvest = object.amountToInvest ?? 0;
+    message.startDate = object.startDate ?? "";
+    message.endDate = object.endDate ?? "";
+    message.createdAt = object.createdAt ?? "";
+    message.updatedAt = object.updatedAt ?? "";
+    message.status = object.status ?? "";
+    message.isPrivate = object.isPrivate ?? false;
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.tasks = object.tasks?.map((e) => TaskResponse.fromPartial(e)) || [];
+    message.brandUsername = object.brandUsername ?? "";
+    message.totalParticipants = object.totalParticipants ?? "";
     return message;
   },
 };

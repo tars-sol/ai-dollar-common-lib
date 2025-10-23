@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
 const campaign_entity_1 = require("./campaign.entity");
 const profile_task_progress_entity_1 = require("./profile_task_progress.entity");
+const payout_entity_1 = require("./payout.entity");
 let ProfileCampaign = class ProfileCampaign {
 };
 exports.ProfileCampaign = ProfileCampaign;
@@ -53,6 +54,18 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
     __metadata("design:type", Object)
 ], ProfileCampaign.prototype, "completedAt", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => payout_entity_1.Payout, (payout) => payout.profileCampaign, {
+        nullable: true,
+        onDelete: 'SET NULL',
+    }),
+    (0, typeorm_1.JoinColumn)({ name: 'payoutId' }),
+    __metadata("design:type", Object)
+], ProfileCampaign.prototype, "payout", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'uuid', nullable: true, unique: true }),
+    __metadata("design:type", Object)
+], ProfileCampaign.prototype, "payoutId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)

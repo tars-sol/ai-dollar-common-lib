@@ -6,10 +6,12 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { Brand } from './brand.entity';
 import { Campaign } from './campaign.entity';
 import { Profile } from './profile.entity';
+import { ProfileCampaign } from './profile_campaign.entity';
 export enum PayoutStatus {
   PENDING = 'pending',
   SUCCEEDED = 'succeeded',
@@ -59,6 +61,10 @@ export class Payout {
   profile: Profile;
   @Column()
   profileId: string;
+  @OneToOne(() => ProfileCampaign, (pc) => pc.payout, {
+    nullable: true,
+  })
+  profileCampaign: ProfileCampaign | null;
   @Column({ nullable: true })
   paidOn: Date;
 

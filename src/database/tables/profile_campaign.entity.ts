@@ -5,12 +5,14 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { Profile } from './profile.entity';
 import { Campaign } from './campaign.entity';
 import { ProfileTaskProgress } from './profile_task_progress.entity';
+import { Payout } from './payout.entity';
 
 @Entity('profile_campaigns')
 @Unique(['profileId', 'campaignId']) // prevent duplicate entries
@@ -38,6 +40,14 @@ export class ProfileCampaign {
   completed: boolean;
   @Column({ type: 'timestamp', nullable: true })
   completedAt: Date | null;
+  @OneToOne(() => Payout, (payout) => payout.profileCampaign, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'payoutId' })
+  payout: Payout | null;
+  @Column({ type: 'uuid', nullable: true, unique: true })
+  payoutId: string | null;
   @Column({default: false})
   rewarded: boolean;
   @Column({ type: 'timestamp', nullable: true })
