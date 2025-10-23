@@ -207,6 +207,7 @@ export interface Article {
     } | undefined;
     createdAt: string;
     updatedAt: string;
+    isViewable?: boolean | undefined;
 }
 export interface CreateArticleRequest {
     profileId: string;

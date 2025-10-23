@@ -246,6 +246,7 @@ export interface Article {
   contentJson: { [key: string]: any } | undefined;
   createdAt: string;
   updatedAt: string;
+  isViewable?: boolean | undefined;
 }
 
 export interface CreateArticleRequest {
@@ -3801,6 +3802,7 @@ function createBaseArticle(): Article {
     contentJson: undefined,
     createdAt: "",
     updatedAt: "",
+    isViewable: undefined,
   };
 }
 
@@ -3829,6 +3831,9 @@ export const Article: MessageFns<Article> = {
     }
     if (message.updatedAt !== "") {
       writer.uint32(66).string(message.updatedAt);
+    }
+    if (message.isViewable !== undefined) {
+      writer.uint32(72).bool(message.isViewable);
     }
     return writer;
   },
@@ -3904,6 +3909,14 @@ export const Article: MessageFns<Article> = {
           message.updatedAt = reader.string();
           continue;
         }
+        case 9: {
+          if (tag !== 72) {
+            break;
+          }
+
+          message.isViewable = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3923,6 +3936,7 @@ export const Article: MessageFns<Article> = {
       contentJson: isObject(object.contentJson) ? object.contentJson : undefined,
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+      isViewable: isSet(object.isViewable) ? globalThis.Boolean(object.isViewable) : undefined,
     };
   },
 
@@ -3952,6 +3966,9 @@ export const Article: MessageFns<Article> = {
     if (message.updatedAt !== "") {
       obj.updatedAt = message.updatedAt;
     }
+    if (message.isViewable !== undefined) {
+      obj.isViewable = message.isViewable;
+    }
     return obj;
   },
 
@@ -3968,6 +3985,7 @@ export const Article: MessageFns<Article> = {
     message.contentJson = object.contentJson ?? undefined;
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";
+    message.isViewable = object.isViewable ?? undefined;
     return message;
   },
 };
