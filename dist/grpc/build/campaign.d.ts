@@ -200,7 +200,7 @@ export declare const SearchCampaignsResponse: MessageFns<SearchCampaignsResponse
 export interface CampaignService {
     CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
     GetCampaignsByBrandId(request: GetCampaignsByBrandIdRequest): Promise<GetCampaignsResponse>;
-    GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
+    GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignByIdResponse>;
     UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
     UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
     GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
@@ -223,7 +223,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     });
     CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
     GetCampaignsByBrandId(request: GetCampaignsByBrandIdRequest): Promise<GetCampaignsResponse>;
-    GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
+    GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignByIdResponse>;
     UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
     UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
     GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;

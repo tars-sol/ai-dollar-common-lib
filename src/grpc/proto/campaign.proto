@@ -7,7 +7,7 @@ import "google/protobuf/empty.proto";
 service CampaignService {
   rpc CreateCampaign(CreateCampaignRequest) returns (CampaignResponse);
   rpc GetCampaignsByBrandId(GetCampaignsByBrandIdRequest) returns (GetCampaignsResponse);
-  rpc GetCampaignById(CampaignsByIdRequest) returns (CampaignResponse);
+  rpc GetCampaignById(CampaignsByIdRequest) returns (CampaignByIdResponse);
   rpc UpdateCampaign(UpdateCampaignRequest) returns (CampaignResponse);
   rpc UpdateCampaignTasks(UpdateTaskRequest) returns (TaskResponse);
   rpc GetTasksByCampaignId(GetTasksByCampaignIdRequest) returns (GetTasksResponse);

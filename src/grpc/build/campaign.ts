@@ -3134,7 +3134,7 @@ export const SearchCampaignsResponse: MessageFns<SearchCampaignsResponse> = {
 export interface CampaignService {
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
   GetCampaignsByBrandId(request: GetCampaignsByBrandIdRequest): Promise<GetCampaignsResponse>;
-  GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
+  GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignByIdResponse>;
   UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
   UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
   GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
@@ -3184,10 +3184,10 @@ export class CampaignServiceClientImpl implements CampaignService {
     return promise.then((data) => GetCampaignsResponse.decode(new BinaryReader(data)));
   }
 
-  GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse> {
+  GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignByIdResponse> {
     const data = CampaignsByIdRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetCampaignById", data);
-    return promise.then((data) => CampaignResponse.decode(new BinaryReader(data)));
+    return promise.then((data) => CampaignByIdResponse.decode(new BinaryReader(data)));
   }
 
   UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse> {

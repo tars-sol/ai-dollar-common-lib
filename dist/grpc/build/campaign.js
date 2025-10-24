@@ -2692,7 +2692,7 @@ class CampaignServiceClientImpl {
     GetCampaignById(request) {
         const data = exports.CampaignsByIdRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetCampaignById", data);
-        return promise.then((data) => exports.CampaignResponse.decode(new wire_1.BinaryReader(data)));
+        return promise.then((data) => exports.CampaignByIdResponse.decode(new wire_1.BinaryReader(data)));
     }
     UpdateCampaign(request) {
         const data = exports.UpdateCampaignRequest.encode(request).finish();
