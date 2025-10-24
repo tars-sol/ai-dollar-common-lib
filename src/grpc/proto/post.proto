@@ -247,6 +247,7 @@ message Article {
   google.protobuf.Struct contentJson = 6;
   string createdAt = 7;
   string updatedAt = 8;
+  optional bool isViewable = 9; 
 }
 
 message CreateArticleRequest {
