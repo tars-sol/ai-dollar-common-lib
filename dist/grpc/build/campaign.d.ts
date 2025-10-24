@@ -86,6 +86,7 @@ export interface CampaignByIdResponse {
     tasks: TaskResponse[];
     brandUsername: string;
     totalParticipants: string;
+    isJoined: boolean;
 }
 export interface UpdateCampaignRequest {
     id: string;
@@ -138,6 +139,9 @@ export interface CampaignsByIdRequest {
     roleId: string;
     role: string;
 }
+export interface CampaignsByProfileIdRequest {
+    profileId: string;
+}
 export interface DeleteTaskByIdRequest {
     brandId: string;
     id: string;
@@ -188,6 +192,7 @@ export declare const TaskResponse: MessageFns<TaskResponse>;
 export declare const TaskCompletedResponse: MessageFns<TaskCompletedResponse>;
 export declare const GetCampaignsByBrandIdRequest: MessageFns<GetCampaignsByBrandIdRequest>;
 export declare const CampaignsByIdRequest: MessageFns<CampaignsByIdRequest>;
+export declare const CampaignsByProfileIdRequest: MessageFns<CampaignsByProfileIdRequest>;
 export declare const DeleteTaskByIdRequest: MessageFns<DeleteTaskByIdRequest>;
 export declare const DeleteCampaignByIdRequest: MessageFns<DeleteCampaignByIdRequest>;
 export declare const GetTasksByCampaignIdRequest: MessageFns<GetTasksByCampaignIdRequest>;
@@ -213,6 +218,7 @@ export interface CampaignService {
     MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
     SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
+    GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
 }
 export declare const CampaignServiceServiceName = "campaign.CampaignService";
 export declare class CampaignServiceClientImpl implements CampaignService {
@@ -236,6 +242,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
     SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
+    GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

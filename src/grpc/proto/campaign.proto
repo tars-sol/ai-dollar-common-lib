@@ -20,6 +20,7 @@ service CampaignService {
   rpc MarkTaskAsCompleted(TaskCompletedResponse) returns (SuccessResponse);
   rpc Health(google.protobuf.Empty) returns (SuccessResponse);
   rpc SearchCampaigns (SearchCampaignsRequest) returns (SearchCampaignsResponse);
+  rpc GetJoinedCampaignsByProfileId (CampaignsByProfileIdRequest) returns (GetCampaignsResponse);
 
 }
 
@@ -112,6 +113,7 @@ message CampaignByIdResponse {
   repeated TaskResponse tasks = 13;
   string brandUsername = 14;
   string totalParticipants = 15;
+  bool isJoined = 16;
 }
 message UpdateCampaignRequest {
   string id = 1;
@@ -160,6 +162,9 @@ message CampaignsByIdRequest{
   string id = 1;
   string roleId = 3;
   string role = 4;
+}
+message CampaignsByProfileIdRequest{
+  string profileId = 1;
 }
 message DeleteTaskByIdRequest{
   string brandId = 2;

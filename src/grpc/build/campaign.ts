@@ -106,6 +106,7 @@ export interface CampaignByIdResponse {
   tasks: TaskResponse[];
   brandUsername: string;
   totalParticipants: string;
+  isJoined: boolean;
 }
 
 export interface UpdateCampaignRequest {
@@ -176,6 +177,10 @@ export interface CampaignsByIdRequest {
   id: string;
   roleId: string;
   role: string;
+}
+
+export interface CampaignsByProfileIdRequest {
+  profileId: string;
 }
 
 export interface DeleteTaskByIdRequest {
@@ -1468,6 +1473,7 @@ function createBaseCampaignByIdResponse(): CampaignByIdResponse {
     tasks: [],
     brandUsername: "",
     totalParticipants: "",
+    isJoined: false,
   };
 }
 
@@ -1514,6 +1520,9 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
     }
     if (message.totalParticipants !== "") {
       writer.uint32(122).string(message.totalParticipants);
+    }
+    if (message.isJoined !== false) {
+      writer.uint32(128).bool(message.isJoined);
     }
     return writer;
   },
@@ -1637,6 +1646,14 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
           message.totalParticipants = reader.string();
           continue;
         }
+        case 16: {
+          if (tag !== 128) {
+            break;
+          }
+
+          message.isJoined = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1662,6 +1679,7 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
       tasks: globalThis.Array.isArray(object?.tasks) ? object.tasks.map((e: any) => TaskResponse.fromJSON(e)) : [],
       brandUsername: isSet(object.brandUsername) ? globalThis.String(object.brandUsername) : "",
       totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
+      isJoined: isSet(object.isJoined) ? globalThis.Boolean(object.isJoined) : false,
     };
   },
 
@@ -1709,6 +1727,9 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
     if (message.totalParticipants !== "") {
       obj.totalParticipants = message.totalParticipants;
     }
+    if (message.isJoined !== false) {
+      obj.isJoined = message.isJoined;
+    }
     return obj;
   },
 
@@ -1731,6 +1752,7 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
     message.tasks = object.tasks?.map((e) => TaskResponse.fromPartial(e)) || [];
     message.brandUsername = object.brandUsername ?? "";
     message.totalParticipants = object.totalParticipants ?? "";
+    message.isJoined = object.isJoined ?? false;
     return message;
   },
 };
@@ -2504,6 +2526,64 @@ export const CampaignsByIdRequest: MessageFns<CampaignsByIdRequest> = {
   },
 };
 
+function createBaseCampaignsByProfileIdRequest(): CampaignsByProfileIdRequest {
+  return { profileId: "" };
+}
+
+export const CampaignsByProfileIdRequest: MessageFns<CampaignsByProfileIdRequest> = {
+  encode(message: CampaignsByProfileIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CampaignsByProfileIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCampaignsByProfileIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CampaignsByProfileIdRequest {
+    return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
+  },
+
+  toJSON(message: CampaignsByProfileIdRequest): unknown {
+    const obj: any = {};
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CampaignsByProfileIdRequest>, I>>(base?: I): CampaignsByProfileIdRequest {
+    return CampaignsByProfileIdRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CampaignsByProfileIdRequest>, I>>(object: I): CampaignsByProfileIdRequest {
+    const message = createBaseCampaignsByProfileIdRequest();
+    message.profileId = object.profileId ?? "";
+    return message;
+  },
+};
+
 function createBaseDeleteTaskByIdRequest(): DeleteTaskByIdRequest {
   return { brandId: "", id: "" };
 }
@@ -3147,6 +3227,7 @@ export interface CampaignService {
   MarkTaskAsCompleted(request: TaskCompletedResponse): Promise<SuccessResponse>;
   Health(request: Empty): Promise<SuccessResponse>;
   SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
+  GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
 }
 
 export const CampaignServiceServiceName = "campaign.CampaignService";
@@ -3171,6 +3252,7 @@ export class CampaignServiceClientImpl implements CampaignService {
     this.MarkTaskAsCompleted = this.MarkTaskAsCompleted.bind(this);
     this.Health = this.Health.bind(this);
     this.SearchCampaigns = this.SearchCampaigns.bind(this);
+    this.GetJoinedCampaignsByProfileId = this.GetJoinedCampaignsByProfileId.bind(this);
   }
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse> {
     const data = CreateCampaignRequest.encode(request).finish();
@@ -3260,6 +3342,12 @@ export class CampaignServiceClientImpl implements CampaignService {
     const data = SearchCampaignsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SearchCampaigns", data);
     return promise.then((data) => SearchCampaignsResponse.decode(new BinaryReader(data)));
+  }
+
+  GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse> {
+    const data = CampaignsByProfileIdRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetJoinedCampaignsByProfileId", data);
+    return promise.then((data) => GetCampaignsResponse.decode(new BinaryReader(data)));
   }
 }
 

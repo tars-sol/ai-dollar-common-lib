@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: campaign.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignByIdResponse = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
+exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByProfileIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignByIdResponse = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -1144,6 +1144,7 @@ function createBaseCampaignByIdResponse() {
         tasks: [],
         brandUsername: "",
         totalParticipants: "",
+        isJoined: false,
     };
 }
 exports.CampaignByIdResponse = {
@@ -1189,6 +1190,9 @@ exports.CampaignByIdResponse = {
         }
         if (message.totalParticipants !== "") {
             writer.uint32(122).string(message.totalParticipants);
+        }
+        if (message.isJoined !== false) {
+            writer.uint32(128).bool(message.isJoined);
         }
         return writer;
     },
@@ -1297,6 +1301,13 @@ exports.CampaignByIdResponse = {
                     message.totalParticipants = reader.string();
                     continue;
                 }
+                case 16: {
+                    if (tag !== 128) {
+                        break;
+                    }
+                    message.isJoined = reader.bool();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1321,6 +1332,7 @@ exports.CampaignByIdResponse = {
             tasks: globalThis.Array.isArray(object?.tasks) ? object.tasks.map((e) => exports.TaskResponse.fromJSON(e)) : [],
             brandUsername: isSet(object.brandUsername) ? globalThis.String(object.brandUsername) : "",
             totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
+            isJoined: isSet(object.isJoined) ? globalThis.Boolean(object.isJoined) : false,
         };
     },
     toJSON(message) {
@@ -1367,6 +1379,9 @@ exports.CampaignByIdResponse = {
         if (message.totalParticipants !== "") {
             obj.totalParticipants = message.totalParticipants;
         }
+        if (message.isJoined !== false) {
+            obj.isJoined = message.isJoined;
+        }
         return obj;
     },
     create(base) {
@@ -1388,6 +1403,7 @@ exports.CampaignByIdResponse = {
         message.tasks = object.tasks?.map((e) => exports.TaskResponse.fromPartial(e)) || [];
         message.brandUsername = object.brandUsername ?? "";
         message.totalParticipants = object.totalParticipants ?? "";
+        message.isJoined = object.isJoined ?? false;
         return message;
     },
 };
@@ -2097,6 +2113,57 @@ exports.CampaignsByIdRequest = {
         return message;
     },
 };
+function createBaseCampaignsByProfileIdRequest() {
+    return { profileId: "" };
+}
+exports.CampaignsByProfileIdRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCampaignsByProfileIdRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CampaignsByProfileIdRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCampaignsByProfileIdRequest();
+        message.profileId = object.profileId ?? "";
+        return message;
+    },
+};
 function createBaseDeleteTaskByIdRequest() {
     return { brandId: "", id: "" };
 }
@@ -2678,6 +2745,7 @@ class CampaignServiceClientImpl {
         this.MarkTaskAsCompleted = this.MarkTaskAsCompleted.bind(this);
         this.Health = this.Health.bind(this);
         this.SearchCampaigns = this.SearchCampaigns.bind(this);
+        this.GetJoinedCampaignsByProfileId = this.GetJoinedCampaignsByProfileId.bind(this);
     }
     CreateCampaign(request) {
         const data = exports.CreateCampaignRequest.encode(request).finish();
@@ -2753,6 +2821,11 @@ class CampaignServiceClientImpl {
         const data = exports.SearchCampaignsRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "SearchCampaigns", data);
         return promise.then((data) => exports.SearchCampaignsResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetJoinedCampaignsByProfileId(request) {
+        const data = exports.CampaignsByProfileIdRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetJoinedCampaignsByProfileId", data);
+        return promise.then((data) => exports.GetCampaignsResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.CampaignServiceClientImpl = CampaignServiceClientImpl;
