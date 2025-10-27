@@ -71,6 +71,12 @@ export interface CommentResponse {
 export interface GetCommentsRequest {
     postId: string;
 }
+export interface DeleteCommentRequest {
+    commentId: string;
+    roleId: string;
+    role: string;
+    userId: string;
+}
 export interface GetPortfolioRequest {
     profileId: string;
     userId: string;
@@ -235,6 +241,7 @@ export declare const GetFeedResponse: MessageFns<GetFeedResponse>;
 export declare const CreateCommentRequest: MessageFns<CreateCommentRequest>;
 export declare const CommentResponse: MessageFns<CommentResponse>;
 export declare const GetCommentsRequest: MessageFns<GetCommentsRequest>;
+export declare const DeleteCommentRequest: MessageFns<DeleteCommentRequest>;
 export declare const GetPortfolioRequest: MessageFns<GetPortfolioRequest>;
 export declare const GetCommentsResponse: MessageFns<GetCommentsResponse>;
 export declare const PostMediaResponse: MessageFns<PostMediaResponse>;
@@ -275,6 +282,7 @@ export interface PostService {
     Health(request: Empty): Promise<HealthResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
     CreateArticle(request: CreateArticleRequest): Promise<Article>;
+    DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -301,6 +309,7 @@ export declare class PostServiceClientImpl implements PostService {
     Health(request: Empty): Promise<HealthResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
     CreateArticle(request: CreateArticleRequest): Promise<Article>;
+    DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

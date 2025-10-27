@@ -93,6 +93,13 @@ export interface GetCommentsRequest {
   postId: string;
 }
 
+export interface DeleteCommentRequest {
+  commentId: string;
+  roleId: string;
+  role: string;
+  userId: string;
+}
+
 export interface GetPortfolioRequest {
   profileId: string;
   userId: string;
@@ -1533,6 +1540,114 @@ export const GetCommentsRequest: MessageFns<GetCommentsRequest> = {
   fromPartial<I extends Exact<DeepPartial<GetCommentsRequest>, I>>(object: I): GetCommentsRequest {
     const message = createBaseGetCommentsRequest();
     message.postId = object.postId ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteCommentRequest(): DeleteCommentRequest {
+  return { commentId: "", roleId: "", role: "", userId: "" };
+}
+
+export const DeleteCommentRequest: MessageFns<DeleteCommentRequest> = {
+  encode(message: DeleteCommentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.commentId !== "") {
+      writer.uint32(10).string(message.commentId);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(18).string(message.roleId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    if (message.userId !== "") {
+      writer.uint32(34).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteCommentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteCommentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.commentId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteCommentRequest {
+    return {
+      commentId: isSet(object.commentId) ? globalThis.String(object.commentId) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+    };
+  },
+
+  toJSON(message: DeleteCommentRequest): unknown {
+    const obj: any = {};
+    if (message.commentId !== "") {
+      obj.commentId = message.commentId;
+    }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteCommentRequest>, I>>(base?: I): DeleteCommentRequest {
+    return DeleteCommentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DeleteCommentRequest>, I>>(object: I): DeleteCommentRequest {
+    const message = createBaseDeleteCommentRequest();
+    message.commentId = object.commentId ?? "";
+    message.roleId = object.roleId ?? "";
+    message.role = object.role ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -4224,6 +4339,7 @@ export interface PostService {
   Health(request: Empty): Promise<HealthResponse>;
   SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
   CreateArticle(request: CreateArticleRequest): Promise<Article>;
+  DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -4251,6 +4367,7 @@ export class PostServiceClientImpl implements PostService {
     this.Health = this.Health.bind(this);
     this.SearchPosts = this.SearchPosts.bind(this);
     this.CreateArticle = this.CreateArticle.bind(this);
+    this.DeleteComment = this.DeleteComment.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -4358,6 +4475,12 @@ export class PostServiceClientImpl implements PostService {
     const data = CreateArticleRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateArticle", data);
     return promise.then((data) => Article.decode(new BinaryReader(data)));
+  }
+
+  DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse> {
+    const data = DeleteCommentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeleteComment", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }
 

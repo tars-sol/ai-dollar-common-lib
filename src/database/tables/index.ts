@@ -26,3 +26,4 @@ export * from './payout.entity';
 export * from './article.entity'
 export * from './post_deleted.entity'
 export * from './mention.entity'
+export * from './event_queue_task.entity';

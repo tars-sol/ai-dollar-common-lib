@@ -24,6 +24,7 @@ service PostService {
   rpc Health(google.protobuf.Empty) returns (HealthResponse);
   rpc SearchPosts (SearchPostsRequest) returns (SearchPostsResponse);
   rpc CreateArticle (CreateArticleRequest) returns (Article);
+  rpc DeleteComment(DeleteCommentRequest) returns (SuccessResponse);
 }
 
 message CreatePostRequest {
@@ -100,6 +101,12 @@ message CommentResponse{
 }
 message GetCommentsRequest{
   string postId=1;
+}
+message DeleteCommentRequest{
+  string commentId = 1;
+  string roleId = 2;
+  string role = 3;
+  string userId = 4;
 }
 message GetPortfolioRequest{
   string profileId = 1;
