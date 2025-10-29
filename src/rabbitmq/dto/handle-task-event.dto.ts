@@ -1,6 +1,8 @@
 import { TaskAction } from '../../database';
-
-export interface TaskFollowEventDto {
+export interface EventDto {
+  correlationId: string;
+}
+export interface TaskFollowEventDto extends EventDto {
   action: TaskAction.FOLLOW_PROFILE | TaskAction.FOLLOW_BRAND;
   targetId: string;
   followerId: string;
@@ -9,7 +11,7 @@ export interface TaskFollowEventDto {
 
 export type TaskUnfollowEventDto = TaskFollowEventDto;
 
-export interface TaskSubscribeEventDto {
+export interface TaskSubscribeEventDto extends EventDto {
   action: TaskAction.SUBSCRIBE_PROFILE;
   targetId: string;
   subscriberId: string;
@@ -18,7 +20,7 @@ export interface TaskSubscribeEventDto {
 
 export type TaskUnsubscribeEventDto = TaskSubscribeEventDto;
 
-export interface TaskLikeEventDto {
+export interface TaskLikeEventDto extends EventDto {
   action: TaskAction.LIKE_POST;
   targetId: string;
   userId: string;
@@ -27,7 +29,7 @@ export interface TaskLikeEventDto {
 
 export type TaskUnlikeEventDto = TaskLikeEventDto;
 
-export interface TaskCommentEventDto {
+export interface TaskCommentEventDto extends EventDto {
   action: TaskAction.COMMENT_ON_POST;
   targetId: string;
   userId: string;
@@ -36,7 +38,7 @@ export interface TaskCommentEventDto {
 }
 export type TaskDeleteCommentEventDto = TaskCommentEventDto;
 
-export interface TaskMentionPostEventDto {
+export interface TaskMentionPostEventDto extends EventDto {
   action:
     | TaskAction.CREATE_POST_ABOUT_PROFILE
     | TaskAction.CREATE_POST_ABOUT_BRAND;
@@ -47,7 +49,7 @@ export interface TaskMentionPostEventDto {
 }
 export type TaskDeleteMentionPostEventDto = TaskMentionPostEventDto;
 
-export interface TaskMentionCommentEventDto {
+export interface TaskMentionCommentEventDto extends EventDto {
   action:
     | TaskAction.MENTION_PROFILE_IN_COMMENTS
     | TaskAction.MENTION_BRAND_IN_COMMENTS;

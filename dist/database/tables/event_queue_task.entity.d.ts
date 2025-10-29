@@ -8,6 +8,6 @@ export declare class EventQueueTask {
     publishAttempts: number;
     nextAttemptAt?: Date | null;
     isSuccessful: boolean;
-    failureReason?: string | null;
+    failureReason: string | null;
     successfulAt?: Date | null;
 }
