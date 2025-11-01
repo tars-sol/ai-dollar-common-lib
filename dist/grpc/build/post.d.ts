@@ -77,6 +77,12 @@ export interface DeleteCommentRequest {
     role: string;
     userId: string;
 }
+export interface UpdateCommentRequest {
+    commentId: string;
+    userId: string;
+    role: string;
+    text: string;
+}
 export interface GetPortfolioRequest {
     profileId: string;
     userId: string;
@@ -242,6 +248,7 @@ export declare const CreateCommentRequest: MessageFns<CreateCommentRequest>;
 export declare const CommentResponse: MessageFns<CommentResponse>;
 export declare const GetCommentsRequest: MessageFns<GetCommentsRequest>;
 export declare const DeleteCommentRequest: MessageFns<DeleteCommentRequest>;
+export declare const UpdateCommentRequest: MessageFns<UpdateCommentRequest>;
 export declare const GetPortfolioRequest: MessageFns<GetPortfolioRequest>;
 export declare const GetCommentsResponse: MessageFns<GetCommentsResponse>;
 export declare const PostMediaResponse: MessageFns<PostMediaResponse>;
@@ -274,6 +281,7 @@ export interface PostService {
     GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
+    UpdateComment(request: UpdateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
     DeletePost(request: DeletePostRequest): Promise<SuccessResponse>;
     AddToPortfolio(request: AddToPortfolioRequest): Promise<SuccessResponse>;
@@ -301,6 +309,7 @@ export declare class PostServiceClientImpl implements PostService {
     GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
     PostReaction(request: PostReactionRequest): Promise<PostResponse>;
     CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
+    UpdateComment(request: UpdateCommentRequest): Promise<CommentResponse>;
     GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
     DeletePost(request: DeletePostRequest): Promise<SuccessResponse>;
     AddToPortfolio(request: AddToPortfolioRequest): Promise<SuccessResponse>;

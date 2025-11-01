@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.CreateArticleRequest = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.DeleteCommentRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.CreateArticleRequest = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.UpdateCommentRequest = exports.DeleteCommentRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -1263,6 +1263,104 @@ exports.DeleteCommentRequest = {
         message.roleId = object.roleId ?? "";
         message.role = object.role ?? "";
         message.userId = object.userId ?? "";
+        return message;
+    },
+};
+function createBaseUpdateCommentRequest() {
+    return { commentId: "", userId: "", role: "", text: "" };
+}
+exports.UpdateCommentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.commentId !== "") {
+            writer.uint32(10).string(message.commentId);
+        }
+        if (message.userId !== "") {
+            writer.uint32(18).string(message.userId);
+        }
+        if (message.role !== "") {
+            writer.uint32(26).string(message.role);
+        }
+        if (message.text !== "") {
+            writer.uint32(34).string(message.text);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateCommentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.commentId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.text = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            commentId: isSet(object.commentId) ? globalThis.String(object.commentId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            text: isSet(object.text) ? globalThis.String(object.text) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.commentId !== "") {
+            obj.commentId = message.commentId;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.text !== "") {
+            obj.text = message.text;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateCommentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateCommentRequest();
+        message.commentId = object.commentId ?? "";
+        message.userId = object.userId ?? "";
+        message.role = object.role ?? "";
+        message.text = object.text ?? "";
         return message;
     },
 };
@@ -3718,6 +3816,7 @@ class PostServiceClientImpl {
         this.GetProfilePosts = this.GetProfilePosts.bind(this);
         this.PostReaction = this.PostReaction.bind(this);
         this.CreateComment = this.CreateComment.bind(this);
+        this.UpdateComment = this.UpdateComment.bind(this);
         this.GetComments = this.GetComments.bind(this);
         this.DeletePost = this.DeletePost.bind(this);
         this.AddToPortfolio = this.AddToPortfolio.bind(this);
@@ -3776,6 +3875,11 @@ class PostServiceClientImpl {
     CreateComment(request) {
         const data = exports.CreateCommentRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "CreateComment", data);
+        return promise.then((data) => exports.CommentResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    UpdateComment(request) {
+        const data = exports.UpdateCommentRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "UpdateComment", data);
         return promise.then((data) => exports.CommentResponse.decode(new wire_1.BinaryReader(data)));
     }
     GetComments(request) {

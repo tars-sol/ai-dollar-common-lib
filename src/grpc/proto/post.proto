@@ -16,6 +16,7 @@ service PostService {
   rpc GetProfilePosts(GetProfilePostsRequest) returns (GetFeedResponse);
   rpc PostReaction(PostReactionRequest) returns (PostResponse);
   rpc CreateComment(CreateCommentRequest) returns (CommentResponse);
+  rpc UpdateComment(UpdateCommentRequest) returns (CommentResponse);
   rpc GetComments(GetCommentsRequest) returns (GetCommentsResponse);
   rpc DeletePost(DeletePostRequest) returns (SuccessResponse);
   rpc AddToPortfolio(AddToPortfolioRequest) returns (SuccessResponse);
@@ -107,6 +108,12 @@ message DeleteCommentRequest{
   string roleId = 2;
   string role = 3;
   string userId = 4;
+}
+message UpdateCommentRequest {
+  string commentId = 1;
+  string userId    = 2;
+  string role      = 3;
+  string text      = 4;
 }
 message GetPortfolioRequest{
   string profileId = 1;

@@ -100,6 +100,13 @@ export interface DeleteCommentRequest {
   userId: string;
 }
 
+export interface UpdateCommentRequest {
+  commentId: string;
+  userId: string;
+  role: string;
+  text: string;
+}
+
 export interface GetPortfolioRequest {
   profileId: string;
   userId: string;
@@ -1648,6 +1655,114 @@ export const DeleteCommentRequest: MessageFns<DeleteCommentRequest> = {
     message.roleId = object.roleId ?? "";
     message.role = object.role ?? "";
     message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateCommentRequest(): UpdateCommentRequest {
+  return { commentId: "", userId: "", role: "", text: "" };
+}
+
+export const UpdateCommentRequest: MessageFns<UpdateCommentRequest> = {
+  encode(message: UpdateCommentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.commentId !== "") {
+      writer.uint32(10).string(message.commentId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    if (message.text !== "") {
+      writer.uint32(34).string(message.text);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateCommentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateCommentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.commentId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.text = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateCommentRequest {
+    return {
+      commentId: isSet(object.commentId) ? globalThis.String(object.commentId) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      text: isSet(object.text) ? globalThis.String(object.text) : "",
+    };
+  },
+
+  toJSON(message: UpdateCommentRequest): unknown {
+    const obj: any = {};
+    if (message.commentId !== "") {
+      obj.commentId = message.commentId;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.text !== "") {
+      obj.text = message.text;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateCommentRequest>, I>>(base?: I): UpdateCommentRequest {
+    return UpdateCommentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateCommentRequest>, I>>(object: I): UpdateCommentRequest {
+    const message = createBaseUpdateCommentRequest();
+    message.commentId = object.commentId ?? "";
+    message.userId = object.userId ?? "";
+    message.role = object.role ?? "";
+    message.text = object.text ?? "";
     return message;
   },
 };
@@ -4331,6 +4446,7 @@ export interface PostService {
   GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
   PostReaction(request: PostReactionRequest): Promise<PostResponse>;
   CreateComment(request: CreateCommentRequest): Promise<CommentResponse>;
+  UpdateComment(request: UpdateCommentRequest): Promise<CommentResponse>;
   GetComments(request: GetCommentsRequest): Promise<GetCommentsResponse>;
   DeletePost(request: DeletePostRequest): Promise<SuccessResponse>;
   AddToPortfolio(request: AddToPortfolioRequest): Promise<SuccessResponse>;
@@ -4359,6 +4475,7 @@ export class PostServiceClientImpl implements PostService {
     this.GetProfilePosts = this.GetProfilePosts.bind(this);
     this.PostReaction = this.PostReaction.bind(this);
     this.CreateComment = this.CreateComment.bind(this);
+    this.UpdateComment = this.UpdateComment.bind(this);
     this.GetComments = this.GetComments.bind(this);
     this.DeletePost = this.DeletePost.bind(this);
     this.AddToPortfolio = this.AddToPortfolio.bind(this);
@@ -4426,6 +4543,12 @@ export class PostServiceClientImpl implements PostService {
   CreateComment(request: CreateCommentRequest): Promise<CommentResponse> {
     const data = CreateCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateComment", data);
+    return promise.then((data) => CommentResponse.decode(new BinaryReader(data)));
+  }
+
+  UpdateComment(request: UpdateCommentRequest): Promise<CommentResponse> {
+    const data = UpdateCommentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "UpdateComment", data);
     return promise.then((data) => CommentResponse.decode(new BinaryReader(data)));
   }
 
