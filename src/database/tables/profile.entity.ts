@@ -26,6 +26,9 @@ export class Profile {
   @Column({ type: 'varchar', nullable: true })
   avatarUrl: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  bannerUrl: string;
+
   @Column({ type: 'text', nullable: true })
   bio: string;
 
@@ -43,13 +46,13 @@ export class Profile {
 
   @Column({ nullable: true })
   telegram: string;
-  
+
   @Column({ nullable: true })
   discord: string;
-  
+
   @Column({ nullable: true })
   tiktok: string;
-  
+
   @Column({ nullable: true })
   instagram: string;
 

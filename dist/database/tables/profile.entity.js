@@ -34,6 +34,10 @@ __decorate([
     __metadata("design:type", String)
 ], Profile.prototype, "avatarUrl", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", String)
+], Profile.prototype, "bannerUrl", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
 ], Profile.prototype, "bio", void 0);

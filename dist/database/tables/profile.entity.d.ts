@@ -4,6 +4,7 @@ export declare class Profile {
     user: User;
     userId: string;
     avatarUrl: string;
+    bannerUrl: string;
     bio: string;
     websiteUrl: string;
     twitter: string;

@@ -8,6 +8,7 @@ export declare class Brand {
     userId: string;
     description: string;
     logoUrl: string;
+    bannerUrl: string;
     discord: string;
     twitter: string;
     telegram: string;

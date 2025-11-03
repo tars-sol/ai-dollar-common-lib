@@ -36,6 +36,9 @@ export class Brand {
   logoUrl: string;
 
   @Column({ type: 'varchar', nullable: true })
+  bannerUrl: string;
+
+  @Column({ type: 'varchar', nullable: true })
   discord: string;
 
   @Column({ type: 'varchar', nullable: true })
