@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: auth.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.SubmitOnboardingTopicsRequest = exports.OnboardingTopicsResponse = exports.Topic = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.HealthResponse = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.FollowRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
+exports.AuthServiceClientImpl = exports.AuthServiceServiceName = exports.SubmitOnboardingTopicsRequest = exports.OnboardingTopicsResponse = exports.Topic = exports.AuthResponse = exports.UserRequest = exports.RefreshTokenRequest = exports.LinkWalletRequest = exports.HealthResponse = exports.WalletLoginRequest = exports.WalletNonceResponse = exports.WalletNonceRequest = exports.SsoLoginRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.LoginRequest = exports.RegisterRequest = exports.RevokeTokenResponse = exports.ValidateTokenResponse = exports.ValidateTokenRequest = exports.RevokeTokenRequest = exports.FollowRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -558,6 +558,157 @@ exports.LoginRequest = {
         const message = createBaseLoginRequest();
         message.email = object.email ?? "";
         message.password = object.password ?? "";
+        return message;
+    },
+};
+function createBaseGenerateUploadUrlRequest() {
+    return { userId: "", fileName: "", contentType: "" };
+}
+exports.GenerateUploadUrlRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.fileName !== "") {
+            writer.uint32(18).string(message.fileName);
+        }
+        if (message.contentType !== "") {
+            writer.uint32(26).string(message.contentType);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGenerateUploadUrlRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.fileName = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.contentType = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+            contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.fileName !== "") {
+            obj.fileName = message.fileName;
+        }
+        if (message.contentType !== "") {
+            obj.contentType = message.contentType;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GenerateUploadUrlRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGenerateUploadUrlRequest();
+        message.userId = object.userId ?? "";
+        message.fileName = object.fileName ?? "";
+        message.contentType = object.contentType ?? "";
+        return message;
+    },
+};
+function createBaseGenerateUploadUrlResponse() {
+    return { uploadUrl: "", key: "" };
+}
+exports.GenerateUploadUrlResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.uploadUrl !== "") {
+            writer.uint32(10).string(message.uploadUrl);
+        }
+        if (message.key !== "") {
+            writer.uint32(18).string(message.key);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGenerateUploadUrlResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.uploadUrl = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.key = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            uploadUrl: isSet(object.uploadUrl) ? globalThis.String(object.uploadUrl) : "",
+            key: isSet(object.key) ? globalThis.String(object.key) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.uploadUrl !== "") {
+            obj.uploadUrl = message.uploadUrl;
+        }
+        if (message.key !== "") {
+            obj.key = message.key;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GenerateUploadUrlResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGenerateUploadUrlResponse();
+        message.uploadUrl = object.uploadUrl ?? "";
+        message.key = object.key ?? "";
         return message;
     },
 };
@@ -1447,6 +1598,7 @@ class AuthServiceClientImpl {
         this.FollowUser = this.FollowUser.bind(this);
         this.ListOnboardingTopics = this.ListOnboardingTopics.bind(this);
         this.SubmitOnboardingTopics = this.SubmitOnboardingTopics.bind(this);
+        this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
     }
     Register(request) {
         const data = exports.RegisterRequest.encode(request).finish();
@@ -1512,6 +1664,11 @@ class AuthServiceClientImpl {
         const data = exports.SubmitOnboardingTopicsRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "SubmitOnboardingTopics", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GenerateUploadUrl(request) {
+        const data = exports.GenerateUploadUrlRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GenerateUploadUrl", data);
+        return promise.then((data) => exports.GenerateUploadUrlResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.AuthServiceClientImpl = AuthServiceClientImpl;

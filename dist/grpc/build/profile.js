@@ -150,6 +150,7 @@ function createBaseProfileResponse() {
         followingCount: "",
         subscribersCount: "",
         subscriptionsCount: "",
+        bannerUrl: "",
     };
 }
 exports.ProfileResponse = {
@@ -231,6 +232,9 @@ exports.ProfileResponse = {
         }
         if (message.subscriptionsCount !== "") {
             writer.uint32(178).string(message.subscriptionsCount);
+        }
+        if (message.bannerUrl !== "") {
+            writer.uint32(218).string(message.bannerUrl);
         }
         return writer;
     },
@@ -423,6 +427,13 @@ exports.ProfileResponse = {
                     message.subscriptionsCount = reader.string();
                     continue;
                 }
+                case 27: {
+                    if (tag !== 218) {
+                        break;
+                    }
+                    message.bannerUrl = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -459,6 +470,7 @@ exports.ProfileResponse = {
             followingCount: isSet(object.followingCount) ? globalThis.String(object.followingCount) : "",
             subscribersCount: isSet(object.subscribersCount) ? globalThis.String(object.subscribersCount) : "",
             subscriptionsCount: isSet(object.subscriptionsCount) ? globalThis.String(object.subscriptionsCount) : "",
+            bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : "",
         };
     },
     toJSON(message) {
@@ -541,6 +553,9 @@ exports.ProfileResponse = {
         if (message.subscriptionsCount !== "") {
             obj.subscriptionsCount = message.subscriptionsCount;
         }
+        if (message.bannerUrl !== "") {
+            obj.bannerUrl = message.bannerUrl;
+        }
         return obj;
     },
     create(base) {
@@ -574,6 +589,7 @@ exports.ProfileResponse = {
         message.followingCount = object.followingCount ?? "";
         message.subscribersCount = object.subscribersCount ?? "";
         message.subscriptionsCount = object.subscriptionsCount ?? "";
+        message.bannerUrl = object.bannerUrl ?? "";
         return message;
     },
 };
@@ -590,6 +606,7 @@ function createBaseCreateProfileRequest() {
         instagram: undefined,
         discord: undefined,
         telegram: undefined,
+        bannerUrl: undefined,
     };
 }
 exports.CreateProfileRequest = {
@@ -626,6 +643,9 @@ exports.CreateProfileRequest = {
         }
         if (message.telegram !== undefined) {
             writer.uint32(90).string(message.telegram);
+        }
+        if (message.bannerUrl !== undefined) {
+            writer.uint32(98).string(message.bannerUrl);
         }
         return writer;
     },
@@ -713,6 +733,13 @@ exports.CreateProfileRequest = {
                     message.telegram = reader.string();
                     continue;
                 }
+                case 12: {
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.bannerUrl = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -734,6 +761,7 @@ exports.CreateProfileRequest = {
             instagram: isSet(object.instagram) ? globalThis.String(object.instagram) : undefined,
             discord: isSet(object.discord) ? globalThis.String(object.discord) : undefined,
             telegram: isSet(object.telegram) ? globalThis.String(object.telegram) : undefined,
+            bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : undefined,
         };
     },
     toJSON(message) {
@@ -771,6 +799,9 @@ exports.CreateProfileRequest = {
         if (message.telegram !== undefined) {
             obj.telegram = message.telegram;
         }
+        if (message.bannerUrl !== undefined) {
+            obj.bannerUrl = message.bannerUrl;
+        }
         return obj;
     },
     create(base) {
@@ -789,6 +820,7 @@ exports.CreateProfileRequest = {
         message.instagram = object.instagram ?? undefined;
         message.discord = object.discord ?? undefined;
         message.telegram = object.telegram ?? undefined;
+        message.bannerUrl = object.bannerUrl ?? undefined;
         return message;
     },
 };
@@ -807,6 +839,7 @@ function createBaseUpdateProfileRequest() {
         youtube: undefined,
         tiktok: undefined,
         instagram: undefined,
+        bannerUrl: undefined,
     };
 }
 exports.UpdateProfileRequest = {
@@ -849,6 +882,9 @@ exports.UpdateProfileRequest = {
         }
         if (message.instagram !== undefined) {
             writer.uint32(90).string(message.instagram);
+        }
+        if (message.bannerUrl !== undefined) {
+            writer.uint32(114).string(message.bannerUrl);
         }
         return writer;
     },
@@ -950,6 +986,13 @@ exports.UpdateProfileRequest = {
                     message.instagram = reader.string();
                     continue;
                 }
+                case 14: {
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.bannerUrl = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -973,6 +1016,7 @@ exports.UpdateProfileRequest = {
             youtube: isSet(object.youtube) ? globalThis.String(object.youtube) : undefined,
             tiktok: isSet(object.tiktok) ? globalThis.String(object.tiktok) : undefined,
             instagram: isSet(object.instagram) ? globalThis.String(object.instagram) : undefined,
+            bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : undefined,
         };
     },
     toJSON(message) {
@@ -1016,6 +1060,9 @@ exports.UpdateProfileRequest = {
         if (message.instagram !== undefined) {
             obj.instagram = message.instagram;
         }
+        if (message.bannerUrl !== undefined) {
+            obj.bannerUrl = message.bannerUrl;
+        }
         return obj;
     },
     create(base) {
@@ -1036,6 +1083,7 @@ exports.UpdateProfileRequest = {
         message.youtube = object.youtube ?? undefined;
         message.tiktok = object.tiktok ?? undefined;
         message.instagram = object.instagram ?? undefined;
+        message.bannerUrl = object.bannerUrl ?? undefined;
         return message;
     },
 };

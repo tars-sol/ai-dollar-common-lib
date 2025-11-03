@@ -27,6 +27,7 @@ export interface BrandResponse {
     telegram: string;
     isFollowing?: boolean | undefined;
     username: string;
+    bannerUrl: string;
 }
 export interface CreateBrandRequest {
     userId: string;
@@ -40,6 +41,7 @@ export interface CreateBrandRequest {
     twitter?: string | undefined;
     telegram?: string | undefined;
     tokenName?: string | undefined;
+    bannerUrl?: string | undefined;
 }
 /** Request for updating a brand */
 export interface UpdateBrandRequest {
@@ -54,6 +56,7 @@ export interface UpdateBrandRequest {
     telegram?: string | undefined;
     tokenName?: string | undefined;
     username?: string | undefined;
+    bannerUrl?: string | undefined;
 }
 export interface SearchBrandsRequest {
     q: string;

@@ -45,6 +45,7 @@ message ProfileResponse {
   string followingCount = 20;
   string subscribersCount = 21;
   string subscriptionsCount = 22;
+  string bannerUrl = 27;
 }
 
 message CreateProfileRequest {
@@ -59,6 +60,7 @@ message CreateProfileRequest {
   optional string instagram = 9;
   optional string discord = 10;
   optional string telegram = 11;
+  optional string bannerUrl = 12;
 }
 
 
@@ -76,6 +78,7 @@ message UpdateProfileRequest {
   optional string youtube = 9;
   optional string tiktok = 10;
   optional string instagram=11;
+  optional string bannerUrl = 14;
 }
 
 message GetProfileByIdRequest {

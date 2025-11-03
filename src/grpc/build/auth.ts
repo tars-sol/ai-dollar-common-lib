@@ -51,6 +51,17 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface GenerateUploadUrlRequest {
+  userId: string;
+  fileName: string;
+  contentType: string;
+}
+
+export interface GenerateUploadUrlResponse {
+  uploadUrl: string;
+  key: string;
+}
+
 export interface SsoLoginRequest {
   idToken: string;
   provider: string;
@@ -730,6 +741,174 @@ export const LoginRequest: MessageFns<LoginRequest> = {
     const message = createBaseLoginRequest();
     message.email = object.email ?? "";
     message.password = object.password ?? "";
+    return message;
+  },
+};
+
+function createBaseGenerateUploadUrlRequest(): GenerateUploadUrlRequest {
+  return { userId: "", fileName: "", contentType: "" };
+}
+
+export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
+  encode(message: GenerateUploadUrlRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.fileName !== "") {
+      writer.uint32(18).string(message.fileName);
+    }
+    if (message.contentType !== "") {
+      writer.uint32(26).string(message.contentType);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenerateUploadUrlRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenerateUploadUrlRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.fileName = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.contentType = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenerateUploadUrlRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
+      contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
+    };
+  },
+
+  toJSON(message: GenerateUploadUrlRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.fileName !== "") {
+      obj.fileName = message.fileName;
+    }
+    if (message.contentType !== "") {
+      obj.contentType = message.contentType;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GenerateUploadUrlRequest>, I>>(base?: I): GenerateUploadUrlRequest {
+    return GenerateUploadUrlRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GenerateUploadUrlRequest>, I>>(object: I): GenerateUploadUrlRequest {
+    const message = createBaseGenerateUploadUrlRequest();
+    message.userId = object.userId ?? "";
+    message.fileName = object.fileName ?? "";
+    message.contentType = object.contentType ?? "";
+    return message;
+  },
+};
+
+function createBaseGenerateUploadUrlResponse(): GenerateUploadUrlResponse {
+  return { uploadUrl: "", key: "" };
+}
+
+export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = {
+  encode(message: GenerateUploadUrlResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.uploadUrl !== "") {
+      writer.uint32(10).string(message.uploadUrl);
+    }
+    if (message.key !== "") {
+      writer.uint32(18).string(message.key);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenerateUploadUrlResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenerateUploadUrlResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.uploadUrl = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenerateUploadUrlResponse {
+    return {
+      uploadUrl: isSet(object.uploadUrl) ? globalThis.String(object.uploadUrl) : "",
+      key: isSet(object.key) ? globalThis.String(object.key) : "",
+    };
+  },
+
+  toJSON(message: GenerateUploadUrlResponse): unknown {
+    const obj: any = {};
+    if (message.uploadUrl !== "") {
+      obj.uploadUrl = message.uploadUrl;
+    }
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GenerateUploadUrlResponse>, I>>(base?: I): GenerateUploadUrlResponse {
+    return GenerateUploadUrlResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GenerateUploadUrlResponse>, I>>(object: I): GenerateUploadUrlResponse {
+    const message = createBaseGenerateUploadUrlResponse();
+    message.uploadUrl = object.uploadUrl ?? "";
+    message.key = object.key ?? "";
     return message;
   },
 };
@@ -1718,6 +1897,7 @@ export interface AuthService {
   FollowUser(request: FollowRequest): Promise<SuccessResponse>;
   ListOnboardingTopics(request: Empty): Promise<OnboardingTopicsResponse>;
   SubmitOnboardingTopics(request: SubmitOnboardingTopicsRequest): Promise<SuccessResponse>;
+  GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
 }
 
 export const AuthServiceServiceName = "auth.AuthService";
@@ -1740,6 +1920,7 @@ export class AuthServiceClientImpl implements AuthService {
     this.FollowUser = this.FollowUser.bind(this);
     this.ListOnboardingTopics = this.ListOnboardingTopics.bind(this);
     this.SubmitOnboardingTopics = this.SubmitOnboardingTopics.bind(this);
+    this.GenerateUploadUrl = this.GenerateUploadUrl.bind(this);
   }
   Register(request: RegisterRequest): Promise<AuthResponse> {
     const data = RegisterRequest.encode(request).finish();
@@ -1817,6 +1998,12 @@ export class AuthServiceClientImpl implements AuthService {
     const data = SubmitOnboardingTopicsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SubmitOnboardingTopics", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse> {
+    const data = GenerateUploadUrlRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GenerateUploadUrl", data);
+    return promise.then((data) => GenerateUploadUrlResponse.decode(new BinaryReader(data)));
   }
 }
 

@@ -34,6 +34,7 @@ export interface ProfileResponse {
     followingCount: string;
     subscribersCount: string;
     subscriptionsCount: string;
+    bannerUrl: string;
 }
 export interface CreateProfileRequest {
     userId: string;
@@ -47,6 +48,7 @@ export interface CreateProfileRequest {
     instagram?: string | undefined;
     discord?: string | undefined;
     telegram?: string | undefined;
+    bannerUrl?: string | undefined;
 }
 export interface UpdateProfileRequest {
     userId: string;
@@ -62,6 +64,7 @@ export interface UpdateProfileRequest {
     youtube?: string | undefined;
     tiktok?: string | undefined;
     instagram?: string | undefined;
+    bannerUrl?: string | undefined;
 }
 export interface GetProfileByIdRequest {
     isPrivate: boolean;

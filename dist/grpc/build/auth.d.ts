@@ -34,6 +34,15 @@ export interface LoginRequest {
     email: string;
     password: string;
 }
+export interface GenerateUploadUrlRequest {
+    userId: string;
+    fileName: string;
+    contentType: string;
+}
+export interface GenerateUploadUrlResponse {
+    uploadUrl: string;
+    key: string;
+}
 export interface SsoLoginRequest {
     idToken: string;
     provider: string;
@@ -97,6 +106,8 @@ export declare const ValidateTokenResponse: MessageFns<ValidateTokenResponse>;
 export declare const RevokeTokenResponse: MessageFns<RevokeTokenResponse>;
 export declare const RegisterRequest: MessageFns<RegisterRequest>;
 export declare const LoginRequest: MessageFns<LoginRequest>;
+export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
+export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
 export declare const SsoLoginRequest: MessageFns<SsoLoginRequest>;
 export declare const WalletNonceRequest: MessageFns<WalletNonceRequest>;
 export declare const WalletNonceResponse: MessageFns<WalletNonceResponse>;
@@ -123,6 +134,7 @@ export interface AuthService {
     FollowUser(request: FollowRequest): Promise<SuccessResponse>;
     ListOnboardingTopics(request: Empty): Promise<OnboardingTopicsResponse>;
     SubmitOnboardingTopics(request: SubmitOnboardingTopicsRequest): Promise<SuccessResponse>;
+    GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
 }
 export declare const AuthServiceServiceName = "auth.AuthService";
 export declare class AuthServiceClientImpl implements AuthService {
@@ -144,6 +156,7 @@ export declare class AuthServiceClientImpl implements AuthService {
     FollowUser(request: FollowRequest): Promise<SuccessResponse>;
     ListOnboardingTopics(request: Empty): Promise<OnboardingTopicsResponse>;
     SubmitOnboardingTopics(request: SubmitOnboardingTopicsRequest): Promise<SuccessResponse>;
+    GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
