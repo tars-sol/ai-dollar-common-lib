@@ -40,8 +40,16 @@ export interface GenerateUploadUrlRequest {
     contentType: string;
 }
 export interface GenerateUploadUrlResponse {
-    uploadUrl: string;
+    url: string;
+    fields: {
+        [key: string]: string;
+    };
     key: string;
+    maxBytes: number;
+}
+export interface GenerateUploadUrlResponse_FieldsEntry {
+    key: string;
+    value: string;
 }
 export interface SsoLoginRequest {
     idToken: string;
@@ -108,6 +116,7 @@ export declare const RegisterRequest: MessageFns<RegisterRequest>;
 export declare const LoginRequest: MessageFns<LoginRequest>;
 export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
+export declare const GenerateUploadUrlResponse_FieldsEntry: MessageFns<GenerateUploadUrlResponse_FieldsEntry>;
 export declare const SsoLoginRequest: MessageFns<SsoLoginRequest>;
 export declare const WalletNonceRequest: MessageFns<WalletNonceRequest>;
 export declare const WalletNonceResponse: MessageFns<WalletNonceResponse>;

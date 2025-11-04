@@ -58,8 +58,15 @@ export interface GenerateUploadUrlRequest {
 }
 
 export interface GenerateUploadUrlResponse {
-  uploadUrl: string;
+  url: string;
+  fields: { [key: string]: string };
   key: string;
+  maxBytes: number;
+}
+
+export interface GenerateUploadUrlResponse_FieldsEntry {
+  key: string;
+  value: string;
 }
 
 export interface SsoLoginRequest {
@@ -838,16 +845,22 @@ export const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest> = {
 };
 
 function createBaseGenerateUploadUrlResponse(): GenerateUploadUrlResponse {
-  return { uploadUrl: "", key: "" };
+  return { url: "", fields: {}, key: "", maxBytes: 0 };
 }
 
 export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = {
   encode(message: GenerateUploadUrlResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.uploadUrl !== "") {
-      writer.uint32(10).string(message.uploadUrl);
+    if (message.url !== "") {
+      writer.uint32(10).string(message.url);
     }
+    Object.entries(message.fields).forEach(([key, value]) => {
+      GenerateUploadUrlResponse_FieldsEntry.encode({ key: key as any, value }, writer.uint32(18).fork()).join();
+    });
     if (message.key !== "") {
-      writer.uint32(18).string(message.key);
+      writer.uint32(26).string(message.key);
+    }
+    if (message.maxBytes !== 0) {
+      writer.uint32(32).uint64(message.maxBytes);
     }
     return writer;
   },
@@ -864,7 +877,7 @@ export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = 
             break;
           }
 
-          message.uploadUrl = reader.string();
+          message.url = reader.string();
           continue;
         }
         case 2: {
@@ -872,7 +885,26 @@ export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = 
             break;
           }
 
+          const entry2 = GenerateUploadUrlResponse_FieldsEntry.decode(reader, reader.uint32());
+          if (entry2.value !== undefined) {
+            message.fields[entry2.key] = entry2.value;
+          }
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
           message.key = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.maxBytes = longToNumber(reader.uint64());
           continue;
         }
       }
@@ -886,18 +918,37 @@ export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = 
 
   fromJSON(object: any): GenerateUploadUrlResponse {
     return {
-      uploadUrl: isSet(object.uploadUrl) ? globalThis.String(object.uploadUrl) : "",
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      fields: isObject(object.fields)
+        ? Object.entries(object.fields).reduce<{ [key: string]: string }>((acc, [key, value]) => {
+          acc[key] = String(value);
+          return acc;
+        }, {})
+        : {},
       key: isSet(object.key) ? globalThis.String(object.key) : "",
+      maxBytes: isSet(object.maxBytes) ? globalThis.Number(object.maxBytes) : 0,
     };
   },
 
   toJSON(message: GenerateUploadUrlResponse): unknown {
     const obj: any = {};
-    if (message.uploadUrl !== "") {
-      obj.uploadUrl = message.uploadUrl;
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.fields) {
+      const entries = Object.entries(message.fields);
+      if (entries.length > 0) {
+        obj.fields = {};
+        entries.forEach(([k, v]) => {
+          obj.fields[k] = v;
+        });
+      }
     }
     if (message.key !== "") {
       obj.key = message.key;
+    }
+    if (message.maxBytes !== 0) {
+      obj.maxBytes = Math.round(message.maxBytes);
     }
     return obj;
   },
@@ -907,8 +958,95 @@ export const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse> = 
   },
   fromPartial<I extends Exact<DeepPartial<GenerateUploadUrlResponse>, I>>(object: I): GenerateUploadUrlResponse {
     const message = createBaseGenerateUploadUrlResponse();
-    message.uploadUrl = object.uploadUrl ?? "";
+    message.url = object.url ?? "";
+    message.fields = Object.entries(object.fields ?? {}).reduce<{ [key: string]: string }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = globalThis.String(value);
+      }
+      return acc;
+    }, {});
     message.key = object.key ?? "";
+    message.maxBytes = object.maxBytes ?? 0;
+    return message;
+  },
+};
+
+function createBaseGenerateUploadUrlResponse_FieldsEntry(): GenerateUploadUrlResponse_FieldsEntry {
+  return { key: "", value: "" };
+}
+
+export const GenerateUploadUrlResponse_FieldsEntry: MessageFns<GenerateUploadUrlResponse_FieldsEntry> = {
+  encode(message: GenerateUploadUrlResponse_FieldsEntry, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenerateUploadUrlResponse_FieldsEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenerateUploadUrlResponse_FieldsEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.key = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenerateUploadUrlResponse_FieldsEntry {
+    return {
+      key: isSet(object.key) ? globalThis.String(object.key) : "",
+      value: isSet(object.value) ? globalThis.String(object.value) : "",
+    };
+  },
+
+  toJSON(message: GenerateUploadUrlResponse_FieldsEntry): unknown {
+    const obj: any = {};
+    if (message.key !== "") {
+      obj.key = message.key;
+    }
+    if (message.value !== "") {
+      obj.value = message.value;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GenerateUploadUrlResponse_FieldsEntry>, I>>(
+    base?: I,
+  ): GenerateUploadUrlResponse_FieldsEntry {
+    return GenerateUploadUrlResponse_FieldsEntry.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GenerateUploadUrlResponse_FieldsEntry>, I>>(
+    object: I,
+  ): GenerateUploadUrlResponse_FieldsEntry {
+    const message = createBaseGenerateUploadUrlResponse_FieldsEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
     return message;
   },
 };
@@ -2022,6 +2160,21 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

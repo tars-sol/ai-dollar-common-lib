@@ -62,8 +62,10 @@ message GenerateUploadUrlRequest {
 }
 
 message GenerateUploadUrlResponse {
-  string uploadUrl = 1;
-  string key = 2;
+  string url = 1;                              
+  map<string, string> fields = 2;         
+  string key = 3;                           
+  uint64 maxBytes = 4;      
 }
 
 message SsoLoginRequest {
