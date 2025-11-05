@@ -71,6 +71,10 @@ export interface CampaignResponse {
     description: string;
     totalParticipants: string;
 }
+export interface CancelCampaignResponse {
+    campaign: CampaignResponse | undefined;
+    isRefund: boolean;
+}
 export interface CampaignByIdResponse {
     id: string;
     brandId: string;
@@ -175,6 +179,27 @@ export interface SearchCampaignsResponse {
     results: CampaignSearchItem[];
     total: number;
 }
+export interface GetCampaignProgressRequest {
+    campaignId: string;
+    brandId: string;
+}
+export interface CampaignProgressParticipant {
+    profileId: string;
+    profileCampaignId: string;
+    username: string;
+    name: string;
+    avatarUrl: string;
+    totalTasks: number;
+    completedTasks: number;
+    isCompleted: boolean;
+    joinedAt: string;
+    completedAt: string;
+}
+export interface GetCampaignProgressResponse {
+    participants: CampaignProgressParticipant[];
+    totalParticipants: number;
+    totalTasks: number;
+}
 export declare const CreateCampaignRequest: MessageFns<CreateCampaignRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const TaskInput: MessageFns<TaskInput>;
@@ -186,6 +211,7 @@ export declare const JoinPublicCampaignRequest: MessageFns<JoinPublicCampaignReq
 export declare const LeaveCampaignRequest: MessageFns<LeaveCampaignRequest>;
 export declare const UpdatePrivateCampaignProfilesRequest: MessageFns<UpdatePrivateCampaignProfilesRequest>;
 export declare const CampaignResponse: MessageFns<CampaignResponse>;
+export declare const CancelCampaignResponse: MessageFns<CancelCampaignResponse>;
 export declare const CampaignByIdResponse: MessageFns<CampaignByIdResponse>;
 export declare const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest>;
 export declare const TaskResponse: MessageFns<TaskResponse>;
@@ -201,6 +227,9 @@ export declare const GetCampaignsResponse: MessageFns<GetCampaignsResponse>;
 export declare const SearchCampaignsRequest: MessageFns<SearchCampaignsRequest>;
 export declare const CampaignSearchItem: MessageFns<CampaignSearchItem>;
 export declare const SearchCampaignsResponse: MessageFns<SearchCampaignsResponse>;
+export declare const GetCampaignProgressRequest: MessageFns<GetCampaignProgressRequest>;
+export declare const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant>;
+export declare const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse>;
 /** gRPC Service */
 export interface CampaignService {
     CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
@@ -209,7 +238,7 @@ export interface CampaignService {
     UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
     UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
     GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
-    DeleteCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
+    CancelCampaignById(request: CampaignsByIdRequest): Promise<CancelCampaignResponse>;
     DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;
     AddProfileToCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
     RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
@@ -219,6 +248,7 @@ export interface CampaignService {
     Health(request: Empty): Promise<SuccessResponse>;
     SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
     GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
+    GetCampaignProgress(request: GetCampaignProgressRequest): Promise<GetCampaignProgressResponse>;
 }
 export declare const CampaignServiceServiceName = "campaign.CampaignService";
 export declare class CampaignServiceClientImpl implements CampaignService {
@@ -233,7 +263,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
     UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
     GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
-    DeleteCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
+    CancelCampaignById(request: CampaignsByIdRequest): Promise<CancelCampaignResponse>;
     DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;
     AddProfileToCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
     RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
@@ -243,6 +273,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     Health(request: Empty): Promise<SuccessResponse>;
     SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
     GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
+    GetCampaignProgress(request: GetCampaignProgressRequest): Promise<GetCampaignProgressResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

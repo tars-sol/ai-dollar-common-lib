@@ -11,7 +11,7 @@ service CampaignService {
   rpc UpdateCampaign(UpdateCampaignRequest) returns (CampaignResponse);
   rpc UpdateCampaignTasks(UpdateTaskRequest) returns (TaskResponse);
   rpc GetTasksByCampaignId(GetTasksByCampaignIdRequest) returns (GetTasksResponse);
-  rpc DeleteCampaignById(CampaignsByIdRequest) returns (CampaignResponse);
+  rpc CancelCampaignById(CampaignsByIdRequest) returns (CancelCampaignResponse);
   rpc DeleteTaskById(DeleteTaskByIdRequest) returns (TaskResponse);
   rpc AddProfileToCampaign(UpdatePrivateCampaignProfilesRequest) returns (SuccessResponse);
   rpc RemoveProfileFromCampaign(UpdatePrivateCampaignProfilesRequest) returns (SuccessResponse);
@@ -19,8 +19,9 @@ service CampaignService {
   rpc LeaveCampaign(LeaveCampaignRequest) returns (SuccessResponse);
   rpc MarkTaskAsCompleted(TaskCompletedResponse) returns (SuccessResponse);
   rpc Health(google.protobuf.Empty) returns (SuccessResponse);
-  rpc SearchCampaigns (SearchCampaignsRequest) returns (SearchCampaignsResponse);
-  rpc GetJoinedCampaignsByProfileId (CampaignsByProfileIdRequest) returns (GetCampaignsResponse);
+  rpc SearchCampaigns(SearchCampaignsRequest) returns (SearchCampaignsResponse);
+  rpc GetJoinedCampaignsByProfileId(CampaignsByProfileIdRequest) returns (GetCampaignsResponse);
+  rpc GetCampaignProgress(GetCampaignProgressRequest) returns (GetCampaignProgressResponse);
 
 }
 
@@ -28,7 +29,7 @@ service CampaignService {
 message CreateCampaignRequest {
   string brandId = 1;
   double amountToInvest = 2;
-  string startDate = 3; 
+  string startDate = 3;
   string endDate = 4;
   repeated TaskInput tasks = 5;
   string name = 6;
@@ -37,7 +38,7 @@ message CreateCampaignRequest {
   bool isPrivate = 10;
 
 }
-message SuccessResponse{
+message SuccessResponse {
   bool success = 1;
 }
 // Single task input (part of the campaign)
@@ -53,29 +54,29 @@ message IN_APP_TASK_RULE {
   string countRequired = 3;
   optional TaskContent content = 4;
 }
-message TaskTargets{
- string targetType = 1;
- string targetId = 2;
+message TaskTargets {
+  string targetType = 1;
+  string targetId = 2;
 }
-message TaskContent{
+message TaskContent {
   optional bool requireMention = 1;
 }
-message UpdateTaskRequest{
+message UpdateTaskRequest {
   optional string title = 1;
   optional string description = 2;
-  string brandId = 5 ;
+  string brandId = 5;
   optional string type = 3;
   string id = 4;
 }
-message JoinPublicCampaignRequest{
+message JoinPublicCampaignRequest {
   string campaignId = 1;
   string profileId = 2;
 }
-message LeaveCampaignRequest{
+message LeaveCampaignRequest {
   string campaignId = 1;
   string profileId = 2;
 }
-message UpdatePrivateCampaignProfilesRequest{
+message UpdatePrivateCampaignProfilesRequest {
   string campaignId = 1;
   string profileId = 2;
   string brandId = 3;
@@ -97,6 +98,10 @@ message CampaignResponse {
   string totalParticipants = 14;
 
 
+}
+message CancelCampaignResponse {
+  CampaignResponse campaign = 1;
+  bool isRefund = 2;
 }
 message CampaignByIdResponse {
   string id = 1;
@@ -127,7 +132,7 @@ message UpdateCampaignRequest {
 }
 
 // Task returned in the response
-message TaskResponse{
+message TaskResponse {
   string id = 1;
   string title = 2;
   string description = 3;
@@ -136,70 +141,95 @@ message TaskResponse{
   string createdAt = 5;
   string updatedAt = 6;
 }
-message TaskCompletedResponse{
+message TaskCompletedResponse {
   string campaignId = 1;
   string taskId = 2;
   string profileId = 3;
   string brandId = 4;
 }
-message GetCampaignsByBrandIdRequest{
+message GetCampaignsByBrandIdRequest {
   string roleId = 1;
   string role = 3;
   optional string brandId = 2;
-  optional string sortBy = 4; // e.g., "createdAt", "amountToInvest"
-  optional string sortOrder = 5; // "asc" or "desc"
-  optional string status = 6; // e.g., "active", "completed"
+  optional string sortBy = 4;// e.g., "createdAt", "amountToInvest"
+  optional string sortOrder = 5;// "asc" or "desc"
+  optional string status = 6;// e.g., "active", "completed"
 
-  optional string startDateFrom=7; // e.g., "2023-01-01"
-  optional string startDateTo=8; // e.g., "2023-12-31"
-  optional string endDateFrom=9; // e.g., "2023-01-01"
-  optional string endDateTo=10; // e.g., "2023-12-31"
-  optional string page=11;
-  optional string limit=12;
+  optional string startDateFrom = 7;// e.g., "2023-01-01"
+  optional string startDateTo = 8;// e.g., "2023-12-31"
+  optional string endDateFrom = 9;// e.g., "2023-01-01"
+  optional string endDateTo = 10;// e.g., "2023-12-31"
+  optional string page = 11;
+  optional string limit = 12;
 
 }
-message CampaignsByIdRequest{
+
+message CampaignsByIdRequest {
   string id = 1;
   string roleId = 3;
   string role = 4;
 }
-message CampaignsByProfileIdRequest{
+message CampaignsByProfileIdRequest {
   string profileId = 1;
 }
-message DeleteTaskByIdRequest{
+message DeleteTaskByIdRequest {
   string brandId = 2;
   string id = 1;
 }
-message DeleteCampaignByIdRequest{
+message DeleteCampaignByIdRequest {
   string brandId = 2;
   string id = 1;
 }
 
-message GetTasksByCampaignIdRequest{
+message GetTasksByCampaignIdRequest {
   string campaignId = 1;
 }
-message GetTasksResponse{
+message GetTasksResponse {
   repeated TaskResponse tasks = 1;
 }
-message GetCampaignsResponse{
+message GetCampaignsResponse {
   repeated CampaignResponse campaigns = 1;
 }
 
 message SearchCampaignsRequest {
-  string q    = 1;
-  int32  page = 2;  
-  int32  limit = 3;  
+  string q = 1;
+  int32 page = 2;
+  int32 limit = 3;
 }
 
 message CampaignSearchItem {
-  string id        = 1;
-  string name      = 2;
-  string brandId   = 3;
+  string id = 1;
+  string name = 2;
+  string brandId = 3;
   string createdAt = 4;
-  double score     = 5;
+  double score = 5;
 }
 
 message SearchCampaignsResponse {
   repeated CampaignSearchItem results = 1;
   int32 total = 2;
+}
+
+message GetCampaignProgressRequest {
+  string campaignId = 1;
+  string brandId = 2;
+}
+
+message CampaignProgressParticipant {
+  string profileId = 1;
+  string profileCampaignId = 2;
+  string username = 3;
+  string name = 4;
+  string avatarUrl = 5;
+  int32 totalTasks = 6;
+  int32 completedTasks = 7;
+  bool isCompleted = 8;
+  string joinedAt = 9;
+  string completedAt = 10;
+}
+
+message GetCampaignProgressResponse {
+  repeated CampaignProgressParticipant participants = 1;
+  int32 totalParticipants = 2;
+  int32 totalTasks = 3;
 }

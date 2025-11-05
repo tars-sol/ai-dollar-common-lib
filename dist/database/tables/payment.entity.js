@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Payment = exports.PaymentStatus = void 0;
+// payment.entity.ts (additions marked)
 const typeorm_1 = require("typeorm");
 const brand_entity_1 = require("./brand.entity");
 const campaign_entity_1 = require("./campaign.entity");
@@ -18,6 +19,9 @@ var PaymentStatus;
     PaymentStatus["PENDING"] = "pending";
     PaymentStatus["SUCCEEDED"] = "succeeded";
     PaymentStatus["FAILED"] = "failed";
+    PaymentStatus["REFUND_INITIATED"] = "refund_initiated";
+    PaymentStatus["REFUNDED"] = "refunded";
+    PaymentStatus["REFUND_FAILED"] = "refund_failed";
 })(PaymentStatus || (exports.PaymentStatus = PaymentStatus = {}));
 let Payment = class Payment {
 };
@@ -82,6 +86,18 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Date)
 ], Payment.prototype, "paidOn", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], Payment.prototype, "isRefunded", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Payment.prototype, "refundStripeId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
+    __metadata("design:type", Object)
+], Payment.prototype, "refundedAt", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

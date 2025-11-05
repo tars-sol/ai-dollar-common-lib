@@ -4,22 +4,27 @@ package payment;
 import "google/protobuf/empty.proto";
 
 service PaymentService {
-  rpc CreatePaymentIntent (CreatePaymentIntentRequest) returns (PaymentIntentResponse);
-  rpc HandlePaymentIntent (PaymentIntentEvent) returns (StripeResponse); 
-  rpc CreateConnectedAccount (ConnectedAccountRequest) returns (ConnectAccountResponse);
-  rpc GetConnectedAccount (ConnectedAccountRequest) returns (ConnectAccountResponse);
-  rpc SendPayout (PayoutRequest) returns (SuccessResponse);
+  rpc CreatePaymentIntent(CreatePaymentIntentRequest) returns (PaymentIntentResponse);
+  rpc HandlePaymentIntent(PaymentIntentEvent) returns (StripeResponse);
+  rpc HandlePaymentRefund(PaymentRefundEvent) returns (StripeResponse);
+  rpc CreateConnectedAccount(ConnectedAccountRequest) returns (ConnectAccountResponse);
+  rpc GetConnectedAccount(ConnectedAccountRequest) returns (ConnectAccountResponse);
+  rpc SendPayout(PayoutRequest) returns (SuccessResponse);
   rpc Health(google.protobuf.Empty) returns (SuccessResponse);
+  rpc RefundPayment(RefundRequest) returns (SuccessResponse);
 }
-message PayoutRequest{
+message PayoutRequest {
   string brandId = 1;
   string campaignId = 2;
   repeated PayoutAmount payoutAmounts = 3;
   bool isEqual = 4;
 }
-message PayoutAmount{
+message PayoutAmount {
   string profileId = 1;
   optional string amount = 2;
+}
+message RefundRequest {
+  string campaignId = 1;
 }
 
 message SuccessResponse {
@@ -42,19 +47,23 @@ message PaymentIntentEvent {
   string event_type = 7;
   string brandId = 2;
 }
+message PaymentRefundEvent {
+  string id = 1;
+  string status = 2;
+}
 message StripeResponse {
   bool success = 1;
   string message = 2;
 }
 
-message ConnectedAccountRequest{
+message ConnectedAccountRequest {
   string email = 1;
   string profileId = 2;
 }
 
-message ConnectAccountResponse{
+message ConnectAccountResponse {
   string accountId = 1;
   string email = 2;
   bool isActive = 3;
-  string onBoardingUrl=4;
+  string onBoardingUrl = 4;
 }

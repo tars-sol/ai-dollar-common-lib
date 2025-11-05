@@ -11,6 +11,9 @@ export interface PayoutAmount {
     profileId: string;
     amount?: string | undefined;
 }
+export interface RefundRequest {
+    campaignId: string;
+}
 export interface SuccessResponse {
     success: boolean;
 }
@@ -30,6 +33,10 @@ export interface PaymentIntentEvent {
     eventType: string;
     brandId: string;
 }
+export interface PaymentRefundEvent {
+    id: string;
+    status: string;
+}
 export interface StripeResponse {
     success: boolean;
     message: string;
@@ -46,20 +53,24 @@ export interface ConnectAccountResponse {
 }
 export declare const PayoutRequest: MessageFns<PayoutRequest>;
 export declare const PayoutAmount: MessageFns<PayoutAmount>;
+export declare const RefundRequest: MessageFns<RefundRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const CreatePaymentIntentRequest: MessageFns<CreatePaymentIntentRequest>;
 export declare const PaymentIntentResponse: MessageFns<PaymentIntentResponse>;
 export declare const PaymentIntentEvent: MessageFns<PaymentIntentEvent>;
+export declare const PaymentRefundEvent: MessageFns<PaymentRefundEvent>;
 export declare const StripeResponse: MessageFns<StripeResponse>;
 export declare const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest>;
 export declare const ConnectAccountResponse: MessageFns<ConnectAccountResponse>;
 export interface PaymentService {
     CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
+    HandlePaymentRefund(request: PaymentRefundEvent): Promise<StripeResponse>;
     CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
+    RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
 }
 export declare const PaymentServiceServiceName = "payment.PaymentService";
 export declare class PaymentServiceClientImpl implements PaymentService {
@@ -70,10 +81,12 @@ export declare class PaymentServiceClientImpl implements PaymentService {
     });
     CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
+    HandlePaymentRefund(request: PaymentRefundEvent): Promise<StripeResponse>;
     CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
     SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
+    RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

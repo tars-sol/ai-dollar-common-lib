@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: payment.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.SuccessResponse = exports.PayoutAmount = exports.PayoutRequest = exports.protobufPackage = void 0;
+exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentRefundEvent = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.SuccessResponse = exports.RefundRequest = exports.PayoutAmount = exports.PayoutRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -175,6 +175,57 @@ exports.PayoutAmount = {
         const message = createBasePayoutAmount();
         message.profileId = object.profileId ?? "";
         message.amount = object.amount ?? undefined;
+        return message;
+    },
+};
+function createBaseRefundRequest() {
+    return { campaignId: "" };
+}
+exports.RefundRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.campaignId !== "") {
+            writer.uint32(10).string(message.campaignId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseRefundRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.campaignId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.campaignId !== "") {
+            obj.campaignId = message.campaignId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.RefundRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseRefundRequest();
+        message.campaignId = object.campaignId ?? "";
         return message;
     },
 };
@@ -491,6 +542,74 @@ exports.PaymentIntentEvent = {
         return message;
     },
 };
+function createBasePaymentRefundEvent() {
+    return { id: "", status: "" };
+}
+exports.PaymentRefundEvent = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== "") {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.status !== "") {
+            writer.uint32(18).string(message.status);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePaymentRefundEvent();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.status = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : "",
+            status: isSet(object.status) ? globalThis.String(object.status) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== "") {
+            obj.id = message.id;
+        }
+        if (message.status !== "") {
+            obj.status = message.status;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PaymentRefundEvent.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePaymentRefundEvent();
+        message.id = object.id ?? "";
+        message.status = object.status ?? "";
+        return message;
+    },
+};
 function createBaseStripeResponse() {
     return { success: false, message: "" };
 }
@@ -732,10 +851,12 @@ class PaymentServiceClientImpl {
         this.rpc = rpc;
         this.CreatePaymentIntent = this.CreatePaymentIntent.bind(this);
         this.HandlePaymentIntent = this.HandlePaymentIntent.bind(this);
+        this.HandlePaymentRefund = this.HandlePaymentRefund.bind(this);
         this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
         this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
         this.SendPayout = this.SendPayout.bind(this);
         this.Health = this.Health.bind(this);
+        this.RefundPayment = this.RefundPayment.bind(this);
     }
     CreatePaymentIntent(request) {
         const data = exports.CreatePaymentIntentRequest.encode(request).finish();
@@ -745,6 +866,11 @@ class PaymentServiceClientImpl {
     HandlePaymentIntent(request) {
         const data = exports.PaymentIntentEvent.encode(request).finish();
         const promise = this.rpc.request(this.service, "HandlePaymentIntent", data);
+        return promise.then((data) => exports.StripeResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    HandlePaymentRefund(request) {
+        const data = exports.PaymentRefundEvent.encode(request).finish();
+        const promise = this.rpc.request(this.service, "HandlePaymentRefund", data);
         return promise.then((data) => exports.StripeResponse.decode(new wire_1.BinaryReader(data)));
     }
     CreateConnectedAccount(request) {
@@ -765,6 +891,11 @@ class PaymentServiceClientImpl {
     Health(request) {
         const data = empty_1.Empty.encode(request).finish();
         const promise = this.rpc.request(this.service, "Health", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    RefundPayment(request) {
+        const data = exports.RefundRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "RefundPayment", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

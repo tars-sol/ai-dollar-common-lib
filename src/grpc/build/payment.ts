@@ -22,6 +22,10 @@ export interface PayoutAmount {
   amount?: string | undefined;
 }
 
+export interface RefundRequest {
+  campaignId: string;
+}
+
 export interface SuccessResponse {
   success: boolean;
 }
@@ -43,6 +47,11 @@ export interface PaymentIntentEvent {
   clientSecret?: string | undefined;
   eventType: string;
   brandId: string;
+}
+
+export interface PaymentRefundEvent {
+  id: string;
+  status: string;
 }
 
 export interface StripeResponse {
@@ -244,6 +253,64 @@ export const PayoutAmount: MessageFns<PayoutAmount> = {
     const message = createBasePayoutAmount();
     message.profileId = object.profileId ?? "";
     message.amount = object.amount ?? undefined;
+    return message;
+  },
+};
+
+function createBaseRefundRequest(): RefundRequest {
+  return { campaignId: "" };
+}
+
+export const RefundRequest: MessageFns<RefundRequest> = {
+  encode(message: RefundRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.campaignId !== "") {
+      writer.uint32(10).string(message.campaignId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RefundRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRefundRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RefundRequest {
+    return { campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "" };
+  },
+
+  toJSON(message: RefundRequest): unknown {
+    const obj: any = {};
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RefundRequest>, I>>(base?: I): RefundRequest {
+    return RefundRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RefundRequest>, I>>(object: I): RefundRequest {
+    const message = createBaseRefundRequest();
+    message.campaignId = object.campaignId ?? "";
     return message;
   },
 };
@@ -596,6 +663,82 @@ export const PaymentIntentEvent: MessageFns<PaymentIntentEvent> = {
   },
 };
 
+function createBasePaymentRefundEvent(): PaymentRefundEvent {
+  return { id: "", status: "" };
+}
+
+export const PaymentRefundEvent: MessageFns<PaymentRefundEvent> = {
+  encode(message: PaymentRefundEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.status !== "") {
+      writer.uint32(18).string(message.status);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PaymentRefundEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePaymentRefundEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PaymentRefundEvent {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+    };
+  },
+
+  toJSON(message: PaymentRefundEvent): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PaymentRefundEvent>, I>>(base?: I): PaymentRefundEvent {
+    return PaymentRefundEvent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PaymentRefundEvent>, I>>(object: I): PaymentRefundEvent {
+    const message = createBasePaymentRefundEvent();
+    message.id = object.id ?? "";
+    message.status = object.status ?? "";
+    return message;
+  },
+};
+
 function createBaseStripeResponse(): StripeResponse {
   return { success: false, message: "" };
 }
@@ -859,10 +1002,12 @@ export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
 export interface PaymentService {
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
   HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
+  HandlePaymentRefund(request: PaymentRefundEvent): Promise<StripeResponse>;
   CreateConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
   GetConnectedAccount(request: ConnectedAccountRequest): Promise<ConnectAccountResponse>;
   SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
   Health(request: Empty): Promise<SuccessResponse>;
+  RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
 }
 
 export const PaymentServiceServiceName = "payment.PaymentService";
@@ -874,10 +1019,12 @@ export class PaymentServiceClientImpl implements PaymentService {
     this.rpc = rpc;
     this.CreatePaymentIntent = this.CreatePaymentIntent.bind(this);
     this.HandlePaymentIntent = this.HandlePaymentIntent.bind(this);
+    this.HandlePaymentRefund = this.HandlePaymentRefund.bind(this);
     this.CreateConnectedAccount = this.CreateConnectedAccount.bind(this);
     this.GetConnectedAccount = this.GetConnectedAccount.bind(this);
     this.SendPayout = this.SendPayout.bind(this);
     this.Health = this.Health.bind(this);
+    this.RefundPayment = this.RefundPayment.bind(this);
   }
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {
     const data = CreatePaymentIntentRequest.encode(request).finish();
@@ -888,6 +1035,12 @@ export class PaymentServiceClientImpl implements PaymentService {
   HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse> {
     const data = PaymentIntentEvent.encode(request).finish();
     const promise = this.rpc.request(this.service, "HandlePaymentIntent", data);
+    return promise.then((data) => StripeResponse.decode(new BinaryReader(data)));
+  }
+
+  HandlePaymentRefund(request: PaymentRefundEvent): Promise<StripeResponse> {
+    const data = PaymentRefundEvent.encode(request).finish();
+    const promise = this.rpc.request(this.service, "HandlePaymentRefund", data);
     return promise.then((data) => StripeResponse.decode(new BinaryReader(data)));
   }
 
@@ -912,6 +1065,12 @@ export class PaymentServiceClientImpl implements PaymentService {
   Health(request: Empty): Promise<SuccessResponse> {
     const data = Empty.encode(request).finish();
     const promise = this.rpc.request(this.service, "Health", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  RefundPayment(request: RefundRequest): Promise<SuccessResponse> {
+    const data = RefundRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "RefundPayment", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }

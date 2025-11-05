@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: campaign.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByProfileIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignByIdResponse = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
+exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.GetCampaignProgressResponse = exports.CampaignProgressParticipant = exports.GetCampaignProgressRequest = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByProfileIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignByIdResponse = exports.CancelCampaignResponse = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -1125,6 +1125,76 @@ exports.CampaignResponse = {
         message.name = object.name ?? "";
         message.description = object.description ?? "";
         message.totalParticipants = object.totalParticipants ?? "";
+        return message;
+    },
+};
+function createBaseCancelCampaignResponse() {
+    return { campaign: undefined, isRefund: false };
+}
+exports.CancelCampaignResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.campaign !== undefined) {
+            exports.CampaignResponse.encode(message.campaign, writer.uint32(10).fork()).join();
+        }
+        if (message.isRefund !== false) {
+            writer.uint32(16).bool(message.isRefund);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCancelCampaignResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.campaign = exports.CampaignResponse.decode(reader, reader.uint32());
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.isRefund = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            campaign: isSet(object.campaign) ? exports.CampaignResponse.fromJSON(object.campaign) : undefined,
+            isRefund: isSet(object.isRefund) ? globalThis.Boolean(object.isRefund) : false,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.campaign !== undefined) {
+            obj.campaign = exports.CampaignResponse.toJSON(message.campaign);
+        }
+        if (message.isRefund !== false) {
+            obj.isRefund = message.isRefund;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CancelCampaignResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCancelCampaignResponse();
+        message.campaign = (object.campaign !== undefined && object.campaign !== null)
+            ? exports.CampaignResponse.fromPartial(object.campaign)
+            : undefined;
+        message.isRefund = object.isRefund ?? false;
         return message;
     },
 };
@@ -2725,6 +2795,358 @@ exports.SearchCampaignsResponse = {
         return message;
     },
 };
+function createBaseGetCampaignProgressRequest() {
+    return { campaignId: "", brandId: "" };
+}
+exports.GetCampaignProgressRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.campaignId !== "") {
+            writer.uint32(10).string(message.campaignId);
+        }
+        if (message.brandId !== "") {
+            writer.uint32(18).string(message.brandId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCampaignProgressRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.campaignId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.brandId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.campaignId !== "") {
+            obj.campaignId = message.campaignId;
+        }
+        if (message.brandId !== "") {
+            obj.brandId = message.brandId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCampaignProgressRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCampaignProgressRequest();
+        message.campaignId = object.campaignId ?? "";
+        message.brandId = object.brandId ?? "";
+        return message;
+    },
+};
+function createBaseCampaignProgressParticipant() {
+    return {
+        profileId: "",
+        profileCampaignId: "",
+        username: "",
+        name: "",
+        avatarUrl: "",
+        totalTasks: 0,
+        completedTasks: 0,
+        isCompleted: false,
+        joinedAt: "",
+        completedAt: "",
+    };
+}
+exports.CampaignProgressParticipant = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
+        }
+        if (message.profileCampaignId !== "") {
+            writer.uint32(18).string(message.profileCampaignId);
+        }
+        if (message.username !== "") {
+            writer.uint32(26).string(message.username);
+        }
+        if (message.name !== "") {
+            writer.uint32(34).string(message.name);
+        }
+        if (message.avatarUrl !== "") {
+            writer.uint32(42).string(message.avatarUrl);
+        }
+        if (message.totalTasks !== 0) {
+            writer.uint32(48).int32(message.totalTasks);
+        }
+        if (message.completedTasks !== 0) {
+            writer.uint32(56).int32(message.completedTasks);
+        }
+        if (message.isCompleted !== false) {
+            writer.uint32(64).bool(message.isCompleted);
+        }
+        if (message.joinedAt !== "") {
+            writer.uint32(74).string(message.joinedAt);
+        }
+        if (message.completedAt !== "") {
+            writer.uint32(82).string(message.completedAt);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCampaignProgressParticipant();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.profileCampaignId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.avatarUrl = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.totalTasks = reader.int32();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.completedTasks = reader.int32();
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.isCompleted = reader.bool();
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.joinedAt = reader.string();
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.completedAt = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            profileCampaignId: isSet(object.profileCampaignId) ? globalThis.String(object.profileCampaignId) : "",
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
+            totalTasks: isSet(object.totalTasks) ? globalThis.Number(object.totalTasks) : 0,
+            completedTasks: isSet(object.completedTasks) ? globalThis.Number(object.completedTasks) : 0,
+            isCompleted: isSet(object.isCompleted) ? globalThis.Boolean(object.isCompleted) : false,
+            joinedAt: isSet(object.joinedAt) ? globalThis.String(object.joinedAt) : "",
+            completedAt: isSet(object.completedAt) ? globalThis.String(object.completedAt) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        if (message.profileCampaignId !== "") {
+            obj.profileCampaignId = message.profileCampaignId;
+        }
+        if (message.username !== "") {
+            obj.username = message.username;
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.avatarUrl !== "") {
+            obj.avatarUrl = message.avatarUrl;
+        }
+        if (message.totalTasks !== 0) {
+            obj.totalTasks = Math.round(message.totalTasks);
+        }
+        if (message.completedTasks !== 0) {
+            obj.completedTasks = Math.round(message.completedTasks);
+        }
+        if (message.isCompleted !== false) {
+            obj.isCompleted = message.isCompleted;
+        }
+        if (message.joinedAt !== "") {
+            obj.joinedAt = message.joinedAt;
+        }
+        if (message.completedAt !== "") {
+            obj.completedAt = message.completedAt;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CampaignProgressParticipant.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCampaignProgressParticipant();
+        message.profileId = object.profileId ?? "";
+        message.profileCampaignId = object.profileCampaignId ?? "";
+        message.username = object.username ?? "";
+        message.name = object.name ?? "";
+        message.avatarUrl = object.avatarUrl ?? "";
+        message.totalTasks = object.totalTasks ?? 0;
+        message.completedTasks = object.completedTasks ?? 0;
+        message.isCompleted = object.isCompleted ?? false;
+        message.joinedAt = object.joinedAt ?? "";
+        message.completedAt = object.completedAt ?? "";
+        return message;
+    },
+};
+function createBaseGetCampaignProgressResponse() {
+    return { participants: [], totalParticipants: 0, totalTasks: 0 };
+}
+exports.GetCampaignProgressResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.participants) {
+            exports.CampaignProgressParticipant.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.totalParticipants !== 0) {
+            writer.uint32(16).int32(message.totalParticipants);
+        }
+        if (message.totalTasks !== 0) {
+            writer.uint32(24).int32(message.totalTasks);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCampaignProgressResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.participants.push(exports.CampaignProgressParticipant.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.totalParticipants = reader.int32();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.totalTasks = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            participants: globalThis.Array.isArray(object?.participants)
+                ? object.participants.map((e) => exports.CampaignProgressParticipant.fromJSON(e))
+                : [],
+            totalParticipants: isSet(object.totalParticipants) ? globalThis.Number(object.totalParticipants) : 0,
+            totalTasks: isSet(object.totalTasks) ? globalThis.Number(object.totalTasks) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.participants?.length) {
+            obj.participants = message.participants.map((e) => exports.CampaignProgressParticipant.toJSON(e));
+        }
+        if (message.totalParticipants !== 0) {
+            obj.totalParticipants = Math.round(message.totalParticipants);
+        }
+        if (message.totalTasks !== 0) {
+            obj.totalTasks = Math.round(message.totalTasks);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCampaignProgressResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCampaignProgressResponse();
+        message.participants = object.participants?.map((e) => exports.CampaignProgressParticipant.fromPartial(e)) || [];
+        message.totalParticipants = object.totalParticipants ?? 0;
+        message.totalTasks = object.totalTasks ?? 0;
+        return message;
+    },
+};
 exports.CampaignServiceServiceName = "campaign.CampaignService";
 class CampaignServiceClientImpl {
     constructor(rpc, opts) {
@@ -2736,7 +3158,7 @@ class CampaignServiceClientImpl {
         this.UpdateCampaign = this.UpdateCampaign.bind(this);
         this.UpdateCampaignTasks = this.UpdateCampaignTasks.bind(this);
         this.GetTasksByCampaignId = this.GetTasksByCampaignId.bind(this);
-        this.DeleteCampaignById = this.DeleteCampaignById.bind(this);
+        this.CancelCampaignById = this.CancelCampaignById.bind(this);
         this.DeleteTaskById = this.DeleteTaskById.bind(this);
         this.AddProfileToCampaign = this.AddProfileToCampaign.bind(this);
         this.RemoveProfileFromCampaign = this.RemoveProfileFromCampaign.bind(this);
@@ -2746,6 +3168,7 @@ class CampaignServiceClientImpl {
         this.Health = this.Health.bind(this);
         this.SearchCampaigns = this.SearchCampaigns.bind(this);
         this.GetJoinedCampaignsByProfileId = this.GetJoinedCampaignsByProfileId.bind(this);
+        this.GetCampaignProgress = this.GetCampaignProgress.bind(this);
     }
     CreateCampaign(request) {
         const data = exports.CreateCampaignRequest.encode(request).finish();
@@ -2777,10 +3200,10 @@ class CampaignServiceClientImpl {
         const promise = this.rpc.request(this.service, "GetTasksByCampaignId", data);
         return promise.then((data) => exports.GetTasksResponse.decode(new wire_1.BinaryReader(data)));
     }
-    DeleteCampaignById(request) {
+    CancelCampaignById(request) {
         const data = exports.CampaignsByIdRequest.encode(request).finish();
-        const promise = this.rpc.request(this.service, "DeleteCampaignById", data);
-        return promise.then((data) => exports.CampaignResponse.decode(new wire_1.BinaryReader(data)));
+        const promise = this.rpc.request(this.service, "CancelCampaignById", data);
+        return promise.then((data) => exports.CancelCampaignResponse.decode(new wire_1.BinaryReader(data)));
     }
     DeleteTaskById(request) {
         const data = exports.DeleteTaskByIdRequest.encode(request).finish();
@@ -2826,6 +3249,11 @@ class CampaignServiceClientImpl {
         const data = exports.CampaignsByProfileIdRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetJoinedCampaignsByProfileId", data);
         return promise.then((data) => exports.GetCampaignsResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetCampaignProgress(request) {
+        const data = exports.GetCampaignProgressRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetCampaignProgress", data);
+        return promise.then((data) => exports.GetCampaignProgressResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.CampaignServiceClientImpl = CampaignServiceClientImpl;

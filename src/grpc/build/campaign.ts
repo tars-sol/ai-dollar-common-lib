@@ -91,6 +91,11 @@ export interface CampaignResponse {
   totalParticipants: string;
 }
 
+export interface CancelCampaignResponse {
+  campaign: CampaignResponse | undefined;
+  isRefund: boolean;
+}
+
 export interface CampaignByIdResponse {
   id: string;
   brandId: string;
@@ -222,6 +227,30 @@ export interface CampaignSearchItem {
 export interface SearchCampaignsResponse {
   results: CampaignSearchItem[];
   total: number;
+}
+
+export interface GetCampaignProgressRequest {
+  campaignId: string;
+  brandId: string;
+}
+
+export interface CampaignProgressParticipant {
+  profileId: string;
+  profileCampaignId: string;
+  username: string;
+  name: string;
+  avatarUrl: string;
+  totalTasks: number;
+  completedTasks: number;
+  isCompleted: boolean;
+  joinedAt: string;
+  completedAt: string;
+}
+
+export interface GetCampaignProgressResponse {
+  participants: CampaignProgressParticipant[];
+  totalParticipants: number;
+  totalTasks: number;
 }
 
 function createBaseCreateCampaignRequest(): CreateCampaignRequest {
@@ -1453,6 +1482,84 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.totalParticipants = object.totalParticipants ?? "";
+    return message;
+  },
+};
+
+function createBaseCancelCampaignResponse(): CancelCampaignResponse {
+  return { campaign: undefined, isRefund: false };
+}
+
+export const CancelCampaignResponse: MessageFns<CancelCampaignResponse> = {
+  encode(message: CancelCampaignResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.campaign !== undefined) {
+      CampaignResponse.encode(message.campaign, writer.uint32(10).fork()).join();
+    }
+    if (message.isRefund !== false) {
+      writer.uint32(16).bool(message.isRefund);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CancelCampaignResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCancelCampaignResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campaign = CampaignResponse.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.isRefund = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CancelCampaignResponse {
+    return {
+      campaign: isSet(object.campaign) ? CampaignResponse.fromJSON(object.campaign) : undefined,
+      isRefund: isSet(object.isRefund) ? globalThis.Boolean(object.isRefund) : false,
+    };
+  },
+
+  toJSON(message: CancelCampaignResponse): unknown {
+    const obj: any = {};
+    if (message.campaign !== undefined) {
+      obj.campaign = CampaignResponse.toJSON(message.campaign);
+    }
+    if (message.isRefund !== false) {
+      obj.isRefund = message.isRefund;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CancelCampaignResponse>, I>>(base?: I): CancelCampaignResponse {
+    return CancelCampaignResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CancelCampaignResponse>, I>>(object: I): CancelCampaignResponse {
+    const message = createBaseCancelCampaignResponse();
+    message.campaign = (object.campaign !== undefined && object.campaign !== null)
+      ? CampaignResponse.fromPartial(object.campaign)
+      : undefined;
+    message.isRefund = object.isRefund ?? false;
     return message;
   },
 };
@@ -3210,6 +3317,391 @@ export const SearchCampaignsResponse: MessageFns<SearchCampaignsResponse> = {
   },
 };
 
+function createBaseGetCampaignProgressRequest(): GetCampaignProgressRequest {
+  return { campaignId: "", brandId: "" };
+}
+
+export const GetCampaignProgressRequest: MessageFns<GetCampaignProgressRequest> = {
+  encode(message: GetCampaignProgressRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.campaignId !== "") {
+      writer.uint32(10).string(message.campaignId);
+    }
+    if (message.brandId !== "") {
+      writer.uint32(18).string(message.brandId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCampaignProgressRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCampaignProgressRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCampaignProgressRequest {
+    return {
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+    };
+  },
+
+  toJSON(message: GetCampaignProgressRequest): unknown {
+    const obj: any = {};
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCampaignProgressRequest>, I>>(base?: I): GetCampaignProgressRequest {
+    return GetCampaignProgressRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCampaignProgressRequest>, I>>(object: I): GetCampaignProgressRequest {
+    const message = createBaseGetCampaignProgressRequest();
+    message.campaignId = object.campaignId ?? "";
+    message.brandId = object.brandId ?? "";
+    return message;
+  },
+};
+
+function createBaseCampaignProgressParticipant(): CampaignProgressParticipant {
+  return {
+    profileId: "",
+    profileCampaignId: "",
+    username: "",
+    name: "",
+    avatarUrl: "",
+    totalTasks: 0,
+    completedTasks: 0,
+    isCompleted: false,
+    joinedAt: "",
+    completedAt: "",
+  };
+}
+
+export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant> = {
+  encode(message: CampaignProgressParticipant, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    if (message.profileCampaignId !== "") {
+      writer.uint32(18).string(message.profileCampaignId);
+    }
+    if (message.username !== "") {
+      writer.uint32(26).string(message.username);
+    }
+    if (message.name !== "") {
+      writer.uint32(34).string(message.name);
+    }
+    if (message.avatarUrl !== "") {
+      writer.uint32(42).string(message.avatarUrl);
+    }
+    if (message.totalTasks !== 0) {
+      writer.uint32(48).int32(message.totalTasks);
+    }
+    if (message.completedTasks !== 0) {
+      writer.uint32(56).int32(message.completedTasks);
+    }
+    if (message.isCompleted !== false) {
+      writer.uint32(64).bool(message.isCompleted);
+    }
+    if (message.joinedAt !== "") {
+      writer.uint32(74).string(message.joinedAt);
+    }
+    if (message.completedAt !== "") {
+      writer.uint32(82).string(message.completedAt);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CampaignProgressParticipant {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCampaignProgressParticipant();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.profileCampaignId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.avatarUrl = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 48) {
+            break;
+          }
+
+          message.totalTasks = reader.int32();
+          continue;
+        }
+        case 7: {
+          if (tag !== 56) {
+            break;
+          }
+
+          message.completedTasks = reader.int32();
+          continue;
+        }
+        case 8: {
+          if (tag !== 64) {
+            break;
+          }
+
+          message.isCompleted = reader.bool();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.joinedAt = reader.string();
+          continue;
+        }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.completedAt = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CampaignProgressParticipant {
+    return {
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      profileCampaignId: isSet(object.profileCampaignId) ? globalThis.String(object.profileCampaignId) : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
+      totalTasks: isSet(object.totalTasks) ? globalThis.Number(object.totalTasks) : 0,
+      completedTasks: isSet(object.completedTasks) ? globalThis.Number(object.completedTasks) : 0,
+      isCompleted: isSet(object.isCompleted) ? globalThis.Boolean(object.isCompleted) : false,
+      joinedAt: isSet(object.joinedAt) ? globalThis.String(object.joinedAt) : "",
+      completedAt: isSet(object.completedAt) ? globalThis.String(object.completedAt) : "",
+    };
+  },
+
+  toJSON(message: CampaignProgressParticipant): unknown {
+    const obj: any = {};
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.profileCampaignId !== "") {
+      obj.profileCampaignId = message.profileCampaignId;
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.avatarUrl !== "") {
+      obj.avatarUrl = message.avatarUrl;
+    }
+    if (message.totalTasks !== 0) {
+      obj.totalTasks = Math.round(message.totalTasks);
+    }
+    if (message.completedTasks !== 0) {
+      obj.completedTasks = Math.round(message.completedTasks);
+    }
+    if (message.isCompleted !== false) {
+      obj.isCompleted = message.isCompleted;
+    }
+    if (message.joinedAt !== "") {
+      obj.joinedAt = message.joinedAt;
+    }
+    if (message.completedAt !== "") {
+      obj.completedAt = message.completedAt;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CampaignProgressParticipant>, I>>(base?: I): CampaignProgressParticipant {
+    return CampaignProgressParticipant.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CampaignProgressParticipant>, I>>(object: I): CampaignProgressParticipant {
+    const message = createBaseCampaignProgressParticipant();
+    message.profileId = object.profileId ?? "";
+    message.profileCampaignId = object.profileCampaignId ?? "";
+    message.username = object.username ?? "";
+    message.name = object.name ?? "";
+    message.avatarUrl = object.avatarUrl ?? "";
+    message.totalTasks = object.totalTasks ?? 0;
+    message.completedTasks = object.completedTasks ?? 0;
+    message.isCompleted = object.isCompleted ?? false;
+    message.joinedAt = object.joinedAt ?? "";
+    message.completedAt = object.completedAt ?? "";
+    return message;
+  },
+};
+
+function createBaseGetCampaignProgressResponse(): GetCampaignProgressResponse {
+  return { participants: [], totalParticipants: 0, totalTasks: 0 };
+}
+
+export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse> = {
+  encode(message: GetCampaignProgressResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.participants) {
+      CampaignProgressParticipant.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.totalParticipants !== 0) {
+      writer.uint32(16).int32(message.totalParticipants);
+    }
+    if (message.totalTasks !== 0) {
+      writer.uint32(24).int32(message.totalTasks);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCampaignProgressResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCampaignProgressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.participants.push(CampaignProgressParticipant.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.totalParticipants = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.totalTasks = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCampaignProgressResponse {
+    return {
+      participants: globalThis.Array.isArray(object?.participants)
+        ? object.participants.map((e: any) => CampaignProgressParticipant.fromJSON(e))
+        : [],
+      totalParticipants: isSet(object.totalParticipants) ? globalThis.Number(object.totalParticipants) : 0,
+      totalTasks: isSet(object.totalTasks) ? globalThis.Number(object.totalTasks) : 0,
+    };
+  },
+
+  toJSON(message: GetCampaignProgressResponse): unknown {
+    const obj: any = {};
+    if (message.participants?.length) {
+      obj.participants = message.participants.map((e) => CampaignProgressParticipant.toJSON(e));
+    }
+    if (message.totalParticipants !== 0) {
+      obj.totalParticipants = Math.round(message.totalParticipants);
+    }
+    if (message.totalTasks !== 0) {
+      obj.totalTasks = Math.round(message.totalTasks);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCampaignProgressResponse>, I>>(base?: I): GetCampaignProgressResponse {
+    return GetCampaignProgressResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCampaignProgressResponse>, I>>(object: I): GetCampaignProgressResponse {
+    const message = createBaseGetCampaignProgressResponse();
+    message.participants = object.participants?.map((e) => CampaignProgressParticipant.fromPartial(e)) || [];
+    message.totalParticipants = object.totalParticipants ?? 0;
+    message.totalTasks = object.totalTasks ?? 0;
+    return message;
+  },
+};
+
 /** gRPC Service */
 export interface CampaignService {
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
@@ -3218,7 +3710,7 @@ export interface CampaignService {
   UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
   UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
   GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
-  DeleteCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse>;
+  CancelCampaignById(request: CampaignsByIdRequest): Promise<CancelCampaignResponse>;
   DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;
   AddProfileToCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
   RemoveProfileFromCampaign(request: UpdatePrivateCampaignProfilesRequest): Promise<SuccessResponse>;
@@ -3228,6 +3720,7 @@ export interface CampaignService {
   Health(request: Empty): Promise<SuccessResponse>;
   SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
   GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
+  GetCampaignProgress(request: GetCampaignProgressRequest): Promise<GetCampaignProgressResponse>;
 }
 
 export const CampaignServiceServiceName = "campaign.CampaignService";
@@ -3243,7 +3736,7 @@ export class CampaignServiceClientImpl implements CampaignService {
     this.UpdateCampaign = this.UpdateCampaign.bind(this);
     this.UpdateCampaignTasks = this.UpdateCampaignTasks.bind(this);
     this.GetTasksByCampaignId = this.GetTasksByCampaignId.bind(this);
-    this.DeleteCampaignById = this.DeleteCampaignById.bind(this);
+    this.CancelCampaignById = this.CancelCampaignById.bind(this);
     this.DeleteTaskById = this.DeleteTaskById.bind(this);
     this.AddProfileToCampaign = this.AddProfileToCampaign.bind(this);
     this.RemoveProfileFromCampaign = this.RemoveProfileFromCampaign.bind(this);
@@ -3253,6 +3746,7 @@ export class CampaignServiceClientImpl implements CampaignService {
     this.Health = this.Health.bind(this);
     this.SearchCampaigns = this.SearchCampaigns.bind(this);
     this.GetJoinedCampaignsByProfileId = this.GetJoinedCampaignsByProfileId.bind(this);
+    this.GetCampaignProgress = this.GetCampaignProgress.bind(this);
   }
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse> {
     const data = CreateCampaignRequest.encode(request).finish();
@@ -3290,10 +3784,10 @@ export class CampaignServiceClientImpl implements CampaignService {
     return promise.then((data) => GetTasksResponse.decode(new BinaryReader(data)));
   }
 
-  DeleteCampaignById(request: CampaignsByIdRequest): Promise<CampaignResponse> {
+  CancelCampaignById(request: CampaignsByIdRequest): Promise<CancelCampaignResponse> {
     const data = CampaignsByIdRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "DeleteCampaignById", data);
-    return promise.then((data) => CampaignResponse.decode(new BinaryReader(data)));
+    const promise = this.rpc.request(this.service, "CancelCampaignById", data);
+    return promise.then((data) => CancelCampaignResponse.decode(new BinaryReader(data)));
   }
 
   DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse> {
@@ -3348,6 +3842,12 @@ export class CampaignServiceClientImpl implements CampaignService {
     const data = CampaignsByProfileIdRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetJoinedCampaignsByProfileId", data);
     return promise.then((data) => GetCampaignsResponse.decode(new BinaryReader(data)));
+  }
+
+  GetCampaignProgress(request: GetCampaignProgressRequest): Promise<GetCampaignProgressResponse> {
+    const data = GetCampaignProgressRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetCampaignProgress", data);
+    return promise.then((data) => GetCampaignProgressResponse.decode(new BinaryReader(data)));
   }
 }
 
