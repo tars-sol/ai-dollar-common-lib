@@ -10,6 +10,7 @@ exports.GrpcPackageToken = {
     BRAND: 'BRAND_PACKAGE',
     CAMPAIGN: 'CAMPAIGN_PACKAGE',
     POST: 'POST_PACKAGE',
+    SUBSCRIPTION: 'SUBSCRIPTION_PACKAGE'
 };
 exports.GrpcProtoName = {
     AUTH: 'auth',
@@ -19,6 +20,7 @@ exports.GrpcProtoName = {
     BRAND: 'brand',
     CAMPAIGN: 'campaign',
     POST: 'post',
+    SUBSCRIPTION: 'subscription'
 };
 exports.GrpcProtoServiceName = {
     AUTH_SERVICE: 'AuthService',
@@ -28,6 +30,7 @@ exports.GrpcProtoServiceName = {
     BRAND_SERVICE: 'BrandService',
     CAMPAIGN_SERVICE: 'CampaignService',
     POST_SERVICE: 'PostService',
+    SUBSCRIPTION_SERVICE: 'SubscriptionService'
 };
 function resolveGrpcProtoPath(protoName) {
     return `ai-dollar-common-lib/src/grpc/proto/${protoName}.proto`;

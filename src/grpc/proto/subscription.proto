@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package subscription;
+
+import "google/protobuf/empty.proto";
+
+service SubscriptionService {
+  rpc CreateTier        (CreateTierRequest)        returns (SubscriptionTierResponse);
+  rpc UpdateTier        (UpdateTierRequest)        returns (SubscriptionTierResponse);
+  rpc UpdateTierPrices  (UpdateTierPricesRequest)  returns (SubscriptionTierResponse);
+  rpc ToggleTierActive  (ToggleTierActiveRequest)  returns (SubscriptionTierResponse);
+  rpc GetTier           (GetTierRequest)           returns (SubscriptionTierResponse);
+  rpc GetCreatorTiers   (GetCreatorTiersRequest)   returns (GetCreatorTiersResponse);
+  rpc DeleteTier        (DeleteTierRequest)        returns (SuccessResponse);
+  rpc Health            (google.protobuf.Empty)    returns (HealthResponse);
+}
+
+message SuccessResponse {
+  bool success = 1;
+}
+
+message HealthResponse {
+  bool isHealthy = 1;
+}
+
+message CreateTierRequest {
+  string  creatorId = 1;
+  string  name = 2;
+  optional string description = 3;
+  optional int32  accessMask = 4; 
+  optional string currency   = 5;
+  optional int64  monthlyPriceCents = 6;
+  optional int64  annualPriceCents  = 7;
+}
+
+message UpdateTierRequest {
+  string  tierId = 1;
+  optional string name        = 2;
+  optional string description = 3;
+  optional int32  accessMask  = 4;
+  optional string currency    = 5; 
+}
+
+message UpdateTierPricesRequest {
+  string tierId = 1;
+  optional int64 monthlyPriceCents = 2;
+  optional int64 annualPriceCents  = 3;
+}
+
+message ToggleTierActiveRequest {
+  string tierId = 1;
+  bool   isActive = 2;
+}
+
+message GetTierRequest {
+  string tierId = 1;
+}
+
+message GetCreatorTiersRequest {
+  string  creatorId = 1;
+  optional bool    onlyActive = 2;
+}
+
+message GetCreatorTiersResponse {
+  repeated SubscriptionTierResponse tiers = 1;
+}
+
+message DeleteTierRequest {
+  string tierId    = 1;
+  string creatorId = 2;
+}
+
+message SubscriptionTierResponse {
+  string id = 1;
+  string creatorId = 2;
+  string  name = 3;
+  optional string description = 4;
+  optional string stripeProductId      = 5;
+  optional string monthlyStripePriceId = 6;
+  optional int64  monthlyPriceCents    = 7;
+  optional string annualStripePriceId  = 8;
+  optional int64  annualPriceCents     = 9;
+  string currency = 10;     
+  int32  accessMask = 11;
+  bool   isActive   = 12;
+  string createdAt  = 13;   
+  string updatedAt  = 14; 
+}
