@@ -108,6 +108,7 @@ message UserRequest {
   string roleId = 5;
   string name = 6;
   string username = 7;
+  string roleImage = 8;
 }
 
 message AuthResponse {

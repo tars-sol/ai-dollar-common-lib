@@ -1283,7 +1283,7 @@ exports.RefreshTokenRequest = {
     },
 };
 function createBaseUserRequest() {
-    return { id: "", email: "", walletAddress: "", role: "", roleId: "", name: "", username: "" };
+    return { id: "", email: "", walletAddress: "", role: "", roleId: "", name: "", username: "", roleImage: "" };
 }
 exports.UserRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1307,6 +1307,9 @@ exports.UserRequest = {
         }
         if (message.username !== "") {
             writer.uint32(58).string(message.username);
+        }
+        if (message.roleImage !== "") {
+            writer.uint32(66).string(message.roleImage);
         }
         return writer;
     },
@@ -1366,6 +1369,13 @@ exports.UserRequest = {
                     message.username = reader.string();
                     continue;
                 }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.roleImage = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1383,6 +1393,7 @@ exports.UserRequest = {
             roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             username: isSet(object.username) ? globalThis.String(object.username) : "",
+            roleImage: isSet(object.roleImage) ? globalThis.String(object.roleImage) : "",
         };
     },
     toJSON(message) {
@@ -1408,6 +1419,9 @@ exports.UserRequest = {
         if (message.username !== "") {
             obj.username = message.username;
         }
+        if (message.roleImage !== "") {
+            obj.roleImage = message.roleImage;
+        }
         return obj;
     },
     create(base) {
@@ -1422,6 +1436,7 @@ exports.UserRequest = {
         message.roleId = object.roleId ?? "";
         message.name = object.name ?? "";
         message.username = object.username ?? "";
+        message.roleImage = object.roleImage ?? "";
         return message;
     },
 };

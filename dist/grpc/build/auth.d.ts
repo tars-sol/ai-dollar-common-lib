@@ -86,6 +86,7 @@ export interface UserRequest {
     roleId: string;
     name: string;
     username: string;
+    roleImage: string;
 }
 export interface AuthResponse {
     token: string;
