@@ -24,8 +24,8 @@ export interface CreateTierRequest {
   description?: string | undefined;
   accessMask?: number | undefined;
   currency?: string | undefined;
-  monthlyPriceCents?: number | undefined;
-  annualPriceCents?: number | undefined;
+  monthlyPriceCents: number;
+  annualPriceCents: number;
 }
 
 export interface UpdateTierRequest {
@@ -70,11 +70,11 @@ export interface SubscriptionTierResponse {
   creatorId: string;
   name: string;
   description?: string | undefined;
-  stripeProductId?: string | undefined;
-  monthlyStripePriceId?: string | undefined;
-  monthlyPriceCents?: number | undefined;
-  annualStripePriceId?: string | undefined;
-  annualPriceCents?: number | undefined;
+  stripeProductId: string;
+  monthlyStripePriceId: string;
+  monthlyPriceCents: number;
+  annualStripePriceId: string;
+  annualPriceCents: number;
   currency: string;
   accessMask: number;
   isActive: boolean;
@@ -205,8 +205,8 @@ function createBaseCreateTierRequest(): CreateTierRequest {
     description: undefined,
     accessMask: undefined,
     currency: undefined,
-    monthlyPriceCents: undefined,
-    annualPriceCents: undefined,
+    monthlyPriceCents: 0,
+    annualPriceCents: 0,
   };
 }
 
@@ -227,11 +227,11 @@ export const CreateTierRequest: MessageFns<CreateTierRequest> = {
     if (message.currency !== undefined) {
       writer.uint32(42).string(message.currency);
     }
-    if (message.monthlyPriceCents !== undefined) {
-      writer.uint32(48).int64(message.monthlyPriceCents);
+    if (message.monthlyPriceCents !== 0) {
+      writer.uint32(48).int32(message.monthlyPriceCents);
     }
-    if (message.annualPriceCents !== undefined) {
-      writer.uint32(56).int64(message.annualPriceCents);
+    if (message.annualPriceCents !== 0) {
+      writer.uint32(56).int32(message.annualPriceCents);
     }
     return writer;
   },
@@ -288,7 +288,7 @@ export const CreateTierRequest: MessageFns<CreateTierRequest> = {
             break;
           }
 
-          message.monthlyPriceCents = longToNumber(reader.int64());
+          message.monthlyPriceCents = reader.int32();
           continue;
         }
         case 7: {
@@ -296,7 +296,7 @@ export const CreateTierRequest: MessageFns<CreateTierRequest> = {
             break;
           }
 
-          message.annualPriceCents = longToNumber(reader.int64());
+          message.annualPriceCents = reader.int32();
           continue;
         }
       }
@@ -315,8 +315,8 @@ export const CreateTierRequest: MessageFns<CreateTierRequest> = {
       description: isSet(object.description) ? globalThis.String(object.description) : undefined,
       accessMask: isSet(object.accessMask) ? globalThis.Number(object.accessMask) : undefined,
       currency: isSet(object.currency) ? globalThis.String(object.currency) : undefined,
-      monthlyPriceCents: isSet(object.monthlyPriceCents) ? globalThis.Number(object.monthlyPriceCents) : undefined,
-      annualPriceCents: isSet(object.annualPriceCents) ? globalThis.Number(object.annualPriceCents) : undefined,
+      monthlyPriceCents: isSet(object.monthlyPriceCents) ? globalThis.Number(object.monthlyPriceCents) : 0,
+      annualPriceCents: isSet(object.annualPriceCents) ? globalThis.Number(object.annualPriceCents) : 0,
     };
   },
 
@@ -337,10 +337,10 @@ export const CreateTierRequest: MessageFns<CreateTierRequest> = {
     if (message.currency !== undefined) {
       obj.currency = message.currency;
     }
-    if (message.monthlyPriceCents !== undefined) {
+    if (message.monthlyPriceCents !== 0) {
       obj.monthlyPriceCents = Math.round(message.monthlyPriceCents);
     }
-    if (message.annualPriceCents !== undefined) {
+    if (message.annualPriceCents !== 0) {
       obj.annualPriceCents = Math.round(message.annualPriceCents);
     }
     return obj;
@@ -356,8 +356,8 @@ export const CreateTierRequest: MessageFns<CreateTierRequest> = {
     message.description = object.description ?? undefined;
     message.accessMask = object.accessMask ?? undefined;
     message.currency = object.currency ?? undefined;
-    message.monthlyPriceCents = object.monthlyPriceCents ?? undefined;
-    message.annualPriceCents = object.annualPriceCents ?? undefined;
+    message.monthlyPriceCents = object.monthlyPriceCents ?? 0;
+    message.annualPriceCents = object.annualPriceCents ?? 0;
     return message;
   },
 };
@@ -496,10 +496,10 @@ export const UpdateTierPricesRequest: MessageFns<UpdateTierPricesRequest> = {
       writer.uint32(10).string(message.tierId);
     }
     if (message.monthlyPriceCents !== undefined) {
-      writer.uint32(16).int64(message.monthlyPriceCents);
+      writer.uint32(16).int32(message.monthlyPriceCents);
     }
     if (message.annualPriceCents !== undefined) {
-      writer.uint32(24).int64(message.annualPriceCents);
+      writer.uint32(24).int32(message.annualPriceCents);
     }
     return writer;
   },
@@ -524,7 +524,7 @@ export const UpdateTierPricesRequest: MessageFns<UpdateTierPricesRequest> = {
             break;
           }
 
-          message.monthlyPriceCents = longToNumber(reader.int64());
+          message.monthlyPriceCents = reader.int32();
           continue;
         }
         case 3: {
@@ -532,7 +532,7 @@ export const UpdateTierPricesRequest: MessageFns<UpdateTierPricesRequest> = {
             break;
           }
 
-          message.annualPriceCents = longToNumber(reader.int64());
+          message.annualPriceCents = reader.int32();
           continue;
         }
       }
@@ -932,11 +932,11 @@ function createBaseSubscriptionTierResponse(): SubscriptionTierResponse {
     creatorId: "",
     name: "",
     description: undefined,
-    stripeProductId: undefined,
-    monthlyStripePriceId: undefined,
-    monthlyPriceCents: undefined,
-    annualStripePriceId: undefined,
-    annualPriceCents: undefined,
+    stripeProductId: "",
+    monthlyStripePriceId: "",
+    monthlyPriceCents: 0,
+    annualStripePriceId: "",
+    annualPriceCents: 0,
     currency: "",
     accessMask: 0,
     isActive: false,
@@ -959,20 +959,20 @@ export const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse> = {
     if (message.description !== undefined) {
       writer.uint32(34).string(message.description);
     }
-    if (message.stripeProductId !== undefined) {
+    if (message.stripeProductId !== "") {
       writer.uint32(42).string(message.stripeProductId);
     }
-    if (message.monthlyStripePriceId !== undefined) {
+    if (message.monthlyStripePriceId !== "") {
       writer.uint32(50).string(message.monthlyStripePriceId);
     }
-    if (message.monthlyPriceCents !== undefined) {
-      writer.uint32(56).int64(message.monthlyPriceCents);
+    if (message.monthlyPriceCents !== 0) {
+      writer.uint32(56).int32(message.monthlyPriceCents);
     }
-    if (message.annualStripePriceId !== undefined) {
+    if (message.annualStripePriceId !== "") {
       writer.uint32(66).string(message.annualStripePriceId);
     }
-    if (message.annualPriceCents !== undefined) {
-      writer.uint32(72).int64(message.annualPriceCents);
+    if (message.annualPriceCents !== 0) {
+      writer.uint32(72).int32(message.annualPriceCents);
     }
     if (message.currency !== "") {
       writer.uint32(82).string(message.currency);
@@ -1052,7 +1052,7 @@ export const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse> = {
             break;
           }
 
-          message.monthlyPriceCents = longToNumber(reader.int64());
+          message.monthlyPriceCents = reader.int32();
           continue;
         }
         case 8: {
@@ -1068,7 +1068,7 @@ export const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse> = {
             break;
           }
 
-          message.annualPriceCents = longToNumber(reader.int64());
+          message.annualPriceCents = reader.int32();
           continue;
         }
         case 10: {
@@ -1126,15 +1126,11 @@ export const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse> = {
       creatorId: isSet(object.creatorId) ? globalThis.String(object.creatorId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-      stripeProductId: isSet(object.stripeProductId) ? globalThis.String(object.stripeProductId) : undefined,
-      monthlyStripePriceId: isSet(object.monthlyStripePriceId)
-        ? globalThis.String(object.monthlyStripePriceId)
-        : undefined,
-      monthlyPriceCents: isSet(object.monthlyPriceCents) ? globalThis.Number(object.monthlyPriceCents) : undefined,
-      annualStripePriceId: isSet(object.annualStripePriceId)
-        ? globalThis.String(object.annualStripePriceId)
-        : undefined,
-      annualPriceCents: isSet(object.annualPriceCents) ? globalThis.Number(object.annualPriceCents) : undefined,
+      stripeProductId: isSet(object.stripeProductId) ? globalThis.String(object.stripeProductId) : "",
+      monthlyStripePriceId: isSet(object.monthlyStripePriceId) ? globalThis.String(object.monthlyStripePriceId) : "",
+      monthlyPriceCents: isSet(object.monthlyPriceCents) ? globalThis.Number(object.monthlyPriceCents) : 0,
+      annualStripePriceId: isSet(object.annualStripePriceId) ? globalThis.String(object.annualStripePriceId) : "",
+      annualPriceCents: isSet(object.annualPriceCents) ? globalThis.Number(object.annualPriceCents) : 0,
       currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
       accessMask: isSet(object.accessMask) ? globalThis.Number(object.accessMask) : 0,
       isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
@@ -1157,19 +1153,19 @@ export const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse> = {
     if (message.description !== undefined) {
       obj.description = message.description;
     }
-    if (message.stripeProductId !== undefined) {
+    if (message.stripeProductId !== "") {
       obj.stripeProductId = message.stripeProductId;
     }
-    if (message.monthlyStripePriceId !== undefined) {
+    if (message.monthlyStripePriceId !== "") {
       obj.monthlyStripePriceId = message.monthlyStripePriceId;
     }
-    if (message.monthlyPriceCents !== undefined) {
+    if (message.monthlyPriceCents !== 0) {
       obj.monthlyPriceCents = Math.round(message.monthlyPriceCents);
     }
-    if (message.annualStripePriceId !== undefined) {
+    if (message.annualStripePriceId !== "") {
       obj.annualStripePriceId = message.annualStripePriceId;
     }
-    if (message.annualPriceCents !== undefined) {
+    if (message.annualPriceCents !== 0) {
       obj.annualPriceCents = Math.round(message.annualPriceCents);
     }
     if (message.currency !== "") {
@@ -1199,11 +1195,11 @@ export const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse> = {
     message.creatorId = object.creatorId ?? "";
     message.name = object.name ?? "";
     message.description = object.description ?? undefined;
-    message.stripeProductId = object.stripeProductId ?? undefined;
-    message.monthlyStripePriceId = object.monthlyStripePriceId ?? undefined;
-    message.monthlyPriceCents = object.monthlyPriceCents ?? undefined;
-    message.annualStripePriceId = object.annualStripePriceId ?? undefined;
-    message.annualPriceCents = object.annualPriceCents ?? undefined;
+    message.stripeProductId = object.stripeProductId ?? "";
+    message.monthlyStripePriceId = object.monthlyStripePriceId ?? "";
+    message.monthlyPriceCents = object.monthlyPriceCents ?? 0;
+    message.annualStripePriceId = object.annualStripePriceId ?? "";
+    message.annualPriceCents = object.annualPriceCents ?? 0;
     message.currency = object.currency ?? "";
     message.accessMask = object.accessMask ?? 0;
     message.isActive = object.isActive ?? false;
@@ -1304,17 +1300,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(int64: { toString(): string }): number {
-  const num = globalThis.Number(int64.toString());
-  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
-  }
-  return num;
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

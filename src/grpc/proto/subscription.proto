@@ -28,9 +28,9 @@ message CreateTierRequest {
   string  name = 2;
   optional string description = 3;
   optional int32  accessMask = 4; 
-  optional string currency   = 5;
-  optional int64  monthlyPriceCents = 6;
-  optional int64  annualPriceCents  = 7;
+  optional string currency   = 5; 
+  int32  monthlyPriceCents = 6;         
+  int32  annualPriceCents  = 7;
 }
 
 message UpdateTierRequest {
@@ -38,13 +38,13 @@ message UpdateTierRequest {
   optional string name        = 2;
   optional string description = 3;
   optional int32  accessMask  = 4;
-  optional string currency    = 5; 
+  optional string currency    = 5;
 }
 
 message UpdateTierPricesRequest {
   string tierId = 1;
-  optional int64 monthlyPriceCents = 2;
-  optional int64 annualPriceCents  = 3;
+  optional int32 monthlyPriceCents = 2;
+  optional int32 annualPriceCents  = 3;
 }
 
 message ToggleTierActiveRequest {
@@ -73,16 +73,18 @@ message DeleteTierRequest {
 message SubscriptionTierResponse {
   string id = 1;
   string creatorId = 2;
-  string  name = 3;
+  string name = 3;
   optional string description = 4;
-  optional string stripeProductId      = 5;
-  optional string monthlyStripePriceId = 6;
-  optional int64  monthlyPriceCents    = 7;
-  optional string annualStripePriceId  = 8;
-  optional int64  annualPriceCents     = 9;
-  string currency = 10;     
+
+  string stripeProductId      = 5;  
+  string monthlyStripePriceId = 6;  
+  int32  monthlyPriceCents    = 7;  
+  string annualStripePriceId  = 8;  
+  int32  annualPriceCents     = 9;  
+
+  string currency = 10;
   int32  accessMask = 11;
   bool   isActive   = 12;
-  string createdAt  = 13;   
-  string updatedAt  = 14; 
+  string createdAt  = 13;
+  string updatedAt  = 14;
 }

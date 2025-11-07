@@ -4,12 +4,12 @@ export declare class SubscriptionTier {
     creatorId: string;
     creator: Profile;
     name: string;
-    description?: string;
-    stripeProductId?: string;
-    monthlyStripePriceId?: string;
-    monthlyPriceCents?: number;
-    annualStripePriceId?: string;
-    annualPriceCents?: number;
+    description?: string | null;
+    stripeProductId: string;
+    monthlyStripePriceId: string;
+    monthlyPriceCents: number;
+    annualStripePriceId: string;
+    annualPriceCents: number;
     currency: string;
     accessMask: number;
     isActive: boolean;

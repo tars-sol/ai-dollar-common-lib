@@ -34,28 +34,28 @@ __decorate([
 ], SubscriptionTier.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], SubscriptionTier.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'varchar' }),
     __metadata("design:type", String)
 ], SubscriptionTier.prototype, "stripeProductId", void 0);
 __decorate([
-    (0, typeorm_1.Index)(),
-    (0, typeorm_1.Column)({ type: 'varchar', nullable: true, unique: true }),
+    (0, typeorm_1.Index)({ unique: true }),
+    (0, typeorm_1.Column)({ type: 'varchar' }),
     __metadata("design:type", String)
 ], SubscriptionTier.prototype, "monthlyStripePriceId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'bigint', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'integer' }),
     __metadata("design:type", Number)
 ], SubscriptionTier.prototype, "monthlyPriceCents", void 0);
 __decorate([
-    (0, typeorm_1.Index)(),
-    (0, typeorm_1.Column)({ type: 'varchar', nullable: true, unique: true }),
+    (0, typeorm_1.Index)({ unique: true }),
+    (0, typeorm_1.Column)({ type: 'varchar' }),
     __metadata("design:type", String)
 ], SubscriptionTier.prototype, "annualStripePriceId", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'bigint', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'integer' }),
     __metadata("design:type", Number)
 ], SubscriptionTier.prototype, "annualPriceCents", void 0);
 __decorate([
@@ -63,7 +63,7 @@ __decorate([
     __metadata("design:type", String)
 ], SubscriptionTier.prototype, "currency", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int', default: 1 }),
+    (0, typeorm_1.Column)({ type: 'integer', default: 0 }),
     __metadata("design:type", Number)
 ], SubscriptionTier.prototype, "accessMask", void 0);
 __decorate([
@@ -81,10 +81,9 @@ __decorate([
 exports.SubscriptionTier = SubscriptionTier = __decorate([
     (0, typeorm_1.Entity)('subscription_tiers'),
     (0, typeorm_1.Index)(['creatorId', 'name'], { unique: true }),
-    (0, typeorm_1.Check)(`(monthly_price_cents IS NOT NULL AND monthly_price_cents >= 0) OR monthly_price_cents IS NULL`),
-    (0, typeorm_1.Check)(`(annual_price_cents  IS NOT NULL AND annual_price_cents  >= 0) OR annual_price_cents  IS NULL`),
-    (0, typeorm_1.Check)(`entitlements_mask >= 0`),
-    (0, typeorm_1.Check)(`currency ~ '^[A-Za-z]{3,10}$'`),
-    (0, typeorm_1.Check)(`(monthly_stripe_price_id IS NOT NULL OR annual_stripe_price_id IS NOT NULL)`)
+    (0, typeorm_1.Check)(`monthly_price_cents >= 0`),
+    (0, typeorm_1.Check)(`annual_price_cents  >= 0`),
+    (0, typeorm_1.Check)(`access_mask >= 0`),
+    (0, typeorm_1.Check)(`currency ~ '^[A-Za-z]{3,10}$'`)
 ], SubscriptionTier);
 //# sourceMappingURL=subscription_tier.entity.js.map

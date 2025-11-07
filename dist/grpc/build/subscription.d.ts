@@ -13,8 +13,8 @@ export interface CreateTierRequest {
     description?: string | undefined;
     accessMask?: number | undefined;
     currency?: string | undefined;
-    monthlyPriceCents?: number | undefined;
-    annualPriceCents?: number | undefined;
+    monthlyPriceCents: number;
+    annualPriceCents: number;
 }
 export interface UpdateTierRequest {
     tierId: string;
@@ -51,11 +51,11 @@ export interface SubscriptionTierResponse {
     creatorId: string;
     name: string;
     description?: string | undefined;
-    stripeProductId?: string | undefined;
-    monthlyStripePriceId?: string | undefined;
-    monthlyPriceCents?: number | undefined;
-    annualStripePriceId?: string | undefined;
-    annualPriceCents?: number | undefined;
+    stripeProductId: string;
+    monthlyStripePriceId: string;
+    monthlyPriceCents: number;
+    annualStripePriceId: string;
+    annualPriceCents: number;
     currency: string;
     accessMask: number;
     isActive: boolean;
