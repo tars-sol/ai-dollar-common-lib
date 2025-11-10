@@ -80,10 +80,6 @@ __decorate([
 ], SubscriptionTier.prototype, "updatedAt", void 0);
 exports.SubscriptionTier = SubscriptionTier = __decorate([
     (0, typeorm_1.Entity)('subscription_tiers'),
-    (0, typeorm_1.Index)(['creatorId', 'name'], { unique: true }),
-    (0, typeorm_1.Check)(`monthly_price_cents >= 0`),
-    (0, typeorm_1.Check)(`annual_price_cents  >= 0`),
-    (0, typeorm_1.Check)(`access_mask >= 0`),
-    (0, typeorm_1.Check)(`currency ~ '^[A-Za-z]{3,10}$'`)
+    (0, typeorm_1.Index)(['creatorId', 'name'], { unique: true })
 ], SubscriptionTier);
 //# sourceMappingURL=subscription_tier.entity.js.map

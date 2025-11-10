@@ -1,1 +1,1 @@
-{"version":3,"file":"constant.js","sourceRoot":"","sources":["../../src/rabbitmq/constant.ts"],"names":[],"mappings":";;;AAAa,QAAA,UAAU,GAAG;IACxB,WAAW,EAAE,aAAa;IAC1B,WAAW,EAAE,aAAa;CAC3B,CAAC"}
+{"version":3,"file":"constant.js","sourceRoot":"","sources":["../../src/rabbitmq/constant.ts"],"names":[],"mappings":";;;AAAa,QAAA,UAAU,GAAG;IACxB,WAAW,EAAE,aAAa;IAC1B,WAAW,EAAE,aAAa;IAC1B,mBAAmB,EAAE,qBAAqB;CAC3C,CAAC"}

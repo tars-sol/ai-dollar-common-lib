@@ -12,6 +12,14 @@ export class EventQueueUser {
     id: string;
 
     @Index()
+    @Column({ type: 'text', nullable: true })
+    exchange: string | null;
+
+    @Index()
+    @Column({ type: 'text', nullable: true })
+    queue: string | null;
+
+    @Index()
     @Column({ type: 'text' })
     routingKey: string;
 

@@ -1,15 +1,11 @@
 import {
   Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn,
-  Index, ManyToOne, JoinColumn, Check
+  Index, ManyToOne, JoinColumn
 } from 'typeorm';
 import { Profile } from './profile.entity';
 
 @Entity('subscription_tiers')
 @Index(['creatorId', 'name'], { unique: true })
-@Check(`monthly_price_cents >= 0`)
-@Check(`annual_price_cents  >= 0`)
-@Check(`access_mask >= 0`)
-@Check(`currency ~ '^[A-Za-z]{3,10}$'`)
 export class SubscriptionTier {
   @PrimaryGeneratedColumn('uuid')
   id: string;
