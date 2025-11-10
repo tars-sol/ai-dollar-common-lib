@@ -2870,13 +2870,13 @@ function createBaseCampaignProgressParticipant() {
         username: "",
         name: "",
         avatarUrl: "",
-        totalTasks: 0,
-        completedTasks: 0,
+        totalTasks: "",
+        completedTasks: "",
         isCompleted: false,
         joinedAt: "",
         completedAt: "",
-        followersCount: 0,
-        subscribersCount: 0,
+        followersCount: "",
+        subscribersCount: "",
     };
 }
 exports.CampaignProgressParticipant = {
@@ -2896,11 +2896,11 @@ exports.CampaignProgressParticipant = {
         if (message.avatarUrl !== "") {
             writer.uint32(42).string(message.avatarUrl);
         }
-        if (message.totalTasks !== 0) {
-            writer.uint32(48).int32(message.totalTasks);
+        if (message.totalTasks !== "") {
+            writer.uint32(50).string(message.totalTasks);
         }
-        if (message.completedTasks !== 0) {
-            writer.uint32(56).int32(message.completedTasks);
+        if (message.completedTasks !== "") {
+            writer.uint32(58).string(message.completedTasks);
         }
         if (message.isCompleted !== false) {
             writer.uint32(64).bool(message.isCompleted);
@@ -2911,11 +2911,11 @@ exports.CampaignProgressParticipant = {
         if (message.completedAt !== "") {
             writer.uint32(82).string(message.completedAt);
         }
-        if (message.followersCount !== 0) {
-            writer.uint32(88).int32(message.followersCount);
+        if (message.followersCount !== "") {
+            writer.uint32(90).string(message.followersCount);
         }
-        if (message.subscribersCount !== 0) {
-            writer.uint32(96).int32(message.subscribersCount);
+        if (message.subscribersCount !== "") {
+            writer.uint32(98).string(message.subscribersCount);
         }
         return writer;
     },
@@ -2962,17 +2962,17 @@ exports.CampaignProgressParticipant = {
                     continue;
                 }
                 case 6: {
-                    if (tag !== 48) {
+                    if (tag !== 50) {
                         break;
                     }
-                    message.totalTasks = reader.int32();
+                    message.totalTasks = reader.string();
                     continue;
                 }
                 case 7: {
-                    if (tag !== 56) {
+                    if (tag !== 58) {
                         break;
                     }
-                    message.completedTasks = reader.int32();
+                    message.completedTasks = reader.string();
                     continue;
                 }
                 case 8: {
@@ -2997,17 +2997,17 @@ exports.CampaignProgressParticipant = {
                     continue;
                 }
                 case 11: {
-                    if (tag !== 88) {
+                    if (tag !== 90) {
                         break;
                     }
-                    message.followersCount = reader.int32();
+                    message.followersCount = reader.string();
                     continue;
                 }
                 case 12: {
-                    if (tag !== 96) {
+                    if (tag !== 98) {
                         break;
                     }
-                    message.subscribersCount = reader.int32();
+                    message.subscribersCount = reader.string();
                     continue;
                 }
             }
@@ -3025,13 +3025,13 @@ exports.CampaignProgressParticipant = {
             username: isSet(object.username) ? globalThis.String(object.username) : "",
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
-            totalTasks: isSet(object.totalTasks) ? globalThis.Number(object.totalTasks) : 0,
-            completedTasks: isSet(object.completedTasks) ? globalThis.Number(object.completedTasks) : 0,
+            totalTasks: isSet(object.totalTasks) ? globalThis.String(object.totalTasks) : "",
+            completedTasks: isSet(object.completedTasks) ? globalThis.String(object.completedTasks) : "",
             isCompleted: isSet(object.isCompleted) ? globalThis.Boolean(object.isCompleted) : false,
             joinedAt: isSet(object.joinedAt) ? globalThis.String(object.joinedAt) : "",
             completedAt: isSet(object.completedAt) ? globalThis.String(object.completedAt) : "",
-            followersCount: isSet(object.followersCount) ? globalThis.Number(object.followersCount) : 0,
-            subscribersCount: isSet(object.subscribersCount) ? globalThis.Number(object.subscribersCount) : 0,
+            followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
+            subscribersCount: isSet(object.subscribersCount) ? globalThis.String(object.subscribersCount) : "",
         };
     },
     toJSON(message) {
@@ -3051,11 +3051,11 @@ exports.CampaignProgressParticipant = {
         if (message.avatarUrl !== "") {
             obj.avatarUrl = message.avatarUrl;
         }
-        if (message.totalTasks !== 0) {
-            obj.totalTasks = Math.round(message.totalTasks);
+        if (message.totalTasks !== "") {
+            obj.totalTasks = message.totalTasks;
         }
-        if (message.completedTasks !== 0) {
-            obj.completedTasks = Math.round(message.completedTasks);
+        if (message.completedTasks !== "") {
+            obj.completedTasks = message.completedTasks;
         }
         if (message.isCompleted !== false) {
             obj.isCompleted = message.isCompleted;
@@ -3066,11 +3066,11 @@ exports.CampaignProgressParticipant = {
         if (message.completedAt !== "") {
             obj.completedAt = message.completedAt;
         }
-        if (message.followersCount !== 0) {
-            obj.followersCount = Math.round(message.followersCount);
+        if (message.followersCount !== "") {
+            obj.followersCount = message.followersCount;
         }
-        if (message.subscribersCount !== 0) {
-            obj.subscribersCount = Math.round(message.subscribersCount);
+        if (message.subscribersCount !== "") {
+            obj.subscribersCount = message.subscribersCount;
         }
         return obj;
     },
@@ -3084,13 +3084,13 @@ exports.CampaignProgressParticipant = {
         message.username = object.username ?? "";
         message.name = object.name ?? "";
         message.avatarUrl = object.avatarUrl ?? "";
-        message.totalTasks = object.totalTasks ?? 0;
-        message.completedTasks = object.completedTasks ?? 0;
+        message.totalTasks = object.totalTasks ?? "";
+        message.completedTasks = object.completedTasks ?? "";
         message.isCompleted = object.isCompleted ?? false;
         message.joinedAt = object.joinedAt ?? "";
         message.completedAt = object.completedAt ?? "";
-        message.followersCount = object.followersCount ?? 0;
-        message.subscribersCount = object.subscribersCount ?? 0;
+        message.followersCount = object.followersCount ?? "";
+        message.subscribersCount = object.subscribersCount ?? "";
         return message;
     },
 };

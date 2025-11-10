@@ -221,13 +221,13 @@ message CampaignProgressParticipant {
   string username = 3;
   string name = 4;
   string avatarUrl = 5;
-  int32 totalTasks = 6;
-  int32 completedTasks = 7;
+  string totalTasks = 6;
+  string completedTasks = 7;
   bool isCompleted = 8;
   string joinedAt = 9;
   string completedAt = 10;
-  int32 followersCount = 11;
-  int32 subscribersCount = 12;
+  string followersCount = 11;
+  string subscribersCount = 12;
 }
 
 message GetCampaignProgressResponse {

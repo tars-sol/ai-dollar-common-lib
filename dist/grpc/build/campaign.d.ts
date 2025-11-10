@@ -189,13 +189,13 @@ export interface CampaignProgressParticipant {
     username: string;
     name: string;
     avatarUrl: string;
-    totalTasks: number;
-    completedTasks: number;
+    totalTasks: string;
+    completedTasks: string;
     isCompleted: boolean;
     joinedAt: string;
     completedAt: string;
-    followersCount: number;
-    subscribersCount: number;
+    followersCount: string;
+    subscribersCount: string;
 }
 export interface GetCampaignProgressResponse {
     participants: CampaignProgressParticipant[];
