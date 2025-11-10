@@ -10,6 +10,45 @@ import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "subscription";
 
+export enum BillingInterval {
+  BILLING_INTERVAL_UNSPECIFIED = 0,
+  MONTHLY = 1,
+  ANNUAL = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function billingIntervalFromJSON(object: any): BillingInterval {
+  switch (object) {
+    case 0:
+    case "BILLING_INTERVAL_UNSPECIFIED":
+      return BillingInterval.BILLING_INTERVAL_UNSPECIFIED;
+    case 1:
+    case "MONTHLY":
+      return BillingInterval.MONTHLY;
+    case 2:
+    case "ANNUAL":
+      return BillingInterval.ANNUAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return BillingInterval.UNRECOGNIZED;
+  }
+}
+
+export function billingIntervalToJSON(object: BillingInterval): string {
+  switch (object) {
+    case BillingInterval.BILLING_INTERVAL_UNSPECIFIED:
+      return "BILLING_INTERVAL_UNSPECIFIED";
+    case BillingInterval.MONTHLY:
+      return "MONTHLY";
+    case BillingInterval.ANNUAL:
+      return "ANNUAL";
+    case BillingInterval.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface SuccessResponse {
   success: boolean;
 }
@@ -80,6 +119,17 @@ export interface SubscriptionTierResponse {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface CreateCheckoutSessionRequest {
+  userId: string;
+  tierId: string;
+  interval: BillingInterval;
+}
+
+export interface CreateCheckoutSessionResponse {
+  url: string;
+  sessionId: string;
 }
 
 function createBaseSuccessResponse(): SuccessResponse {
@@ -1209,6 +1259,176 @@ export const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse> = {
   },
 };
 
+function createBaseCreateCheckoutSessionRequest(): CreateCheckoutSessionRequest {
+  return { userId: "", tierId: "", interval: 0 };
+}
+
+export const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionRequest> = {
+  encode(message: CreateCheckoutSessionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.tierId !== "") {
+      writer.uint32(18).string(message.tierId);
+    }
+    if (message.interval !== 0) {
+      writer.uint32(24).int32(message.interval);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateCheckoutSessionRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateCheckoutSessionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.tierId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.interval = reader.int32() as any;
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateCheckoutSessionRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      tierId: isSet(object.tierId) ? globalThis.String(object.tierId) : "",
+      interval: isSet(object.interval) ? billingIntervalFromJSON(object.interval) : 0,
+    };
+  },
+
+  toJSON(message: CreateCheckoutSessionRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.tierId !== "") {
+      obj.tierId = message.tierId;
+    }
+    if (message.interval !== 0) {
+      obj.interval = billingIntervalToJSON(message.interval);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateCheckoutSessionRequest>, I>>(base?: I): CreateCheckoutSessionRequest {
+    return CreateCheckoutSessionRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateCheckoutSessionRequest>, I>>(object: I): CreateCheckoutSessionRequest {
+    const message = createBaseCreateCheckoutSessionRequest();
+    message.userId = object.userId ?? "";
+    message.tierId = object.tierId ?? "";
+    message.interval = object.interval ?? 0;
+    return message;
+  },
+};
+
+function createBaseCreateCheckoutSessionResponse(): CreateCheckoutSessionResponse {
+  return { url: "", sessionId: "" };
+}
+
+export const CreateCheckoutSessionResponse: MessageFns<CreateCheckoutSessionResponse> = {
+  encode(message: CreateCheckoutSessionResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.url !== "") {
+      writer.uint32(10).string(message.url);
+    }
+    if (message.sessionId !== "") {
+      writer.uint32(18).string(message.sessionId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateCheckoutSessionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateCheckoutSessionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.sessionId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateCheckoutSessionResponse {
+    return {
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      sessionId: isSet(object.sessionId) ? globalThis.String(object.sessionId) : "",
+    };
+  },
+
+  toJSON(message: CreateCheckoutSessionResponse): unknown {
+    const obj: any = {};
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.sessionId !== "") {
+      obj.sessionId = message.sessionId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateCheckoutSessionResponse>, I>>(base?: I): CreateCheckoutSessionResponse {
+    return CreateCheckoutSessionResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateCheckoutSessionResponse>, I>>(
+    object: I,
+  ): CreateCheckoutSessionResponse {
+    const message = createBaseCreateCheckoutSessionResponse();
+    message.url = object.url ?? "";
+    message.sessionId = object.sessionId ?? "";
+    return message;
+  },
+};
+
 export interface SubscriptionService {
   CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse>;
   UpdateTier(request: UpdateTierRequest): Promise<SubscriptionTierResponse>;
@@ -1218,6 +1438,7 @@ export interface SubscriptionService {
   GetCreatorTiers(request: GetCreatorTiersRequest): Promise<GetCreatorTiersResponse>;
   DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
   Health(request: Empty): Promise<HealthResponse>;
+  CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
 }
 
 export const SubscriptionServiceServiceName = "subscription.SubscriptionService";
@@ -1235,6 +1456,7 @@ export class SubscriptionServiceClientImpl implements SubscriptionService {
     this.GetCreatorTiers = this.GetCreatorTiers.bind(this);
     this.DeleteTier = this.DeleteTier.bind(this);
     this.Health = this.Health.bind(this);
+    this.CreateCheckoutSession = this.CreateCheckoutSession.bind(this);
   }
   CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse> {
     const data = CreateTierRequest.encode(request).finish();
@@ -1282,6 +1504,12 @@ export class SubscriptionServiceClientImpl implements SubscriptionService {
     const data = Empty.encode(request).finish();
     const promise = this.rpc.request(this.service, "Health", data);
     return promise.then((data) => HealthResponse.decode(new BinaryReader(data)));
+  }
+
+  CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse> {
+    const data = CreateCheckoutSessionRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateCheckoutSession", data);
+    return promise.then((data) => CreateCheckoutSessionResponse.decode(new BinaryReader(data)));
   }
 }
 

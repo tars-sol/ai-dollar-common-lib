@@ -18,6 +18,7 @@ export declare class User {
     followersCount: number;
     followingCount: number;
     subscriptionsCount: number;
+    stripeCustomerId: string;
     createdAt: Date;
     updatedAt: Date;
 }

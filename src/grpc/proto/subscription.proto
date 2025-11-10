@@ -13,6 +13,7 @@ service SubscriptionService {
   rpc GetCreatorTiers   (GetCreatorTiersRequest)   returns (GetCreatorTiersResponse);
   rpc DeleteTier        (DeleteTierRequest)        returns (SuccessResponse);
   rpc Health            (google.protobuf.Empty)    returns (HealthResponse);
+  rpc CreateCheckoutSession (CreateCheckoutSessionRequest) returns (CreateCheckoutSessionResponse);
 }
 
 message SuccessResponse {
@@ -87,4 +88,21 @@ message SubscriptionTierResponse {
   bool   isActive   = 12;
   string createdAt  = 13;
   string updatedAt  = 14;
+}
+
+enum BillingInterval {
+  BILLING_INTERVAL_UNSPECIFIED = 0;
+  MONTHLY = 1;
+  ANNUAL  = 2;
+}
+
+message CreateCheckoutSessionRequest {
+  string userId = 1;               
+  string tierId = 2;              
+  BillingInterval interval = 3;    
+}
+
+message CreateCheckoutSessionResponse {
+  string url       = 1; 
+  string sessionId = 2;
 }

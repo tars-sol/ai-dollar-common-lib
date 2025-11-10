@@ -72,6 +72,10 @@ export class User {
   @Column({ type: 'int', default: 0 })
   subscriptionsCount: number;
 
+  @Index({ unique: true, where: '"stripeCustomerId" IS NOT NULL' })
+  @Column({ type: 'varchar', nullable: true })
+  stripeCustomerId: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

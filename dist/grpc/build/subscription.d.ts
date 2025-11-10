@@ -1,6 +1,14 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "subscription";
+export declare enum BillingInterval {
+    BILLING_INTERVAL_UNSPECIFIED = 0,
+    MONTHLY = 1,
+    ANNUAL = 2,
+    UNRECOGNIZED = -1
+}
+export declare function billingIntervalFromJSON(object: any): BillingInterval;
+export declare function billingIntervalToJSON(object: BillingInterval): string;
 export interface SuccessResponse {
     success: boolean;
 }
@@ -62,6 +70,15 @@ export interface SubscriptionTierResponse {
     createdAt: string;
     updatedAt: string;
 }
+export interface CreateCheckoutSessionRequest {
+    userId: string;
+    tierId: string;
+    interval: BillingInterval;
+}
+export interface CreateCheckoutSessionResponse {
+    url: string;
+    sessionId: string;
+}
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const HealthResponse: MessageFns<HealthResponse>;
 export declare const CreateTierRequest: MessageFns<CreateTierRequest>;
@@ -73,6 +90,8 @@ export declare const GetCreatorTiersRequest: MessageFns<GetCreatorTiersRequest>;
 export declare const GetCreatorTiersResponse: MessageFns<GetCreatorTiersResponse>;
 export declare const DeleteTierRequest: MessageFns<DeleteTierRequest>;
 export declare const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse>;
+export declare const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionRequest>;
+export declare const CreateCheckoutSessionResponse: MessageFns<CreateCheckoutSessionResponse>;
 export interface SubscriptionService {
     CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse>;
     UpdateTier(request: UpdateTierRequest): Promise<SubscriptionTierResponse>;
@@ -82,6 +101,7 @@ export interface SubscriptionService {
     GetCreatorTiers(request: GetCreatorTiersRequest): Promise<GetCreatorTiersResponse>;
     DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<HealthResponse>;
+    CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
 }
 export declare const SubscriptionServiceServiceName = "subscription.SubscriptionService";
 export declare class SubscriptionServiceClientImpl implements SubscriptionService {
@@ -98,6 +118,7 @@ export declare class SubscriptionServiceClientImpl implements SubscriptionServic
     GetCreatorTiers(request: GetCreatorTiersRequest): Promise<GetCreatorTiersResponse>;
     DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<HealthResponse>;
+    CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

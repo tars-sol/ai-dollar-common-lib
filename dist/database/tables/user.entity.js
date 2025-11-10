@@ -93,6 +93,11 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "subscriptionsCount", void 0);
 __decorate([
+    (0, typeorm_1.Index)({ unique: true, where: '"stripeCustomerId" IS NOT NULL' }),
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "stripeCustomerId", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);
