@@ -2875,6 +2875,8 @@ function createBaseCampaignProgressParticipant() {
         isCompleted: false,
         joinedAt: "",
         completedAt: "",
+        followersCount: 0,
+        subscribersCount: 0,
     };
 }
 exports.CampaignProgressParticipant = {
@@ -2908,6 +2910,12 @@ exports.CampaignProgressParticipant = {
         }
         if (message.completedAt !== "") {
             writer.uint32(82).string(message.completedAt);
+        }
+        if (message.followersCount !== 0) {
+            writer.uint32(88).int32(message.followersCount);
+        }
+        if (message.subscribersCount !== 0) {
+            writer.uint32(96).int32(message.subscribersCount);
         }
         return writer;
     },
@@ -2988,6 +2996,20 @@ exports.CampaignProgressParticipant = {
                     message.completedAt = reader.string();
                     continue;
                 }
+                case 11: {
+                    if (tag !== 88) {
+                        break;
+                    }
+                    message.followersCount = reader.int32();
+                    continue;
+                }
+                case 12: {
+                    if (tag !== 96) {
+                        break;
+                    }
+                    message.subscribersCount = reader.int32();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -3008,6 +3030,8 @@ exports.CampaignProgressParticipant = {
             isCompleted: isSet(object.isCompleted) ? globalThis.Boolean(object.isCompleted) : false,
             joinedAt: isSet(object.joinedAt) ? globalThis.String(object.joinedAt) : "",
             completedAt: isSet(object.completedAt) ? globalThis.String(object.completedAt) : "",
+            followersCount: isSet(object.followersCount) ? globalThis.Number(object.followersCount) : 0,
+            subscribersCount: isSet(object.subscribersCount) ? globalThis.Number(object.subscribersCount) : 0,
         };
     },
     toJSON(message) {
@@ -3042,6 +3066,12 @@ exports.CampaignProgressParticipant = {
         if (message.completedAt !== "") {
             obj.completedAt = message.completedAt;
         }
+        if (message.followersCount !== 0) {
+            obj.followersCount = Math.round(message.followersCount);
+        }
+        if (message.subscribersCount !== 0) {
+            obj.subscribersCount = Math.round(message.subscribersCount);
+        }
         return obj;
     },
     create(base) {
@@ -3059,6 +3089,8 @@ exports.CampaignProgressParticipant = {
         message.isCompleted = object.isCompleted ?? false;
         message.joinedAt = object.joinedAt ?? "";
         message.completedAt = object.completedAt ?? "";
+        message.followersCount = object.followersCount ?? 0;
+        message.subscribersCount = object.subscribersCount ?? 0;
         return message;
     },
 };

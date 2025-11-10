@@ -226,6 +226,8 @@ message CampaignProgressParticipant {
   bool isCompleted = 8;
   string joinedAt = 9;
   string completedAt = 10;
+  int32 followersCount = 11;
+  int32 subscribersCount = 12;
 }
 
 message GetCampaignProgressResponse {

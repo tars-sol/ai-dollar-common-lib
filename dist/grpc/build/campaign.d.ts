@@ -194,6 +194,8 @@ export interface CampaignProgressParticipant {
     isCompleted: boolean;
     joinedAt: string;
     completedAt: string;
+    followersCount: number;
+    subscribersCount: number;
 }
 export interface GetCampaignProgressResponse {
     participants: CampaignProgressParticipant[];
