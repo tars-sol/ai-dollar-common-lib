@@ -10,45 +10,6 @@ import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "subscription";
 
-export enum BillingInterval {
-  BILLING_INTERVAL_UNSPECIFIED = 0,
-  MONTHLY = 1,
-  ANNUAL = 2,
-  UNRECOGNIZED = -1,
-}
-
-export function billingIntervalFromJSON(object: any): BillingInterval {
-  switch (object) {
-    case 0:
-    case "BILLING_INTERVAL_UNSPECIFIED":
-      return BillingInterval.BILLING_INTERVAL_UNSPECIFIED;
-    case 1:
-    case "MONTHLY":
-      return BillingInterval.MONTHLY;
-    case 2:
-    case "ANNUAL":
-      return BillingInterval.ANNUAL;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return BillingInterval.UNRECOGNIZED;
-  }
-}
-
-export function billingIntervalToJSON(object: BillingInterval): string {
-  switch (object) {
-    case BillingInterval.BILLING_INTERVAL_UNSPECIFIED:
-      return "BILLING_INTERVAL_UNSPECIFIED";
-    case BillingInterval.MONTHLY:
-      return "MONTHLY";
-    case BillingInterval.ANNUAL:
-      return "ANNUAL";
-    case BillingInterval.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
 export interface SuccessResponse {
   success: boolean;
 }
@@ -124,7 +85,7 @@ export interface SubscriptionTierResponse {
 export interface CreateCheckoutSessionRequest {
   userId: string;
   tierId: string;
-  interval: BillingInterval;
+  interval: string;
 }
 
 export interface CreateCheckoutSessionResponse {
@@ -1260,7 +1221,7 @@ export const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse> = {
 };
 
 function createBaseCreateCheckoutSessionRequest(): CreateCheckoutSessionRequest {
-  return { userId: "", tierId: "", interval: 0 };
+  return { userId: "", tierId: "", interval: "" };
 }
 
 export const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionRequest> = {
@@ -1271,8 +1232,8 @@ export const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionReque
     if (message.tierId !== "") {
       writer.uint32(18).string(message.tierId);
     }
-    if (message.interval !== 0) {
-      writer.uint32(24).int32(message.interval);
+    if (message.interval !== "") {
+      writer.uint32(26).string(message.interval);
     }
     return writer;
   },
@@ -1301,11 +1262,11 @@ export const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionReque
           continue;
         }
         case 3: {
-          if (tag !== 24) {
+          if (tag !== 26) {
             break;
           }
 
-          message.interval = reader.int32() as any;
+          message.interval = reader.string();
           continue;
         }
       }
@@ -1321,7 +1282,7 @@ export const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionReque
     return {
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       tierId: isSet(object.tierId) ? globalThis.String(object.tierId) : "",
-      interval: isSet(object.interval) ? billingIntervalFromJSON(object.interval) : 0,
+      interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
     };
   },
 
@@ -1333,8 +1294,8 @@ export const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionReque
     if (message.tierId !== "") {
       obj.tierId = message.tierId;
     }
-    if (message.interval !== 0) {
-      obj.interval = billingIntervalToJSON(message.interval);
+    if (message.interval !== "") {
+      obj.interval = message.interval;
     }
     return obj;
   },
@@ -1346,7 +1307,7 @@ export const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionReque
     const message = createBaseCreateCheckoutSessionRequest();
     message.userId = object.userId ?? "";
     message.tierId = object.tierId ?? "";
-    message.interval = object.interval ?? 0;
+    message.interval = object.interval ?? "";
     return message;
   },
 };

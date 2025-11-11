@@ -5,50 +5,11 @@
 //   protoc               v3.21.12
 // source: subscription.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubscriptionServiceClientImpl = exports.SubscriptionServiceServiceName = exports.CreateCheckoutSessionResponse = exports.CreateCheckoutSessionRequest = exports.SubscriptionTierResponse = exports.DeleteTierRequest = exports.GetCreatorTiersResponse = exports.GetCreatorTiersRequest = exports.GetTierRequest = exports.ToggleTierActiveRequest = exports.UpdateTierPricesRequest = exports.UpdateTierRequest = exports.CreateTierRequest = exports.HealthResponse = exports.SuccessResponse = exports.BillingInterval = exports.protobufPackage = void 0;
-exports.billingIntervalFromJSON = billingIntervalFromJSON;
-exports.billingIntervalToJSON = billingIntervalToJSON;
+exports.SubscriptionServiceClientImpl = exports.SubscriptionServiceServiceName = exports.CreateCheckoutSessionResponse = exports.CreateCheckoutSessionRequest = exports.SubscriptionTierResponse = exports.DeleteTierRequest = exports.GetCreatorTiersResponse = exports.GetCreatorTiersRequest = exports.GetTierRequest = exports.ToggleTierActiveRequest = exports.UpdateTierPricesRequest = exports.UpdateTierRequest = exports.CreateTierRequest = exports.HealthResponse = exports.SuccessResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
 exports.protobufPackage = "subscription";
-var BillingInterval;
-(function (BillingInterval) {
-    BillingInterval[BillingInterval["BILLING_INTERVAL_UNSPECIFIED"] = 0] = "BILLING_INTERVAL_UNSPECIFIED";
-    BillingInterval[BillingInterval["MONTHLY"] = 1] = "MONTHLY";
-    BillingInterval[BillingInterval["ANNUAL"] = 2] = "ANNUAL";
-    BillingInterval[BillingInterval["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
-})(BillingInterval || (exports.BillingInterval = BillingInterval = {}));
-function billingIntervalFromJSON(object) {
-    switch (object) {
-        case 0:
-        case "BILLING_INTERVAL_UNSPECIFIED":
-            return BillingInterval.BILLING_INTERVAL_UNSPECIFIED;
-        case 1:
-        case "MONTHLY":
-            return BillingInterval.MONTHLY;
-        case 2:
-        case "ANNUAL":
-            return BillingInterval.ANNUAL;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return BillingInterval.UNRECOGNIZED;
-    }
-}
-function billingIntervalToJSON(object) {
-    switch (object) {
-        case BillingInterval.BILLING_INTERVAL_UNSPECIFIED:
-            return "BILLING_INTERVAL_UNSPECIFIED";
-        case BillingInterval.MONTHLY:
-            return "MONTHLY";
-        case BillingInterval.ANNUAL:
-            return "ANNUAL";
-        case BillingInterval.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
 function createBaseSuccessResponse() {
     return { success: false };
 }
@@ -1072,7 +1033,7 @@ exports.SubscriptionTierResponse = {
     },
 };
 function createBaseCreateCheckoutSessionRequest() {
-    return { userId: "", tierId: "", interval: 0 };
+    return { userId: "", tierId: "", interval: "" };
 }
 exports.CreateCheckoutSessionRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1082,8 +1043,8 @@ exports.CreateCheckoutSessionRequest = {
         if (message.tierId !== "") {
             writer.uint32(18).string(message.tierId);
         }
-        if (message.interval !== 0) {
-            writer.uint32(24).int32(message.interval);
+        if (message.interval !== "") {
+            writer.uint32(26).string(message.interval);
         }
         return writer;
     },
@@ -1109,10 +1070,10 @@ exports.CreateCheckoutSessionRequest = {
                     continue;
                 }
                 case 3: {
-                    if (tag !== 24) {
+                    if (tag !== 26) {
                         break;
                     }
-                    message.interval = reader.int32();
+                    message.interval = reader.string();
                     continue;
                 }
             }
@@ -1127,7 +1088,7 @@ exports.CreateCheckoutSessionRequest = {
         return {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             tierId: isSet(object.tierId) ? globalThis.String(object.tierId) : "",
-            interval: isSet(object.interval) ? billingIntervalFromJSON(object.interval) : 0,
+            interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
         };
     },
     toJSON(message) {
@@ -1138,8 +1099,8 @@ exports.CreateCheckoutSessionRequest = {
         if (message.tierId !== "") {
             obj.tierId = message.tierId;
         }
-        if (message.interval !== 0) {
-            obj.interval = billingIntervalToJSON(message.interval);
+        if (message.interval !== "") {
+            obj.interval = message.interval;
         }
         return obj;
     },
@@ -1150,7 +1111,7 @@ exports.CreateCheckoutSessionRequest = {
         const message = createBaseCreateCheckoutSessionRequest();
         message.userId = object.userId ?? "";
         message.tierId = object.tierId ?? "";
-        message.interval = object.interval ?? 0;
+        message.interval = object.interval ?? "";
         return message;
     },
 };

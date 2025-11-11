@@ -1,14 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "subscription";
-export declare enum BillingInterval {
-    BILLING_INTERVAL_UNSPECIFIED = 0,
-    MONTHLY = 1,
-    ANNUAL = 2,
-    UNRECOGNIZED = -1
-}
-export declare function billingIntervalFromJSON(object: any): BillingInterval;
-export declare function billingIntervalToJSON(object: BillingInterval): string;
 export interface SuccessResponse {
     success: boolean;
 }
@@ -73,7 +65,7 @@ export interface SubscriptionTierResponse {
 export interface CreateCheckoutSessionRequest {
     userId: string;
     tierId: string;
-    interval: BillingInterval;
+    interval: string;
 }
 export interface CreateCheckoutSessionResponse {
     url: string;
