@@ -2371,12 +2371,18 @@ exports.DeleteCampaignByIdRequest = {
     },
 };
 function createBaseGetTasksByCampaignIdRequest() {
-    return { campaignId: "" };
+    return { campaignId: "", roleId: "", role: "" };
 }
 exports.GetTasksByCampaignIdRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.campaignId !== "") {
             writer.uint32(10).string(message.campaignId);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(18).string(message.roleId);
+        }
+        if (message.role !== "") {
+            writer.uint32(26).string(message.role);
         }
         return writer;
     },
@@ -2394,6 +2400,20 @@ exports.GetTasksByCampaignIdRequest = {
                     message.campaignId = reader.string();
                     continue;
                 }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2403,12 +2423,22 @@ exports.GetTasksByCampaignIdRequest = {
         return message;
     },
     fromJSON(object) {
-        return { campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "" };
+        return {
+            campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+        };
     },
     toJSON(message) {
         const obj = {};
         if (message.campaignId !== "") {
             obj.campaignId = message.campaignId;
+        }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
         }
         return obj;
     },
@@ -2418,6 +2448,8 @@ exports.GetTasksByCampaignIdRequest = {
     fromPartial(object) {
         const message = createBaseGetTasksByCampaignIdRequest();
         message.campaignId = object.campaignId ?? "";
+        message.roleId = object.roleId ?? "";
+        message.role = object.role ?? "";
         return message;
     },
 };
@@ -3095,18 +3127,24 @@ exports.CampaignProgressParticipant = {
     },
 };
 function createBaseGetCampaignProgressResponse() {
-    return { participants: [], totalParticipants: 0, totalTasks: 0 };
+    return { participants: [], campaignId: "", campaignStatus: "", totalParticipants: 0, totalTasks: 0 };
 }
 exports.GetCampaignProgressResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.participants) {
             exports.CampaignProgressParticipant.encode(v, writer.uint32(10).fork()).join();
         }
+        if (message.campaignId !== "") {
+            writer.uint32(18).string(message.campaignId);
+        }
+        if (message.campaignStatus !== "") {
+            writer.uint32(26).string(message.campaignStatus);
+        }
         if (message.totalParticipants !== 0) {
-            writer.uint32(16).int32(message.totalParticipants);
+            writer.uint32(32).int32(message.totalParticipants);
         }
         if (message.totalTasks !== 0) {
-            writer.uint32(24).int32(message.totalTasks);
+            writer.uint32(40).int32(message.totalTasks);
         }
         return writer;
     },
@@ -3125,14 +3163,28 @@ exports.GetCampaignProgressResponse = {
                     continue;
                 }
                 case 2: {
-                    if (tag !== 16) {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.campaignId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.campaignStatus = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 32) {
                         break;
                     }
                     message.totalParticipants = reader.int32();
                     continue;
                 }
-                case 3: {
-                    if (tag !== 24) {
+                case 5: {
+                    if (tag !== 40) {
                         break;
                     }
                     message.totalTasks = reader.int32();
@@ -3151,6 +3203,8 @@ exports.GetCampaignProgressResponse = {
             participants: globalThis.Array.isArray(object?.participants)
                 ? object.participants.map((e) => exports.CampaignProgressParticipant.fromJSON(e))
                 : [],
+            campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+            campaignStatus: isSet(object.campaignStatus) ? globalThis.String(object.campaignStatus) : "",
             totalParticipants: isSet(object.totalParticipants) ? globalThis.Number(object.totalParticipants) : 0,
             totalTasks: isSet(object.totalTasks) ? globalThis.Number(object.totalTasks) : 0,
         };
@@ -3159,6 +3213,12 @@ exports.GetCampaignProgressResponse = {
         const obj = {};
         if (message.participants?.length) {
             obj.participants = message.participants.map((e) => exports.CampaignProgressParticipant.toJSON(e));
+        }
+        if (message.campaignId !== "") {
+            obj.campaignId = message.campaignId;
+        }
+        if (message.campaignStatus !== "") {
+            obj.campaignStatus = message.campaignStatus;
         }
         if (message.totalParticipants !== 0) {
             obj.totalParticipants = Math.round(message.totalParticipants);
@@ -3174,6 +3234,8 @@ exports.GetCampaignProgressResponse = {
     fromPartial(object) {
         const message = createBaseGetCampaignProgressResponse();
         message.participants = object.participants?.map((e) => exports.CampaignProgressParticipant.fromPartial(e)) || [];
+        message.campaignId = object.campaignId ?? "";
+        message.campaignStatus = object.campaignStatus ?? "";
         message.totalParticipants = object.totalParticipants ?? 0;
         message.totalTasks = object.totalTasks ?? 0;
         return message;

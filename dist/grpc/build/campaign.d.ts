@@ -156,6 +156,8 @@ export interface DeleteCampaignByIdRequest {
 }
 export interface GetTasksByCampaignIdRequest {
     campaignId: string;
+    roleId: string;
+    role: string;
 }
 export interface GetTasksResponse {
     tasks: TaskResponse[];
@@ -199,6 +201,8 @@ export interface CampaignProgressParticipant {
 }
 export interface GetCampaignProgressResponse {
     participants: CampaignProgressParticipant[];
+    campaignId: string;
+    campaignStatus: string;
     totalParticipants: number;
     totalTasks: number;
 }

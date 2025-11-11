@@ -183,6 +183,8 @@ message DeleteCampaignByIdRequest {
 
 message GetTasksByCampaignIdRequest {
   string campaignId = 1;
+  string roleId = 2;
+  string role = 3;
 }
 message GetTasksResponse {
   repeated TaskResponse tasks = 1;
@@ -232,6 +234,8 @@ message CampaignProgressParticipant {
 
 message GetCampaignProgressResponse {
   repeated CampaignProgressParticipant participants = 1;
-  int32 totalParticipants = 2;
-  int32 totalTasks = 3;
+  string campaignId = 2;
+  string campaignStatus = 3;
+  int32 totalParticipants = 4;
+  int32 totalTasks = 5;
 }
