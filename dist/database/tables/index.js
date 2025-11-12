@@ -44,4 +44,5 @@ __exportStar(require("./post_deleted.entity"), exports);
 __exportStar(require("./mention.entity"), exports);
 __exportStar(require("./event_queue_task.entity"), exports);
 __exportStar(require("./subscription_tier.entity"), exports);
+__exportStar(require("./subscription_earning.entity"), exports);
 //# sourceMappingURL=index.js.map
