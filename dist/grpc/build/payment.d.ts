@@ -51,6 +51,21 @@ export interface ConnectAccountResponse {
     isActive: boolean;
     onBoardingUrl: string;
 }
+export interface SubscriptionPaymentRequest {
+    eventId: string;
+    invoiceId: string;
+    subscriptionId: string;
+    customerId: string;
+    amountPaid: string;
+    currency: string;
+    periodStart: number;
+    periodEnd: number;
+    paidAt: number;
+    userId: string;
+    creatorId: string;
+    tierId: string;
+    interval: string;
+}
 export declare const PayoutRequest: MessageFns<PayoutRequest>;
 export declare const PayoutAmount: MessageFns<PayoutAmount>;
 export declare const RefundRequest: MessageFns<RefundRequest>;
@@ -62,6 +77,7 @@ export declare const PaymentRefundEvent: MessageFns<PaymentRefundEvent>;
 export declare const StripeResponse: MessageFns<StripeResponse>;
 export declare const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest>;
 export declare const ConnectAccountResponse: MessageFns<ConnectAccountResponse>;
+export declare const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest>;
 export interface PaymentService {
     CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
@@ -71,6 +87,7 @@ export interface PaymentService {
     SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
     RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
+    HandleSubscriptionPayment(request: SubscriptionPaymentRequest): Promise<SuccessResponse>;
 }
 export declare const PaymentServiceServiceName = "payment.PaymentService";
 export declare class PaymentServiceClientImpl implements PaymentService {
@@ -87,6 +104,7 @@ export declare class PaymentServiceClientImpl implements PaymentService {
     SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
     RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
+    HandleSubscriptionPayment(request: SubscriptionPaymentRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

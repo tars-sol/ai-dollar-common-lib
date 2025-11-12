@@ -12,6 +12,7 @@ service PaymentService {
   rpc SendPayout(PayoutRequest) returns (SuccessResponse);
   rpc Health(google.protobuf.Empty) returns (SuccessResponse);
   rpc RefundPayment(RefundRequest) returns (SuccessResponse);
+  rpc HandleSubscriptionPayment(SubscriptionPaymentRequest) returns (SuccessResponse);
 }
 message PayoutRequest {
   string brandId = 1;
@@ -66,4 +67,23 @@ message ConnectAccountResponse {
   string email = 2;
   bool isActive = 3;
   string onBoardingUrl = 4;
+}
+
+message SubscriptionPaymentRequest {
+  string eventId = 1;            
+  string invoiceId = 2;          
+  string subscriptionId = 3;     
+  string customerId = 4;         
+
+  string amountPaid = 5;         
+  string currency = 6;           
+
+  int64 periodStart = 7;         
+  int64 periodEnd = 8;           
+  int64 paidAt = 9;              
+
+  string userId = 10;            
+  string creatorId = 11;         
+  string tierId = 12;            
+  string interval = 13;          
 }

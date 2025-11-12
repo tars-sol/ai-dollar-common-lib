@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: payment.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentRefundEvent = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.SuccessResponse = exports.RefundRequest = exports.PayoutAmount = exports.PayoutRequest = exports.protobufPackage = void 0;
+exports.PaymentServiceClientImpl = exports.PaymentServiceServiceName = exports.SubscriptionPaymentRequest = exports.ConnectAccountResponse = exports.ConnectedAccountRequest = exports.StripeResponse = exports.PaymentRefundEvent = exports.PaymentIntentEvent = exports.PaymentIntentResponse = exports.CreatePaymentIntentRequest = exports.SuccessResponse = exports.RefundRequest = exports.PayoutAmount = exports.PayoutRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -844,6 +844,253 @@ exports.ConnectAccountResponse = {
         return message;
     },
 };
+function createBaseSubscriptionPaymentRequest() {
+    return {
+        eventId: "",
+        invoiceId: "",
+        subscriptionId: "",
+        customerId: "",
+        amountPaid: "",
+        currency: "",
+        periodStart: 0,
+        periodEnd: 0,
+        paidAt: 0,
+        userId: "",
+        creatorId: "",
+        tierId: "",
+        interval: "",
+    };
+}
+exports.SubscriptionPaymentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.eventId !== "") {
+            writer.uint32(10).string(message.eventId);
+        }
+        if (message.invoiceId !== "") {
+            writer.uint32(18).string(message.invoiceId);
+        }
+        if (message.subscriptionId !== "") {
+            writer.uint32(26).string(message.subscriptionId);
+        }
+        if (message.customerId !== "") {
+            writer.uint32(34).string(message.customerId);
+        }
+        if (message.amountPaid !== "") {
+            writer.uint32(42).string(message.amountPaid);
+        }
+        if (message.currency !== "") {
+            writer.uint32(50).string(message.currency);
+        }
+        if (message.periodStart !== 0) {
+            writer.uint32(56).int64(message.periodStart);
+        }
+        if (message.periodEnd !== 0) {
+            writer.uint32(64).int64(message.periodEnd);
+        }
+        if (message.paidAt !== 0) {
+            writer.uint32(72).int64(message.paidAt);
+        }
+        if (message.userId !== "") {
+            writer.uint32(82).string(message.userId);
+        }
+        if (message.creatorId !== "") {
+            writer.uint32(90).string(message.creatorId);
+        }
+        if (message.tierId !== "") {
+            writer.uint32(98).string(message.tierId);
+        }
+        if (message.interval !== "") {
+            writer.uint32(106).string(message.interval);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSubscriptionPaymentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.eventId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.invoiceId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.subscriptionId = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.customerId = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.amountPaid = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.currency = reader.string();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.periodStart = longToNumber(reader.int64());
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.periodEnd = longToNumber(reader.int64());
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.paidAt = longToNumber(reader.int64());
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 11: {
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.creatorId = reader.string();
+                    continue;
+                }
+                case 12: {
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.tierId = reader.string();
+                    continue;
+                }
+                case 13: {
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.interval = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            eventId: isSet(object.eventId) ? globalThis.String(object.eventId) : "",
+            invoiceId: isSet(object.invoiceId) ? globalThis.String(object.invoiceId) : "",
+            subscriptionId: isSet(object.subscriptionId) ? globalThis.String(object.subscriptionId) : "",
+            customerId: isSet(object.customerId) ? globalThis.String(object.customerId) : "",
+            amountPaid: isSet(object.amountPaid) ? globalThis.String(object.amountPaid) : "",
+            currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+            periodStart: isSet(object.periodStart) ? globalThis.Number(object.periodStart) : 0,
+            periodEnd: isSet(object.periodEnd) ? globalThis.Number(object.periodEnd) : 0,
+            paidAt: isSet(object.paidAt) ? globalThis.Number(object.paidAt) : 0,
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            creatorId: isSet(object.creatorId) ? globalThis.String(object.creatorId) : "",
+            tierId: isSet(object.tierId) ? globalThis.String(object.tierId) : "",
+            interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.eventId !== "") {
+            obj.eventId = message.eventId;
+        }
+        if (message.invoiceId !== "") {
+            obj.invoiceId = message.invoiceId;
+        }
+        if (message.subscriptionId !== "") {
+            obj.subscriptionId = message.subscriptionId;
+        }
+        if (message.customerId !== "") {
+            obj.customerId = message.customerId;
+        }
+        if (message.amountPaid !== "") {
+            obj.amountPaid = message.amountPaid;
+        }
+        if (message.currency !== "") {
+            obj.currency = message.currency;
+        }
+        if (message.periodStart !== 0) {
+            obj.periodStart = Math.round(message.periodStart);
+        }
+        if (message.periodEnd !== 0) {
+            obj.periodEnd = Math.round(message.periodEnd);
+        }
+        if (message.paidAt !== 0) {
+            obj.paidAt = Math.round(message.paidAt);
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.creatorId !== "") {
+            obj.creatorId = message.creatorId;
+        }
+        if (message.tierId !== "") {
+            obj.tierId = message.tierId;
+        }
+        if (message.interval !== "") {
+            obj.interval = message.interval;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SubscriptionPaymentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSubscriptionPaymentRequest();
+        message.eventId = object.eventId ?? "";
+        message.invoiceId = object.invoiceId ?? "";
+        message.subscriptionId = object.subscriptionId ?? "";
+        message.customerId = object.customerId ?? "";
+        message.amountPaid = object.amountPaid ?? "";
+        message.currency = object.currency ?? "";
+        message.periodStart = object.periodStart ?? 0;
+        message.periodEnd = object.periodEnd ?? 0;
+        message.paidAt = object.paidAt ?? 0;
+        message.userId = object.userId ?? "";
+        message.creatorId = object.creatorId ?? "";
+        message.tierId = object.tierId ?? "";
+        message.interval = object.interval ?? "";
+        return message;
+    },
+};
 exports.PaymentServiceServiceName = "payment.PaymentService";
 class PaymentServiceClientImpl {
     constructor(rpc, opts) {
@@ -857,6 +1104,7 @@ class PaymentServiceClientImpl {
         this.SendPayout = this.SendPayout.bind(this);
         this.Health = this.Health.bind(this);
         this.RefundPayment = this.RefundPayment.bind(this);
+        this.HandleSubscriptionPayment = this.HandleSubscriptionPayment.bind(this);
     }
     CreatePaymentIntent(request) {
         const data = exports.CreatePaymentIntentRequest.encode(request).finish();
@@ -898,8 +1146,23 @@ class PaymentServiceClientImpl {
         const promise = this.rpc.request(this.service, "RefundPayment", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
+    HandleSubscriptionPayment(request) {
+        const data = exports.SubscriptionPaymentRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "HandleSubscriptionPayment", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
 }
 exports.PaymentServiceClientImpl = PaymentServiceClientImpl;
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }
