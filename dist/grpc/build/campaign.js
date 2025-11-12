@@ -2909,6 +2909,7 @@ function createBaseCampaignProgressParticipant() {
         completedAt: "",
         followersCount: "",
         subscribersCount: "",
+        totalEarning: "",
     };
 }
 exports.CampaignProgressParticipant = {
@@ -2948,6 +2949,9 @@ exports.CampaignProgressParticipant = {
         }
         if (message.subscribersCount !== "") {
             writer.uint32(98).string(message.subscribersCount);
+        }
+        if (message.totalEarning !== "") {
+            writer.uint32(106).string(message.totalEarning);
         }
         return writer;
     },
@@ -3042,6 +3046,13 @@ exports.CampaignProgressParticipant = {
                     message.subscribersCount = reader.string();
                     continue;
                 }
+                case 13: {
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.totalEarning = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -3064,6 +3075,7 @@ exports.CampaignProgressParticipant = {
             completedAt: isSet(object.completedAt) ? globalThis.String(object.completedAt) : "",
             followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
             subscribersCount: isSet(object.subscribersCount) ? globalThis.String(object.subscribersCount) : "",
+            totalEarning: isSet(object.totalEarning) ? globalThis.String(object.totalEarning) : "",
         };
     },
     toJSON(message) {
@@ -3104,6 +3116,9 @@ exports.CampaignProgressParticipant = {
         if (message.subscribersCount !== "") {
             obj.subscribersCount = message.subscribersCount;
         }
+        if (message.totalEarning !== "") {
+            obj.totalEarning = message.totalEarning;
+        }
         return obj;
     },
     create(base) {
@@ -3123,6 +3138,7 @@ exports.CampaignProgressParticipant = {
         message.completedAt = object.completedAt ?? "";
         message.followersCount = object.followersCount ?? "";
         message.subscribersCount = object.subscribersCount ?? "";
+        message.totalEarning = object.totalEarning ?? "";
         return message;
     },
 };

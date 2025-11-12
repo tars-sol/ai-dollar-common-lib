@@ -249,6 +249,7 @@ export interface CampaignProgressParticipant {
   completedAt: string;
   followersCount: string;
   subscribersCount: string;
+  totalEarning: string;
 }
 
 export interface GetCampaignProgressResponse {
@@ -3447,6 +3448,7 @@ function createBaseCampaignProgressParticipant(): CampaignProgressParticipant {
     completedAt: "",
     followersCount: "",
     subscribersCount: "",
+    totalEarning: "",
   };
 }
 
@@ -3487,6 +3489,9 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
     }
     if (message.subscribersCount !== "") {
       writer.uint32(98).string(message.subscribersCount);
+    }
+    if (message.totalEarning !== "") {
+      writer.uint32(106).string(message.totalEarning);
     }
     return writer;
   },
@@ -3594,6 +3599,14 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
           message.subscribersCount = reader.string();
           continue;
         }
+        case 13: {
+          if (tag !== 106) {
+            break;
+          }
+
+          message.totalEarning = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3617,6 +3630,7 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
       completedAt: isSet(object.completedAt) ? globalThis.String(object.completedAt) : "",
       followersCount: isSet(object.followersCount) ? globalThis.String(object.followersCount) : "",
       subscribersCount: isSet(object.subscribersCount) ? globalThis.String(object.subscribersCount) : "",
+      totalEarning: isSet(object.totalEarning) ? globalThis.String(object.totalEarning) : "",
     };
   },
 
@@ -3658,6 +3672,9 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
     if (message.subscribersCount !== "") {
       obj.subscribersCount = message.subscribersCount;
     }
+    if (message.totalEarning !== "") {
+      obj.totalEarning = message.totalEarning;
+    }
     return obj;
   },
 
@@ -3678,6 +3695,7 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
     message.completedAt = object.completedAt ?? "";
     message.followersCount = object.followersCount ?? "";
     message.subscribersCount = object.subscribersCount ?? "";
+    message.totalEarning = object.totalEarning ?? "";
     return message;
   },
 };

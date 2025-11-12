@@ -230,6 +230,7 @@ message CampaignProgressParticipant {
   string completedAt = 10;
   string followersCount = 11;
   string subscribersCount = 12;
+  string totalEarning = 13;
 }
 
 message GetCampaignProgressResponse {

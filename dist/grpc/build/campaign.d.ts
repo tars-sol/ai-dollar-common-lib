@@ -198,6 +198,7 @@ export interface CampaignProgressParticipant {
     completedAt: string;
     followersCount: string;
     subscribersCount: string;
+    totalEarning: string;
 }
 export interface GetCampaignProgressResponse {
     participants: CampaignProgressParticipant[];
