@@ -1,18 +1,11 @@
 import {
-  Check,
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn,
+  Index, ManyToOne, JoinColumn, Unique
 } from 'typeorm';
 import { Profile } from './profile.entity';
 import { User } from './user.entity';
+import { SubscriptionTier } from './subscription_tier.entity';
 
-// profiles/entities/profile-subscription.entity.ts
 export enum SubscriptionStatus {
   ACTIVE = 'ACTIVE',
   CANCELED = 'CANCELED',
@@ -20,25 +13,40 @@ export enum SubscriptionStatus {
 }
 
 @Entity('profile_subscriptions')
-@Index(['subscriberId', 'creatorId'])
-@Check(`"subscriberId" <> "creatorId"`) // no self-subscribe
+@Unique('u_subscriber_creator', ['subscriberId', 'creatorId']) 
+@Index(['subscriberId'])
+@Index(['creatorId'])
+@Index(['tierId'])
 export class ProfileSubscription {
   @PrimaryGeneratedColumn('uuid') id: string;
 
-  @Index()
-  @Column()
-  subscriberId: string; // Profile.id who pays
-  @Index()
-  @Column()
-  creatorId: string; // Profile.id being supported
-
+  @Column({ type: 'uuid' })
+  subscriberId: string;
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'subscriberId' })
   subscriber: User;
 
+  @Column({ type: 'uuid' })
+  creatorId: string;
   @ManyToOne(() => Profile, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'creatorId' })
   creator: Profile;
+
+  @Column({ type: 'uuid', nullable: true })
+  tierId: string | null;
+  @ManyToOne(() => SubscriptionTier, { onDelete: 'SET NULL', nullable: true })
+  @JoinColumn({ name: 'tierId' })
+  tier?: SubscriptionTier | null;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  currentPeriodStart: Date | null;
+
+  @Index()
+  @Column({ type: 'timestamptz', nullable: true })
+  currentPeriodEnd: Date | null;
+
+  @Column({ type: 'boolean', default: false })
+  cancelAtPeriodEnd: boolean;
 
   @Column({
     type: 'enum',

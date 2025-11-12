@@ -13,7 +13,7 @@ exports.ProfileSubscription = exports.SubscriptionStatus = void 0;
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
 const user_entity_1 = require("./user.entity");
-// profiles/entities/profile-subscription.entity.ts
+const subscription_tier_entity_1 = require("./subscription_tier.entity");
 var SubscriptionStatus;
 (function (SubscriptionStatus) {
     SubscriptionStatus["ACTIVE"] = "ACTIVE";
@@ -28,25 +28,45 @@ __decorate([
     __metadata("design:type", String)
 ], ProfileSubscription.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Index)(),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'uuid' }),
     __metadata("design:type", String)
 ], ProfileSubscription.prototype, "subscriberId", void 0);
-__decorate([
-    (0, typeorm_1.Index)(),
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], ProfileSubscription.prototype, "creatorId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'subscriberId' }),
     __metadata("design:type", user_entity_1.User)
 ], ProfileSubscription.prototype, "subscriber", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'uuid' }),
+    __metadata("design:type", String)
+], ProfileSubscription.prototype, "creatorId", void 0);
+__decorate([
     (0, typeorm_1.ManyToOne)(() => profile_entity_1.Profile, { onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'creatorId' }),
     __metadata("design:type", profile_entity_1.Profile)
 ], ProfileSubscription.prototype, "creator", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'uuid', nullable: true }),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "tierId", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => subscription_tier_entity_1.SubscriptionTier, { onDelete: 'SET NULL', nullable: true }),
+    (0, typeorm_1.JoinColumn)({ name: 'tierId' }),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "tier", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "currentPeriodStart", void 0);
+__decorate([
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "currentPeriodEnd", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
+], ProfileSubscription.prototype, "cancelAtPeriodEnd", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
@@ -65,7 +85,9 @@ __decorate([
 ], ProfileSubscription.prototype, "updatedAt", void 0);
 exports.ProfileSubscription = ProfileSubscription = __decorate([
     (0, typeorm_1.Entity)('profile_subscriptions'),
-    (0, typeorm_1.Index)(['subscriberId', 'creatorId']),
-    (0, typeorm_1.Check)(`"subscriberId" <> "creatorId"`) // no self-subscribe
+    (0, typeorm_1.Unique)('u_subscriber_creator', ['subscriberId', 'creatorId']),
+    (0, typeorm_1.Index)(['subscriberId']),
+    (0, typeorm_1.Index)(['creatorId']),
+    (0, typeorm_1.Index)(['tierId'])
 ], ProfileSubscription);
 //# sourceMappingURL=profile_subscribe.entity.js.map
