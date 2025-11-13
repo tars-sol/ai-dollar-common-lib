@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: subscription.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubscriptionServiceClientImpl = exports.SubscriptionServiceServiceName = exports.CreateCheckoutSessionResponse = exports.CreateCheckoutSessionRequest = exports.SubscriptionTierResponse = exports.DeleteTierRequest = exports.GetCreatorTiersResponse = exports.GetCreatorTiersRequest = exports.GetTierRequest = exports.ToggleTierActiveRequest = exports.UpdateTierPricesRequest = exports.UpdateTierRequest = exports.CreateTierRequest = exports.HealthResponse = exports.SuccessResponse = exports.protobufPackage = void 0;
+exports.SubscriptionServiceClientImpl = exports.SubscriptionServiceServiceName = exports.CreateCheckoutSecretResponse = exports.CreateCheckoutSecretRequest = exports.CreateCheckoutSessionResponse = exports.CreateCheckoutSessionRequest = exports.SubscriptionTierResponse = exports.DeleteTierRequest = exports.GetCreatorTiersResponse = exports.GetCreatorTiersRequest = exports.GetTierRequest = exports.ToggleTierActiveRequest = exports.UpdateTierPricesRequest = exports.UpdateTierRequest = exports.CreateTierRequest = exports.HealthResponse = exports.SuccessResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -1183,6 +1183,140 @@ exports.CreateCheckoutSessionResponse = {
         return message;
     },
 };
+function createBaseCreateCheckoutSecretRequest() {
+    return { userId: "", tierId: "", interval: "" };
+}
+exports.CreateCheckoutSecretRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.tierId !== "") {
+            writer.uint32(18).string(message.tierId);
+        }
+        if (message.interval !== "") {
+            writer.uint32(26).string(message.interval);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateCheckoutSecretRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.tierId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.interval = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            tierId: isSet(object.tierId) ? globalThis.String(object.tierId) : "",
+            interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.tierId !== "") {
+            obj.tierId = message.tierId;
+        }
+        if (message.interval !== "") {
+            obj.interval = message.interval;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateCheckoutSecretRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateCheckoutSecretRequest();
+        message.userId = object.userId ?? "";
+        message.tierId = object.tierId ?? "";
+        message.interval = object.interval ?? "";
+        return message;
+    },
+};
+function createBaseCreateCheckoutSecretResponse() {
+    return { clientSecretKey: "" };
+}
+exports.CreateCheckoutSecretResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.clientSecretKey !== "") {
+            writer.uint32(10).string(message.clientSecretKey);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateCheckoutSecretResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.clientSecretKey = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { clientSecretKey: isSet(object.clientSecretKey) ? globalThis.String(object.clientSecretKey) : "" };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.clientSecretKey !== "") {
+            obj.clientSecretKey = message.clientSecretKey;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateCheckoutSecretResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateCheckoutSecretResponse();
+        message.clientSecretKey = object.clientSecretKey ?? "";
+        return message;
+    },
+};
 exports.SubscriptionServiceServiceName = "subscription.SubscriptionService";
 class SubscriptionServiceClientImpl {
     constructor(rpc, opts) {
@@ -1197,6 +1331,7 @@ class SubscriptionServiceClientImpl {
         this.DeleteTier = this.DeleteTier.bind(this);
         this.Health = this.Health.bind(this);
         this.CreateCheckoutSession = this.CreateCheckoutSession.bind(this);
+        this.CreateCheckoutSecret = this.CreateCheckoutSecret.bind(this);
     }
     CreateTier(request) {
         const data = exports.CreateTierRequest.encode(request).finish();
@@ -1242,6 +1377,11 @@ class SubscriptionServiceClientImpl {
         const data = exports.CreateCheckoutSessionRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "CreateCheckoutSession", data);
         return promise.then((data) => exports.CreateCheckoutSessionResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    CreateCheckoutSecret(request) {
+        const data = exports.CreateCheckoutSecretRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "CreateCheckoutSecret", data);
+        return promise.then((data) => exports.CreateCheckoutSecretResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.SubscriptionServiceClientImpl = SubscriptionServiceClientImpl;

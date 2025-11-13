@@ -93,6 +93,16 @@ export interface CreateCheckoutSessionResponse {
   sessionId: string;
 }
 
+export interface CreateCheckoutSecretRequest {
+  userId: string;
+  tierId: string;
+  interval: string;
+}
+
+export interface CreateCheckoutSecretResponse {
+  clientSecretKey: string;
+}
+
 function createBaseSuccessResponse(): SuccessResponse {
   return { success: false };
 }
@@ -1390,6 +1400,156 @@ export const CreateCheckoutSessionResponse: MessageFns<CreateCheckoutSessionResp
   },
 };
 
+function createBaseCreateCheckoutSecretRequest(): CreateCheckoutSecretRequest {
+  return { userId: "", tierId: "", interval: "" };
+}
+
+export const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest> = {
+  encode(message: CreateCheckoutSecretRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.tierId !== "") {
+      writer.uint32(18).string(message.tierId);
+    }
+    if (message.interval !== "") {
+      writer.uint32(26).string(message.interval);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateCheckoutSecretRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateCheckoutSecretRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.tierId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.interval = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateCheckoutSecretRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      tierId: isSet(object.tierId) ? globalThis.String(object.tierId) : "",
+      interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
+    };
+  },
+
+  toJSON(message: CreateCheckoutSecretRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.tierId !== "") {
+      obj.tierId = message.tierId;
+    }
+    if (message.interval !== "") {
+      obj.interval = message.interval;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateCheckoutSecretRequest>, I>>(base?: I): CreateCheckoutSecretRequest {
+    return CreateCheckoutSecretRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateCheckoutSecretRequest>, I>>(object: I): CreateCheckoutSecretRequest {
+    const message = createBaseCreateCheckoutSecretRequest();
+    message.userId = object.userId ?? "";
+    message.tierId = object.tierId ?? "";
+    message.interval = object.interval ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateCheckoutSecretResponse(): CreateCheckoutSecretResponse {
+  return { clientSecretKey: "" };
+}
+
+export const CreateCheckoutSecretResponse: MessageFns<CreateCheckoutSecretResponse> = {
+  encode(message: CreateCheckoutSecretResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.clientSecretKey !== "") {
+      writer.uint32(10).string(message.clientSecretKey);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateCheckoutSecretResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateCheckoutSecretResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.clientSecretKey = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateCheckoutSecretResponse {
+    return { clientSecretKey: isSet(object.clientSecretKey) ? globalThis.String(object.clientSecretKey) : "" };
+  },
+
+  toJSON(message: CreateCheckoutSecretResponse): unknown {
+    const obj: any = {};
+    if (message.clientSecretKey !== "") {
+      obj.clientSecretKey = message.clientSecretKey;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateCheckoutSecretResponse>, I>>(base?: I): CreateCheckoutSecretResponse {
+    return CreateCheckoutSecretResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CreateCheckoutSecretResponse>, I>>(object: I): CreateCheckoutSecretResponse {
+    const message = createBaseCreateCheckoutSecretResponse();
+    message.clientSecretKey = object.clientSecretKey ?? "";
+    return message;
+  },
+};
+
 export interface SubscriptionService {
   CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse>;
   UpdateTier(request: UpdateTierRequest): Promise<SubscriptionTierResponse>;
@@ -1400,6 +1560,7 @@ export interface SubscriptionService {
   DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
   Health(request: Empty): Promise<HealthResponse>;
   CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
+  CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
 }
 
 export const SubscriptionServiceServiceName = "subscription.SubscriptionService";
@@ -1418,6 +1579,7 @@ export class SubscriptionServiceClientImpl implements SubscriptionService {
     this.DeleteTier = this.DeleteTier.bind(this);
     this.Health = this.Health.bind(this);
     this.CreateCheckoutSession = this.CreateCheckoutSession.bind(this);
+    this.CreateCheckoutSecret = this.CreateCheckoutSecret.bind(this);
   }
   CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse> {
     const data = CreateTierRequest.encode(request).finish();
@@ -1471,6 +1633,12 @@ export class SubscriptionServiceClientImpl implements SubscriptionService {
     const data = CreateCheckoutSessionRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateCheckoutSession", data);
     return promise.then((data) => CreateCheckoutSessionResponse.decode(new BinaryReader(data)));
+  }
+
+  CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse> {
+    const data = CreateCheckoutSecretRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateCheckoutSecret", data);
+    return promise.then((data) => CreateCheckoutSecretResponse.decode(new BinaryReader(data)));
   }
 }
 

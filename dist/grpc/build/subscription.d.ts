@@ -71,6 +71,14 @@ export interface CreateCheckoutSessionResponse {
     url: string;
     sessionId: string;
 }
+export interface CreateCheckoutSecretRequest {
+    userId: string;
+    tierId: string;
+    interval: string;
+}
+export interface CreateCheckoutSecretResponse {
+    clientSecretKey: string;
+}
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const HealthResponse: MessageFns<HealthResponse>;
 export declare const CreateTierRequest: MessageFns<CreateTierRequest>;
@@ -84,6 +92,8 @@ export declare const DeleteTierRequest: MessageFns<DeleteTierRequest>;
 export declare const SubscriptionTierResponse: MessageFns<SubscriptionTierResponse>;
 export declare const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSessionRequest>;
 export declare const CreateCheckoutSessionResponse: MessageFns<CreateCheckoutSessionResponse>;
+export declare const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest>;
+export declare const CreateCheckoutSecretResponse: MessageFns<CreateCheckoutSecretResponse>;
 export interface SubscriptionService {
     CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse>;
     UpdateTier(request: UpdateTierRequest): Promise<SubscriptionTierResponse>;
@@ -94,6 +104,7 @@ export interface SubscriptionService {
     DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<HealthResponse>;
     CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
+    CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
 }
 export declare const SubscriptionServiceServiceName = "subscription.SubscriptionService";
 export declare class SubscriptionServiceClientImpl implements SubscriptionService {
@@ -111,6 +122,7 @@ export declare class SubscriptionServiceClientImpl implements SubscriptionServic
     DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<HealthResponse>;
     CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
+    CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

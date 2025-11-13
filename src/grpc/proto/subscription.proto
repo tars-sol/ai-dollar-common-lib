@@ -14,6 +14,7 @@ service SubscriptionService {
   rpc DeleteTier        (DeleteTierRequest)        returns (SuccessResponse);
   rpc Health            (google.protobuf.Empty)    returns (HealthResponse);
   rpc CreateCheckoutSession (CreateCheckoutSessionRequest) returns (CreateCheckoutSessionResponse);
+  rpc CreateCheckoutSecret (CreateCheckoutSecretRequest)   returns (CreateCheckoutSecretResponse);
 }
 
 message SuccessResponse {
@@ -99,4 +100,14 @@ message CreateCheckoutSessionRequest {
 message CreateCheckoutSessionResponse {
   string url       = 1; 
   string sessionId = 2;
+}
+
+message CreateCheckoutSecretRequest {
+  string userId = 1;
+  string tierId = 2;
+  string interval = 3;
+}
+
+message CreateCheckoutSecretResponse {
+  string clientSecretKey = 1; 
 }
