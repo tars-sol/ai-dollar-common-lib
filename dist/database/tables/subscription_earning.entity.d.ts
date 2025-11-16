@@ -17,6 +17,8 @@ export declare class SubscriptionEarning {
     currency: string;
     availableAt: Date;
     status: SubscriptionEarningStatus;
+    stripeInvoiceId: string | null;
+    stripePaymentIntentId: string | null;
     createdAt: Date;
     updatedAt: Date;
 }

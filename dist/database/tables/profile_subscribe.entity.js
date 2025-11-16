@@ -76,6 +76,16 @@ __decorate([
     __metadata("design:type", String)
 ], ProfileSubscription.prototype, "status", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
+    (0, typeorm_1.Index)(),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "stripeSubscriptionId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
+    (0, typeorm_1.Index)(),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "stripeCustomerId", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], ProfileSubscription.prototype, "createdAt", void 0);

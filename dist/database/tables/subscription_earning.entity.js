@@ -59,6 +59,16 @@ __decorate([
     __metadata("design:type", String)
 ], SubscriptionEarning.prototype, "status", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
+    (0, typeorm_1.Index)({ unique: true, where: `"stripeInvoiceId" IS NOT NULL` }),
+    __metadata("design:type", Object)
+], SubscriptionEarning.prototype, "stripeInvoiceId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
+    (0, typeorm_1.Index)(),
+    __metadata("design:type", Object)
+], SubscriptionEarning.prototype, "stripePaymentIntentId", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], SubscriptionEarning.prototype, "createdAt", void 0);

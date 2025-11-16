@@ -18,6 +18,8 @@ export declare class ProfileSubscription {
     currentPeriodEnd: Date | null;
     cancelAtPeriodEnd: boolean;
     status: SubscriptionStatus;
+    stripeSubscriptionId: string | null;
+    stripeCustomerId: string | null;
     createdAt: Date;
     updatedAt: Date;
 }

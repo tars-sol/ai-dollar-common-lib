@@ -13,7 +13,7 @@ export enum SubscriptionStatus {
 }
 
 @Entity('profile_subscriptions')
-@Unique('u_subscriber_creator', ['subscriberId', 'creatorId']) 
+@Unique('u_subscriber_creator', ['subscriberId', 'creatorId'])
 @Index(['subscriberId'])
 @Index(['creatorId'])
 @Index(['tierId'])
@@ -54,6 +54,14 @@ export class ProfileSubscription {
     default: SubscriptionStatus.ACTIVE,
   })
   status: SubscriptionStatus;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Index()
+  stripeSubscriptionId: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Index()
+  stripeCustomerId: string | null;
 
   @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() updatedAt: Date;

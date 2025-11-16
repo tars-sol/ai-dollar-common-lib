@@ -5,14 +5,14 @@ import {
 import { ProfileSubscription } from './profile_subscribe.entity';
 
 export enum SubscriptionEarningStatus {
-  PENDING = 'PENDING',  
-  AVAILABLE = 'AVAILABLE', 
-  WITHHELD = 'WITHHELD',      
-  TRANSFERRED = 'TRANSFERRED', 
-  REFUNDED = 'REFUNDED',      
-  REVERSED = 'REVERSED',    
-  CHARGEBACK= 'CHARGEBACK',
-  TRANSFER_FAILED= 'TRANSFER_FAILED' 
+  PENDING = 'PENDING',
+  AVAILABLE = 'AVAILABLE',
+  WITHHELD = 'WITHHELD',
+  TRANSFERRED = 'TRANSFERRED',
+  REFUNDED = 'REFUNDED',
+  REVERSED = 'REVERSED',
+  CHARGEBACK = 'CHARGEBACK',
+  TRANSFER_FAILED = 'TRANSFER_FAILED'
 }
 
 @Entity('subscription_earnings')
@@ -41,6 +41,14 @@ export class SubscriptionEarning {
   @Index()
   @Column({ type: 'enum', enum: SubscriptionEarningStatus, default: SubscriptionEarningStatus.PENDING })
   status: SubscriptionEarningStatus;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Index({ unique: true, where: `"stripeInvoiceId" IS NOT NULL` })
+  stripeInvoiceId: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Index()
+  stripePaymentIntentId: string | null;
 
   @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() updatedAt: Date;
