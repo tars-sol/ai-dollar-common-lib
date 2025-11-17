@@ -785,6 +785,8 @@ function createBaseSubscriptionTierResponse() {
         isActive: false,
         createdAt: "",
         updatedAt: "",
+        creatorName: undefined,
+        creatorAvatarUrl: undefined,
     };
 }
 exports.SubscriptionTierResponse = {
@@ -830,6 +832,12 @@ exports.SubscriptionTierResponse = {
         }
         if (message.updatedAt !== "") {
             writer.uint32(114).string(message.updatedAt);
+        }
+        if (message.creatorName !== undefined) {
+            writer.uint32(122).string(message.creatorName);
+        }
+        if (message.creatorAvatarUrl !== undefined) {
+            writer.uint32(130).string(message.creatorAvatarUrl);
         }
         return writer;
     },
@@ -938,6 +946,20 @@ exports.SubscriptionTierResponse = {
                     message.updatedAt = reader.string();
                     continue;
                 }
+                case 15: {
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.creatorName = reader.string();
+                    continue;
+                }
+                case 16: {
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.creatorAvatarUrl = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -962,6 +984,8 @@ exports.SubscriptionTierResponse = {
             isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+            creatorName: isSet(object.creatorName) ? globalThis.String(object.creatorName) : undefined,
+            creatorAvatarUrl: isSet(object.creatorAvatarUrl) ? globalThis.String(object.creatorAvatarUrl) : undefined,
         };
     },
     toJSON(message) {
@@ -1008,6 +1032,12 @@ exports.SubscriptionTierResponse = {
         if (message.updatedAt !== "") {
             obj.updatedAt = message.updatedAt;
         }
+        if (message.creatorName !== undefined) {
+            obj.creatorName = message.creatorName;
+        }
+        if (message.creatorAvatarUrl !== undefined) {
+            obj.creatorAvatarUrl = message.creatorAvatarUrl;
+        }
         return obj;
     },
     create(base) {
@@ -1029,6 +1059,8 @@ exports.SubscriptionTierResponse = {
         message.isActive = object.isActive ?? false;
         message.createdAt = object.createdAt ?? "";
         message.updatedAt = object.updatedAt ?? "";
+        message.creatorName = object.creatorName ?? undefined;
+        message.creatorAvatarUrl = object.creatorAvatarUrl ?? undefined;
         return message;
     },
 };

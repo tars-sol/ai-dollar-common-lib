@@ -61,6 +61,8 @@ export interface SubscriptionTierResponse {
     isActive: boolean;
     createdAt: string;
     updatedAt: string;
+    creatorName?: string | undefined;
+    creatorAvatarUrl?: string | undefined;
 }
 export interface CreateCheckoutSessionRequest {
     userId: string;

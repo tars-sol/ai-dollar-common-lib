@@ -89,6 +89,9 @@ message SubscriptionTierResponse {
   bool   isActive   = 12;
   string createdAt  = 13;
   string updatedAt  = 14;
+
+  optional string creatorName      = 15;
+  optional string creatorAvatarUrl = 16;
 }
 
 message CreateCheckoutSessionRequest {
