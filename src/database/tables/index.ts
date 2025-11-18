@@ -29,3 +29,5 @@ export * from './mention.entity'
 export * from './event_queue_task.entity';
 export * from './subscription_tier.entity'
 export * from './subscription_earning.entity'
+export * from './post_daily_view.entity'
+export * from './profile_daily_metrics.entity'
