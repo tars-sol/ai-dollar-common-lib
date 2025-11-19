@@ -237,6 +237,8 @@ message GetCampaignProgressResponse {
   repeated CampaignProgressParticipant participants = 1;
   string campaignId = 2;
   string campaignStatus = 3;
-  int32 totalParticipants = 4;
-  int32 totalTasks = 5;
+  string availableBudget = 4;
+  string amountPaidOut = 5;
+  int32 totalParticipants = 6;
+  int32 totalTasks = 7;
 }

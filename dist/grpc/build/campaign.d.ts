@@ -204,6 +204,8 @@ export interface GetCampaignProgressResponse {
     participants: CampaignProgressParticipant[];
     campaignId: string;
     campaignStatus: string;
+    availableBudget: string;
+    amountPaidOut: string;
     totalParticipants: number;
     totalTasks: number;
 }

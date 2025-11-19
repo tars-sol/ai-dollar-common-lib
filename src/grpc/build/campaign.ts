@@ -256,6 +256,8 @@ export interface GetCampaignProgressResponse {
   participants: CampaignProgressParticipant[];
   campaignId: string;
   campaignStatus: string;
+  availableBudget: string;
+  amountPaidOut: string;
   totalParticipants: number;
   totalTasks: number;
 }
@@ -3701,7 +3703,15 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
 };
 
 function createBaseGetCampaignProgressResponse(): GetCampaignProgressResponse {
-  return { participants: [], campaignId: "", campaignStatus: "", totalParticipants: 0, totalTasks: 0 };
+  return {
+    participants: [],
+    campaignId: "",
+    campaignStatus: "",
+    availableBudget: "",
+    amountPaidOut: "",
+    totalParticipants: 0,
+    totalTasks: 0,
+  };
 }
 
 export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse> = {
@@ -3715,11 +3725,17 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
     if (message.campaignStatus !== "") {
       writer.uint32(26).string(message.campaignStatus);
     }
+    if (message.availableBudget !== "") {
+      writer.uint32(34).string(message.availableBudget);
+    }
+    if (message.amountPaidOut !== "") {
+      writer.uint32(42).string(message.amountPaidOut);
+    }
     if (message.totalParticipants !== 0) {
-      writer.uint32(32).int32(message.totalParticipants);
+      writer.uint32(48).int32(message.totalParticipants);
     }
     if (message.totalTasks !== 0) {
-      writer.uint32(40).int32(message.totalTasks);
+      writer.uint32(56).int32(message.totalTasks);
     }
     return writer;
   },
@@ -3756,15 +3772,31 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
           continue;
         }
         case 4: {
-          if (tag !== 32) {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.availableBudget = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.amountPaidOut = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 48) {
             break;
           }
 
           message.totalParticipants = reader.int32();
           continue;
         }
-        case 5: {
-          if (tag !== 40) {
+        case 7: {
+          if (tag !== 56) {
             break;
           }
 
@@ -3787,6 +3819,8 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
         : [],
       campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
       campaignStatus: isSet(object.campaignStatus) ? globalThis.String(object.campaignStatus) : "",
+      availableBudget: isSet(object.availableBudget) ? globalThis.String(object.availableBudget) : "",
+      amountPaidOut: isSet(object.amountPaidOut) ? globalThis.String(object.amountPaidOut) : "",
       totalParticipants: isSet(object.totalParticipants) ? globalThis.Number(object.totalParticipants) : 0,
       totalTasks: isSet(object.totalTasks) ? globalThis.Number(object.totalTasks) : 0,
     };
@@ -3802,6 +3836,12 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
     }
     if (message.campaignStatus !== "") {
       obj.campaignStatus = message.campaignStatus;
+    }
+    if (message.availableBudget !== "") {
+      obj.availableBudget = message.availableBudget;
+    }
+    if (message.amountPaidOut !== "") {
+      obj.amountPaidOut = message.amountPaidOut;
     }
     if (message.totalParticipants !== 0) {
       obj.totalParticipants = Math.round(message.totalParticipants);
@@ -3820,6 +3860,8 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
     message.participants = object.participants?.map((e) => CampaignProgressParticipant.fromPartial(e)) || [];
     message.campaignId = object.campaignId ?? "";
     message.campaignStatus = object.campaignStatus ?? "";
+    message.availableBudget = object.availableBudget ?? "";
+    message.amountPaidOut = object.amountPaidOut ?? "";
     message.totalParticipants = object.totalParticipants ?? 0;
     message.totalTasks = object.totalTasks ?? 0;
     return message;
