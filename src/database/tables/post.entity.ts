@@ -93,6 +93,9 @@ export class Post {
   @Column({ type: 'int', default: 0 })
   commentCount: number;
 
+  @Column({ type: 'int', default: 0 })
+  viewCount: number;
+
   @OneToMany(() => PostComment, (c) => c.post)
   comments?: PostComment[];
 

@@ -114,6 +114,10 @@ __decorate([
     __metadata("design:type", Number)
 ], Post.prototype, "commentCount", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
+], Post.prototype, "viewCount", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => post_comment_entity_1.PostComment, (c) => c.post),
     __metadata("design:type", Array)
 ], Post.prototype, "comments", void 0);

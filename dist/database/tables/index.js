@@ -45,4 +45,6 @@ __exportStar(require("./mention.entity"), exports);
 __exportStar(require("./event_queue_task.entity"), exports);
 __exportStar(require("./subscription_tier.entity"), exports);
 __exportStar(require("./subscription_earning.entity"), exports);
+__exportStar(require("./post_daily_view.entity"), exports);
+__exportStar(require("./profile_daily_metrics.entity"), exports);
 //# sourceMappingURL=index.js.map

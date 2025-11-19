@@ -33,6 +33,7 @@ export declare class Post {
     likeCount: number;
     dislikeCount: number;
     commentCount: number;
+    viewCount: number;
     comments?: PostComment[];
     reactions?: PostReactions[];
 }
