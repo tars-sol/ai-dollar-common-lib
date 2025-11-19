@@ -8,3 +8,4 @@ export * as BrandProto from './build/brand';
 export * as CampaignProto from './build/campaign';
 export * as PostProto from './build/post'
 export * as SubscriptionProto from './build/subscription'
+export * as MetricsProto from './build/metric'
