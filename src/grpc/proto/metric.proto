@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package metrics;
+
+import "google/protobuf/empty.proto";
+
+service MetricsService {
+  rpc GetProfileEarningsMetrics   (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
+  rpc GetProfileViewsMetrics      (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
+  rpc GetProfileFollowersMetrics  (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
+  rpc GetProfileSubscribersMetrics(GetProfileMetricsRequest) returns (ProfileMetricsResponse);
+  rpc Health(google.protobuf.Empty) returns (MetricsHealthResponse);
+}
+
+
+message GetProfileMetricsRequest {
+  string profileId = 1;
+  MetricRange range = 2;
+}
+
+message ProfileMetricsResponse {
+  MetricKind metric = 1;
+  MetricRange range = 2;
+  repeated MetricPoint points = 3;
+}
+
+message MetricPoint {
+  string date = 1;
+  string label = 2;
+  string value = 3;
+}
+
+message MetricsHealthResponse {
+  bool isHealthy = 1;
+}
+
+enum MetricRange {
+  METRIC_RANGE_UNSPECIFIED = 0;
+  WEEK = 1;
+  MONTH = 2;
+  YEAR = 3;
+}
+
+enum MetricKind {
+  METRIC_KIND_UNSPECIFIED = 0;
+  EARNINGS = 1;
+  VIEWS = 2;
+  FOLLOWERS = 3;
+  SUBSCRIBERS = 4;
+}

@@ -36,7 +36,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubscriptionProto = exports.PostProto = exports.CampaignProto = exports.BrandProto = exports.ProfileProto = exports.PaymentProto = exports.AuthProto = void 0;
+exports.MetricsProto = exports.SubscriptionProto = exports.PostProto = exports.CampaignProto = exports.BrandProto = exports.ProfileProto = exports.PaymentProto = exports.AuthProto = void 0;
 __exportStar(require("./constant"), exports);
 //generated files
 exports.AuthProto = __importStar(require("./build/auth"));
@@ -46,4 +46,5 @@ exports.BrandProto = __importStar(require("./build/brand"));
 exports.CampaignProto = __importStar(require("./build/campaign"));
 exports.PostProto = __importStar(require("./build/post"));
 exports.SubscriptionProto = __importStar(require("./build/subscription"));
+exports.MetricsProto = __importStar(require("./build/metric"));
 //# sourceMappingURL=index.js.map
