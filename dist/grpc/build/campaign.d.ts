@@ -206,8 +206,8 @@ export interface GetCampaignProgressResponse {
     campaignStatus: string;
     availableBudget: string;
     amountPaidOut: string;
-    totalParticipants: number;
-    totalTasks: number;
+    totalParticipants: string;
+    totalTasks: string;
 }
 export declare const CreateCampaignRequest: MessageFns<CreateCampaignRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;

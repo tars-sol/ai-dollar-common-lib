@@ -258,8 +258,8 @@ export interface GetCampaignProgressResponse {
   campaignStatus: string;
   availableBudget: string;
   amountPaidOut: string;
-  totalParticipants: number;
-  totalTasks: number;
+  totalParticipants: string;
+  totalTasks: string;
 }
 
 function createBaseCreateCampaignRequest(): CreateCampaignRequest {
@@ -3709,8 +3709,8 @@ function createBaseGetCampaignProgressResponse(): GetCampaignProgressResponse {
     campaignStatus: "",
     availableBudget: "",
     amountPaidOut: "",
-    totalParticipants: 0,
-    totalTasks: 0,
+    totalParticipants: "",
+    totalTasks: "",
   };
 }
 
@@ -3731,11 +3731,11 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
     if (message.amountPaidOut !== "") {
       writer.uint32(42).string(message.amountPaidOut);
     }
-    if (message.totalParticipants !== 0) {
-      writer.uint32(48).int32(message.totalParticipants);
+    if (message.totalParticipants !== "") {
+      writer.uint32(50).string(message.totalParticipants);
     }
-    if (message.totalTasks !== 0) {
-      writer.uint32(56).int32(message.totalTasks);
+    if (message.totalTasks !== "") {
+      writer.uint32(58).string(message.totalTasks);
     }
     return writer;
   },
@@ -3788,19 +3788,19 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
           continue;
         }
         case 6: {
-          if (tag !== 48) {
+          if (tag !== 50) {
             break;
           }
 
-          message.totalParticipants = reader.int32();
+          message.totalParticipants = reader.string();
           continue;
         }
         case 7: {
-          if (tag !== 56) {
+          if (tag !== 58) {
             break;
           }
 
-          message.totalTasks = reader.int32();
+          message.totalTasks = reader.string();
           continue;
         }
       }
@@ -3821,8 +3821,8 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
       campaignStatus: isSet(object.campaignStatus) ? globalThis.String(object.campaignStatus) : "",
       availableBudget: isSet(object.availableBudget) ? globalThis.String(object.availableBudget) : "",
       amountPaidOut: isSet(object.amountPaidOut) ? globalThis.String(object.amountPaidOut) : "",
-      totalParticipants: isSet(object.totalParticipants) ? globalThis.Number(object.totalParticipants) : 0,
-      totalTasks: isSet(object.totalTasks) ? globalThis.Number(object.totalTasks) : 0,
+      totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
+      totalTasks: isSet(object.totalTasks) ? globalThis.String(object.totalTasks) : "",
     };
   },
 
@@ -3843,11 +3843,11 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
     if (message.amountPaidOut !== "") {
       obj.amountPaidOut = message.amountPaidOut;
     }
-    if (message.totalParticipants !== 0) {
-      obj.totalParticipants = Math.round(message.totalParticipants);
+    if (message.totalParticipants !== "") {
+      obj.totalParticipants = message.totalParticipants;
     }
-    if (message.totalTasks !== 0) {
-      obj.totalTasks = Math.round(message.totalTasks);
+    if (message.totalTasks !== "") {
+      obj.totalTasks = message.totalTasks;
     }
     return obj;
   },
@@ -3862,8 +3862,8 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
     message.campaignStatus = object.campaignStatus ?? "";
     message.availableBudget = object.availableBudget ?? "";
     message.amountPaidOut = object.amountPaidOut ?? "";
-    message.totalParticipants = object.totalParticipants ?? 0;
-    message.totalTasks = object.totalTasks ?? 0;
+    message.totalParticipants = object.totalParticipants ?? "";
+    message.totalTasks = object.totalTasks ?? "";
     return message;
   },
 };

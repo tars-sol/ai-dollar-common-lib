@@ -239,6 +239,6 @@ message GetCampaignProgressResponse {
   string campaignStatus = 3;
   string availableBudget = 4;
   string amountPaidOut = 5;
-  int32 totalParticipants = 6;
-  int32 totalTasks = 7;
+  string totalParticipants = 6;
+  string totalTasks = 7;
 }
