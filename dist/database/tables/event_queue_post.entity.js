@@ -20,6 +20,16 @@ __decorate([
 ], EventQueuePost.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Index)(),
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", Object)
+], EventQueuePost.prototype, "exchange", void 0);
+__decorate([
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", Object)
+], EventQueuePost.prototype, "queue", void 0);
+__decorate([
+    (0, typeorm_1.Index)(),
     (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)
 ], EventQueuePost.prototype, "routingKey", void 0);

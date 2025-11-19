@@ -12,6 +12,14 @@ export class EventQueuePost {
     id: string;
 
     @Index()
+    @Column({ type: 'text', nullable: true })
+    exchange: string | null;
+
+    @Index()
+    @Column({ type: 'text', nullable: true })
+    queue: string | null;
+
+    @Index()
     @Column({ type: 'text' })
     routingKey: string;
 
@@ -35,4 +43,5 @@ export class EventQueuePost {
     @Index()
     @Column({ type: 'timestamptz', nullable: true })
     nextAttemptAt?: Date | null;
+
 }

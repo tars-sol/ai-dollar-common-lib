@@ -1,5 +1,5 @@
 export declare const RMQ_CLIENT: {
-    USER_CLIENT: string;
+    TASK_CLIENT: string;
     POST_CLIENT: string;
     SUBSCRIPTION_CLIENT: string;
 };
