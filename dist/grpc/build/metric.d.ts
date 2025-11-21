@@ -1,5 +1,4 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "metrics";
 export declare enum MetricRange {
     METRIC_RANGE_UNSPECIFIED = 0,
@@ -34,19 +33,14 @@ export interface MetricPoint {
     label: string;
     value: string;
 }
-export interface MetricsHealthResponse {
-    isHealthy: boolean;
-}
 export declare const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest>;
 export declare const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse>;
 export declare const MetricPoint: MessageFns<MetricPoint>;
-export declare const MetricsHealthResponse: MessageFns<MetricsHealthResponse>;
 export interface MetricsService {
     GetProfileEarningsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileViewsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileFollowersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileSubscribersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
-    Health(request: Empty): Promise<MetricsHealthResponse>;
 }
 export declare const MetricsServiceServiceName = "metrics.MetricsService";
 export declare class MetricsServiceClientImpl implements MetricsService {
@@ -59,7 +53,6 @@ export declare class MetricsServiceClientImpl implements MetricsService {
     GetProfileViewsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileFollowersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileSubscribersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
-    Health(request: Empty): Promise<MetricsHealthResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

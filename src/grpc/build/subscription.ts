@@ -6,16 +6,11 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "subscription";
 
 export interface SuccessResponse {
   success: boolean;
-}
-
-export interface HealthResponse {
-  isHealthy: boolean;
 }
 
 export interface CreateTierRequest {
@@ -159,64 +154,6 @@ export const SuccessResponse: MessageFns<SuccessResponse> = {
   fromPartial<I extends Exact<DeepPartial<SuccessResponse>, I>>(object: I): SuccessResponse {
     const message = createBaseSuccessResponse();
     message.success = object.success ?? false;
-    return message;
-  },
-};
-
-function createBaseHealthResponse(): HealthResponse {
-  return { isHealthy: false };
-}
-
-export const HealthResponse: MessageFns<HealthResponse> = {
-  encode(message: HealthResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.isHealthy !== false) {
-      writer.uint32(8).bool(message.isHealthy);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): HealthResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseHealthResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 8) {
-            break;
-          }
-
-          message.isHealthy = reader.bool();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): HealthResponse {
-    return { isHealthy: isSet(object.isHealthy) ? globalThis.Boolean(object.isHealthy) : false };
-  },
-
-  toJSON(message: HealthResponse): unknown {
-    const obj: any = {};
-    if (message.isHealthy !== false) {
-      obj.isHealthy = message.isHealthy;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<HealthResponse>, I>>(base?: I): HealthResponse {
-    return HealthResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<HealthResponse>, I>>(object: I): HealthResponse {
-    const message = createBaseHealthResponse();
-    message.isHealthy = object.isHealthy ?? false;
     return message;
   },
 };
@@ -1594,7 +1531,6 @@ export interface SubscriptionService {
   GetTier(request: GetTierRequest): Promise<SubscriptionTierResponse>;
   GetCreatorTiers(request: GetCreatorTiersRequest): Promise<GetCreatorTiersResponse>;
   DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
-  Health(request: Empty): Promise<HealthResponse>;
   CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
   CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
 }
@@ -1613,7 +1549,6 @@ export class SubscriptionServiceClientImpl implements SubscriptionService {
     this.GetTier = this.GetTier.bind(this);
     this.GetCreatorTiers = this.GetCreatorTiers.bind(this);
     this.DeleteTier = this.DeleteTier.bind(this);
-    this.Health = this.Health.bind(this);
     this.CreateCheckoutSession = this.CreateCheckoutSession.bind(this);
     this.CreateCheckoutSecret = this.CreateCheckoutSecret.bind(this);
   }
@@ -1657,12 +1592,6 @@ export class SubscriptionServiceClientImpl implements SubscriptionService {
     const data = DeleteTierRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteTier", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
-  }
-
-  Health(request: Empty): Promise<HealthResponse> {
-    const data = Empty.encode(request).finish();
-    const promise = this.rpc.request(this.service, "Health", data);
-    return promise.then((data) => HealthResponse.decode(new BinaryReader(data)));
   }
 
   CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse> {

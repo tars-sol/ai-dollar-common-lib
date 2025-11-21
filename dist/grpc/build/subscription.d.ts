@@ -1,11 +1,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Empty } from "./google/protobuf/empty";
 export declare const protobufPackage = "subscription";
 export interface SuccessResponse {
     success: boolean;
-}
-export interface HealthResponse {
-    isHealthy: boolean;
 }
 export interface CreateTierRequest {
     creatorId: string;
@@ -82,7 +78,6 @@ export interface CreateCheckoutSecretResponse {
     clientSecretKey: string;
 }
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
-export declare const HealthResponse: MessageFns<HealthResponse>;
 export declare const CreateTierRequest: MessageFns<CreateTierRequest>;
 export declare const UpdateTierRequest: MessageFns<UpdateTierRequest>;
 export declare const UpdateTierPricesRequest: MessageFns<UpdateTierPricesRequest>;
@@ -104,7 +99,6 @@ export interface SubscriptionService {
     GetTier(request: GetTierRequest): Promise<SubscriptionTierResponse>;
     GetCreatorTiers(request: GetCreatorTiersRequest): Promise<GetCreatorTiersResponse>;
     DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
-    Health(request: Empty): Promise<HealthResponse>;
     CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
     CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
 }
@@ -122,7 +116,6 @@ export declare class SubscriptionServiceClientImpl implements SubscriptionServic
     GetTier(request: GetTierRequest): Promise<SubscriptionTierResponse>;
     GetCreatorTiers(request: GetCreatorTiersRequest): Promise<GetCreatorTiersResponse>;
     DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
-    Health(request: Empty): Promise<HealthResponse>;
     CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
     CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
 }

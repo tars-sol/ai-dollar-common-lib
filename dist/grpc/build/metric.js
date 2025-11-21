@@ -5,14 +5,13 @@
 //   protoc               v3.21.12
 // source: metric.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MetricsServiceClientImpl = exports.MetricsServiceServiceName = exports.MetricsHealthResponse = exports.MetricPoint = exports.ProfileMetricsResponse = exports.GetProfileMetricsRequest = exports.MetricKind = exports.MetricRange = exports.protobufPackage = void 0;
+exports.MetricsServiceClientImpl = exports.MetricsServiceServiceName = exports.MetricPoint = exports.ProfileMetricsResponse = exports.GetProfileMetricsRequest = exports.MetricKind = exports.MetricRange = exports.protobufPackage = void 0;
 exports.metricRangeFromJSON = metricRangeFromJSON;
 exports.metricRangeToJSON = metricRangeToJSON;
 exports.metricKindFromJSON = metricKindFromJSON;
 exports.metricKindToJSON = metricKindToJSON;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
-const empty_1 = require("./google/protobuf/empty");
 exports.protobufPackage = "metrics";
 var MetricRange;
 (function (MetricRange) {
@@ -340,57 +339,6 @@ exports.MetricPoint = {
         return message;
     },
 };
-function createBaseMetricsHealthResponse() {
-    return { isHealthy: false };
-}
-exports.MetricsHealthResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.isHealthy !== false) {
-            writer.uint32(8).bool(message.isHealthy);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        const end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseMetricsHealthResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1: {
-                    if (tag !== 8) {
-                        break;
-                    }
-                    message.isHealthy = reader.bool();
-                    continue;
-                }
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { isHealthy: isSet(object.isHealthy) ? globalThis.Boolean(object.isHealthy) : false };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.isHealthy !== false) {
-            obj.isHealthy = message.isHealthy;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.MetricsHealthResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseMetricsHealthResponse();
-        message.isHealthy = object.isHealthy ?? false;
-        return message;
-    },
-};
 exports.MetricsServiceServiceName = "metrics.MetricsService";
 class MetricsServiceClientImpl {
     constructor(rpc, opts) {
@@ -400,7 +348,6 @@ class MetricsServiceClientImpl {
         this.GetProfileViewsMetrics = this.GetProfileViewsMetrics.bind(this);
         this.GetProfileFollowersMetrics = this.GetProfileFollowersMetrics.bind(this);
         this.GetProfileSubscribersMetrics = this.GetProfileSubscribersMetrics.bind(this);
-        this.Health = this.Health.bind(this);
     }
     GetProfileEarningsMetrics(request) {
         const data = exports.GetProfileMetricsRequest.encode(request).finish();
@@ -421,11 +368,6 @@ class MetricsServiceClientImpl {
         const data = exports.GetProfileMetricsRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetProfileSubscribersMetrics", data);
         return promise.then((data) => exports.ProfileMetricsResponse.decode(new wire_1.BinaryReader(data)));
-    }
-    Health(request) {
-        const data = empty_1.Empty.encode(request).finish();
-        const promise = this.rpc.request(this.service, "Health", data);
-        return promise.then((data) => exports.MetricsHealthResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.MetricsServiceClientImpl = MetricsServiceClientImpl;

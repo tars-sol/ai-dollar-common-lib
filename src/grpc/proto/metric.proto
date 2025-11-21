@@ -9,7 +9,6 @@ service MetricsService {
   rpc GetProfileViewsMetrics      (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
   rpc GetProfileFollowersMetrics  (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
   rpc GetProfileSubscribersMetrics(GetProfileMetricsRequest) returns (ProfileMetricsResponse);
-  rpc Health(google.protobuf.Empty) returns (MetricsHealthResponse);
 }
 
 
@@ -28,10 +27,6 @@ message MetricPoint {
   string date = 1;
   string label = 2;
   string value = 3;
-}
-
-message MetricsHealthResponse {
-  bool isHealthy = 1;
 }
 
 enum MetricRange {

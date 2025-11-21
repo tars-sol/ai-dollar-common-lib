@@ -12,17 +12,12 @@ service SubscriptionService {
   rpc GetTier           (GetTierRequest)           returns (SubscriptionTierResponse);
   rpc GetCreatorTiers   (GetCreatorTiersRequest)   returns (GetCreatorTiersResponse);
   rpc DeleteTier        (DeleteTierRequest)        returns (SuccessResponse);
-  rpc Health            (google.protobuf.Empty)    returns (HealthResponse);
   rpc CreateCheckoutSession (CreateCheckoutSessionRequest) returns (CreateCheckoutSessionResponse);
   rpc CreateCheckoutSecret (CreateCheckoutSecretRequest)   returns (CreateCheckoutSecretResponse);
 }
 
 message SuccessResponse {
   bool success = 1;
-}
-
-message HealthResponse {
-  bool isHealthy = 1;
 }
 
 message CreateTierRequest {

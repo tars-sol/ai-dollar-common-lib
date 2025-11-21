@@ -6,7 +6,6 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "metrics";
 
@@ -121,10 +120,6 @@ export interface MetricPoint {
   date: string;
   label: string;
   value: string;
-}
-
-export interface MetricsHealthResponse {
-  isHealthy: boolean;
 }
 
 function createBaseGetProfileMetricsRequest(): GetProfileMetricsRequest {
@@ -387,70 +382,11 @@ export const MetricPoint: MessageFns<MetricPoint> = {
   },
 };
 
-function createBaseMetricsHealthResponse(): MetricsHealthResponse {
-  return { isHealthy: false };
-}
-
-export const MetricsHealthResponse: MessageFns<MetricsHealthResponse> = {
-  encode(message: MetricsHealthResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.isHealthy !== false) {
-      writer.uint32(8).bool(message.isHealthy);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): MetricsHealthResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMetricsHealthResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 8) {
-            break;
-          }
-
-          message.isHealthy = reader.bool();
-          continue;
-        }
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MetricsHealthResponse {
-    return { isHealthy: isSet(object.isHealthy) ? globalThis.Boolean(object.isHealthy) : false };
-  },
-
-  toJSON(message: MetricsHealthResponse): unknown {
-    const obj: any = {};
-    if (message.isHealthy !== false) {
-      obj.isHealthy = message.isHealthy;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<MetricsHealthResponse>, I>>(base?: I): MetricsHealthResponse {
-    return MetricsHealthResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<MetricsHealthResponse>, I>>(object: I): MetricsHealthResponse {
-    const message = createBaseMetricsHealthResponse();
-    message.isHealthy = object.isHealthy ?? false;
-    return message;
-  },
-};
-
 export interface MetricsService {
   GetProfileEarningsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
   GetProfileViewsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
   GetProfileFollowersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
   GetProfileSubscribersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
-  Health(request: Empty): Promise<MetricsHealthResponse>;
 }
 
 export const MetricsServiceServiceName = "metrics.MetricsService";
@@ -464,7 +400,6 @@ export class MetricsServiceClientImpl implements MetricsService {
     this.GetProfileViewsMetrics = this.GetProfileViewsMetrics.bind(this);
     this.GetProfileFollowersMetrics = this.GetProfileFollowersMetrics.bind(this);
     this.GetProfileSubscribersMetrics = this.GetProfileSubscribersMetrics.bind(this);
-    this.Health = this.Health.bind(this);
   }
   GetProfileEarningsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse> {
     const data = GetProfileMetricsRequest.encode(request).finish();
@@ -488,12 +423,6 @@ export class MetricsServiceClientImpl implements MetricsService {
     const data = GetProfileMetricsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetProfileSubscribersMetrics", data);
     return promise.then((data) => ProfileMetricsResponse.decode(new BinaryReader(data)));
-  }
-
-  Health(request: Empty): Promise<MetricsHealthResponse> {
-    const data = Empty.encode(request).finish();
-    const promise = this.rpc.request(this.service, "Health", data);
-    return promise.then((data) => MetricsHealthResponse.decode(new BinaryReader(data)));
   }
 }
 
