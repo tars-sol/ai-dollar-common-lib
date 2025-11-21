@@ -7,6 +7,7 @@ export declare const GrpcPackageToken: {
     readonly CAMPAIGN: "CAMPAIGN_PACKAGE";
     readonly POST: "POST_PACKAGE";
     readonly SUBSCRIPTION: "SUBSCRIPTION_PACKAGE";
+    readonly METRIC: "METRIC_PACKAGE";
 };
 export type GrpcPackageToken = (typeof GrpcPackageToken)[keyof typeof GrpcPackageToken];
 export declare const GrpcProtoName: {
@@ -18,6 +19,7 @@ export declare const GrpcProtoName: {
     readonly CAMPAIGN: "campaign";
     readonly POST: "post";
     readonly SUBSCRIPTION: "subscription";
+    readonly METRIC: "metric";
 };
 export type GrpcProtoName = (typeof GrpcProtoName)[keyof typeof GrpcProtoName];
 export declare const GrpcProtoServiceName: {
@@ -29,6 +31,7 @@ export declare const GrpcProtoServiceName: {
     readonly CAMPAIGN_SERVICE: "CampaignService";
     readonly POST_SERVICE: "PostService";
     readonly SUBSCRIPTION_SERVICE: "SubscriptionService";
+    readonly METRIC_SERVICE: "MetricService";
 };
 export type GrpcProtoServiceName = (typeof GrpcProtoServiceName)[keyof typeof GrpcProtoServiceName];
 export declare function resolveGrpcProtoPath(protoName: GrpcProtoName): string;

@@ -6,7 +6,8 @@ export const GrpcPackageToken = {
   BRAND: 'BRAND_PACKAGE',
   CAMPAIGN: 'CAMPAIGN_PACKAGE',
   POST: 'POST_PACKAGE',
-  SUBSCRIPTION: 'SUBSCRIPTION_PACKAGE'
+  SUBSCRIPTION: 'SUBSCRIPTION_PACKAGE',
+  METRIC: 'METRIC_PACKAGE'
 
 } as const;
 export type GrpcPackageToken =
@@ -20,7 +21,8 @@ export const GrpcProtoName = {
   BRAND: 'brand',
   CAMPAIGN: 'campaign',
   POST: 'post',
-  SUBSCRIPTION: 'subscription'
+  SUBSCRIPTION: 'subscription',
+  METRIC: 'metric'
 } as const;
 
 export type GrpcProtoName = (typeof GrpcProtoName)[keyof typeof GrpcProtoName];
@@ -33,7 +35,8 @@ export const GrpcProtoServiceName = {
   BRAND_SERVICE: 'BrandService',
   CAMPAIGN_SERVICE: 'CampaignService',
   POST_SERVICE: 'PostService',
-  SUBSCRIPTION_SERVICE: 'SubscriptionService'
+  SUBSCRIPTION_SERVICE: 'SubscriptionService',
+  METRIC_SERVICE: 'MetricService'
 } as const;
 
 export type GrpcProtoServiceName =
