@@ -31,13 +31,7 @@ export class ProfileDailyMetrics {
   followersTotal: number;
 
   @Column({ type: 'bigint', default: 0 })
-  followersDelta: number;
-
-  @Column({ type: 'bigint', default: 0 })
   subsTotal: number;
-
-  @Column({ type: 'bigint', default: 0 })
-  subsDelta: number;
 
   @CreateDateColumn()
   createdAt: Date;

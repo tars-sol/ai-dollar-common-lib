@@ -41,15 +41,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'bigint', default: 0 }),
     __metadata("design:type", Number)
-], ProfileDailyMetrics.prototype, "followersDelta", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'bigint', default: 0 }),
-    __metadata("design:type", Number)
 ], ProfileDailyMetrics.prototype, "subsTotal", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'bigint', default: 0 }),
-    __metadata("design:type", Number)
-], ProfileDailyMetrics.prototype, "subsDelta", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

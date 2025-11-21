@@ -5,9 +5,7 @@ export declare class ProfileDailyMetrics {
     earningsCents: number;
     viewsCount: number;
     followersTotal: number;
-    followersDelta: number;
     subsTotal: number;
-    subsDelta: number;
     createdAt: Date;
     updatedAt: Date;
 }
