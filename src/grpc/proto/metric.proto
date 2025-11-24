@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package metric;
 
-import "google/protobuf/empty.proto";
-
 service MetricsService {
   rpc GetProfileEarningsMetrics   (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
   rpc GetProfileViewsMetrics      (GetProfileMetricsRequest) returns (ProfileMetricsResponse);

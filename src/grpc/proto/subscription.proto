@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package subscription;
 
-import "google/protobuf/empty.proto";
-
 service SubscriptionService {
   rpc CreateTier        (CreateTierRequest)        returns (SubscriptionTierResponse);
   rpc UpdateTier        (UpdateTierRequest)        returns (SubscriptionTierResponse);
