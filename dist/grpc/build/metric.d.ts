@@ -1,5 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-export declare const protobufPackage = "metrics";
+export declare const protobufPackage = "metric";
 export declare enum MetricRange {
     METRIC_RANGE_UNSPECIFIED = 0,
     WEEK = 1,
@@ -42,7 +42,7 @@ export interface MetricsService {
     GetProfileFollowersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileSubscribersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
 }
-export declare const MetricsServiceServiceName = "metrics.MetricsService";
+export declare const MetricsServiceServiceName = "metric.MetricsService";
 export declare class MetricsServiceClientImpl implements MetricsService {
     private readonly rpc;
     private readonly service;

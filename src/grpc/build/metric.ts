@@ -7,7 +7,7 @@
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
-export const protobufPackage = "metrics";
+export const protobufPackage = "metric";
 
 export enum MetricRange {
   METRIC_RANGE_UNSPECIFIED = 0,
@@ -389,7 +389,7 @@ export interface MetricsService {
   GetProfileSubscribersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
 }
 
-export const MetricsServiceServiceName = "metrics.MetricsService";
+export const MetricsServiceServiceName = "metric.MetricsService";
 export class MetricsServiceClientImpl implements MetricsService {
   private readonly rpc: Rpc;
   private readonly service: string;

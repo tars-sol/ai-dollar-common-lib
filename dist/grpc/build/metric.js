@@ -12,7 +12,7 @@ exports.metricKindFromJSON = metricKindFromJSON;
 exports.metricKindToJSON = metricKindToJSON;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
-exports.protobufPackage = "metrics";
+exports.protobufPackage = "metric";
 var MetricRange;
 (function (MetricRange) {
     MetricRange[MetricRange["METRIC_RANGE_UNSPECIFIED"] = 0] = "METRIC_RANGE_UNSPECIFIED";
@@ -339,7 +339,7 @@ exports.MetricPoint = {
         return message;
     },
 };
-exports.MetricsServiceServiceName = "metrics.MetricsService";
+exports.MetricsServiceServiceName = "metric.MetricsService";
 class MetricsServiceClientImpl {
     constructor(rpc, opts) {
         this.service = opts?.service || exports.MetricsServiceServiceName;
