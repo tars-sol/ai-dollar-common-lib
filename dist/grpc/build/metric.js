@@ -5,116 +5,20 @@
 //   protoc               v3.21.12
 // source: metric.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MetricsServiceClientImpl = exports.MetricsServiceServiceName = exports.MetricPoint = exports.ProfileMetricsResponse = exports.GetProfileMetricsRequest = exports.MetricKind = exports.MetricRange = exports.protobufPackage = void 0;
-exports.metricRangeFromJSON = metricRangeFromJSON;
-exports.metricRangeToJSON = metricRangeToJSON;
-exports.metricKindFromJSON = metricKindFromJSON;
-exports.metricKindToJSON = metricKindToJSON;
+exports.MetricsServiceClientImpl = exports.MetricsServiceServiceName = exports.MetricPoint = exports.ProfileMetricsResponse = exports.GetProfileMetricsRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "metric";
-var MetricRange;
-(function (MetricRange) {
-    MetricRange[MetricRange["METRIC_RANGE_UNSPECIFIED"] = 0] = "METRIC_RANGE_UNSPECIFIED";
-    MetricRange[MetricRange["WEEK"] = 1] = "WEEK";
-    MetricRange[MetricRange["MONTH"] = 2] = "MONTH";
-    MetricRange[MetricRange["YEAR"] = 3] = "YEAR";
-    MetricRange[MetricRange["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
-})(MetricRange || (exports.MetricRange = MetricRange = {}));
-function metricRangeFromJSON(object) {
-    switch (object) {
-        case 0:
-        case "METRIC_RANGE_UNSPECIFIED":
-            return MetricRange.METRIC_RANGE_UNSPECIFIED;
-        case 1:
-        case "WEEK":
-            return MetricRange.WEEK;
-        case 2:
-        case "MONTH":
-            return MetricRange.MONTH;
-        case 3:
-        case "YEAR":
-            return MetricRange.YEAR;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return MetricRange.UNRECOGNIZED;
-    }
-}
-function metricRangeToJSON(object) {
-    switch (object) {
-        case MetricRange.METRIC_RANGE_UNSPECIFIED:
-            return "METRIC_RANGE_UNSPECIFIED";
-        case MetricRange.WEEK:
-            return "WEEK";
-        case MetricRange.MONTH:
-            return "MONTH";
-        case MetricRange.YEAR:
-            return "YEAR";
-        case MetricRange.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
-var MetricKind;
-(function (MetricKind) {
-    MetricKind[MetricKind["METRIC_KIND_UNSPECIFIED"] = 0] = "METRIC_KIND_UNSPECIFIED";
-    MetricKind[MetricKind["EARNINGS"] = 1] = "EARNINGS";
-    MetricKind[MetricKind["VIEWS"] = 2] = "VIEWS";
-    MetricKind[MetricKind["FOLLOWERS"] = 3] = "FOLLOWERS";
-    MetricKind[MetricKind["SUBSCRIBERS"] = 4] = "SUBSCRIBERS";
-    MetricKind[MetricKind["UNRECOGNIZED"] = -1] = "UNRECOGNIZED";
-})(MetricKind || (exports.MetricKind = MetricKind = {}));
-function metricKindFromJSON(object) {
-    switch (object) {
-        case 0:
-        case "METRIC_KIND_UNSPECIFIED":
-            return MetricKind.METRIC_KIND_UNSPECIFIED;
-        case 1:
-        case "EARNINGS":
-            return MetricKind.EARNINGS;
-        case 2:
-        case "VIEWS":
-            return MetricKind.VIEWS;
-        case 3:
-        case "FOLLOWERS":
-            return MetricKind.FOLLOWERS;
-        case 4:
-        case "SUBSCRIBERS":
-            return MetricKind.SUBSCRIBERS;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return MetricKind.UNRECOGNIZED;
-    }
-}
-function metricKindToJSON(object) {
-    switch (object) {
-        case MetricKind.METRIC_KIND_UNSPECIFIED:
-            return "METRIC_KIND_UNSPECIFIED";
-        case MetricKind.EARNINGS:
-            return "EARNINGS";
-        case MetricKind.VIEWS:
-            return "VIEWS";
-        case MetricKind.FOLLOWERS:
-            return "FOLLOWERS";
-        case MetricKind.SUBSCRIBERS:
-            return "SUBSCRIBERS";
-        case MetricKind.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
 function createBaseGetProfileMetricsRequest() {
-    return { profileId: "", range: 0 };
+    return { profileId: "", range: "" };
 }
 exports.GetProfileMetricsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.profileId !== "") {
             writer.uint32(10).string(message.profileId);
         }
-        if (message.range !== 0) {
-            writer.uint32(16).int32(message.range);
+        if (message.range !== "") {
+            writer.uint32(18).string(message.range);
         }
         return writer;
     },
@@ -133,10 +37,10 @@ exports.GetProfileMetricsRequest = {
                     continue;
                 }
                 case 2: {
-                    if (tag !== 16) {
+                    if (tag !== 18) {
                         break;
                     }
-                    message.range = reader.int32();
+                    message.range = reader.string();
                     continue;
                 }
             }
@@ -150,7 +54,7 @@ exports.GetProfileMetricsRequest = {
     fromJSON(object) {
         return {
             profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
-            range: isSet(object.range) ? metricRangeFromJSON(object.range) : 0,
+            range: isSet(object.range) ? globalThis.String(object.range) : "",
         };
     },
     toJSON(message) {
@@ -158,8 +62,8 @@ exports.GetProfileMetricsRequest = {
         if (message.profileId !== "") {
             obj.profileId = message.profileId;
         }
-        if (message.range !== 0) {
-            obj.range = metricRangeToJSON(message.range);
+        if (message.range !== "") {
+            obj.range = message.range;
         }
         return obj;
     },
@@ -169,20 +73,20 @@ exports.GetProfileMetricsRequest = {
     fromPartial(object) {
         const message = createBaseGetProfileMetricsRequest();
         message.profileId = object.profileId ?? "";
-        message.range = object.range ?? 0;
+        message.range = object.range ?? "";
         return message;
     },
 };
 function createBaseProfileMetricsResponse() {
-    return { metric: 0, range: 0, points: [] };
+    return { metric: "", range: "", points: [] };
 }
 exports.ProfileMetricsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.metric !== 0) {
-            writer.uint32(8).int32(message.metric);
+        if (message.metric !== "") {
+            writer.uint32(10).string(message.metric);
         }
-        if (message.range !== 0) {
-            writer.uint32(16).int32(message.range);
+        if (message.range !== "") {
+            writer.uint32(18).string(message.range);
         }
         for (const v of message.points) {
             exports.MetricPoint.encode(v, writer.uint32(26).fork()).join();
@@ -197,17 +101,17 @@ exports.ProfileMetricsResponse = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1: {
-                    if (tag !== 8) {
+                    if (tag !== 10) {
                         break;
                     }
-                    message.metric = reader.int32();
+                    message.metric = reader.string();
                     continue;
                 }
                 case 2: {
-                    if (tag !== 16) {
+                    if (tag !== 18) {
                         break;
                     }
-                    message.range = reader.int32();
+                    message.range = reader.string();
                     continue;
                 }
                 case 3: {
@@ -227,18 +131,18 @@ exports.ProfileMetricsResponse = {
     },
     fromJSON(object) {
         return {
-            metric: isSet(object.metric) ? metricKindFromJSON(object.metric) : 0,
-            range: isSet(object.range) ? metricRangeFromJSON(object.range) : 0,
+            metric: isSet(object.metric) ? globalThis.String(object.metric) : "",
+            range: isSet(object.range) ? globalThis.String(object.range) : "",
             points: globalThis.Array.isArray(object?.points) ? object.points.map((e) => exports.MetricPoint.fromJSON(e)) : [],
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.metric !== 0) {
-            obj.metric = metricKindToJSON(message.metric);
+        if (message.metric !== "") {
+            obj.metric = message.metric;
         }
-        if (message.range !== 0) {
-            obj.range = metricRangeToJSON(message.range);
+        if (message.range !== "") {
+            obj.range = message.range;
         }
         if (message.points?.length) {
             obj.points = message.points.map((e) => exports.MetricPoint.toJSON(e));
@@ -250,8 +154,8 @@ exports.ProfileMetricsResponse = {
     },
     fromPartial(object) {
         const message = createBaseProfileMetricsResponse();
-        message.metric = object.metric ?? 0;
-        message.range = object.range ?? 0;
+        message.metric = object.metric ?? "";
+        message.range = object.range ?? "";
         message.points = object.points?.map((e) => exports.MetricPoint.fromPartial(e)) || [];
         return message;
     },

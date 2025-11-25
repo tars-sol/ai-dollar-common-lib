@@ -1,31 +1,12 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export declare const protobufPackage = "metric";
-export declare enum MetricRange {
-    METRIC_RANGE_UNSPECIFIED = 0,
-    WEEK = 1,
-    MONTH = 2,
-    YEAR = 3,
-    UNRECOGNIZED = -1
-}
-export declare function metricRangeFromJSON(object: any): MetricRange;
-export declare function metricRangeToJSON(object: MetricRange): string;
-export declare enum MetricKind {
-    METRIC_KIND_UNSPECIFIED = 0,
-    EARNINGS = 1,
-    VIEWS = 2,
-    FOLLOWERS = 3,
-    SUBSCRIBERS = 4,
-    UNRECOGNIZED = -1
-}
-export declare function metricKindFromJSON(object: any): MetricKind;
-export declare function metricKindToJSON(object: MetricKind): string;
 export interface GetProfileMetricsRequest {
     profileId: string;
-    range: MetricRange;
+    range: string;
 }
 export interface ProfileMetricsResponse {
-    metric: MetricKind;
-    range: MetricRange;
+    metric: string;
+    range: string;
     points: MetricPoint[];
 }
 export interface MetricPoint {

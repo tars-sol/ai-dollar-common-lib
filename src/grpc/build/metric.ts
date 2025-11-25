@@ -9,110 +9,14 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "metric";
 
-export enum MetricRange {
-  METRIC_RANGE_UNSPECIFIED = 0,
-  WEEK = 1,
-  MONTH = 2,
-  YEAR = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function metricRangeFromJSON(object: any): MetricRange {
-  switch (object) {
-    case 0:
-    case "METRIC_RANGE_UNSPECIFIED":
-      return MetricRange.METRIC_RANGE_UNSPECIFIED;
-    case 1:
-    case "WEEK":
-      return MetricRange.WEEK;
-    case 2:
-    case "MONTH":
-      return MetricRange.MONTH;
-    case 3:
-    case "YEAR":
-      return MetricRange.YEAR;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return MetricRange.UNRECOGNIZED;
-  }
-}
-
-export function metricRangeToJSON(object: MetricRange): string {
-  switch (object) {
-    case MetricRange.METRIC_RANGE_UNSPECIFIED:
-      return "METRIC_RANGE_UNSPECIFIED";
-    case MetricRange.WEEK:
-      return "WEEK";
-    case MetricRange.MONTH:
-      return "MONTH";
-    case MetricRange.YEAR:
-      return "YEAR";
-    case MetricRange.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
-export enum MetricKind {
-  METRIC_KIND_UNSPECIFIED = 0,
-  EARNINGS = 1,
-  VIEWS = 2,
-  FOLLOWERS = 3,
-  SUBSCRIBERS = 4,
-  UNRECOGNIZED = -1,
-}
-
-export function metricKindFromJSON(object: any): MetricKind {
-  switch (object) {
-    case 0:
-    case "METRIC_KIND_UNSPECIFIED":
-      return MetricKind.METRIC_KIND_UNSPECIFIED;
-    case 1:
-    case "EARNINGS":
-      return MetricKind.EARNINGS;
-    case 2:
-    case "VIEWS":
-      return MetricKind.VIEWS;
-    case 3:
-    case "FOLLOWERS":
-      return MetricKind.FOLLOWERS;
-    case 4:
-    case "SUBSCRIBERS":
-      return MetricKind.SUBSCRIBERS;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return MetricKind.UNRECOGNIZED;
-  }
-}
-
-export function metricKindToJSON(object: MetricKind): string {
-  switch (object) {
-    case MetricKind.METRIC_KIND_UNSPECIFIED:
-      return "METRIC_KIND_UNSPECIFIED";
-    case MetricKind.EARNINGS:
-      return "EARNINGS";
-    case MetricKind.VIEWS:
-      return "VIEWS";
-    case MetricKind.FOLLOWERS:
-      return "FOLLOWERS";
-    case MetricKind.SUBSCRIBERS:
-      return "SUBSCRIBERS";
-    case MetricKind.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
 export interface GetProfileMetricsRequest {
   profileId: string;
-  range: MetricRange;
+  range: string;
 }
 
 export interface ProfileMetricsResponse {
-  metric: MetricKind;
-  range: MetricRange;
+  metric: string;
+  range: string;
   points: MetricPoint[];
 }
 
@@ -123,7 +27,7 @@ export interface MetricPoint {
 }
 
 function createBaseGetProfileMetricsRequest(): GetProfileMetricsRequest {
-  return { profileId: "", range: 0 };
+  return { profileId: "", range: "" };
 }
 
 export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
@@ -131,8 +35,8 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
     if (message.profileId !== "") {
       writer.uint32(10).string(message.profileId);
     }
-    if (message.range !== 0) {
-      writer.uint32(16).int32(message.range);
+    if (message.range !== "") {
+      writer.uint32(18).string(message.range);
     }
     return writer;
   },
@@ -153,11 +57,11 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
           continue;
         }
         case 2: {
-          if (tag !== 16) {
+          if (tag !== 18) {
             break;
           }
 
-          message.range = reader.int32() as any;
+          message.range = reader.string();
           continue;
         }
       }
@@ -172,7 +76,7 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
   fromJSON(object: any): GetProfileMetricsRequest {
     return {
       profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
-      range: isSet(object.range) ? metricRangeFromJSON(object.range) : 0,
+      range: isSet(object.range) ? globalThis.String(object.range) : "",
     };
   },
 
@@ -181,8 +85,8 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
     if (message.profileId !== "") {
       obj.profileId = message.profileId;
     }
-    if (message.range !== 0) {
-      obj.range = metricRangeToJSON(message.range);
+    if (message.range !== "") {
+      obj.range = message.range;
     }
     return obj;
   },
@@ -193,22 +97,22 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
   fromPartial<I extends Exact<DeepPartial<GetProfileMetricsRequest>, I>>(object: I): GetProfileMetricsRequest {
     const message = createBaseGetProfileMetricsRequest();
     message.profileId = object.profileId ?? "";
-    message.range = object.range ?? 0;
+    message.range = object.range ?? "";
     return message;
   },
 };
 
 function createBaseProfileMetricsResponse(): ProfileMetricsResponse {
-  return { metric: 0, range: 0, points: [] };
+  return { metric: "", range: "", points: [] };
 }
 
 export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
   encode(message: ProfileMetricsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.metric !== 0) {
-      writer.uint32(8).int32(message.metric);
+    if (message.metric !== "") {
+      writer.uint32(10).string(message.metric);
     }
-    if (message.range !== 0) {
-      writer.uint32(16).int32(message.range);
+    if (message.range !== "") {
+      writer.uint32(18).string(message.range);
     }
     for (const v of message.points) {
       MetricPoint.encode(v!, writer.uint32(26).fork()).join();
@@ -224,19 +128,19 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
-          if (tag !== 8) {
+          if (tag !== 10) {
             break;
           }
 
-          message.metric = reader.int32() as any;
+          message.metric = reader.string();
           continue;
         }
         case 2: {
-          if (tag !== 16) {
+          if (tag !== 18) {
             break;
           }
 
-          message.range = reader.int32() as any;
+          message.range = reader.string();
           continue;
         }
         case 3: {
@@ -258,19 +162,19 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
 
   fromJSON(object: any): ProfileMetricsResponse {
     return {
-      metric: isSet(object.metric) ? metricKindFromJSON(object.metric) : 0,
-      range: isSet(object.range) ? metricRangeFromJSON(object.range) : 0,
+      metric: isSet(object.metric) ? globalThis.String(object.metric) : "",
+      range: isSet(object.range) ? globalThis.String(object.range) : "",
       points: globalThis.Array.isArray(object?.points) ? object.points.map((e: any) => MetricPoint.fromJSON(e)) : [],
     };
   },
 
   toJSON(message: ProfileMetricsResponse): unknown {
     const obj: any = {};
-    if (message.metric !== 0) {
-      obj.metric = metricKindToJSON(message.metric);
+    if (message.metric !== "") {
+      obj.metric = message.metric;
     }
-    if (message.range !== 0) {
-      obj.range = metricRangeToJSON(message.range);
+    if (message.range !== "") {
+      obj.range = message.range;
     }
     if (message.points?.length) {
       obj.points = message.points.map((e) => MetricPoint.toJSON(e));
@@ -283,8 +187,8 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
   },
   fromPartial<I extends Exact<DeepPartial<ProfileMetricsResponse>, I>>(object: I): ProfileMetricsResponse {
     const message = createBaseProfileMetricsResponse();
-    message.metric = object.metric ?? 0;
-    message.range = object.range ?? 0;
+    message.metric = object.metric ?? "";
+    message.range = object.range ?? "";
     message.points = object.points?.map((e) => MetricPoint.fromPartial(e)) || [];
     return message;
   },

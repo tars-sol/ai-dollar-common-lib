@@ -12,12 +12,12 @@ service MetricsService {
 
 message GetProfileMetricsRequest {
   string profileId = 1;
-  MetricRange range = 2;
+  string range = 2;
 }
 
 message ProfileMetricsResponse {
-  MetricKind metric = 1;
-  MetricRange range = 2;
+  string metric = 1;
+  string range = 2;
   repeated MetricPoint points = 3;
 }
 
@@ -27,17 +27,3 @@ message MetricPoint {
   string value = 3;
 }
 
-enum MetricRange {
-  METRIC_RANGE_UNSPECIFIED = 0;
-  WEEK = 1;
-  MONTH = 2;
-  YEAR = 3;
-}
-
-enum MetricKind {
-  METRIC_KIND_UNSPECIFIED = 0;
-  EARNINGS = 1;
-  VIEWS = 2;
-  FOLLOWERS = 3;
-  SUBSCRIBERS = 4;
-}
