@@ -8,6 +8,7 @@ export interface ProfileMetricsResponse {
     metric: string;
     range: string;
     points: MetricPoint[];
+    changePercentage: number;
 }
 export interface MetricPoint {
     date: string;

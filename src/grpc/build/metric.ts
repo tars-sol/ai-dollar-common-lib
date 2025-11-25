@@ -18,6 +18,7 @@ export interface ProfileMetricsResponse {
   metric: string;
   range: string;
   points: MetricPoint[];
+  changePercentage: number;
 }
 
 export interface MetricPoint {
@@ -103,7 +104,7 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
 };
 
 function createBaseProfileMetricsResponse(): ProfileMetricsResponse {
-  return { metric: "", range: "", points: [] };
+  return { metric: "", range: "", points: [], changePercentage: 0 };
 }
 
 export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
@@ -116,6 +117,9 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
     }
     for (const v of message.points) {
       MetricPoint.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.changePercentage !== 0) {
+      writer.uint32(33).double(message.changePercentage);
     }
     return writer;
   },
@@ -151,6 +155,14 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
           message.points.push(MetricPoint.decode(reader, reader.uint32()));
           continue;
         }
+        case 4: {
+          if (tag !== 33) {
+            break;
+          }
+
+          message.changePercentage = reader.double();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -165,6 +177,7 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
       metric: isSet(object.metric) ? globalThis.String(object.metric) : "",
       range: isSet(object.range) ? globalThis.String(object.range) : "",
       points: globalThis.Array.isArray(object?.points) ? object.points.map((e: any) => MetricPoint.fromJSON(e)) : [],
+      changePercentage: isSet(object.changePercentage) ? globalThis.Number(object.changePercentage) : 0,
     };
   },
 
@@ -179,6 +192,9 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
     if (message.points?.length) {
       obj.points = message.points.map((e) => MetricPoint.toJSON(e));
     }
+    if (message.changePercentage !== 0) {
+      obj.changePercentage = message.changePercentage;
+    }
     return obj;
   },
 
@@ -190,6 +206,7 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
     message.metric = object.metric ?? "";
     message.range = object.range ?? "";
     message.points = object.points?.map((e) => MetricPoint.fromPartial(e)) || [];
+    message.changePercentage = object.changePercentage ?? 0;
     return message;
   },
 };
