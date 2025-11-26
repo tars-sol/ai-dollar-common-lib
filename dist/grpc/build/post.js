@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.CreateArticleRequest = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.UpdateCommentRequest = exports.DeleteCommentRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.CreateArticleRequest = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.UpdateCommentRequest = exports.DeleteCommentRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.TrendingTagsResponse = exports.TrendingTags = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.GetPostsByHashtagRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -459,6 +459,104 @@ exports.UpdatePostRequest = {
         return message;
     },
 };
+function createBaseGetPostsByHashtagRequest() {
+    return { tag: "", userId: "", limit: "", offset: "" };
+}
+exports.GetPostsByHashtagRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.tag !== "") {
+            writer.uint32(10).string(message.tag);
+        }
+        if (message.userId !== "") {
+            writer.uint32(18).string(message.userId);
+        }
+        if (message.limit !== "") {
+            writer.uint32(26).string(message.limit);
+        }
+        if (message.offset !== "") {
+            writer.uint32(34).string(message.offset);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetPostsByHashtagRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.tag = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.limit = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.offset = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            tag: isSet(object.tag) ? globalThis.String(object.tag) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            limit: isSet(object.limit) ? globalThis.String(object.limit) : "",
+            offset: isSet(object.offset) ? globalThis.String(object.offset) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.tag !== "") {
+            obj.tag = message.tag;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.limit !== "") {
+            obj.limit = message.limit;
+        }
+        if (message.offset !== "") {
+            obj.offset = message.offset;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetPostsByHashtagRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetPostsByHashtagRequest();
+        message.tag = object.tag ?? "";
+        message.userId = object.userId ?? "";
+        message.limit = object.limit ?? "";
+        message.offset = object.offset ?? "";
+        return message;
+    },
+};
 function createBaseGenerateUploadUrlRequest() {
     return { profileId: "", fileName: "", contentType: "" };
 }
@@ -720,6 +818,127 @@ exports.GetFeedRequest = {
         message.role = object.role ?? "";
         message.roleId = object.roleId ?? "";
         message.userId = object.userId ?? "";
+        return message;
+    },
+};
+function createBaseTrendingTags() {
+    return { hashtag: "", uses: "" };
+}
+exports.TrendingTags = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.hashtag !== "") {
+            writer.uint32(10).string(message.hashtag);
+        }
+        if (message.uses !== "") {
+            writer.uint32(18).string(message.uses);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTrendingTags();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.hashtag = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.uses = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            hashtag: isSet(object.hashtag) ? globalThis.String(object.hashtag) : "",
+            uses: isSet(object.uses) ? globalThis.String(object.uses) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.hashtag !== "") {
+            obj.hashtag = message.hashtag;
+        }
+        if (message.uses !== "") {
+            obj.uses = message.uses;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TrendingTags.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTrendingTags();
+        message.hashtag = object.hashtag ?? "";
+        message.uses = object.uses ?? "";
+        return message;
+    },
+};
+function createBaseTrendingTagsResponse() {
+    return { tags: [] };
+}
+exports.TrendingTagsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.tags) {
+            exports.TrendingTags.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTrendingTagsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.tags.push(exports.TrendingTags.decode(reader, reader.uint32()));
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e) => exports.TrendingTags.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.tags?.length) {
+            obj.tags = message.tags.map((e) => exports.TrendingTags.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TrendingTagsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTrendingTagsResponse();
+        message.tags = object.tags?.map((e) => exports.TrendingTags.fromPartial(e)) || [];
         return message;
     },
 };
@@ -3823,9 +4042,11 @@ class PostServiceClientImpl {
         this.RemoveFromPortfolio = this.RemoveFromPortfolio.bind(this);
         this.GetPortfolio = this.GetPortfolio.bind(this);
         this.Health = this.Health.bind(this);
+        this.GetTrendingHashtags = this.GetTrendingHashtags.bind(this);
         this.SearchPosts = this.SearchPosts.bind(this);
         this.CreateArticle = this.CreateArticle.bind(this);
         this.DeleteComment = this.DeleteComment.bind(this);
+        this.GetPostsByHashtag = this.GetPostsByHashtag.bind(this);
     }
     Create(request) {
         const data = exports.CreatePostRequest.encode(request).finish();
@@ -3912,6 +4133,11 @@ class PostServiceClientImpl {
         const promise = this.rpc.request(this.service, "Health", data);
         return promise.then((data) => exports.HealthResponse.decode(new wire_1.BinaryReader(data)));
     }
+    GetTrendingHashtags(request) {
+        const data = empty_1.Empty.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetTrendingHashtags", data);
+        return promise.then((data) => exports.TrendingTagsResponse.decode(new wire_1.BinaryReader(data)));
+    }
     SearchPosts(request) {
         const data = exports.SearchPostsRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "SearchPosts", data);
@@ -3926,6 +4152,11 @@ class PostServiceClientImpl {
         const data = exports.DeleteCommentRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "DeleteComment", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetPostsByHashtag(request) {
+        const data = exports.GetPostsByHashtagRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetPostsByHashtag", data);
+        return promise.then((data) => exports.GetFeedResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.PostServiceClientImpl = PostServiceClientImpl;

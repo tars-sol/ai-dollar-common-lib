@@ -42,6 +42,14 @@ export interface UpdatePostRequest {
   accessType?: string | undefined;
 }
 
+export interface GetPostsByHashtagRequest {
+  /** "#harisrauf" or "harisrauf" */
+  tag: string;
+  userId: string;
+  limit: string;
+  offset: string;
+}
+
 export interface GenerateUploadUrlRequest {
   profileId: string;
   fileName: string;
@@ -59,6 +67,15 @@ export interface GetFeedRequest {
   role: string;
   roleId: string;
   userId: string;
+}
+
+export interface TrendingTags {
+  hashtag: string;
+  uses: string;
+}
+
+export interface TrendingTagsResponse {
+  tags: TrendingTags[];
 }
 
 export interface GetPostRequest {
@@ -767,6 +784,114 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
   },
 };
 
+function createBaseGetPostsByHashtagRequest(): GetPostsByHashtagRequest {
+  return { tag: "", userId: "", limit: "", offset: "" };
+}
+
+export const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest> = {
+  encode(message: GetPostsByHashtagRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.tag !== "") {
+      writer.uint32(10).string(message.tag);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
+    }
+    if (message.limit !== "") {
+      writer.uint32(26).string(message.limit);
+    }
+    if (message.offset !== "") {
+      writer.uint32(34).string(message.offset);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPostsByHashtagRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPostsByHashtagRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.tag = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.limit = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.offset = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPostsByHashtagRequest {
+    return {
+      tag: isSet(object.tag) ? globalThis.String(object.tag) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      limit: isSet(object.limit) ? globalThis.String(object.limit) : "",
+      offset: isSet(object.offset) ? globalThis.String(object.offset) : "",
+    };
+  },
+
+  toJSON(message: GetPostsByHashtagRequest): unknown {
+    const obj: any = {};
+    if (message.tag !== "") {
+      obj.tag = message.tag;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.limit !== "") {
+      obj.limit = message.limit;
+    }
+    if (message.offset !== "") {
+      obj.offset = message.offset;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPostsByHashtagRequest>, I>>(base?: I): GetPostsByHashtagRequest {
+    return GetPostsByHashtagRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPostsByHashtagRequest>, I>>(object: I): GetPostsByHashtagRequest {
+    const message = createBaseGetPostsByHashtagRequest();
+    message.tag = object.tag ?? "";
+    message.userId = object.userId ?? "";
+    message.limit = object.limit ?? "";
+    message.offset = object.offset ?? "";
+    return message;
+  },
+};
+
 function createBaseGenerateUploadUrlRequest(): GenerateUploadUrlRequest {
   return { profileId: "", fileName: "", contentType: "" };
 }
@@ -1055,6 +1180,142 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
     message.role = object.role ?? "";
     message.roleId = object.roleId ?? "";
     message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseTrendingTags(): TrendingTags {
+  return { hashtag: "", uses: "" };
+}
+
+export const TrendingTags: MessageFns<TrendingTags> = {
+  encode(message: TrendingTags, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.hashtag !== "") {
+      writer.uint32(10).string(message.hashtag);
+    }
+    if (message.uses !== "") {
+      writer.uint32(18).string(message.uses);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TrendingTags {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTrendingTags();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.hashtag = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.uses = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TrendingTags {
+    return {
+      hashtag: isSet(object.hashtag) ? globalThis.String(object.hashtag) : "",
+      uses: isSet(object.uses) ? globalThis.String(object.uses) : "",
+    };
+  },
+
+  toJSON(message: TrendingTags): unknown {
+    const obj: any = {};
+    if (message.hashtag !== "") {
+      obj.hashtag = message.hashtag;
+    }
+    if (message.uses !== "") {
+      obj.uses = message.uses;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TrendingTags>, I>>(base?: I): TrendingTags {
+    return TrendingTags.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TrendingTags>, I>>(object: I): TrendingTags {
+    const message = createBaseTrendingTags();
+    message.hashtag = object.hashtag ?? "";
+    message.uses = object.uses ?? "";
+    return message;
+  },
+};
+
+function createBaseTrendingTagsResponse(): TrendingTagsResponse {
+  return { tags: [] };
+}
+
+export const TrendingTagsResponse: MessageFns<TrendingTagsResponse> = {
+  encode(message: TrendingTagsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.tags) {
+      TrendingTags.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TrendingTagsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTrendingTagsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.tags.push(TrendingTags.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TrendingTagsResponse {
+    return {
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => TrendingTags.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: TrendingTagsResponse): unknown {
+    const obj: any = {};
+    if (message.tags?.length) {
+      obj.tags = message.tags.map((e) => TrendingTags.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TrendingTagsResponse>, I>>(base?: I): TrendingTagsResponse {
+    return TrendingTagsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TrendingTagsResponse>, I>>(object: I): TrendingTagsResponse {
+    const message = createBaseTrendingTagsResponse();
+    message.tags = object.tags?.map((e) => TrendingTags.fromPartial(e)) || [];
     return message;
   },
 };
@@ -4453,9 +4714,11 @@ export interface PostService {
   RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
   GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
   Health(request: Empty): Promise<HealthResponse>;
+  GetTrendingHashtags(request: Empty): Promise<TrendingTagsResponse>;
   SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
   CreateArticle(request: CreateArticleRequest): Promise<Article>;
   DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse>;
+  GetPostsByHashtag(request: GetPostsByHashtagRequest): Promise<GetFeedResponse>;
 }
 
 export const PostServiceServiceName = "post.PostService";
@@ -4482,9 +4745,11 @@ export class PostServiceClientImpl implements PostService {
     this.RemoveFromPortfolio = this.RemoveFromPortfolio.bind(this);
     this.GetPortfolio = this.GetPortfolio.bind(this);
     this.Health = this.Health.bind(this);
+    this.GetTrendingHashtags = this.GetTrendingHashtags.bind(this);
     this.SearchPosts = this.SearchPosts.bind(this);
     this.CreateArticle = this.CreateArticle.bind(this);
     this.DeleteComment = this.DeleteComment.bind(this);
+    this.GetPostsByHashtag = this.GetPostsByHashtag.bind(this);
   }
   Create(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
@@ -4588,6 +4853,12 @@ export class PostServiceClientImpl implements PostService {
     return promise.then((data) => HealthResponse.decode(new BinaryReader(data)));
   }
 
+  GetTrendingHashtags(request: Empty): Promise<TrendingTagsResponse> {
+    const data = Empty.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetTrendingHashtags", data);
+    return promise.then((data) => TrendingTagsResponse.decode(new BinaryReader(data)));
+  }
+
   SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse> {
     const data = SearchPostsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SearchPosts", data);
@@ -4604,6 +4875,12 @@ export class PostServiceClientImpl implements PostService {
     const data = DeleteCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteComment", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  GetPostsByHashtag(request: GetPostsByHashtagRequest): Promise<GetFeedResponse> {
+    const data = GetPostsByHashtagRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetPostsByHashtag", data);
+    return promise.then((data) => GetFeedResponse.decode(new BinaryReader(data)));
   }
 }
 

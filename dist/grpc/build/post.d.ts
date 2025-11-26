@@ -28,6 +28,13 @@ export interface UpdatePostRequest {
     caption?: string | undefined;
     accessType?: string | undefined;
 }
+export interface GetPostsByHashtagRequest {
+    /** "#harisrauf" or "harisrauf" */
+    tag: string;
+    userId: string;
+    limit: string;
+    offset: string;
+}
 export interface GenerateUploadUrlRequest {
     profileId: string;
     fileName: string;
@@ -43,6 +50,13 @@ export interface GetFeedRequest {
     role: string;
     roleId: string;
     userId: string;
+}
+export interface TrendingTags {
+    hashtag: string;
+    uses: string;
+}
+export interface TrendingTagsResponse {
+    tags: TrendingTags[];
 }
 export interface GetPostRequest {
     postId: string;
@@ -239,9 +253,12 @@ export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const DeletePostRequest: MessageFns<DeletePostRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;
+export declare const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest>;
 export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
 export declare const GetFeedRequest: MessageFns<GetFeedRequest>;
+export declare const TrendingTags: MessageFns<TrendingTags>;
+export declare const TrendingTagsResponse: MessageFns<TrendingTagsResponse>;
 export declare const GetPostRequest: MessageFns<GetPostRequest>;
 export declare const GetFeedResponse: MessageFns<GetFeedResponse>;
 export declare const CreateCommentRequest: MessageFns<CreateCommentRequest>;
@@ -288,9 +305,11 @@ export interface PostService {
     RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
     GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
     Health(request: Empty): Promise<HealthResponse>;
+    GetTrendingHashtags(request: Empty): Promise<TrendingTagsResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
     CreateArticle(request: CreateArticleRequest): Promise<Article>;
     DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse>;
+    GetPostsByHashtag(request: GetPostsByHashtagRequest): Promise<GetFeedResponse>;
 }
 export declare const PostServiceServiceName = "post.PostService";
 export declare class PostServiceClientImpl implements PostService {
@@ -316,9 +335,11 @@ export declare class PostServiceClientImpl implements PostService {
     RemoveFromPortfolio(request: RemoveFromPortfolioRequest): Promise<SuccessResponse>;
     GetPortfolio(request: GetPortfolioRequest): Promise<GetFeedResponse>;
     Health(request: Empty): Promise<HealthResponse>;
+    GetTrendingHashtags(request: Empty): Promise<TrendingTagsResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
     CreateArticle(request: CreateArticleRequest): Promise<Article>;
     DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse>;
+    GetPostsByHashtag(request: GetPostsByHashtagRequest): Promise<GetFeedResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

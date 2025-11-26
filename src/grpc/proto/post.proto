@@ -6,13 +6,13 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
 
 service PostService {
-  rpc Create (CreatePostRequest) returns (PostResponse);
-  rpc Update (UpdatePostRequest) returns (PostResponse);
-  rpc GenerateUploadUrl (GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
-  rpc GetFeed (GetFeedRequest) returns (GetFeedResponse);
-  rpc GetPost (GetPostRequest) returns (PostResponse);
+  rpc Create(CreatePostRequest) returns (PostResponse);
+  rpc Update(UpdatePostRequest) returns (PostResponse);
+  rpc GenerateUploadUrl(GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
+  rpc GetFeed(GetFeedRequest) returns (GetFeedResponse);
+  rpc GetPost(GetPostRequest) returns (PostResponse);
   rpc PostClicked(GetPostRequest) returns (SuccessResponse);
-  rpc VoteOnPoll (VoteOnPollRequest) returns (PostResponse);
+  rpc VoteOnPoll(VoteOnPollRequest) returns (PostResponse);
   rpc GetProfilePosts(GetProfilePostsRequest) returns (GetFeedResponse);
   rpc PostReaction(PostReactionRequest) returns (PostResponse);
   rpc CreateComment(CreateCommentRequest) returns (CommentResponse);
@@ -23,9 +23,11 @@ service PostService {
   rpc RemoveFromPortfolio(RemoveFromPortfolioRequest) returns (SuccessResponse);
   rpc GetPortfolio(GetPortfolioRequest) returns (GetFeedResponse);
   rpc Health(google.protobuf.Empty) returns (HealthResponse);
-  rpc SearchPosts (SearchPostsRequest) returns (SearchPostsResponse);
-  rpc CreateArticle (CreateArticleRequest) returns (Article);
+  rpc GetTrendingHashtags(google.protobuf.Empty) returns (TrendingTagsResponse);
+  rpc SearchPosts(SearchPostsRequest) returns (SearchPostsResponse);
+  rpc CreateArticle(CreateArticleRequest) returns (Article);
   rpc DeleteComment(DeleteCommentRequest) returns (SuccessResponse);
+  rpc GetPostsByHashtag(GetPostsByHashtagRequest) returns (GetFeedResponse);
 }
 
 message CreatePostRequest {
@@ -34,26 +36,32 @@ message CreatePostRequest {
   string accessType = 3;
   string postType = 8;
   optional string mimeType = 4;
-  optional string giphyUrl=13;
+  optional string giphyUrl = 13;
   optional string mediaType = 9;
   optional string s3Key = 5;
   optional string fileType = 6;
   optional string originalFileName = 7;
-  optional string pollEndTime=10;
+  optional string pollEndTime = 10;
   repeated string options = 11;
 }
-message DeletePostRequest{
+message DeletePostRequest {
   string id = 1;
   string profileId = 2;
 }
-message SuccessResponse{
+message SuccessResponse {
   bool success = 1;
 }
 message UpdatePostRequest {
   string id = 1;
   string profileId = 2;
   optional string caption = 3;
-  optional string accessType = 4; 
+  optional string accessType = 4;
+}
+message GetPostsByHashtagRequest {
+  string tag = 1;      // "#harisrauf" or "harisrauf"
+  string userId = 2;
+  string limit = 3;
+  string offset = 4;
 }
 
 message GenerateUploadUrlRequest {
@@ -69,41 +77,50 @@ message GenerateUploadUrlResponse {
 
 message GetFeedRequest {
   uint32 page = 1;
-  uint32 perPage = 2; 
-  string role= 3;
-  string roleId= 4;
-  string userId= 5;
+  uint32 perPage = 2;
+  string role = 3;
+  string roleId = 4;
+  string userId = 5;
+}
+
+message TrendingTags {
+  string hashtag = 1;
+  string uses = 2;
+}
+
+message TrendingTagsResponse {
+  repeated TrendingTags tags = 1;
 }
 
 message GetPostRequest {
-  string postId = 1; 
+  string postId = 1;
   string userId = 2;
-  string role   = 3;
+  string role = 3;
   string roleId = 4;
 }
 
 message GetFeedResponse {
   repeated PostResponse posts = 1;
 }
-message CreateCommentRequest{
+message CreateCommentRequest {
   string userId = 1;
   string text = 2;
   string postId = 3;
   string role = 5;
 }
-message CommentResponse{
+message CommentResponse {
   string text = 2;
   string postId = 3;
-  string createdAt=4;
-  string updatedAt=5;
+  string createdAt = 4;
+  string updatedAt = 5;
   string id = 6;
   optional CommentCreator commentCreator = 7;
   repeated Mention mentions = 8;
 }
-message GetCommentsRequest{
-  string postId=1;
+message GetCommentsRequest {
+  string postId = 1;
 }
-message DeleteCommentRequest{
+message DeleteCommentRequest {
   string commentId = 1;
   string roleId = 2;
   string role = 3;
@@ -111,31 +128,31 @@ message DeleteCommentRequest{
 }
 message UpdateCommentRequest {
   string commentId = 1;
-  string userId    = 2;
-  string role      = 3;
-  string text      = 4;
+  string userId = 2;
+  string role = 3;
+  string text = 4;
 }
-message GetPortfolioRequest{
+message GetPortfolioRequest {
   string profileId = 1;
   string userId = 2;
   string role = 3;
   string roleId = 4;
 }
-message GetCommentsResponse{
- repeated CommentResponse comments=1;
+message GetCommentsResponse {
+  repeated CommentResponse comments = 1;
 }
-message PostMediaResponse{
+message PostMediaResponse {
   string id = 6;
   optional string mimeType = 1;
   string mediaType = 2;
   optional string s3Key = 3;
   optional string originalFileName = 4;
   optional string signedUrl = 5;
-  optional string giphyUrl=7;
+  optional string giphyUrl = 7;
 
 }
 
-message PostFileResponse{
+message PostFileResponse {
   string id = 6;
   string mimeType = 1;
   string s3Key = 3;
@@ -145,36 +162,36 @@ message PostFileResponse{
   string sizeInBytes = 8;
 
 }
-message VoteOnPollRequest{
+message VoteOnPollRequest {
   string roleId = 1;
   string postId = 2;
   string optionId = 3;
-  string role= 4;
-  string userId= 5;
+  string role = 4;
+  string userId = 5;
 }
-message HealthResponse{
+message HealthResponse {
   bool isHealthy = 1;
 }
-message PostPollResponse{
+message PostPollResponse {
   string id = 1;
   string pollEndTime = 2;
   repeated string votedProfilePics = 3;
   repeated PostPollOptionResponse postPollOptions = 4;
 }
-message PostPollOptionResponse{
+message PostPollOptionResponse {
   string id = 1;
   string text = 2;
   string voteCount = 3;
-  string indexNumber=4;
+  string indexNumber = 4;
   bool userVoted = 5;
 }
-message PostReactionRequest{
-  string roleId= 1;
-  string postId= 2;
+message PostReactionRequest {
+  string roleId = 1;
+  string postId = 2;
   bool reaction = 3;
-  string reactionType=4;
-  string role= 5;
-  string userId= 6;
+  string reactionType = 4;
+  string role = 5;
+  string userId = 6;
 
 }
 
@@ -183,16 +200,16 @@ message Creator {
   string image = 2;
   bool isVerified = 3;
 }
-message AddToPortfolioRequest{
-  string profileId= 1;
-  repeated string postIds= 2;
+message AddToPortfolioRequest {
+  string profileId = 1;
+  repeated string postIds = 2;
 }
 
-message RemoveFromPortfolioRequest{
-  string profileId= 1;
-  repeated string postIds= 2;
+message RemoveFromPortfolioRequest {
+  string profileId = 1;
+  repeated string postIds = 2;
 }
-message CommentCreator{
+message CommentCreator {
   string name = 1;
   string image = 2;
   bool isVerified = 3;
@@ -203,7 +220,7 @@ message CommentCreator{
 
 message Mention {
   string username = 1;
-  string role = 2;     // "profile" | "brand"
+  string role = 2;// "profile" | "brand"
   string roleId = 3;
 }
 
@@ -214,8 +231,8 @@ message PostResponse {
   string accessType = 4;
   string postType = 5;
   optional PostMediaResponse postMedia = 6;
-  optional PostPollResponse postPoll=7;
-  optional PostFileResponse postFile=8;
+  optional PostPollResponse postPoll = 7;
+  optional PostFileResponse postFile = 8;
   string createdAt = 9;
   string updatedAt = 10;
   string commentCount = 11;
@@ -228,23 +245,23 @@ message PostResponse {
   repeated Mention mentions = 18;
 
 }
-message GetProfilePostsRequest{
+message GetProfilePostsRequest {
   string profileId = 1;
   string userId = 2;
 }
 
 message SearchPostsRequest {
-  string q    = 1;
-  int32  page = 2;
-  int32  limit = 3;
+  string q = 1;
+  int32 page = 2;
+  int32 limit = 3;
 }
 
 message PostSearchItem {
-  string id        = 1;
+  string id = 1;
   string profileId = 2;
-  string caption   = 3;
+  string caption = 3;
   string createdAt = 4;
-  double score     = 5;
+  double score = 5;
 }
 
 message SearchPostsResponse {
@@ -256,25 +273,25 @@ message Article {
   string id = 1;
   string postId = 2;
   string title = 3;
-  string status = 4;     
-  string language = 5; 
+  string status = 4;
+  string language = 5;
   google.protobuf.Struct contentJson = 6;
   string createdAt = 7;
   string updatedAt = 8;
-  optional bool isViewable = 9; 
+  optional bool isViewable = 9;
 }
 
 message CreateArticleRequest {
-  string profileId = 1;                            
-  string accessType = 2;                           
-  string caption = 3;                              
-  string s3Key = 4;                                
-  string mimeType = 5;                             
-  string originalFileName = 6;                     
-  string title = 7;                                
-  google.protobuf.Struct contentJson = 8;          
-  string language = 9;                             
-  string status = 10;                            
+  string profileId = 1;
+  string accessType = 2;
+  string caption = 3;
+  string s3Key = 4;
+  string mimeType = 5;
+  string originalFileName = 6;
+  string title = 7;
+  google.protobuf.Struct contentJson = 8;
+  string language = 9;
+  string status = 10;
 }
 
 
