@@ -58,10 +58,11 @@ message UpdatePostRequest {
   optional string accessType = 4;
 }
 message GetPostsByHashtagRequest {
-  string tag = 1;      // "#harisrauf" or "harisrauf"
-  string userId = 2;
-  string limit = 3;
-  string offset = 4;
+  string term = 1;// "#harisrauf" or "harisrauf"
+  string type = 2; // "HASHTAG" | "MENTION"
+  string userId = 3;
+  string limit = 4;
+  string offset = 5;
 }
 
 message GenerateUploadUrlRequest {
@@ -84,8 +85,9 @@ message GetFeedRequest {
 }
 
 message TrendingTags {
-  string hashtag = 1;
+  string type = 1;
   string uses = 2;
+  string term = 3;
 }
 
 message TrendingTagsResponse {

@@ -460,21 +460,24 @@ exports.UpdatePostRequest = {
     },
 };
 function createBaseGetPostsByHashtagRequest() {
-    return { tag: "", userId: "", limit: "", offset: "" };
+    return { term: "", type: "", userId: "", limit: "", offset: "" };
 }
 exports.GetPostsByHashtagRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.tag !== "") {
-            writer.uint32(10).string(message.tag);
+        if (message.term !== "") {
+            writer.uint32(10).string(message.term);
+        }
+        if (message.type !== "") {
+            writer.uint32(18).string(message.type);
         }
         if (message.userId !== "") {
-            writer.uint32(18).string(message.userId);
+            writer.uint32(26).string(message.userId);
         }
         if (message.limit !== "") {
-            writer.uint32(26).string(message.limit);
+            writer.uint32(34).string(message.limit);
         }
         if (message.offset !== "") {
-            writer.uint32(34).string(message.offset);
+            writer.uint32(42).string(message.offset);
         }
         return writer;
     },
@@ -489,25 +492,32 @@ exports.GetPostsByHashtagRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.tag = reader.string();
+                    message.term = reader.string();
                     continue;
                 }
                 case 2: {
                     if (tag !== 18) {
                         break;
                     }
-                    message.userId = reader.string();
+                    message.type = reader.string();
                     continue;
                 }
                 case 3: {
                     if (tag !== 26) {
                         break;
                     }
-                    message.limit = reader.string();
+                    message.userId = reader.string();
                     continue;
                 }
                 case 4: {
                     if (tag !== 34) {
+                        break;
+                    }
+                    message.limit = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
                         break;
                     }
                     message.offset = reader.string();
@@ -523,7 +533,8 @@ exports.GetPostsByHashtagRequest = {
     },
     fromJSON(object) {
         return {
-            tag: isSet(object.tag) ? globalThis.String(object.tag) : "",
+            term: isSet(object.term) ? globalThis.String(object.term) : "",
+            type: isSet(object.type) ? globalThis.String(object.type) : "",
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             limit: isSet(object.limit) ? globalThis.String(object.limit) : "",
             offset: isSet(object.offset) ? globalThis.String(object.offset) : "",
@@ -531,8 +542,11 @@ exports.GetPostsByHashtagRequest = {
     },
     toJSON(message) {
         const obj = {};
-        if (message.tag !== "") {
-            obj.tag = message.tag;
+        if (message.term !== "") {
+            obj.term = message.term;
+        }
+        if (message.type !== "") {
+            obj.type = message.type;
         }
         if (message.userId !== "") {
             obj.userId = message.userId;
@@ -550,7 +564,8 @@ exports.GetPostsByHashtagRequest = {
     },
     fromPartial(object) {
         const message = createBaseGetPostsByHashtagRequest();
-        message.tag = object.tag ?? "";
+        message.term = object.term ?? "";
+        message.type = object.type ?? "";
         message.userId = object.userId ?? "";
         message.limit = object.limit ?? "";
         message.offset = object.offset ?? "";
@@ -822,15 +837,18 @@ exports.GetFeedRequest = {
     },
 };
 function createBaseTrendingTags() {
-    return { hashtag: "", uses: "" };
+    return { type: "", uses: "", term: "" };
 }
 exports.TrendingTags = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.hashtag !== "") {
-            writer.uint32(10).string(message.hashtag);
+        if (message.type !== "") {
+            writer.uint32(10).string(message.type);
         }
         if (message.uses !== "") {
             writer.uint32(18).string(message.uses);
+        }
+        if (message.term !== "") {
+            writer.uint32(26).string(message.term);
         }
         return writer;
     },
@@ -845,7 +863,7 @@ exports.TrendingTags = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.hashtag = reader.string();
+                    message.type = reader.string();
                     continue;
                 }
                 case 2: {
@@ -853,6 +871,13 @@ exports.TrendingTags = {
                         break;
                     }
                     message.uses = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.term = reader.string();
                     continue;
                 }
             }
@@ -865,17 +890,21 @@ exports.TrendingTags = {
     },
     fromJSON(object) {
         return {
-            hashtag: isSet(object.hashtag) ? globalThis.String(object.hashtag) : "",
+            type: isSet(object.type) ? globalThis.String(object.type) : "",
             uses: isSet(object.uses) ? globalThis.String(object.uses) : "",
+            term: isSet(object.term) ? globalThis.String(object.term) : "",
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.hashtag !== "") {
-            obj.hashtag = message.hashtag;
+        if (message.type !== "") {
+            obj.type = message.type;
         }
         if (message.uses !== "") {
             obj.uses = message.uses;
+        }
+        if (message.term !== "") {
+            obj.term = message.term;
         }
         return obj;
     },
@@ -884,8 +913,9 @@ exports.TrendingTags = {
     },
     fromPartial(object) {
         const message = createBaseTrendingTags();
-        message.hashtag = object.hashtag ?? "";
+        message.type = object.type ?? "";
         message.uses = object.uses ?? "";
+        message.term = object.term ?? "";
         return message;
     },
 };

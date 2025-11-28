@@ -44,7 +44,9 @@ export interface UpdatePostRequest {
 
 export interface GetPostsByHashtagRequest {
   /** "#harisrauf" or "harisrauf" */
-  tag: string;
+  term: string;
+  /** "HASHTAG" | "MENTION" */
+  type: string;
   userId: string;
   limit: string;
   offset: string;
@@ -70,8 +72,9 @@ export interface GetFeedRequest {
 }
 
 export interface TrendingTags {
-  hashtag: string;
+  type: string;
   uses: string;
+  term: string;
 }
 
 export interface TrendingTagsResponse {
@@ -785,22 +788,25 @@ export const UpdatePostRequest: MessageFns<UpdatePostRequest> = {
 };
 
 function createBaseGetPostsByHashtagRequest(): GetPostsByHashtagRequest {
-  return { tag: "", userId: "", limit: "", offset: "" };
+  return { term: "", type: "", userId: "", limit: "", offset: "" };
 }
 
 export const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest> = {
   encode(message: GetPostsByHashtagRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.tag !== "") {
-      writer.uint32(10).string(message.tag);
+    if (message.term !== "") {
+      writer.uint32(10).string(message.term);
+    }
+    if (message.type !== "") {
+      writer.uint32(18).string(message.type);
     }
     if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+      writer.uint32(26).string(message.userId);
     }
     if (message.limit !== "") {
-      writer.uint32(26).string(message.limit);
+      writer.uint32(34).string(message.limit);
     }
     if (message.offset !== "") {
-      writer.uint32(34).string(message.offset);
+      writer.uint32(42).string(message.offset);
     }
     return writer;
   },
@@ -817,7 +823,7 @@ export const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest> = {
             break;
           }
 
-          message.tag = reader.string();
+          message.term = reader.string();
           continue;
         }
         case 2: {
@@ -825,7 +831,7 @@ export const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.type = reader.string();
           continue;
         }
         case 3: {
@@ -833,11 +839,19 @@ export const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest> = {
             break;
           }
 
-          message.limit = reader.string();
+          message.userId = reader.string();
           continue;
         }
         case 4: {
           if (tag !== 34) {
+            break;
+          }
+
+          message.limit = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
             break;
           }
 
@@ -855,7 +869,8 @@ export const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest> = {
 
   fromJSON(object: any): GetPostsByHashtagRequest {
     return {
-      tag: isSet(object.tag) ? globalThis.String(object.tag) : "",
+      term: isSet(object.term) ? globalThis.String(object.term) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       limit: isSet(object.limit) ? globalThis.String(object.limit) : "",
       offset: isSet(object.offset) ? globalThis.String(object.offset) : "",
@@ -864,8 +879,11 @@ export const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest> = {
 
   toJSON(message: GetPostsByHashtagRequest): unknown {
     const obj: any = {};
-    if (message.tag !== "") {
-      obj.tag = message.tag;
+    if (message.term !== "") {
+      obj.term = message.term;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
     }
     if (message.userId !== "") {
       obj.userId = message.userId;
@@ -884,7 +902,8 @@ export const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<GetPostsByHashtagRequest>, I>>(object: I): GetPostsByHashtagRequest {
     const message = createBaseGetPostsByHashtagRequest();
-    message.tag = object.tag ?? "";
+    message.term = object.term ?? "";
+    message.type = object.type ?? "";
     message.userId = object.userId ?? "";
     message.limit = object.limit ?? "";
     message.offset = object.offset ?? "";
@@ -1185,16 +1204,19 @@ export const GetFeedRequest: MessageFns<GetFeedRequest> = {
 };
 
 function createBaseTrendingTags(): TrendingTags {
-  return { hashtag: "", uses: "" };
+  return { type: "", uses: "", term: "" };
 }
 
 export const TrendingTags: MessageFns<TrendingTags> = {
   encode(message: TrendingTags, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.hashtag !== "") {
-      writer.uint32(10).string(message.hashtag);
+    if (message.type !== "") {
+      writer.uint32(10).string(message.type);
     }
     if (message.uses !== "") {
       writer.uint32(18).string(message.uses);
+    }
+    if (message.term !== "") {
+      writer.uint32(26).string(message.term);
     }
     return writer;
   },
@@ -1211,7 +1233,7 @@ export const TrendingTags: MessageFns<TrendingTags> = {
             break;
           }
 
-          message.hashtag = reader.string();
+          message.type = reader.string();
           continue;
         }
         case 2: {
@@ -1220,6 +1242,14 @@ export const TrendingTags: MessageFns<TrendingTags> = {
           }
 
           message.uses = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.term = reader.string();
           continue;
         }
       }
@@ -1233,18 +1263,22 @@ export const TrendingTags: MessageFns<TrendingTags> = {
 
   fromJSON(object: any): TrendingTags {
     return {
-      hashtag: isSet(object.hashtag) ? globalThis.String(object.hashtag) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
       uses: isSet(object.uses) ? globalThis.String(object.uses) : "",
+      term: isSet(object.term) ? globalThis.String(object.term) : "",
     };
   },
 
   toJSON(message: TrendingTags): unknown {
     const obj: any = {};
-    if (message.hashtag !== "") {
-      obj.hashtag = message.hashtag;
+    if (message.type !== "") {
+      obj.type = message.type;
     }
     if (message.uses !== "") {
       obj.uses = message.uses;
+    }
+    if (message.term !== "") {
+      obj.term = message.term;
     }
     return obj;
   },
@@ -1254,8 +1288,9 @@ export const TrendingTags: MessageFns<TrendingTags> = {
   },
   fromPartial<I extends Exact<DeepPartial<TrendingTags>, I>>(object: I): TrendingTags {
     const message = createBaseTrendingTags();
-    message.hashtag = object.hashtag ?? "";
+    message.type = object.type ?? "";
     message.uses = object.uses ?? "";
+    message.term = object.term ?? "";
     return message;
   },
 };

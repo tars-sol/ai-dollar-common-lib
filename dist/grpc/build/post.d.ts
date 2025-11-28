@@ -30,7 +30,9 @@ export interface UpdatePostRequest {
 }
 export interface GetPostsByHashtagRequest {
     /** "#harisrauf" or "harisrauf" */
-    tag: string;
+    term: string;
+    /** "HASHTAG" | "MENTION" */
+    type: string;
     userId: string;
     limit: string;
     offset: string;
@@ -52,8 +54,9 @@ export interface GetFeedRequest {
     userId: string;
 }
 export interface TrendingTags {
-    hashtag: string;
+    type: string;
     uses: string;
+    term: string;
 }
 export interface TrendingTagsResponse {
     tags: TrendingTags[];

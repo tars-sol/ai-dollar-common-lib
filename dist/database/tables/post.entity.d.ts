@@ -22,6 +22,7 @@ export declare class Post {
     caption?: string;
     hashtagsText?: string;
     fts: string;
+    ftsFull: string;
     accessType: AccessType;
     type: PostType;
     inPortfolio: boolean;

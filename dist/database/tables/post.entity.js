@@ -70,6 +70,19 @@ __decorate([
     __metadata("design:type", String)
 ], Post.prototype, "fts", void 0);
 __decorate([
+    (0, typeorm_1.Column)({
+        type: 'tsvector',
+        asExpression: `
+    setweight(to_tsvector('english_unaccent', coalesce("hashtagsText", '')), 'A') ||
+    setweight(to_tsvector('english_unaccent', coalesce("caption", '')), 'B')
+  `,
+        generatedType: 'STORED',
+        nullable: true,
+        select: false,
+    }),
+    __metadata("design:type", String)
+], Post.prototype, "ftsFull", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'enum', enum: AccessType, default: AccessType.PUBLIC }),
     __metadata("design:type", String)
 ], Post.prototype, "accessType", void 0);

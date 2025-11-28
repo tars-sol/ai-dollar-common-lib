@@ -28,7 +28,7 @@ export enum PostType {
   MEDIA = 'MEDIA',
   POLL = 'POLL',
   FILE = 'FILE',
-  ARTICLE = 'ARTICLE'
+  ARTICLE = 'ARTICLE',
 }
 
 @Entity('posts')
@@ -61,6 +61,18 @@ export class Post {
     select: false,
   })
   fts!: string;
+
+  @Column({
+    type: 'tsvector',
+    asExpression: `
+    setweight(to_tsvector('english_unaccent', coalesce("hashtagsText", '')), 'A') ||
+    setweight(to_tsvector('english_unaccent', coalesce("caption", '')), 'B')
+  `,
+    generatedType: 'STORED',
+    nullable: true,
+    select: false,
+  })
+  ftsFull!: string;
 
   @Column({ type: 'enum', enum: AccessType, default: AccessType.PUBLIC })
   accessType: AccessType;
