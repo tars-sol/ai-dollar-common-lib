@@ -3,6 +3,7 @@ export declare const protobufPackage = "metric";
 export interface GetProfileMetricsRequest {
     profileId: string;
     range: string;
+    userId: string;
 }
 export interface ProfileMetricsResponse {
     metric: string;

@@ -10,7 +10,7 @@ exports.MetricsServiceClientImpl = exports.MetricsServiceServiceName = exports.M
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "metric";
 function createBaseGetProfileMetricsRequest() {
-    return { profileId: "", range: "" };
+    return { profileId: "", range: "", userId: "" };
 }
 exports.GetProfileMetricsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -19,6 +19,9 @@ exports.GetProfileMetricsRequest = {
         }
         if (message.range !== "") {
             writer.uint32(18).string(message.range);
+        }
+        if (message.userId !== "") {
+            writer.uint32(26).string(message.userId);
         }
         return writer;
     },
@@ -43,6 +46,13 @@ exports.GetProfileMetricsRequest = {
                     message.range = reader.string();
                     continue;
                 }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -55,6 +65,7 @@ exports.GetProfileMetricsRequest = {
         return {
             profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
             range: isSet(object.range) ? globalThis.String(object.range) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
         };
     },
     toJSON(message) {
@@ -65,6 +76,9 @@ exports.GetProfileMetricsRequest = {
         if (message.range !== "") {
             obj.range = message.range;
         }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
         return obj;
     },
     create(base) {
@@ -74,6 +88,7 @@ exports.GetProfileMetricsRequest = {
         const message = createBaseGetProfileMetricsRequest();
         message.profileId = object.profileId ?? "";
         message.range = object.range ?? "";
+        message.userId = object.userId ?? "";
         return message;
     },
 };

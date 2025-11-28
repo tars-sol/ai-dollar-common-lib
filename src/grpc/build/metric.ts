@@ -12,6 +12,7 @@ export const protobufPackage = "metric";
 export interface GetProfileMetricsRequest {
   profileId: string;
   range: string;
+  userId: string;
 }
 
 export interface ProfileMetricsResponse {
@@ -28,7 +29,7 @@ export interface MetricPoint {
 }
 
 function createBaseGetProfileMetricsRequest(): GetProfileMetricsRequest {
-  return { profileId: "", range: "" };
+  return { profileId: "", range: "", userId: "" };
 }
 
 export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
@@ -38,6 +39,9 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
     }
     if (message.range !== "") {
       writer.uint32(18).string(message.range);
+    }
+    if (message.userId !== "") {
+      writer.uint32(26).string(message.userId);
     }
     return writer;
   },
@@ -65,6 +69,14 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
           message.range = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -78,6 +90,7 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
     return {
       profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
       range: isSet(object.range) ? globalThis.String(object.range) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
     };
   },
 
@@ -89,6 +102,9 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
     if (message.range !== "") {
       obj.range = message.range;
     }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
     return obj;
   },
 
@@ -99,6 +115,7 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
     const message = createBaseGetProfileMetricsRequest();
     message.profileId = object.profileId ?? "";
     message.range = object.range ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };

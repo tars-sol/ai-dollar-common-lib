@@ -13,6 +13,7 @@ service MetricsService {
 message GetProfileMetricsRequest {
   string profileId = 1;
   string range = 2;
+  string userId = 3;
 }
 
 message ProfileMetricsResponse {
