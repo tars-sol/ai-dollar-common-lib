@@ -62,6 +62,12 @@ export class Profile {
   @Column({ type: 'int', default: 0 })
   subscribersCount: number;
 
+  @Column({ type: 'int', default: 0 })
+  viewsCount: number;
+
+  @Column({ type: 'bigint', default: 0  })
+  earningCents: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
