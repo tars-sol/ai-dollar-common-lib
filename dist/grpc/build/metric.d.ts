@@ -10,6 +10,7 @@ export interface ProfileMetricsResponse {
     range: string;
     points: MetricPoint[];
     changePercentage: number;
+    totalValue: string;
 }
 export interface MetricPoint {
     date: string;

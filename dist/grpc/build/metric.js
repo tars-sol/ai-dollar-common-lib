@@ -93,7 +93,7 @@ exports.GetProfileMetricsRequest = {
     },
 };
 function createBaseProfileMetricsResponse() {
-    return { metric: "", range: "", points: [], changePercentage: 0 };
+    return { metric: "", range: "", points: [], changePercentage: 0, totalValue: "" };
 }
 exports.ProfileMetricsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -108,6 +108,9 @@ exports.ProfileMetricsResponse = {
         }
         if (message.changePercentage !== 0) {
             writer.uint32(33).double(message.changePercentage);
+        }
+        if (message.totalValue !== "") {
+            writer.uint32(42).string(message.totalValue);
         }
         return writer;
     },
@@ -146,6 +149,13 @@ exports.ProfileMetricsResponse = {
                     message.changePercentage = reader.double();
                     continue;
                 }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.totalValue = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -160,6 +170,7 @@ exports.ProfileMetricsResponse = {
             range: isSet(object.range) ? globalThis.String(object.range) : "",
             points: globalThis.Array.isArray(object?.points) ? object.points.map((e) => exports.MetricPoint.fromJSON(e)) : [],
             changePercentage: isSet(object.changePercentage) ? globalThis.Number(object.changePercentage) : 0,
+            totalValue: isSet(object.totalValue) ? globalThis.String(object.totalValue) : "",
         };
     },
     toJSON(message) {
@@ -176,6 +187,9 @@ exports.ProfileMetricsResponse = {
         if (message.changePercentage !== 0) {
             obj.changePercentage = message.changePercentage;
         }
+        if (message.totalValue !== "") {
+            obj.totalValue = message.totalValue;
+        }
         return obj;
     },
     create(base) {
@@ -187,6 +201,7 @@ exports.ProfileMetricsResponse = {
         message.range = object.range ?? "";
         message.points = object.points?.map((e) => exports.MetricPoint.fromPartial(e)) || [];
         message.changePercentage = object.changePercentage ?? 0;
+        message.totalValue = object.totalValue ?? "";
         return message;
     },
 };

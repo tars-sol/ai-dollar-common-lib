@@ -21,6 +21,7 @@ message ProfileMetricsResponse {
   string range = 2;
   repeated MetricPoint points = 3;
   double changePercentage = 4;
+  string totalValue = 5;
 }
 
 message MetricPoint {
