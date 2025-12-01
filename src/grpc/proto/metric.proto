@@ -3,12 +3,14 @@ syntax = "proto3";
 package metric;
 
 service MetricsService {
-  rpc GetProfileEarningsMetrics   (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
-  rpc GetProfileViewsMetrics      (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
-  rpc GetProfileFollowersMetrics  (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
-  rpc GetProfileSubscribersMetrics(GetProfileMetricsRequest) returns (ProfileMetricsResponse);
-}
+  rpc GetProfileEarningsMetrics    (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
+  rpc GetProfileViewsMetrics       (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
+  rpc GetProfileFollowersMetrics   (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
+  rpc GetProfileSubscribersMetrics (GetProfileMetricsRequest) returns (ProfileMetricsResponse);
 
+  rpc GetBrandPayoutsMetrics       (GetBrandMetricsRequest)   returns (BrandMetricsResponse);
+  rpc GetBrandFollowersMetrics     (GetBrandMetricsRequest)   returns (BrandMetricsResponse);
+}
 
 message GetProfileMetricsRequest {
   string profileId = 1;
@@ -16,7 +18,20 @@ message GetProfileMetricsRequest {
   string userId = 3;
 }
 
+message GetBrandMetricsRequest {
+  string brandId = 1;
+  string range = 2;
+}
+
 message ProfileMetricsResponse {
+  string metric = 1;
+  string range = 2;
+  repeated MetricPoint points = 3;
+  double changePercentage = 4;
+  string totalValue = 5;
+}
+
+message BrandMetricsResponse {
   string metric = 1;
   string range = 2;
   repeated MetricPoint points = 3;

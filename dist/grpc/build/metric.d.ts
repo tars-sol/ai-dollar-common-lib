@@ -5,7 +5,18 @@ export interface GetProfileMetricsRequest {
     range: string;
     userId: string;
 }
+export interface GetBrandMetricsRequest {
+    brandId: string;
+    range: string;
+}
 export interface ProfileMetricsResponse {
+    metric: string;
+    range: string;
+    points: MetricPoint[];
+    changePercentage: number;
+    totalValue: string;
+}
+export interface BrandMetricsResponse {
     metric: string;
     range: string;
     points: MetricPoint[];
@@ -18,13 +29,17 @@ export interface MetricPoint {
     value: string;
 }
 export declare const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest>;
+export declare const GetBrandMetricsRequest: MessageFns<GetBrandMetricsRequest>;
 export declare const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse>;
+export declare const BrandMetricsResponse: MessageFns<BrandMetricsResponse>;
 export declare const MetricPoint: MessageFns<MetricPoint>;
 export interface MetricsService {
     GetProfileEarningsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileViewsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileFollowersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileSubscribersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
+    GetBrandPayoutsMetrics(request: GetBrandMetricsRequest): Promise<BrandMetricsResponse>;
+    GetBrandFollowersMetrics(request: GetBrandMetricsRequest): Promise<BrandMetricsResponse>;
 }
 export declare const MetricsServiceServiceName = "metric.MetricsService";
 export declare class MetricsServiceClientImpl implements MetricsService {
@@ -37,6 +52,8 @@ export declare class MetricsServiceClientImpl implements MetricsService {
     GetProfileViewsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileFollowersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
     GetProfileSubscribersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
+    GetBrandPayoutsMetrics(request: GetBrandMetricsRequest): Promise<BrandMetricsResponse>;
+    GetBrandFollowersMetrics(request: GetBrandMetricsRequest): Promise<BrandMetricsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

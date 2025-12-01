@@ -15,7 +15,20 @@ export interface GetProfileMetricsRequest {
   userId: string;
 }
 
+export interface GetBrandMetricsRequest {
+  brandId: string;
+  range: string;
+}
+
 export interface ProfileMetricsResponse {
+  metric: string;
+  range: string;
+  points: MetricPoint[];
+  changePercentage: number;
+  totalValue: string;
+}
+
+export interface BrandMetricsResponse {
   metric: string;
   range: string;
   points: MetricPoint[];
@@ -117,6 +130,82 @@ export const GetProfileMetricsRequest: MessageFns<GetProfileMetricsRequest> = {
     message.profileId = object.profileId ?? "";
     message.range = object.range ?? "";
     message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetBrandMetricsRequest(): GetBrandMetricsRequest {
+  return { brandId: "", range: "" };
+}
+
+export const GetBrandMetricsRequest: MessageFns<GetBrandMetricsRequest> = {
+  encode(message: GetBrandMetricsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.brandId !== "") {
+      writer.uint32(10).string(message.brandId);
+    }
+    if (message.range !== "") {
+      writer.uint32(18).string(message.range);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetBrandMetricsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetBrandMetricsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.range = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetBrandMetricsRequest {
+    return {
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      range: isSet(object.range) ? globalThis.String(object.range) : "",
+    };
+  },
+
+  toJSON(message: GetBrandMetricsRequest): unknown {
+    const obj: any = {};
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    if (message.range !== "") {
+      obj.range = message.range;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetBrandMetricsRequest>, I>>(base?: I): GetBrandMetricsRequest {
+    return GetBrandMetricsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetBrandMetricsRequest>, I>>(object: I): GetBrandMetricsRequest {
+    const message = createBaseGetBrandMetricsRequest();
+    message.brandId = object.brandId ?? "";
+    message.range = object.range ?? "";
     return message;
   },
 };
@@ -245,6 +334,130 @@ export const ProfileMetricsResponse: MessageFns<ProfileMetricsResponse> = {
   },
 };
 
+function createBaseBrandMetricsResponse(): BrandMetricsResponse {
+  return { metric: "", range: "", points: [], changePercentage: 0, totalValue: "" };
+}
+
+export const BrandMetricsResponse: MessageFns<BrandMetricsResponse> = {
+  encode(message: BrandMetricsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.metric !== "") {
+      writer.uint32(10).string(message.metric);
+    }
+    if (message.range !== "") {
+      writer.uint32(18).string(message.range);
+    }
+    for (const v of message.points) {
+      MetricPoint.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.changePercentage !== 0) {
+      writer.uint32(33).double(message.changePercentage);
+    }
+    if (message.totalValue !== "") {
+      writer.uint32(42).string(message.totalValue);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BrandMetricsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBrandMetricsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.metric = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.range = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.points.push(MetricPoint.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 4: {
+          if (tag !== 33) {
+            break;
+          }
+
+          message.changePercentage = reader.double();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.totalValue = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BrandMetricsResponse {
+    return {
+      metric: isSet(object.metric) ? globalThis.String(object.metric) : "",
+      range: isSet(object.range) ? globalThis.String(object.range) : "",
+      points: globalThis.Array.isArray(object?.points) ? object.points.map((e: any) => MetricPoint.fromJSON(e)) : [],
+      changePercentage: isSet(object.changePercentage) ? globalThis.Number(object.changePercentage) : 0,
+      totalValue: isSet(object.totalValue) ? globalThis.String(object.totalValue) : "",
+    };
+  },
+
+  toJSON(message: BrandMetricsResponse): unknown {
+    const obj: any = {};
+    if (message.metric !== "") {
+      obj.metric = message.metric;
+    }
+    if (message.range !== "") {
+      obj.range = message.range;
+    }
+    if (message.points?.length) {
+      obj.points = message.points.map((e) => MetricPoint.toJSON(e));
+    }
+    if (message.changePercentage !== 0) {
+      obj.changePercentage = message.changePercentage;
+    }
+    if (message.totalValue !== "") {
+      obj.totalValue = message.totalValue;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<BrandMetricsResponse>, I>>(base?: I): BrandMetricsResponse {
+    return BrandMetricsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<BrandMetricsResponse>, I>>(object: I): BrandMetricsResponse {
+    const message = createBaseBrandMetricsResponse();
+    message.metric = object.metric ?? "";
+    message.range = object.range ?? "";
+    message.points = object.points?.map((e) => MetricPoint.fromPartial(e)) || [];
+    message.changePercentage = object.changePercentage ?? 0;
+    message.totalValue = object.totalValue ?? "";
+    return message;
+  },
+};
+
 function createBaseMetricPoint(): MetricPoint {
   return { date: "", label: "", value: "" };
 }
@@ -342,6 +555,8 @@ export interface MetricsService {
   GetProfileViewsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
   GetProfileFollowersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
   GetProfileSubscribersMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse>;
+  GetBrandPayoutsMetrics(request: GetBrandMetricsRequest): Promise<BrandMetricsResponse>;
+  GetBrandFollowersMetrics(request: GetBrandMetricsRequest): Promise<BrandMetricsResponse>;
 }
 
 export const MetricsServiceServiceName = "metric.MetricsService";
@@ -355,6 +570,8 @@ export class MetricsServiceClientImpl implements MetricsService {
     this.GetProfileViewsMetrics = this.GetProfileViewsMetrics.bind(this);
     this.GetProfileFollowersMetrics = this.GetProfileFollowersMetrics.bind(this);
     this.GetProfileSubscribersMetrics = this.GetProfileSubscribersMetrics.bind(this);
+    this.GetBrandPayoutsMetrics = this.GetBrandPayoutsMetrics.bind(this);
+    this.GetBrandFollowersMetrics = this.GetBrandFollowersMetrics.bind(this);
   }
   GetProfileEarningsMetrics(request: GetProfileMetricsRequest): Promise<ProfileMetricsResponse> {
     const data = GetProfileMetricsRequest.encode(request).finish();
@@ -378,6 +595,18 @@ export class MetricsServiceClientImpl implements MetricsService {
     const data = GetProfileMetricsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetProfileSubscribersMetrics", data);
     return promise.then((data) => ProfileMetricsResponse.decode(new BinaryReader(data)));
+  }
+
+  GetBrandPayoutsMetrics(request: GetBrandMetricsRequest): Promise<BrandMetricsResponse> {
+    const data = GetBrandMetricsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetBrandPayoutsMetrics", data);
+    return promise.then((data) => BrandMetricsResponse.decode(new BinaryReader(data)));
+  }
+
+  GetBrandFollowersMetrics(request: GetBrandMetricsRequest): Promise<BrandMetricsResponse> {
+    const data = GetBrandMetricsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetBrandFollowersMetrics", data);
+    return promise.then((data) => BrandMetricsResponse.decode(new BinaryReader(data)));
   }
 }
 
