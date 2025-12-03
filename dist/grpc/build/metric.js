@@ -93,7 +93,7 @@ exports.GetProfileMetricsRequest = {
     },
 };
 function createBaseGetBrandMetricsRequest() {
-    return { brandId: "", range: "" };
+    return { brandId: "", range: "", userId: "" };
 }
 exports.GetBrandMetricsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -102,6 +102,9 @@ exports.GetBrandMetricsRequest = {
         }
         if (message.range !== "") {
             writer.uint32(18).string(message.range);
+        }
+        if (message.userId !== "") {
+            writer.uint32(26).string(message.userId);
         }
         return writer;
     },
@@ -126,6 +129,13 @@ exports.GetBrandMetricsRequest = {
                     message.range = reader.string();
                     continue;
                 }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -138,6 +148,7 @@ exports.GetBrandMetricsRequest = {
         return {
             brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
             range: isSet(object.range) ? globalThis.String(object.range) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
         };
     },
     toJSON(message) {
@@ -148,6 +159,9 @@ exports.GetBrandMetricsRequest = {
         if (message.range !== "") {
             obj.range = message.range;
         }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
         return obj;
     },
     create(base) {
@@ -157,6 +171,7 @@ exports.GetBrandMetricsRequest = {
         const message = createBaseGetBrandMetricsRequest();
         message.brandId = object.brandId ?? "";
         message.range = object.range ?? "";
+        message.userId = object.userId ?? "";
         return message;
     },
 };

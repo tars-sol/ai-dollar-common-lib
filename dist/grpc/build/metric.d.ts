@@ -8,6 +8,7 @@ export interface GetProfileMetricsRequest {
 export interface GetBrandMetricsRequest {
     brandId: string;
     range: string;
+    userId: string;
 }
 export interface ProfileMetricsResponse {
     metric: string;
