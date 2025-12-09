@@ -12,6 +12,7 @@ service SubscriptionService {
   rpc DeleteTier        (DeleteTierRequest)        returns (SuccessResponse);
   rpc CreateCheckoutSession (CreateCheckoutSessionRequest) returns (CreateCheckoutSessionResponse);
   rpc CreateCheckoutSecret (CreateCheckoutSecretRequest)   returns (CreateCheckoutSecretResponse);
+  rpc HandleSubscriptionPayment(SubscriptionPaymentRequest) returns (SuccessResponse);
 }
 
 message SuccessResponse {
@@ -106,4 +107,23 @@ message CreateCheckoutSecretRequest {
 
 message CreateCheckoutSecretResponse {
   string clientSecretKey = 1; 
+}
+
+message SubscriptionPaymentRequest {
+  string eventId = 1;            
+  string invoiceId = 2;          
+  string subscriptionId = 3;     
+  string customerId = 4;         
+
+  string amountPaid = 5;         
+  string currency = 6;           
+
+  int64 periodStart = 7;         
+  int64 periodEnd = 8;           
+  int64 paidAt = 9;              
+
+  string userId = 10;            
+  string creatorId = 11;         
+  string tierId = 12;            
+  string interval = 13;          
 }

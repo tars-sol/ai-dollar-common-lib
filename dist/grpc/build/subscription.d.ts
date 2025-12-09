@@ -77,6 +77,21 @@ export interface CreateCheckoutSecretRequest {
 export interface CreateCheckoutSecretResponse {
     clientSecretKey: string;
 }
+export interface SubscriptionPaymentRequest {
+    eventId: string;
+    invoiceId: string;
+    subscriptionId: string;
+    customerId: string;
+    amountPaid: string;
+    currency: string;
+    periodStart: number;
+    periodEnd: number;
+    paidAt: number;
+    userId: string;
+    creatorId: string;
+    tierId: string;
+    interval: string;
+}
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const CreateTierRequest: MessageFns<CreateTierRequest>;
 export declare const UpdateTierRequest: MessageFns<UpdateTierRequest>;
@@ -91,6 +106,7 @@ export declare const CreateCheckoutSessionRequest: MessageFns<CreateCheckoutSess
 export declare const CreateCheckoutSessionResponse: MessageFns<CreateCheckoutSessionResponse>;
 export declare const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest>;
 export declare const CreateCheckoutSecretResponse: MessageFns<CreateCheckoutSecretResponse>;
+export declare const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest>;
 export interface SubscriptionService {
     CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse>;
     UpdateTier(request: UpdateTierRequest): Promise<SubscriptionTierResponse>;
@@ -101,6 +117,7 @@ export interface SubscriptionService {
     DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
     CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
     CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
+    HandleSubscriptionPayment(request: SubscriptionPaymentRequest): Promise<SuccessResponse>;
 }
 export declare const SubscriptionServiceServiceName = "subscription.SubscriptionService";
 export declare class SubscriptionServiceClientImpl implements SubscriptionService {
@@ -118,6 +135,7 @@ export declare class SubscriptionServiceClientImpl implements SubscriptionServic
     DeleteTier(request: DeleteTierRequest): Promise<SuccessResponse>;
     CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
     CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
+    HandleSubscriptionPayment(request: SubscriptionPaymentRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
