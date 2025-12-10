@@ -70,6 +70,7 @@ export interface BrandSearchItem {
     logoUrl: string;
     createdAt: string;
     score: number;
+    tags: string[];
 }
 export interface SearchBrandsResponse {
     results: BrandSearchItem[];

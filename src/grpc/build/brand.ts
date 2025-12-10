@@ -84,6 +84,7 @@ export interface BrandSearchItem {
   logoUrl: string;
   createdAt: string;
   score: number;
+  tags: string[];
 }
 
 export interface SearchBrandsResponse {
@@ -1160,7 +1161,7 @@ export const SearchBrandsRequest: MessageFns<SearchBrandsRequest> = {
 };
 
 function createBaseBrandSearchItem(): BrandSearchItem {
-  return { id: "", username: "", name: "", logoUrl: "", createdAt: "", score: 0 };
+  return { id: "", username: "", name: "", logoUrl: "", createdAt: "", score: 0, tags: [] };
 }
 
 export const BrandSearchItem: MessageFns<BrandSearchItem> = {
@@ -1182,6 +1183,9 @@ export const BrandSearchItem: MessageFns<BrandSearchItem> = {
     }
     if (message.score !== 0) {
       writer.uint32(49).double(message.score);
+    }
+    for (const v of message.tags) {
+      writer.uint32(58).string(v!);
     }
     return writer;
   },
@@ -1241,6 +1245,14 @@ export const BrandSearchItem: MessageFns<BrandSearchItem> = {
           message.score = reader.double();
           continue;
         }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.tags.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1258,6 +1270,7 @@ export const BrandSearchItem: MessageFns<BrandSearchItem> = {
       logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : "",
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+      tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e: any) => globalThis.String(e)) : [],
     };
   },
 
@@ -1281,6 +1294,9 @@ export const BrandSearchItem: MessageFns<BrandSearchItem> = {
     if (message.score !== 0) {
       obj.score = message.score;
     }
+    if (message.tags?.length) {
+      obj.tags = message.tags;
+    }
     return obj;
   },
 
@@ -1295,6 +1311,7 @@ export const BrandSearchItem: MessageFns<BrandSearchItem> = {
     message.logoUrl = object.logoUrl ?? "";
     message.createdAt = object.createdAt ?? "";
     message.score = object.score ?? 0;
+    message.tags = object.tags?.map((e) => e) || [];
     return message;
   },
 };

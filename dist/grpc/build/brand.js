@@ -998,7 +998,7 @@ exports.SearchBrandsRequest = {
     },
 };
 function createBaseBrandSearchItem() {
-    return { id: "", username: "", name: "", logoUrl: "", createdAt: "", score: 0 };
+    return { id: "", username: "", name: "", logoUrl: "", createdAt: "", score: 0, tags: [] };
 }
 exports.BrandSearchItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1019,6 +1019,9 @@ exports.BrandSearchItem = {
         }
         if (message.score !== 0) {
             writer.uint32(49).double(message.score);
+        }
+        for (const v of message.tags) {
+            writer.uint32(58).string(v);
         }
         return writer;
     },
@@ -1071,6 +1074,13 @@ exports.BrandSearchItem = {
                     message.score = reader.double();
                     continue;
                 }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.tags.push(reader.string());
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1087,6 +1097,7 @@ exports.BrandSearchItem = {
             logoUrl: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : "",
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
             score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+            tags: globalThis.Array.isArray(object?.tags) ? object.tags.map((e) => globalThis.String(e)) : [],
         };
     },
     toJSON(message) {
@@ -1109,6 +1120,9 @@ exports.BrandSearchItem = {
         if (message.score !== 0) {
             obj.score = message.score;
         }
+        if (message.tags?.length) {
+            obj.tags = message.tags;
+        }
         return obj;
     },
     create(base) {
@@ -1122,6 +1136,7 @@ exports.BrandSearchItem = {
         message.logoUrl = object.logoUrl ?? "";
         message.createdAt = object.createdAt ?? "";
         message.score = object.score ?? 0;
+        message.tags = object.tags?.map((e) => e) || [];
         return message;
     },
 };

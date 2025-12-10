@@ -220,6 +220,7 @@ export interface PostSearchItem {
     caption: string;
     createdAt: string;
     score: number;
+    username: string;
 }
 export interface SearchPostsResponse {
     results: PostSearchItem[];

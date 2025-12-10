@@ -264,6 +264,7 @@ message PostSearchItem {
   string caption = 3;
   string createdAt = 4;
   double score = 5;
+  string username = 6;
 }
 
 message SearchPostsResponse {

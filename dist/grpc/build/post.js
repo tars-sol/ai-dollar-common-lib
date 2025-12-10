@@ -3486,7 +3486,7 @@ exports.SearchPostsRequest = {
     },
 };
 function createBasePostSearchItem() {
-    return { id: "", profileId: "", caption: "", createdAt: "", score: 0 };
+    return { id: "", profileId: "", caption: "", createdAt: "", score: 0, username: "" };
 }
 exports.PostSearchItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -3504,6 +3504,9 @@ exports.PostSearchItem = {
         }
         if (message.score !== 0) {
             writer.uint32(41).double(message.score);
+        }
+        if (message.username !== "") {
+            writer.uint32(50).string(message.username);
         }
         return writer;
     },
@@ -3549,6 +3552,13 @@ exports.PostSearchItem = {
                     message.score = reader.double();
                     continue;
                 }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -3564,6 +3574,7 @@ exports.PostSearchItem = {
             caption: isSet(object.caption) ? globalThis.String(object.caption) : "",
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
             score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
         };
     },
     toJSON(message) {
@@ -3583,6 +3594,9 @@ exports.PostSearchItem = {
         if (message.score !== 0) {
             obj.score = message.score;
         }
+        if (message.username !== "") {
+            obj.username = message.username;
+        }
         return obj;
     },
     create(base) {
@@ -3595,6 +3609,7 @@ exports.PostSearchItem = {
         message.caption = object.caption ?? "";
         message.createdAt = object.createdAt ?? "";
         message.score = object.score ?? 0;
+        message.username = object.username ?? "";
         return message;
     },
 };

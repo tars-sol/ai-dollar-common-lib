@@ -84,6 +84,7 @@ message BrandSearchItem {
   string logoUrl   = 4;
   string createdAt = 5;
   double score     = 6;
+  repeated string tags = 7;
 }
 
 message SearchBrandsResponse {
