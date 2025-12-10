@@ -80,6 +80,8 @@ export interface SearchProfilesRequest {
     q: string;
     page: number;
     limit: number;
+    role: string;
+    roleId: string;
 }
 export interface ProfileSearchItem {
     id: string;

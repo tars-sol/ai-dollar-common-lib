@@ -62,6 +62,8 @@ export interface SearchBrandsRequest {
     q: string;
     page: number;
     limit: number;
+    role: string;
+    roleId: string;
 }
 export interface BrandSearchItem {
     id: string;

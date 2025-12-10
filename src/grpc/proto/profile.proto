@@ -99,6 +99,8 @@ message SearchProfilesRequest {
   string q    = 1;  
   int32  page = 2;  
   int32  limit = 3; 
+  string role = 4;
+  string roleId = 5;
 }
 
 message ProfileSearchItem {

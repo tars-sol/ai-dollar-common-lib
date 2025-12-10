@@ -75,6 +75,8 @@ export interface SearchBrandsRequest {
   q: string;
   page: number;
   limit: number;
+  role: string;
+  roleId: string;
 }
 
 export interface BrandSearchItem {
@@ -1069,7 +1071,7 @@ export const UpdateBrandRequest: MessageFns<UpdateBrandRequest> = {
 };
 
 function createBaseSearchBrandsRequest(): SearchBrandsRequest {
-  return { q: "", page: 0, limit: 0 };
+  return { q: "", page: 0, limit: 0, role: "", roleId: "" };
 }
 
 export const SearchBrandsRequest: MessageFns<SearchBrandsRequest> = {
@@ -1082,6 +1084,12 @@ export const SearchBrandsRequest: MessageFns<SearchBrandsRequest> = {
     }
     if (message.limit !== 0) {
       writer.uint32(24).int32(message.limit);
+    }
+    if (message.role !== "") {
+      writer.uint32(34).string(message.role);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(42).string(message.roleId);
     }
     return writer;
   },
@@ -1117,6 +1125,22 @@ export const SearchBrandsRequest: MessageFns<SearchBrandsRequest> = {
           message.limit = reader.int32();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1131,6 +1155,8 @@ export const SearchBrandsRequest: MessageFns<SearchBrandsRequest> = {
       q: isSet(object.q) ? globalThis.String(object.q) : "",
       page: isSet(object.page) ? globalThis.Number(object.page) : 0,
       limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
     };
   },
 
@@ -1145,6 +1171,12 @@ export const SearchBrandsRequest: MessageFns<SearchBrandsRequest> = {
     if (message.limit !== 0) {
       obj.limit = Math.round(message.limit);
     }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
     return obj;
   },
 
@@ -1156,6 +1188,8 @@ export const SearchBrandsRequest: MessageFns<SearchBrandsRequest> = {
     message.q = object.q ?? "";
     message.page = object.page ?? 0;
     message.limit = object.limit ?? 0;
+    message.role = object.role ?? "";
+    message.roleId = object.roleId ?? "";
     return message;
   },
 };
