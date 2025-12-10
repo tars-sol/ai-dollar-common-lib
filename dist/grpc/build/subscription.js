@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: subscription.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubscriptionServiceClientImpl = exports.SubscriptionServiceServiceName = exports.SubscriptionPaymentRequest = exports.CreateCheckoutSecretResponse = exports.CreateCheckoutSecretRequest = exports.CreateCheckoutSessionResponse = exports.CreateCheckoutSessionRequest = exports.SubscriptionTierResponse = exports.DeleteTierRequest = exports.GetCreatorTiersResponse = exports.GetCreatorTiersRequest = exports.GetTierRequest = exports.ToggleTierActiveRequest = exports.UpdateTierPricesRequest = exports.UpdateTierRequest = exports.CreateTierRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
+exports.SubscriptionServiceClientImpl = exports.SubscriptionServiceServiceName = exports.ChangeSubscriptionIntervalRequest = exports.CancelSubscriptionRequest = exports.SubscriptionPaymentRequest = exports.CreateCheckoutSecretResponse = exports.CreateCheckoutSecretRequest = exports.CreateCheckoutSessionResponse = exports.CreateCheckoutSessionRequest = exports.SubscriptionTierResponse = exports.DeleteTierRequest = exports.GetCreatorTiersResponse = exports.GetCreatorTiersRequest = exports.GetTierRequest = exports.ToggleTierActiveRequest = exports.UpdateTierPricesRequest = exports.UpdateTierRequest = exports.CreateTierRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "subscription";
@@ -1544,6 +1544,157 @@ exports.SubscriptionPaymentRequest = {
         return message;
     },
 };
+function createBaseCancelSubscriptionRequest() {
+    return { userId: "", creatorId: "" };
+}
+exports.CancelSubscriptionRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.creatorId !== "") {
+            writer.uint32(18).string(message.creatorId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCancelSubscriptionRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.creatorId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            creatorId: isSet(object.creatorId) ? globalThis.String(object.creatorId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.creatorId !== "") {
+            obj.creatorId = message.creatorId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CancelSubscriptionRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCancelSubscriptionRequest();
+        message.userId = object.userId ?? "";
+        message.creatorId = object.creatorId ?? "";
+        return message;
+    },
+};
+function createBaseChangeSubscriptionIntervalRequest() {
+    return { userId: "", creatorId: "", interval: "" };
+}
+exports.ChangeSubscriptionIntervalRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.creatorId !== "") {
+            writer.uint32(18).string(message.creatorId);
+        }
+        if (message.interval !== "") {
+            writer.uint32(26).string(message.interval);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseChangeSubscriptionIntervalRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.creatorId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.interval = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            creatorId: isSet(object.creatorId) ? globalThis.String(object.creatorId) : "",
+            interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.creatorId !== "") {
+            obj.creatorId = message.creatorId;
+        }
+        if (message.interval !== "") {
+            obj.interval = message.interval;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ChangeSubscriptionIntervalRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseChangeSubscriptionIntervalRequest();
+        message.userId = object.userId ?? "";
+        message.creatorId = object.creatorId ?? "";
+        message.interval = object.interval ?? "";
+        return message;
+    },
+};
 exports.SubscriptionServiceServiceName = "subscription.SubscriptionService";
 class SubscriptionServiceClientImpl {
     constructor(rpc, opts) {
@@ -1559,6 +1710,8 @@ class SubscriptionServiceClientImpl {
         this.CreateCheckoutSession = this.CreateCheckoutSession.bind(this);
         this.CreateCheckoutSecret = this.CreateCheckoutSecret.bind(this);
         this.HandleSubscriptionPayment = this.HandleSubscriptionPayment.bind(this);
+        this.CancelSubscription = this.CancelSubscription.bind(this);
+        this.ChangeSubscriptionInterval = this.ChangeSubscriptionInterval.bind(this);
     }
     CreateTier(request) {
         const data = exports.CreateTierRequest.encode(request).finish();
@@ -1608,6 +1761,16 @@ class SubscriptionServiceClientImpl {
     HandleSubscriptionPayment(request) {
         const data = exports.SubscriptionPaymentRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "HandleSubscriptionPayment", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    CancelSubscription(request) {
+        const data = exports.CancelSubscriptionRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "CancelSubscription", data);
+        return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    ChangeSubscriptionInterval(request) {
+        const data = exports.ChangeSubscriptionIntervalRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "ChangeSubscriptionInterval", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
     }
 }

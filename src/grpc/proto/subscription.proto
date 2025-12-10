@@ -13,6 +13,9 @@ service SubscriptionService {
   rpc CreateCheckoutSession (CreateCheckoutSessionRequest) returns (CreateCheckoutSessionResponse);
   rpc CreateCheckoutSecret (CreateCheckoutSecretRequest)   returns (CreateCheckoutSecretResponse);
   rpc HandleSubscriptionPayment(SubscriptionPaymentRequest) returns (SuccessResponse);
+
+  rpc CancelSubscription         (CancelSubscriptionRequest)         returns (SuccessResponse);
+  rpc ChangeSubscriptionInterval (ChangeSubscriptionIntervalRequest) returns (SuccessResponse);
 }
 
 message SuccessResponse {
@@ -126,4 +129,15 @@ message SubscriptionPaymentRequest {
   string creatorId = 11;         
   string tierId = 12;            
   string interval = 13;          
+}
+
+message CancelSubscriptionRequest {
+  string userId    = 1;
+  string creatorId = 2;
+}
+
+message ChangeSubscriptionIntervalRequest {
+  string userId    = 1;
+  string creatorId = 2;
+  string interval  = 3;
 }

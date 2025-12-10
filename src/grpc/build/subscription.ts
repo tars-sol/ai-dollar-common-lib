@@ -116,6 +116,17 @@ export interface SubscriptionPaymentRequest {
   interval: string;
 }
 
+export interface CancelSubscriptionRequest {
+  userId: string;
+  creatorId: string;
+}
+
+export interface ChangeSubscriptionIntervalRequest {
+  userId: string;
+  creatorId: string;
+  interval: string;
+}
+
 function createBaseSuccessResponse(): SuccessResponse {
   return { success: false };
 }
@@ -1805,6 +1816,178 @@ export const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest> 
   },
 };
 
+function createBaseCancelSubscriptionRequest(): CancelSubscriptionRequest {
+  return { userId: "", creatorId: "" };
+}
+
+export const CancelSubscriptionRequest: MessageFns<CancelSubscriptionRequest> = {
+  encode(message: CancelSubscriptionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.creatorId !== "") {
+      writer.uint32(18).string(message.creatorId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CancelSubscriptionRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCancelSubscriptionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.creatorId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CancelSubscriptionRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      creatorId: isSet(object.creatorId) ? globalThis.String(object.creatorId) : "",
+    };
+  },
+
+  toJSON(message: CancelSubscriptionRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.creatorId !== "") {
+      obj.creatorId = message.creatorId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CancelSubscriptionRequest>, I>>(base?: I): CancelSubscriptionRequest {
+    return CancelSubscriptionRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CancelSubscriptionRequest>, I>>(object: I): CancelSubscriptionRequest {
+    const message = createBaseCancelSubscriptionRequest();
+    message.userId = object.userId ?? "";
+    message.creatorId = object.creatorId ?? "";
+    return message;
+  },
+};
+
+function createBaseChangeSubscriptionIntervalRequest(): ChangeSubscriptionIntervalRequest {
+  return { userId: "", creatorId: "", interval: "" };
+}
+
+export const ChangeSubscriptionIntervalRequest: MessageFns<ChangeSubscriptionIntervalRequest> = {
+  encode(message: ChangeSubscriptionIntervalRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.creatorId !== "") {
+      writer.uint32(18).string(message.creatorId);
+    }
+    if (message.interval !== "") {
+      writer.uint32(26).string(message.interval);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ChangeSubscriptionIntervalRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseChangeSubscriptionIntervalRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.creatorId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.interval = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ChangeSubscriptionIntervalRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      creatorId: isSet(object.creatorId) ? globalThis.String(object.creatorId) : "",
+      interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
+    };
+  },
+
+  toJSON(message: ChangeSubscriptionIntervalRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.creatorId !== "") {
+      obj.creatorId = message.creatorId;
+    }
+    if (message.interval !== "") {
+      obj.interval = message.interval;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ChangeSubscriptionIntervalRequest>, I>>(
+    base?: I,
+  ): ChangeSubscriptionIntervalRequest {
+    return ChangeSubscriptionIntervalRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ChangeSubscriptionIntervalRequest>, I>>(
+    object: I,
+  ): ChangeSubscriptionIntervalRequest {
+    const message = createBaseChangeSubscriptionIntervalRequest();
+    message.userId = object.userId ?? "";
+    message.creatorId = object.creatorId ?? "";
+    message.interval = object.interval ?? "";
+    return message;
+  },
+};
+
 export interface SubscriptionService {
   CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse>;
   UpdateTier(request: UpdateTierRequest): Promise<SubscriptionTierResponse>;
@@ -1816,6 +1999,8 @@ export interface SubscriptionService {
   CreateCheckoutSession(request: CreateCheckoutSessionRequest): Promise<CreateCheckoutSessionResponse>;
   CreateCheckoutSecret(request: CreateCheckoutSecretRequest): Promise<CreateCheckoutSecretResponse>;
   HandleSubscriptionPayment(request: SubscriptionPaymentRequest): Promise<SuccessResponse>;
+  CancelSubscription(request: CancelSubscriptionRequest): Promise<SuccessResponse>;
+  ChangeSubscriptionInterval(request: ChangeSubscriptionIntervalRequest): Promise<SuccessResponse>;
 }
 
 export const SubscriptionServiceServiceName = "subscription.SubscriptionService";
@@ -1835,6 +2020,8 @@ export class SubscriptionServiceClientImpl implements SubscriptionService {
     this.CreateCheckoutSession = this.CreateCheckoutSession.bind(this);
     this.CreateCheckoutSecret = this.CreateCheckoutSecret.bind(this);
     this.HandleSubscriptionPayment = this.HandleSubscriptionPayment.bind(this);
+    this.CancelSubscription = this.CancelSubscription.bind(this);
+    this.ChangeSubscriptionInterval = this.ChangeSubscriptionInterval.bind(this);
   }
   CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse> {
     const data = CreateTierRequest.encode(request).finish();
@@ -1893,6 +2080,18 @@ export class SubscriptionServiceClientImpl implements SubscriptionService {
   HandleSubscriptionPayment(request: SubscriptionPaymentRequest): Promise<SuccessResponse> {
     const data = SubscriptionPaymentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "HandleSubscriptionPayment", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  CancelSubscription(request: CancelSubscriptionRequest): Promise<SuccessResponse> {
+    const data = CancelSubscriptionRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CancelSubscription", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  ChangeSubscriptionInterval(request: ChangeSubscriptionIntervalRequest): Promise<SuccessResponse> {
+    const data = ChangeSubscriptionIntervalRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ChangeSubscriptionInterval", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }
