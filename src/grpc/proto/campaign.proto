@@ -144,6 +144,7 @@ message TaskResponse {
   string type = 8;
   string createdAt = 5;
   string updatedAt = 6;
+  optional IN_APP_TASK_RULE rule = 9;
 }
 message TaskCompletedResponse {
   string campaignId = 1;

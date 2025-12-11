@@ -113,6 +113,7 @@ export interface TaskResponse {
     type: string;
     createdAt: string;
     updatedAt: string;
+    rule?: inAppTaskRule | undefined;
 }
 export interface TaskCompletedResponse {
     campaignId: string;

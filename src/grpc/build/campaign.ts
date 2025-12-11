@@ -137,6 +137,7 @@ export interface TaskResponse {
   type: string;
   createdAt: string;
   updatedAt: string;
+  rule?: inAppTaskRule | undefined;
 }
 
 export interface TaskCompletedResponse {
@@ -2102,7 +2103,16 @@ export const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest> = {
 };
 
 function createBaseTaskResponse(): TaskResponse {
-  return { id: "", title: "", description: "", campaignId: "", type: "", createdAt: "", updatedAt: "" };
+  return {
+    id: "",
+    title: "",
+    description: "",
+    campaignId: "",
+    type: "",
+    createdAt: "",
+    updatedAt: "",
+    rule: undefined,
+  };
 }
 
 export const TaskResponse: MessageFns<TaskResponse> = {
@@ -2127,6 +2137,9 @@ export const TaskResponse: MessageFns<TaskResponse> = {
     }
     if (message.updatedAt !== "") {
       writer.uint32(50).string(message.updatedAt);
+    }
+    if (message.rule !== undefined) {
+      inAppTaskRule.encode(message.rule, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -2194,6 +2207,14 @@ export const TaskResponse: MessageFns<TaskResponse> = {
           message.updatedAt = reader.string();
           continue;
         }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.rule = inAppTaskRule.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2212,6 +2233,7 @@ export const TaskResponse: MessageFns<TaskResponse> = {
       type: isSet(object.type) ? globalThis.String(object.type) : "",
       createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
       updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+      rule: isSet(object.rule) ? inAppTaskRule.fromJSON(object.rule) : undefined,
     };
   },
 
@@ -2238,6 +2260,9 @@ export const TaskResponse: MessageFns<TaskResponse> = {
     if (message.updatedAt !== "") {
       obj.updatedAt = message.updatedAt;
     }
+    if (message.rule !== undefined) {
+      obj.rule = inAppTaskRule.toJSON(message.rule);
+    }
     return obj;
   },
 
@@ -2253,6 +2278,9 @@ export const TaskResponse: MessageFns<TaskResponse> = {
     message.type = object.type ?? "";
     message.createdAt = object.createdAt ?? "";
     message.updatedAt = object.updatedAt ?? "";
+    message.rule = (object.rule !== undefined && object.rule !== null)
+      ? inAppTaskRule.fromPartial(object.rule)
+      : undefined;
     return message;
   },
 };

@@ -1682,7 +1682,16 @@ exports.UpdateCampaignRequest = {
     },
 };
 function createBaseTaskResponse() {
-    return { id: "", title: "", description: "", campaignId: "", type: "", createdAt: "", updatedAt: "" };
+    return {
+        id: "",
+        title: "",
+        description: "",
+        campaignId: "",
+        type: "",
+        createdAt: "",
+        updatedAt: "",
+        rule: undefined,
+    };
 }
 exports.TaskResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -1706,6 +1715,9 @@ exports.TaskResponse = {
         }
         if (message.updatedAt !== "") {
             writer.uint32(50).string(message.updatedAt);
+        }
+        if (message.rule !== undefined) {
+            exports.inAppTaskRule.encode(message.rule, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -1765,6 +1777,13 @@ exports.TaskResponse = {
                     message.updatedAt = reader.string();
                     continue;
                 }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.rule = exports.inAppTaskRule.decode(reader, reader.uint32());
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1782,6 +1801,7 @@ exports.TaskResponse = {
             type: isSet(object.type) ? globalThis.String(object.type) : "",
             createdAt: isSet(object.createdAt) ? globalThis.String(object.createdAt) : "",
             updatedAt: isSet(object.updatedAt) ? globalThis.String(object.updatedAt) : "",
+            rule: isSet(object.rule) ? exports.inAppTaskRule.fromJSON(object.rule) : undefined,
         };
     },
     toJSON(message) {
@@ -1807,6 +1827,9 @@ exports.TaskResponse = {
         if (message.updatedAt !== "") {
             obj.updatedAt = message.updatedAt;
         }
+        if (message.rule !== undefined) {
+            obj.rule = exports.inAppTaskRule.toJSON(message.rule);
+        }
         return obj;
     },
     create(base) {
@@ -1821,6 +1844,9 @@ exports.TaskResponse = {
         message.type = object.type ?? "";
         message.createdAt = object.createdAt ?? "";
         message.updatedAt = object.updatedAt ?? "";
+        message.rule = (object.rule !== undefined && object.rule !== null)
+            ? exports.inAppTaskRule.fromPartial(object.rule)
+            : undefined;
         return message;
     },
 };
