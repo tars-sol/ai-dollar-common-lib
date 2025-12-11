@@ -54,9 +54,13 @@ export interface TaskContent {
 export interface UpdateTaskRequest {
   title?: string | undefined;
   description?: string | undefined;
-  brandId: string;
   type?: string | undefined;
   id: string;
+}
+
+export interface UpdateCampaignTasksRequest {
+  tasks: UpdateTaskRequest[];
+  brandId: string;
 }
 
 export interface JoinPublicCampaignRequest {
@@ -875,7 +879,7 @@ export const TaskContent: MessageFns<TaskContent> = {
 };
 
 function createBaseUpdateTaskRequest(): UpdateTaskRequest {
-  return { title: undefined, description: undefined, brandId: "", type: undefined, id: "" };
+  return { title: undefined, description: undefined, type: undefined, id: "" };
 }
 
 export const UpdateTaskRequest: MessageFns<UpdateTaskRequest> = {
@@ -885,9 +889,6 @@ export const UpdateTaskRequest: MessageFns<UpdateTaskRequest> = {
     }
     if (message.description !== undefined) {
       writer.uint32(18).string(message.description);
-    }
-    if (message.brandId !== "") {
-      writer.uint32(42).string(message.brandId);
     }
     if (message.type !== undefined) {
       writer.uint32(26).string(message.type);
@@ -921,14 +922,6 @@ export const UpdateTaskRequest: MessageFns<UpdateTaskRequest> = {
           message.description = reader.string();
           continue;
         }
-        case 5: {
-          if (tag !== 42) {
-            break;
-          }
-
-          message.brandId = reader.string();
-          continue;
-        }
         case 3: {
           if (tag !== 26) {
             break;
@@ -958,7 +951,6 @@ export const UpdateTaskRequest: MessageFns<UpdateTaskRequest> = {
     return {
       title: isSet(object.title) ? globalThis.String(object.title) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
       type: isSet(object.type) ? globalThis.String(object.type) : undefined,
       id: isSet(object.id) ? globalThis.String(object.id) : "",
     };
@@ -971,9 +963,6 @@ export const UpdateTaskRequest: MessageFns<UpdateTaskRequest> = {
     }
     if (message.description !== undefined) {
       obj.description = message.description;
-    }
-    if (message.brandId !== "") {
-      obj.brandId = message.brandId;
     }
     if (message.type !== undefined) {
       obj.type = message.type;
@@ -991,9 +980,84 @@ export const UpdateTaskRequest: MessageFns<UpdateTaskRequest> = {
     const message = createBaseUpdateTaskRequest();
     message.title = object.title ?? undefined;
     message.description = object.description ?? undefined;
-    message.brandId = object.brandId ?? "";
     message.type = object.type ?? undefined;
     message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateCampaignTasksRequest(): UpdateCampaignTasksRequest {
+  return { tasks: [], brandId: "" };
+}
+
+export const UpdateCampaignTasksRequest: MessageFns<UpdateCampaignTasksRequest> = {
+  encode(message: UpdateCampaignTasksRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.tasks) {
+      UpdateTaskRequest.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.brandId !== "") {
+      writer.uint32(18).string(message.brandId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateCampaignTasksRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateCampaignTasksRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.tasks.push(UpdateTaskRequest.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateCampaignTasksRequest {
+    return {
+      tasks: globalThis.Array.isArray(object?.tasks) ? object.tasks.map((e: any) => UpdateTaskRequest.fromJSON(e)) : [],
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+    };
+  },
+
+  toJSON(message: UpdateCampaignTasksRequest): unknown {
+    const obj: any = {};
+    if (message.tasks?.length) {
+      obj.tasks = message.tasks.map((e) => UpdateTaskRequest.toJSON(e));
+    }
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateCampaignTasksRequest>, I>>(base?: I): UpdateCampaignTasksRequest {
+    return UpdateCampaignTasksRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateCampaignTasksRequest>, I>>(object: I): UpdateCampaignTasksRequest {
+    const message = createBaseUpdateCampaignTasksRequest();
+    message.tasks = object.tasks?.map((e) => UpdateTaskRequest.fromPartial(e)) || [];
+    message.brandId = object.brandId ?? "";
     return message;
   },
 };
@@ -3874,7 +3938,7 @@ export interface CampaignService {
   GetCampaignsByBrandId(request: GetCampaignsByBrandIdRequest): Promise<GetCampaignsResponse>;
   GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignByIdResponse>;
   UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
-  UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
+  UpdateCampaignTasks(request: UpdateCampaignTasksRequest): Promise<GetTasksResponse>;
   GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
   CancelCampaignById(request: CampaignsByIdRequest): Promise<CancelCampaignResponse>;
   DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;
@@ -3938,10 +4002,10 @@ export class CampaignServiceClientImpl implements CampaignService {
     return promise.then((data) => CampaignResponse.decode(new BinaryReader(data)));
   }
 
-  UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse> {
-    const data = UpdateTaskRequest.encode(request).finish();
+  UpdateCampaignTasks(request: UpdateCampaignTasksRequest): Promise<GetTasksResponse> {
+    const data = UpdateCampaignTasksRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateCampaignTasks", data);
-    return promise.then((data) => TaskResponse.decode(new BinaryReader(data)));
+    return promise.then((data) => GetTasksResponse.decode(new BinaryReader(data)));
   }
 
   GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse> {

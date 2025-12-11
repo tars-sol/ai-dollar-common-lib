@@ -39,9 +39,12 @@ export interface TaskContent {
 export interface UpdateTaskRequest {
     title?: string | undefined;
     description?: string | undefined;
-    brandId: string;
     type?: string | undefined;
     id: string;
+}
+export interface UpdateCampaignTasksRequest {
+    tasks: UpdateTaskRequest[];
+    brandId: string;
 }
 export interface JoinPublicCampaignRequest {
     campaignId: string;
@@ -216,6 +219,7 @@ export declare const inAppTaskRule: MessageFns<inAppTaskRule>;
 export declare const TaskTargets: MessageFns<TaskTargets>;
 export declare const TaskContent: MessageFns<TaskContent>;
 export declare const UpdateTaskRequest: MessageFns<UpdateTaskRequest>;
+export declare const UpdateCampaignTasksRequest: MessageFns<UpdateCampaignTasksRequest>;
 export declare const JoinPublicCampaignRequest: MessageFns<JoinPublicCampaignRequest>;
 export declare const LeaveCampaignRequest: MessageFns<LeaveCampaignRequest>;
 export declare const UpdatePrivateCampaignProfilesRequest: MessageFns<UpdatePrivateCampaignProfilesRequest>;
@@ -245,7 +249,7 @@ export interface CampaignService {
     GetCampaignsByBrandId(request: GetCampaignsByBrandIdRequest): Promise<GetCampaignsResponse>;
     GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignByIdResponse>;
     UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
-    UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
+    UpdateCampaignTasks(request: UpdateCampaignTasksRequest): Promise<GetTasksResponse>;
     GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
     CancelCampaignById(request: CampaignsByIdRequest): Promise<CancelCampaignResponse>;
     DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;
@@ -270,7 +274,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     GetCampaignsByBrandId(request: GetCampaignsByBrandIdRequest): Promise<GetCampaignsResponse>;
     GetCampaignById(request: CampaignsByIdRequest): Promise<CampaignByIdResponse>;
     UpdateCampaign(request: UpdateCampaignRequest): Promise<CampaignResponse>;
-    UpdateCampaignTasks(request: UpdateTaskRequest): Promise<TaskResponse>;
+    UpdateCampaignTasks(request: UpdateCampaignTasksRequest): Promise<GetTasksResponse>;
     GetTasksByCampaignId(request: GetTasksByCampaignIdRequest): Promise<GetTasksResponse>;
     CancelCampaignById(request: CampaignsByIdRequest): Promise<CancelCampaignResponse>;
     DeleteTaskById(request: DeleteTaskByIdRequest): Promise<TaskResponse>;

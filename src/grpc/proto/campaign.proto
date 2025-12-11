@@ -9,7 +9,7 @@ service CampaignService {
   rpc GetCampaignsByBrandId(GetCampaignsByBrandIdRequest) returns (GetCampaignsResponse);
   rpc GetCampaignById(CampaignsByIdRequest) returns (CampaignByIdResponse);
   rpc UpdateCampaign(UpdateCampaignRequest) returns (CampaignResponse);
-  rpc UpdateCampaignTasks(UpdateTaskRequest) returns (TaskResponse);
+  rpc UpdateCampaignTasks(UpdateCampaignTasksRequest) returns (GetTasksResponse);
   rpc GetTasksByCampaignId(GetTasksByCampaignIdRequest) returns (GetTasksResponse);
   rpc CancelCampaignById(CampaignsByIdRequest) returns (CancelCampaignResponse);
   rpc DeleteTaskById(DeleteTaskByIdRequest) returns (TaskResponse);
@@ -64,10 +64,14 @@ message TaskContent {
 message UpdateTaskRequest {
   optional string title = 1;
   optional string description = 2;
-  string brandId = 5;
   optional string type = 3;
   string id = 4;
 }
+message UpdateCampaignTasksRequest {
+  repeated UpdateTaskRequest tasks = 1;
+  string brandId = 2;
+}
+
 message JoinPublicCampaignRequest {
   string campaignId = 1;
   string profileId = 2;

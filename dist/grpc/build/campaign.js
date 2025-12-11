@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: campaign.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.GetCampaignProgressResponse = exports.CampaignProgressParticipant = exports.GetCampaignProgressRequest = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByProfileIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignByIdResponse = exports.CancelCampaignResponse = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
+exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.GetCampaignProgressResponse = exports.CampaignProgressParticipant = exports.GetCampaignProgressRequest = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByProfileIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignByIdResponse = exports.CancelCampaignResponse = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateCampaignTasksRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -566,7 +566,7 @@ exports.TaskContent = {
     },
 };
 function createBaseUpdateTaskRequest() {
-    return { title: undefined, description: undefined, brandId: "", type: undefined, id: "" };
+    return { title: undefined, description: undefined, type: undefined, id: "" };
 }
 exports.UpdateTaskRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -575,9 +575,6 @@ exports.UpdateTaskRequest = {
         }
         if (message.description !== undefined) {
             writer.uint32(18).string(message.description);
-        }
-        if (message.brandId !== "") {
-            writer.uint32(42).string(message.brandId);
         }
         if (message.type !== undefined) {
             writer.uint32(26).string(message.type);
@@ -608,13 +605,6 @@ exports.UpdateTaskRequest = {
                     message.description = reader.string();
                     continue;
                 }
-                case 5: {
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.brandId = reader.string();
-                    continue;
-                }
                 case 3: {
                     if (tag !== 26) {
                         break;
@@ -641,7 +631,6 @@ exports.UpdateTaskRequest = {
         return {
             title: isSet(object.title) ? globalThis.String(object.title) : undefined,
             description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
             type: isSet(object.type) ? globalThis.String(object.type) : undefined,
             id: isSet(object.id) ? globalThis.String(object.id) : "",
         };
@@ -653,9 +642,6 @@ exports.UpdateTaskRequest = {
         }
         if (message.description !== undefined) {
             obj.description = message.description;
-        }
-        if (message.brandId !== "") {
-            obj.brandId = message.brandId;
         }
         if (message.type !== undefined) {
             obj.type = message.type;
@@ -672,9 +658,76 @@ exports.UpdateTaskRequest = {
         const message = createBaseUpdateTaskRequest();
         message.title = object.title ?? undefined;
         message.description = object.description ?? undefined;
-        message.brandId = object.brandId ?? "";
         message.type = object.type ?? undefined;
         message.id = object.id ?? "";
+        return message;
+    },
+};
+function createBaseUpdateCampaignTasksRequest() {
+    return { tasks: [], brandId: "" };
+}
+exports.UpdateCampaignTasksRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.tasks) {
+            exports.UpdateTaskRequest.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.brandId !== "") {
+            writer.uint32(18).string(message.brandId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateCampaignTasksRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.tasks.push(exports.UpdateTaskRequest.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.brandId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            tasks: globalThis.Array.isArray(object?.tasks) ? object.tasks.map((e) => exports.UpdateTaskRequest.fromJSON(e)) : [],
+            brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.tasks?.length) {
+            obj.tasks = message.tasks.map((e) => exports.UpdateTaskRequest.toJSON(e));
+        }
+        if (message.brandId !== "") {
+            obj.brandId = message.brandId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateCampaignTasksRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateCampaignTasksRequest();
+        message.tasks = object.tasks?.map((e) => exports.UpdateTaskRequest.fromPartial(e)) || [];
+        message.brandId = object.brandId ?? "";
         return message;
     },
 };
@@ -3339,9 +3392,9 @@ class CampaignServiceClientImpl {
         return promise.then((data) => exports.CampaignResponse.decode(new wire_1.BinaryReader(data)));
     }
     UpdateCampaignTasks(request) {
-        const data = exports.UpdateTaskRequest.encode(request).finish();
+        const data = exports.UpdateCampaignTasksRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "UpdateCampaignTasks", data);
-        return promise.then((data) => exports.TaskResponse.decode(new wire_1.BinaryReader(data)));
+        return promise.then((data) => exports.GetTasksResponse.decode(new wire_1.BinaryReader(data)));
     }
     GetTasksByCampaignId(request) {
         const data = exports.GetTasksByCampaignIdRequest.encode(request).finish();
