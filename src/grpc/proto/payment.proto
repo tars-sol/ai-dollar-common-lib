@@ -66,4 +66,5 @@ message ConnectAccountResponse {
   string email = 2;
   bool isActive = 3;
   string onBoardingUrl = 4;
+  repeated string requiredFields = 5;
 }

@@ -69,6 +69,7 @@ export interface ConnectAccountResponse {
   email: string;
   isActive: boolean;
   onBoardingUrl: string;
+  requiredFields: string[];
 }
 
 function createBasePayoutRequest(): PayoutRequest {
@@ -892,7 +893,7 @@ export const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest> = {
 };
 
 function createBaseConnectAccountResponse(): ConnectAccountResponse {
-  return { accountId: "", email: "", isActive: false, onBoardingUrl: "" };
+  return { accountId: "", email: "", isActive: false, onBoardingUrl: "", requiredFields: [] };
 }
 
 export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
@@ -908,6 +909,9 @@ export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
     }
     if (message.onBoardingUrl !== "") {
       writer.uint32(34).string(message.onBoardingUrl);
+    }
+    for (const v of message.requiredFields) {
+      writer.uint32(42).string(v!);
     }
     return writer;
   },
@@ -951,6 +955,14 @@ export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
           message.onBoardingUrl = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.requiredFields.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -966,6 +978,9 @@ export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
       onBoardingUrl: isSet(object.onBoardingUrl) ? globalThis.String(object.onBoardingUrl) : "",
+      requiredFields: globalThis.Array.isArray(object?.requiredFields)
+        ? object.requiredFields.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -983,6 +998,9 @@ export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
     if (message.onBoardingUrl !== "") {
       obj.onBoardingUrl = message.onBoardingUrl;
     }
+    if (message.requiredFields?.length) {
+      obj.requiredFields = message.requiredFields;
+    }
     return obj;
   },
 
@@ -995,6 +1013,7 @@ export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
     message.email = object.email ?? "";
     message.isActive = object.isActive ?? false;
     message.onBoardingUrl = object.onBoardingUrl ?? "";
+    message.requiredFields = object.requiredFields?.map((e) => e) || [];
     return message;
   },
 };

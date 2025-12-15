@@ -50,6 +50,7 @@ export interface ConnectAccountResponse {
     email: string;
     isActive: boolean;
     onBoardingUrl: string;
+    requiredFields: string[];
 }
 export declare const PayoutRequest: MessageFns<PayoutRequest>;
 export declare const PayoutAmount: MessageFns<PayoutAmount>;

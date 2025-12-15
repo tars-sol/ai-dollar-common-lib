@@ -747,7 +747,7 @@ exports.ConnectedAccountRequest = {
     },
 };
 function createBaseConnectAccountResponse() {
-    return { accountId: "", email: "", isActive: false, onBoardingUrl: "" };
+    return { accountId: "", email: "", isActive: false, onBoardingUrl: "", requiredFields: [] };
 }
 exports.ConnectAccountResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -762,6 +762,9 @@ exports.ConnectAccountResponse = {
         }
         if (message.onBoardingUrl !== "") {
             writer.uint32(34).string(message.onBoardingUrl);
+        }
+        for (const v of message.requiredFields) {
+            writer.uint32(42).string(v);
         }
         return writer;
     },
@@ -800,6 +803,13 @@ exports.ConnectAccountResponse = {
                     message.onBoardingUrl = reader.string();
                     continue;
                 }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.requiredFields.push(reader.string());
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -814,6 +824,9 @@ exports.ConnectAccountResponse = {
             email: isSet(object.email) ? globalThis.String(object.email) : "",
             isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
             onBoardingUrl: isSet(object.onBoardingUrl) ? globalThis.String(object.onBoardingUrl) : "",
+            requiredFields: globalThis.Array.isArray(object?.requiredFields)
+                ? object.requiredFields.map((e) => globalThis.String(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -830,6 +843,9 @@ exports.ConnectAccountResponse = {
         if (message.onBoardingUrl !== "") {
             obj.onBoardingUrl = message.onBoardingUrl;
         }
+        if (message.requiredFields?.length) {
+            obj.requiredFields = message.requiredFields;
+        }
         return obj;
     },
     create(base) {
@@ -841,6 +857,7 @@ exports.ConnectAccountResponse = {
         message.email = object.email ?? "";
         message.isActive = object.isActive ?? false;
         message.onBoardingUrl = object.onBoardingUrl ?? "";
+        message.requiredFields = object.requiredFields?.map((e) => e) || [];
         return message;
     },
 };
