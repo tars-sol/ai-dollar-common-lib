@@ -267,6 +267,21 @@ export interface GetCampaignProgressResponse {
   totalTasks: string;
 }
 
+export interface GetProfileCampaignProgressRequest {
+  campaignId: string;
+  profileId: string;
+}
+
+export interface ProfileCampaignTaskProgressItem {
+  taskId: string;
+  isCompleted: boolean;
+  progressCount: number;
+}
+
+export interface GetProfileCampaignProgressResponse {
+  items: ProfileCampaignTaskProgressItem[];
+}
+
 function createBaseCreateCampaignRequest(): CreateCampaignRequest {
   return {
     brandId: "",
@@ -3962,6 +3977,246 @@ export const GetCampaignProgressResponse: MessageFns<GetCampaignProgressResponse
   },
 };
 
+function createBaseGetProfileCampaignProgressRequest(): GetProfileCampaignProgressRequest {
+  return { campaignId: "", profileId: "" };
+}
+
+export const GetProfileCampaignProgressRequest: MessageFns<GetProfileCampaignProgressRequest> = {
+  encode(message: GetProfileCampaignProgressRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.campaignId !== "") {
+      writer.uint32(10).string(message.campaignId);
+    }
+    if (message.profileId !== "") {
+      writer.uint32(18).string(message.profileId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetProfileCampaignProgressRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetProfileCampaignProgressRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetProfileCampaignProgressRequest {
+    return {
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+    };
+  },
+
+  toJSON(message: GetProfileCampaignProgressRequest): unknown {
+    const obj: any = {};
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetProfileCampaignProgressRequest>, I>>(
+    base?: I,
+  ): GetProfileCampaignProgressRequest {
+    return GetProfileCampaignProgressRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetProfileCampaignProgressRequest>, I>>(
+    object: I,
+  ): GetProfileCampaignProgressRequest {
+    const message = createBaseGetProfileCampaignProgressRequest();
+    message.campaignId = object.campaignId ?? "";
+    message.profileId = object.profileId ?? "";
+    return message;
+  },
+};
+
+function createBaseProfileCampaignTaskProgressItem(): ProfileCampaignTaskProgressItem {
+  return { taskId: "", isCompleted: false, progressCount: 0 };
+}
+
+export const ProfileCampaignTaskProgressItem: MessageFns<ProfileCampaignTaskProgressItem> = {
+  encode(message: ProfileCampaignTaskProgressItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.taskId !== "") {
+      writer.uint32(10).string(message.taskId);
+    }
+    if (message.isCompleted !== false) {
+      writer.uint32(16).bool(message.isCompleted);
+    }
+    if (message.progressCount !== 0) {
+      writer.uint32(24).int32(message.progressCount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ProfileCampaignTaskProgressItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProfileCampaignTaskProgressItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.taskId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.isCompleted = reader.bool();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.progressCount = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProfileCampaignTaskProgressItem {
+    return {
+      taskId: isSet(object.taskId) ? globalThis.String(object.taskId) : "",
+      isCompleted: isSet(object.isCompleted) ? globalThis.Boolean(object.isCompleted) : false,
+      progressCount: isSet(object.progressCount) ? globalThis.Number(object.progressCount) : 0,
+    };
+  },
+
+  toJSON(message: ProfileCampaignTaskProgressItem): unknown {
+    const obj: any = {};
+    if (message.taskId !== "") {
+      obj.taskId = message.taskId;
+    }
+    if (message.isCompleted !== false) {
+      obj.isCompleted = message.isCompleted;
+    }
+    if (message.progressCount !== 0) {
+      obj.progressCount = Math.round(message.progressCount);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ProfileCampaignTaskProgressItem>, I>>(base?: I): ProfileCampaignTaskProgressItem {
+    return ProfileCampaignTaskProgressItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ProfileCampaignTaskProgressItem>, I>>(
+    object: I,
+  ): ProfileCampaignTaskProgressItem {
+    const message = createBaseProfileCampaignTaskProgressItem();
+    message.taskId = object.taskId ?? "";
+    message.isCompleted = object.isCompleted ?? false;
+    message.progressCount = object.progressCount ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetProfileCampaignProgressResponse(): GetProfileCampaignProgressResponse {
+  return { items: [] };
+}
+
+export const GetProfileCampaignProgressResponse: MessageFns<GetProfileCampaignProgressResponse> = {
+  encode(message: GetProfileCampaignProgressResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.items) {
+      ProfileCampaignTaskProgressItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetProfileCampaignProgressResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetProfileCampaignProgressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.items.push(ProfileCampaignTaskProgressItem.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetProfileCampaignProgressResponse {
+    return {
+      items: globalThis.Array.isArray(object?.items)
+        ? object.items.map((e: any) => ProfileCampaignTaskProgressItem.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetProfileCampaignProgressResponse): unknown {
+    const obj: any = {};
+    if (message.items?.length) {
+      obj.items = message.items.map((e) => ProfileCampaignTaskProgressItem.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetProfileCampaignProgressResponse>, I>>(
+    base?: I,
+  ): GetProfileCampaignProgressResponse {
+    return GetProfileCampaignProgressResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetProfileCampaignProgressResponse>, I>>(
+    object: I,
+  ): GetProfileCampaignProgressResponse {
+    const message = createBaseGetProfileCampaignProgressResponse();
+    message.items = object.items?.map((e) => ProfileCampaignTaskProgressItem.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 /** gRPC Service */
 export interface CampaignService {
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
@@ -3981,6 +4236,7 @@ export interface CampaignService {
   SearchCampaigns(request: SearchCampaignsRequest): Promise<SearchCampaignsResponse>;
   GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
   GetCampaignProgress(request: GetCampaignProgressRequest): Promise<GetCampaignProgressResponse>;
+  GetProfileCampaignProgress(request: GetProfileCampaignProgressRequest): Promise<GetProfileCampaignProgressResponse>;
 }
 
 export const CampaignServiceServiceName = "campaign.CampaignService";
@@ -4007,6 +4263,7 @@ export class CampaignServiceClientImpl implements CampaignService {
     this.SearchCampaigns = this.SearchCampaigns.bind(this);
     this.GetJoinedCampaignsByProfileId = this.GetJoinedCampaignsByProfileId.bind(this);
     this.GetCampaignProgress = this.GetCampaignProgress.bind(this);
+    this.GetProfileCampaignProgress = this.GetProfileCampaignProgress.bind(this);
   }
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse> {
     const data = CreateCampaignRequest.encode(request).finish();
@@ -4108,6 +4365,12 @@ export class CampaignServiceClientImpl implements CampaignService {
     const data = GetCampaignProgressRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetCampaignProgress", data);
     return promise.then((data) => GetCampaignProgressResponse.decode(new BinaryReader(data)));
+  }
+
+  GetProfileCampaignProgress(request: GetProfileCampaignProgressRequest): Promise<GetProfileCampaignProgressResponse> {
+    const data = GetProfileCampaignProgressRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetProfileCampaignProgress", data);
+    return promise.then((data) => GetProfileCampaignProgressResponse.decode(new BinaryReader(data)));
   }
 }
 

@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: campaign.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.GetCampaignProgressResponse = exports.CampaignProgressParticipant = exports.GetCampaignProgressRequest = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByProfileIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignByIdResponse = exports.CancelCampaignResponse = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateCampaignTasksRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
+exports.CampaignServiceClientImpl = exports.CampaignServiceServiceName = exports.GetProfileCampaignProgressResponse = exports.ProfileCampaignTaskProgressItem = exports.GetProfileCampaignProgressRequest = exports.GetCampaignProgressResponse = exports.CampaignProgressParticipant = exports.GetCampaignProgressRequest = exports.SearchCampaignsResponse = exports.CampaignSearchItem = exports.SearchCampaignsRequest = exports.GetCampaignsResponse = exports.GetTasksResponse = exports.GetTasksByCampaignIdRequest = exports.DeleteCampaignByIdRequest = exports.DeleteTaskByIdRequest = exports.CampaignsByProfileIdRequest = exports.CampaignsByIdRequest = exports.GetCampaignsByBrandIdRequest = exports.TaskCompletedResponse = exports.TaskResponse = exports.UpdateCampaignRequest = exports.CampaignByIdResponse = exports.CancelCampaignResponse = exports.CampaignResponse = exports.UpdatePrivateCampaignProfilesRequest = exports.LeaveCampaignRequest = exports.JoinPublicCampaignRequest = exports.UpdateCampaignTasksRequest = exports.UpdateTaskRequest = exports.TaskContent = exports.TaskTargets = exports.inAppTaskRule = exports.TaskInput = exports.SuccessResponse = exports.CreateCampaignRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -3376,6 +3376,212 @@ exports.GetCampaignProgressResponse = {
         return message;
     },
 };
+function createBaseGetProfileCampaignProgressRequest() {
+    return { campaignId: "", profileId: "" };
+}
+exports.GetProfileCampaignProgressRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.campaignId !== "") {
+            writer.uint32(10).string(message.campaignId);
+        }
+        if (message.profileId !== "") {
+            writer.uint32(18).string(message.profileId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetProfileCampaignProgressRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.campaignId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.campaignId !== "") {
+            obj.campaignId = message.campaignId;
+        }
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetProfileCampaignProgressRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetProfileCampaignProgressRequest();
+        message.campaignId = object.campaignId ?? "";
+        message.profileId = object.profileId ?? "";
+        return message;
+    },
+};
+function createBaseProfileCampaignTaskProgressItem() {
+    return { taskId: "", isCompleted: false, progressCount: 0 };
+}
+exports.ProfileCampaignTaskProgressItem = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.taskId !== "") {
+            writer.uint32(10).string(message.taskId);
+        }
+        if (message.isCompleted !== false) {
+            writer.uint32(16).bool(message.isCompleted);
+        }
+        if (message.progressCount !== 0) {
+            writer.uint32(24).int32(message.progressCount);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseProfileCampaignTaskProgressItem();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.taskId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.isCompleted = reader.bool();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.progressCount = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            taskId: isSet(object.taskId) ? globalThis.String(object.taskId) : "",
+            isCompleted: isSet(object.isCompleted) ? globalThis.Boolean(object.isCompleted) : false,
+            progressCount: isSet(object.progressCount) ? globalThis.Number(object.progressCount) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.taskId !== "") {
+            obj.taskId = message.taskId;
+        }
+        if (message.isCompleted !== false) {
+            obj.isCompleted = message.isCompleted;
+        }
+        if (message.progressCount !== 0) {
+            obj.progressCount = Math.round(message.progressCount);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ProfileCampaignTaskProgressItem.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseProfileCampaignTaskProgressItem();
+        message.taskId = object.taskId ?? "";
+        message.isCompleted = object.isCompleted ?? false;
+        message.progressCount = object.progressCount ?? 0;
+        return message;
+    },
+};
+function createBaseGetProfileCampaignProgressResponse() {
+    return { items: [] };
+}
+exports.GetProfileCampaignProgressResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.items) {
+            exports.ProfileCampaignTaskProgressItem.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetProfileCampaignProgressResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.items.push(exports.ProfileCampaignTaskProgressItem.decode(reader, reader.uint32()));
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            items: globalThis.Array.isArray(object?.items)
+                ? object.items.map((e) => exports.ProfileCampaignTaskProgressItem.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.items?.length) {
+            obj.items = message.items.map((e) => exports.ProfileCampaignTaskProgressItem.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetProfileCampaignProgressResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetProfileCampaignProgressResponse();
+        message.items = object.items?.map((e) => exports.ProfileCampaignTaskProgressItem.fromPartial(e)) || [];
+        return message;
+    },
+};
 exports.CampaignServiceServiceName = "campaign.CampaignService";
 class CampaignServiceClientImpl {
     constructor(rpc, opts) {
@@ -3398,6 +3604,7 @@ class CampaignServiceClientImpl {
         this.SearchCampaigns = this.SearchCampaigns.bind(this);
         this.GetJoinedCampaignsByProfileId = this.GetJoinedCampaignsByProfileId.bind(this);
         this.GetCampaignProgress = this.GetCampaignProgress.bind(this);
+        this.GetProfileCampaignProgress = this.GetProfileCampaignProgress.bind(this);
     }
     CreateCampaign(request) {
         const data = exports.CreateCampaignRequest.encode(request).finish();
@@ -3483,6 +3690,11 @@ class CampaignServiceClientImpl {
         const data = exports.GetCampaignProgressRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "GetCampaignProgress", data);
         return promise.then((data) => exports.GetCampaignProgressResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetProfileCampaignProgress(request) {
+        const data = exports.GetProfileCampaignProgressRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetProfileCampaignProgress", data);
+        return promise.then((data) => exports.GetProfileCampaignProgressResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.CampaignServiceClientImpl = CampaignServiceClientImpl;

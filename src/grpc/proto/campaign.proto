@@ -22,7 +22,7 @@ service CampaignService {
   rpc SearchCampaigns(SearchCampaignsRequest) returns (SearchCampaignsResponse);
   rpc GetJoinedCampaignsByProfileId(CampaignsByProfileIdRequest) returns (GetCampaignsResponse);
   rpc GetCampaignProgress(GetCampaignProgressRequest) returns (GetCampaignProgressResponse);
-
+  rpc GetProfileCampaignProgress(GetProfileCampaignProgressRequest) returns (GetProfileCampaignProgressResponse);
 }
 
 // Request message for creating a campaign
@@ -246,4 +246,19 @@ message GetCampaignProgressResponse {
   string amountPaidOut = 5;
   string totalParticipants = 6;
   string totalTasks = 7;
+}
+
+message GetProfileCampaignProgressRequest {
+  string campaignId = 1;
+  string profileId = 2;
+}
+
+message ProfileCampaignTaskProgressItem {
+  string taskId = 1;
+  bool isCompleted = 2;
+  int32 progressCount = 3;
+}
+
+message GetProfileCampaignProgressResponse {
+  repeated ProfileCampaignTaskProgressItem items = 1;
 }
