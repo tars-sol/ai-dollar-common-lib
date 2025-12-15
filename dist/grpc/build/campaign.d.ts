@@ -196,7 +196,7 @@ export interface CampaignProgressParticipant {
     name: string;
     avatarUrl: string;
     totalTasks: string;
-    completedTasks: string;
+    completedTasks: string[];
     isCompleted: boolean;
     joinedAt: string;
     completedAt: string;

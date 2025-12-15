@@ -248,7 +248,7 @@ export interface CampaignProgressParticipant {
   name: string;
   avatarUrl: string;
   totalTasks: string;
-  completedTasks: string;
+  completedTasks: string[];
   isCompleted: boolean;
   joinedAt: string;
   completedAt: string;
@@ -3536,7 +3536,7 @@ function createBaseCampaignProgressParticipant(): CampaignProgressParticipant {
     name: "",
     avatarUrl: "",
     totalTasks: "",
-    completedTasks: "",
+    completedTasks: [],
     isCompleted: false,
     joinedAt: "",
     completedAt: "",
@@ -3566,8 +3566,8 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
     if (message.totalTasks !== "") {
       writer.uint32(50).string(message.totalTasks);
     }
-    if (message.completedTasks !== "") {
-      writer.uint32(58).string(message.completedTasks);
+    for (const v of message.completedTasks) {
+      writer.uint32(58).string(v!);
     }
     if (message.isCompleted !== false) {
       writer.uint32(64).bool(message.isCompleted);
@@ -3650,7 +3650,7 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
             break;
           }
 
-          message.completedTasks = reader.string();
+          message.completedTasks.push(reader.string());
           continue;
         }
         case 8: {
@@ -3718,7 +3718,9 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
       totalTasks: isSet(object.totalTasks) ? globalThis.String(object.totalTasks) : "",
-      completedTasks: isSet(object.completedTasks) ? globalThis.String(object.completedTasks) : "",
+      completedTasks: globalThis.Array.isArray(object?.completedTasks)
+        ? object.completedTasks.map((e: any) => globalThis.String(e))
+        : [],
       isCompleted: isSet(object.isCompleted) ? globalThis.Boolean(object.isCompleted) : false,
       joinedAt: isSet(object.joinedAt) ? globalThis.String(object.joinedAt) : "",
       completedAt: isSet(object.completedAt) ? globalThis.String(object.completedAt) : "",
@@ -3748,7 +3750,7 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
     if (message.totalTasks !== "") {
       obj.totalTasks = message.totalTasks;
     }
-    if (message.completedTasks !== "") {
+    if (message.completedTasks?.length) {
       obj.completedTasks = message.completedTasks;
     }
     if (message.isCompleted !== false) {
@@ -3783,7 +3785,7 @@ export const CampaignProgressParticipant: MessageFns<CampaignProgressParticipant
     message.name = object.name ?? "";
     message.avatarUrl = object.avatarUrl ?? "";
     message.totalTasks = object.totalTasks ?? "";
-    message.completedTasks = object.completedTasks ?? "";
+    message.completedTasks = object.completedTasks?.map((e) => e) || [];
     message.isCompleted = object.isCompleted ?? false;
     message.joinedAt = object.joinedAt ?? "";
     message.completedAt = object.completedAt ?? "";
