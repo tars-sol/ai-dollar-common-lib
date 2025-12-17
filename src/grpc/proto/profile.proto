@@ -8,7 +8,7 @@ service ProfileService {
   rpc GetProfileById (GetProfileByIdRequest) returns (ProfileResponse);
   rpc SubscribeProfile (SubscribeRequest) returns (SuccessResponse);
   rpc SearchProfiles (SearchProfilesRequest) returns (SearchProfilesResponse);
-
+  rpc TrendingProfiles (TrendingProfilesRequest) returns (TrendingProfilesResponse);
 }
 
 message SubscribeRequest{
@@ -91,14 +91,14 @@ message GetProfileByIdRequest {
 }
 
 message SuccessResponse{
-  bool success = 1 ; 
+  bool success = 1 ;
 }
 
 
 message SearchProfilesRequest {
-  string q    = 1;  
-  int32  page = 2;  
-  int32  limit = 3; 
+  string q    = 1;
+  int32  page = 2;
+  int32  limit = 3;
   string role = 4;
   string roleId = 5;
 }
@@ -114,5 +114,24 @@ message ProfileSearchItem {
 
 message SearchProfilesResponse {
   repeated ProfileSearchItem results = 1;
+  int32 total = 2;
+}
+
+message TrendingProfilesRequest {
+  int32 pageNumber = 1; 
+  string role = 2;      
+  string roleId = 3;  
+}
+
+message TrendingProfileItem {
+  string profileId = 1;
+  string userId = 2;
+  string username = 3;
+  string name = 4;
+  string avatarUrl = 5;
+}
+
+message TrendingProfilesResponse {
+  repeated TrendingProfileItem profiles = 1;
   int32 total = 2;
 }

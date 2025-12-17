@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: profile.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.SearchProfilesResponse = exports.ProfileSearchItem = exports.SearchProfilesRequest = exports.SuccessResponse = exports.GetProfileByIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
+exports.ProfileServiceClientImpl = exports.ProfileServiceServiceName = exports.TrendingProfilesResponse = exports.TrendingProfileItem = exports.TrendingProfilesRequest = exports.SearchProfilesResponse = exports.ProfileSearchItem = exports.SearchProfilesRequest = exports.SuccessResponse = exports.GetProfileByIdRequest = exports.UpdateProfileRequest = exports.CreateProfileRequest = exports.ProfileResponse = exports.SubscribeRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "profile";
@@ -1562,6 +1562,272 @@ exports.SearchProfilesResponse = {
         return message;
     },
 };
+function createBaseTrendingProfilesRequest() {
+    return { pageNumber: 0, role: "", roleId: "" };
+}
+exports.TrendingProfilesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.pageNumber !== 0) {
+            writer.uint32(8).int32(message.pageNumber);
+        }
+        if (message.role !== "") {
+            writer.uint32(18).string(message.role);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(26).string(message.roleId);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTrendingProfilesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.pageNumber = reader.int32();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            pageNumber: isSet(object.pageNumber) ? globalThis.Number(object.pageNumber) : 0,
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.pageNumber !== 0) {
+            obj.pageNumber = Math.round(message.pageNumber);
+        }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TrendingProfilesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTrendingProfilesRequest();
+        message.pageNumber = object.pageNumber ?? 0;
+        message.role = object.role ?? "";
+        message.roleId = object.roleId ?? "";
+        return message;
+    },
+};
+function createBaseTrendingProfileItem() {
+    return { profileId: "", userId: "", username: "", name: "", avatarUrl: "" };
+}
+exports.TrendingProfileItem = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.profileId !== "") {
+            writer.uint32(10).string(message.profileId);
+        }
+        if (message.userId !== "") {
+            writer.uint32(18).string(message.userId);
+        }
+        if (message.username !== "") {
+            writer.uint32(26).string(message.username);
+        }
+        if (message.name !== "") {
+            writer.uint32(34).string(message.name);
+        }
+        if (message.avatarUrl !== "") {
+            writer.uint32(42).string(message.avatarUrl);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTrendingProfileItem();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.username = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.avatarUrl = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            username: isSet(object.username) ? globalThis.String(object.username) : "",
+            name: isSet(object.name) ? globalThis.String(object.name) : "",
+            avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.username !== "") {
+            obj.username = message.username;
+        }
+        if (message.name !== "") {
+            obj.name = message.name;
+        }
+        if (message.avatarUrl !== "") {
+            obj.avatarUrl = message.avatarUrl;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TrendingProfileItem.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTrendingProfileItem();
+        message.profileId = object.profileId ?? "";
+        message.userId = object.userId ?? "";
+        message.username = object.username ?? "";
+        message.name = object.name ?? "";
+        message.avatarUrl = object.avatarUrl ?? "";
+        return message;
+    },
+};
+function createBaseTrendingProfilesResponse() {
+    return { profiles: [], total: 0 };
+}
+exports.TrendingProfilesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.profiles) {
+            exports.TrendingProfileItem.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.total !== 0) {
+            writer.uint32(16).int32(message.total);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseTrendingProfilesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.profiles.push(exports.TrendingProfileItem.decode(reader, reader.uint32()));
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.total = reader.int32();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            profiles: globalThis.Array.isArray(object?.profiles)
+                ? object.profiles.map((e) => exports.TrendingProfileItem.fromJSON(e))
+                : [],
+            total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.profiles?.length) {
+            obj.profiles = message.profiles.map((e) => exports.TrendingProfileItem.toJSON(e));
+        }
+        if (message.total !== 0) {
+            obj.total = Math.round(message.total);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.TrendingProfilesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseTrendingProfilesResponse();
+        message.profiles = object.profiles?.map((e) => exports.TrendingProfileItem.fromPartial(e)) || [];
+        message.total = object.total ?? 0;
+        return message;
+    },
+};
 exports.ProfileServiceServiceName = "profile.ProfileService";
 class ProfileServiceClientImpl {
     constructor(rpc, opts) {
@@ -1572,6 +1838,7 @@ class ProfileServiceClientImpl {
         this.GetProfileById = this.GetProfileById.bind(this);
         this.SubscribeProfile = this.SubscribeProfile.bind(this);
         this.SearchProfiles = this.SearchProfiles.bind(this);
+        this.TrendingProfiles = this.TrendingProfiles.bind(this);
     }
     Create(request) {
         const data = exports.CreateProfileRequest.encode(request).finish();
@@ -1597,6 +1864,11 @@ class ProfileServiceClientImpl {
         const data = exports.SearchProfilesRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "SearchProfiles", data);
         return promise.then((data) => exports.SearchProfilesResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    TrendingProfiles(request) {
+        const data = exports.TrendingProfilesRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "TrendingProfiles", data);
+        return promise.then((data) => exports.TrendingProfilesResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.ProfileServiceClientImpl = ProfileServiceClientImpl;

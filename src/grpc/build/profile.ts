@@ -113,6 +113,25 @@ export interface SearchProfilesResponse {
   total: number;
 }
 
+export interface TrendingProfilesRequest {
+  pageNumber: number;
+  role: string;
+  roleId: string;
+}
+
+export interface TrendingProfileItem {
+  profileId: string;
+  userId: string;
+  username: string;
+  name: string;
+  avatarUrl: string;
+}
+
+export interface TrendingProfilesResponse {
+  profiles: TrendingProfileItem[];
+  total: number;
+}
+
 function createBaseSubscribeRequest(): SubscribeRequest {
   return { targetId: "", subscribe: false, roleId: "", userId: "", role: "" };
 }
@@ -1797,12 +1816,307 @@ export const SearchProfilesResponse: MessageFns<SearchProfilesResponse> = {
   },
 };
 
+function createBaseTrendingProfilesRequest(): TrendingProfilesRequest {
+  return { pageNumber: 0, role: "", roleId: "" };
+}
+
+export const TrendingProfilesRequest: MessageFns<TrendingProfilesRequest> = {
+  encode(message: TrendingProfilesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.pageNumber !== 0) {
+      writer.uint32(8).int32(message.pageNumber);
+    }
+    if (message.role !== "") {
+      writer.uint32(18).string(message.role);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(26).string(message.roleId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TrendingProfilesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTrendingProfilesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TrendingProfilesRequest {
+    return {
+      pageNumber: isSet(object.pageNumber) ? globalThis.Number(object.pageNumber) : 0,
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+    };
+  },
+
+  toJSON(message: TrendingProfilesRequest): unknown {
+    const obj: any = {};
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TrendingProfilesRequest>, I>>(base?: I): TrendingProfilesRequest {
+    return TrendingProfilesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TrendingProfilesRequest>, I>>(object: I): TrendingProfilesRequest {
+    const message = createBaseTrendingProfilesRequest();
+    message.pageNumber = object.pageNumber ?? 0;
+    message.role = object.role ?? "";
+    message.roleId = object.roleId ?? "";
+    return message;
+  },
+};
+
+function createBaseTrendingProfileItem(): TrendingProfileItem {
+  return { profileId: "", userId: "", username: "", name: "", avatarUrl: "" };
+}
+
+export const TrendingProfileItem: MessageFns<TrendingProfileItem> = {
+  encode(message: TrendingProfileItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
+    }
+    if (message.username !== "") {
+      writer.uint32(26).string(message.username);
+    }
+    if (message.name !== "") {
+      writer.uint32(34).string(message.name);
+    }
+    if (message.avatarUrl !== "") {
+      writer.uint32(42).string(message.avatarUrl);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TrendingProfileItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTrendingProfileItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.avatarUrl = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TrendingProfileItem {
+    return {
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
+    };
+  },
+
+  toJSON(message: TrendingProfileItem): unknown {
+    const obj: any = {};
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.avatarUrl !== "") {
+      obj.avatarUrl = message.avatarUrl;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TrendingProfileItem>, I>>(base?: I): TrendingProfileItem {
+    return TrendingProfileItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TrendingProfileItem>, I>>(object: I): TrendingProfileItem {
+    const message = createBaseTrendingProfileItem();
+    message.profileId = object.profileId ?? "";
+    message.userId = object.userId ?? "";
+    message.username = object.username ?? "";
+    message.name = object.name ?? "";
+    message.avatarUrl = object.avatarUrl ?? "";
+    return message;
+  },
+};
+
+function createBaseTrendingProfilesResponse(): TrendingProfilesResponse {
+  return { profiles: [], total: 0 };
+}
+
+export const TrendingProfilesResponse: MessageFns<TrendingProfilesResponse> = {
+  encode(message: TrendingProfilesResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.profiles) {
+      TrendingProfileItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.total !== 0) {
+      writer.uint32(16).int32(message.total);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TrendingProfilesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTrendingProfilesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profiles.push(TrendingProfileItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TrendingProfilesResponse {
+    return {
+      profiles: globalThis.Array.isArray(object?.profiles)
+        ? object.profiles.map((e: any) => TrendingProfileItem.fromJSON(e))
+        : [],
+      total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+    };
+  },
+
+  toJSON(message: TrendingProfilesResponse): unknown {
+    const obj: any = {};
+    if (message.profiles?.length) {
+      obj.profiles = message.profiles.map((e) => TrendingProfileItem.toJSON(e));
+    }
+    if (message.total !== 0) {
+      obj.total = Math.round(message.total);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TrendingProfilesResponse>, I>>(base?: I): TrendingProfilesResponse {
+    return TrendingProfilesResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TrendingProfilesResponse>, I>>(object: I): TrendingProfilesResponse {
+    const message = createBaseTrendingProfilesResponse();
+    message.profiles = object.profiles?.map((e) => TrendingProfileItem.fromPartial(e)) || [];
+    message.total = object.total ?? 0;
+    return message;
+  },
+};
+
 export interface ProfileService {
   Create(request: CreateProfileRequest): Promise<ProfileResponse>;
   Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
   GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
   SubscribeProfile(request: SubscribeRequest): Promise<SuccessResponse>;
   SearchProfiles(request: SearchProfilesRequest): Promise<SearchProfilesResponse>;
+  TrendingProfiles(request: TrendingProfilesRequest): Promise<TrendingProfilesResponse>;
 }
 
 export const ProfileServiceServiceName = "profile.ProfileService";
@@ -1817,6 +2131,7 @@ export class ProfileServiceClientImpl implements ProfileService {
     this.GetProfileById = this.GetProfileById.bind(this);
     this.SubscribeProfile = this.SubscribeProfile.bind(this);
     this.SearchProfiles = this.SearchProfiles.bind(this);
+    this.TrendingProfiles = this.TrendingProfiles.bind(this);
   }
   Create(request: CreateProfileRequest): Promise<ProfileResponse> {
     const data = CreateProfileRequest.encode(request).finish();
@@ -1846,6 +2161,12 @@ export class ProfileServiceClientImpl implements ProfileService {
     const data = SearchProfilesRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SearchProfiles", data);
     return promise.then((data) => SearchProfilesResponse.decode(new BinaryReader(data)));
+  }
+
+  TrendingProfiles(request: TrendingProfilesRequest): Promise<TrendingProfilesResponse> {
+    const data = TrendingProfilesRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "TrendingProfiles", data);
+    return promise.then((data) => TrendingProfilesResponse.decode(new BinaryReader(data)));
   }
 }
 

@@ -95,6 +95,22 @@ export interface SearchProfilesResponse {
     results: ProfileSearchItem[];
     total: number;
 }
+export interface TrendingProfilesRequest {
+    pageNumber: number;
+    role: string;
+    roleId: string;
+}
+export interface TrendingProfileItem {
+    profileId: string;
+    userId: string;
+    username: string;
+    name: string;
+    avatarUrl: string;
+}
+export interface TrendingProfilesResponse {
+    profiles: TrendingProfileItem[];
+    total: number;
+}
 export declare const SubscribeRequest: MessageFns<SubscribeRequest>;
 export declare const ProfileResponse: MessageFns<ProfileResponse>;
 export declare const CreateProfileRequest: MessageFns<CreateProfileRequest>;
@@ -104,12 +120,16 @@ export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const SearchProfilesRequest: MessageFns<SearchProfilesRequest>;
 export declare const ProfileSearchItem: MessageFns<ProfileSearchItem>;
 export declare const SearchProfilesResponse: MessageFns<SearchProfilesResponse>;
+export declare const TrendingProfilesRequest: MessageFns<TrendingProfilesRequest>;
+export declare const TrendingProfileItem: MessageFns<TrendingProfileItem>;
+export declare const TrendingProfilesResponse: MessageFns<TrendingProfilesResponse>;
 export interface ProfileService {
     Create(request: CreateProfileRequest): Promise<ProfileResponse>;
     Update(request: UpdateProfileRequest): Promise<ProfileResponse>;
     GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
     SubscribeProfile(request: SubscribeRequest): Promise<SuccessResponse>;
     SearchProfiles(request: SearchProfilesRequest): Promise<SearchProfilesResponse>;
+    TrendingProfiles(request: TrendingProfilesRequest): Promise<TrendingProfilesResponse>;
 }
 export declare const ProfileServiceServiceName = "profile.ProfileService";
 export declare class ProfileServiceClientImpl implements ProfileService {
@@ -123,6 +143,7 @@ export declare class ProfileServiceClientImpl implements ProfileService {
     GetProfileById(request: GetProfileByIdRequest): Promise<ProfileResponse>;
     SubscribeProfile(request: SubscribeRequest): Promise<SuccessResponse>;
     SearchProfiles(request: SearchProfilesRequest): Promise<SearchProfilesResponse>;
+    TrendingProfiles(request: TrendingProfilesRequest): Promise<TrendingProfilesResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
