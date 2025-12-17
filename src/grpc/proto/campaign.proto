@@ -23,6 +23,7 @@ service CampaignService {
   rpc GetJoinedCampaignsByProfileId(CampaignsByProfileIdRequest) returns (GetCampaignsResponse);
   rpc GetCampaignProgress(GetCampaignProgressRequest) returns (GetCampaignProgressResponse);
   rpc GetProfileCampaignProgress(GetProfileCampaignProgressRequest) returns (GetProfileCampaignProgressResponse);
+  rpc TrendingCampaigns(TrendingCampaignsRequest) returns (TrendingCampaignsResponse);
 }
 
 // Request message for creating a campaign
@@ -262,3 +263,23 @@ message ProfileCampaignTaskProgressItem {
 message GetProfileCampaignProgressResponse {
   repeated ProfileCampaignTaskProgressItem items = 1;
 }
+
+message TrendingCampaignsRequest {
+  optional string pageNumber = 1;
+}
+
+message TrendingCampaignItem {
+  string id = 1;
+  string name = 2;
+  string brandId = 3;
+  string brandName = 4;
+  string bannerUrl = 5;
+  string totalParticipants = 6;
+  double amountToInvest = 7;
+}
+
+message TrendingCampaignsResponse {
+  repeated TrendingCampaignItem campaigns = 1;
+  int32 total = 2;
+}
+

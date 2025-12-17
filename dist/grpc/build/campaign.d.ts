@@ -225,6 +225,22 @@ export interface ProfileCampaignTaskProgressItem {
 export interface GetProfileCampaignProgressResponse {
     items: ProfileCampaignTaskProgressItem[];
 }
+export interface TrendingCampaignsRequest {
+    pageNumber?: string | undefined;
+}
+export interface TrendingCampaignItem {
+    id: string;
+    name: string;
+    brandId: string;
+    brandName: string;
+    bannerUrl: string;
+    totalParticipants: string;
+    amountToInvest: number;
+}
+export interface TrendingCampaignsResponse {
+    campaigns: TrendingCampaignItem[];
+    total: number;
+}
 export declare const CreateCampaignRequest: MessageFns<CreateCampaignRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const TaskInput: MessageFns<TaskInput>;
@@ -259,6 +275,9 @@ export declare const GetCampaignProgressResponse: MessageFns<GetCampaignProgress
 export declare const GetProfileCampaignProgressRequest: MessageFns<GetProfileCampaignProgressRequest>;
 export declare const ProfileCampaignTaskProgressItem: MessageFns<ProfileCampaignTaskProgressItem>;
 export declare const GetProfileCampaignProgressResponse: MessageFns<GetProfileCampaignProgressResponse>;
+export declare const TrendingCampaignsRequest: MessageFns<TrendingCampaignsRequest>;
+export declare const TrendingCampaignItem: MessageFns<TrendingCampaignItem>;
+export declare const TrendingCampaignsResponse: MessageFns<TrendingCampaignsResponse>;
 /** gRPC Service */
 export interface CampaignService {
     CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
@@ -279,6 +298,7 @@ export interface CampaignService {
     GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
     GetCampaignProgress(request: GetCampaignProgressRequest): Promise<GetCampaignProgressResponse>;
     GetProfileCampaignProgress(request: GetProfileCampaignProgressRequest): Promise<GetProfileCampaignProgressResponse>;
+    TrendingCampaigns(request: TrendingCampaignsRequest): Promise<TrendingCampaignsResponse>;
 }
 export declare const CampaignServiceServiceName = "campaign.CampaignService";
 export declare class CampaignServiceClientImpl implements CampaignService {
@@ -305,6 +325,7 @@ export declare class CampaignServiceClientImpl implements CampaignService {
     GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
     GetCampaignProgress(request: GetCampaignProgressRequest): Promise<GetCampaignProgressResponse>;
     GetProfileCampaignProgress(request: GetProfileCampaignProgressRequest): Promise<GetProfileCampaignProgressResponse>;
+    TrendingCampaigns(request: TrendingCampaignsRequest): Promise<TrendingCampaignsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

@@ -282,6 +282,25 @@ export interface GetProfileCampaignProgressResponse {
   items: ProfileCampaignTaskProgressItem[];
 }
 
+export interface TrendingCampaignsRequest {
+  pageNumber?: string | undefined;
+}
+
+export interface TrendingCampaignItem {
+  id: string;
+  name: string;
+  brandId: string;
+  brandName: string;
+  bannerUrl: string;
+  totalParticipants: string;
+  amountToInvest: number;
+}
+
+export interface TrendingCampaignsResponse {
+  campaigns: TrendingCampaignItem[];
+  total: number;
+}
+
 function createBaseCreateCampaignRequest(): CreateCampaignRequest {
   return {
     brandId: "",
@@ -4217,6 +4236,298 @@ export const GetProfileCampaignProgressResponse: MessageFns<GetProfileCampaignPr
   },
 };
 
+function createBaseTrendingCampaignsRequest(): TrendingCampaignsRequest {
+  return { pageNumber: undefined };
+}
+
+export const TrendingCampaignsRequest: MessageFns<TrendingCampaignsRequest> = {
+  encode(message: TrendingCampaignsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.pageNumber !== undefined) {
+      writer.uint32(10).string(message.pageNumber);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TrendingCampaignsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTrendingCampaignsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.pageNumber = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TrendingCampaignsRequest {
+    return { pageNumber: isSet(object.pageNumber) ? globalThis.String(object.pageNumber) : undefined };
+  },
+
+  toJSON(message: TrendingCampaignsRequest): unknown {
+    const obj: any = {};
+    if (message.pageNumber !== undefined) {
+      obj.pageNumber = message.pageNumber;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TrendingCampaignsRequest>, I>>(base?: I): TrendingCampaignsRequest {
+    return TrendingCampaignsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TrendingCampaignsRequest>, I>>(object: I): TrendingCampaignsRequest {
+    const message = createBaseTrendingCampaignsRequest();
+    message.pageNumber = object.pageNumber ?? undefined;
+    return message;
+  },
+};
+
+function createBaseTrendingCampaignItem(): TrendingCampaignItem {
+  return { id: "", name: "", brandId: "", brandName: "", bannerUrl: "", totalParticipants: "", amountToInvest: 0 };
+}
+
+export const TrendingCampaignItem: MessageFns<TrendingCampaignItem> = {
+  encode(message: TrendingCampaignItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.brandId !== "") {
+      writer.uint32(26).string(message.brandId);
+    }
+    if (message.brandName !== "") {
+      writer.uint32(34).string(message.brandName);
+    }
+    if (message.bannerUrl !== "") {
+      writer.uint32(42).string(message.bannerUrl);
+    }
+    if (message.totalParticipants !== "") {
+      writer.uint32(50).string(message.totalParticipants);
+    }
+    if (message.amountToInvest !== 0) {
+      writer.uint32(57).double(message.amountToInvest);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TrendingCampaignItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTrendingCampaignItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.brandName = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.bannerUrl = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.totalParticipants = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 57) {
+            break;
+          }
+
+          message.amountToInvest = reader.double();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TrendingCampaignItem {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      brandName: isSet(object.brandName) ? globalThis.String(object.brandName) : "",
+      bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : "",
+      totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
+      amountToInvest: isSet(object.amountToInvest) ? globalThis.Number(object.amountToInvest) : 0,
+    };
+  },
+
+  toJSON(message: TrendingCampaignItem): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    if (message.brandName !== "") {
+      obj.brandName = message.brandName;
+    }
+    if (message.bannerUrl !== "") {
+      obj.bannerUrl = message.bannerUrl;
+    }
+    if (message.totalParticipants !== "") {
+      obj.totalParticipants = message.totalParticipants;
+    }
+    if (message.amountToInvest !== 0) {
+      obj.amountToInvest = message.amountToInvest;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TrendingCampaignItem>, I>>(base?: I): TrendingCampaignItem {
+    return TrendingCampaignItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TrendingCampaignItem>, I>>(object: I): TrendingCampaignItem {
+    const message = createBaseTrendingCampaignItem();
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
+    message.brandId = object.brandId ?? "";
+    message.brandName = object.brandName ?? "";
+    message.bannerUrl = object.bannerUrl ?? "";
+    message.totalParticipants = object.totalParticipants ?? "";
+    message.amountToInvest = object.amountToInvest ?? 0;
+    return message;
+  },
+};
+
+function createBaseTrendingCampaignsResponse(): TrendingCampaignsResponse {
+  return { campaigns: [], total: 0 };
+}
+
+export const TrendingCampaignsResponse: MessageFns<TrendingCampaignsResponse> = {
+  encode(message: TrendingCampaignsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.campaigns) {
+      TrendingCampaignItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.total !== 0) {
+      writer.uint32(16).int32(message.total);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TrendingCampaignsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTrendingCampaignsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campaigns.push(TrendingCampaignItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TrendingCampaignsResponse {
+    return {
+      campaigns: globalThis.Array.isArray(object?.campaigns)
+        ? object.campaigns.map((e: any) => TrendingCampaignItem.fromJSON(e))
+        : [],
+      total: isSet(object.total) ? globalThis.Number(object.total) : 0,
+    };
+  },
+
+  toJSON(message: TrendingCampaignsResponse): unknown {
+    const obj: any = {};
+    if (message.campaigns?.length) {
+      obj.campaigns = message.campaigns.map((e) => TrendingCampaignItem.toJSON(e));
+    }
+    if (message.total !== 0) {
+      obj.total = Math.round(message.total);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TrendingCampaignsResponse>, I>>(base?: I): TrendingCampaignsResponse {
+    return TrendingCampaignsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TrendingCampaignsResponse>, I>>(object: I): TrendingCampaignsResponse {
+    const message = createBaseTrendingCampaignsResponse();
+    message.campaigns = object.campaigns?.map((e) => TrendingCampaignItem.fromPartial(e)) || [];
+    message.total = object.total ?? 0;
+    return message;
+  },
+};
+
 /** gRPC Service */
 export interface CampaignService {
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse>;
@@ -4237,6 +4548,7 @@ export interface CampaignService {
   GetJoinedCampaignsByProfileId(request: CampaignsByProfileIdRequest): Promise<GetCampaignsResponse>;
   GetCampaignProgress(request: GetCampaignProgressRequest): Promise<GetCampaignProgressResponse>;
   GetProfileCampaignProgress(request: GetProfileCampaignProgressRequest): Promise<GetProfileCampaignProgressResponse>;
+  TrendingCampaigns(request: TrendingCampaignsRequest): Promise<TrendingCampaignsResponse>;
 }
 
 export const CampaignServiceServiceName = "campaign.CampaignService";
@@ -4264,6 +4576,7 @@ export class CampaignServiceClientImpl implements CampaignService {
     this.GetJoinedCampaignsByProfileId = this.GetJoinedCampaignsByProfileId.bind(this);
     this.GetCampaignProgress = this.GetCampaignProgress.bind(this);
     this.GetProfileCampaignProgress = this.GetProfileCampaignProgress.bind(this);
+    this.TrendingCampaigns = this.TrendingCampaigns.bind(this);
   }
   CreateCampaign(request: CreateCampaignRequest): Promise<CampaignResponse> {
     const data = CreateCampaignRequest.encode(request).finish();
@@ -4371,6 +4684,12 @@ export class CampaignServiceClientImpl implements CampaignService {
     const data = GetProfileCampaignProgressRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetProfileCampaignProgress", data);
     return promise.then((data) => GetProfileCampaignProgressResponse.decode(new BinaryReader(data)));
+  }
+
+  TrendingCampaigns(request: TrendingCampaignsRequest): Promise<TrendingCampaignsResponse> {
+    const data = TrendingCampaignsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "TrendingCampaigns", data);
+    return promise.then((data) => TrendingCampaignsResponse.decode(new BinaryReader(data)));
   }
 }
 
