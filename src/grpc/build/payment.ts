@@ -72,6 +72,27 @@ export interface ConnectAccountResponse {
   requiredFields: string[];
 }
 
+export interface GetProfilePayoutHistoryRequest {
+  profileId: string;
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface ProfilePayoutHistoryItem {
+  campaignName: string;
+  brandName: string;
+  brandLogo: string;
+  campaignCreatedDate: string;
+  campaignEndDate: string;
+  paymentDate: string;
+  amount: string;
+}
+
+export interface GetProfilePayoutHistoryResponse {
+  items: ProfilePayoutHistoryItem[];
+  totalItems: number;
+}
+
 function createBasePayoutRequest(): PayoutRequest {
   return { brandId: "", campaignId: "", payoutAmounts: [], isEqual: false };
 }
@@ -1018,6 +1039,344 @@ export const ConnectAccountResponse: MessageFns<ConnectAccountResponse> = {
   },
 };
 
+function createBaseGetProfilePayoutHistoryRequest(): GetProfilePayoutHistoryRequest {
+  return { profileId: "", pageNumber: 0, pageSize: 0 };
+}
+
+export const GetProfilePayoutHistoryRequest: MessageFns<GetProfilePayoutHistoryRequest> = {
+  encode(message: GetProfilePayoutHistoryRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.profileId !== "") {
+      writer.uint32(10).string(message.profileId);
+    }
+    if (message.pageNumber !== 0) {
+      writer.uint32(16).int32(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(24).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetProfilePayoutHistoryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetProfilePayoutHistoryRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.profileId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.pageNumber = reader.int32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.pageSize = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetProfilePayoutHistoryRequest {
+    return {
+      profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+      pageNumber: isSet(object.pageNumber) ? globalThis.Number(object.pageNumber) : 0,
+      pageSize: isSet(object.pageSize) ? globalThis.Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: GetProfilePayoutHistoryRequest): unknown {
+    const obj: any = {};
+    if (message.profileId !== "") {
+      obj.profileId = message.profileId;
+    }
+    if (message.pageNumber !== 0) {
+      obj.pageNumber = Math.round(message.pageNumber);
+    }
+    if (message.pageSize !== 0) {
+      obj.pageSize = Math.round(message.pageSize);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetProfilePayoutHistoryRequest>, I>>(base?: I): GetProfilePayoutHistoryRequest {
+    return GetProfilePayoutHistoryRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetProfilePayoutHistoryRequest>, I>>(
+    object: I,
+  ): GetProfilePayoutHistoryRequest {
+    const message = createBaseGetProfilePayoutHistoryRequest();
+    message.profileId = object.profileId ?? "";
+    message.pageNumber = object.pageNumber ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseProfilePayoutHistoryItem(): ProfilePayoutHistoryItem {
+  return {
+    campaignName: "",
+    brandName: "",
+    brandLogo: "",
+    campaignCreatedDate: "",
+    campaignEndDate: "",
+    paymentDate: "",
+    amount: "",
+  };
+}
+
+export const ProfilePayoutHistoryItem: MessageFns<ProfilePayoutHistoryItem> = {
+  encode(message: ProfilePayoutHistoryItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.campaignName !== "") {
+      writer.uint32(10).string(message.campaignName);
+    }
+    if (message.brandName !== "") {
+      writer.uint32(18).string(message.brandName);
+    }
+    if (message.brandLogo !== "") {
+      writer.uint32(26).string(message.brandLogo);
+    }
+    if (message.campaignCreatedDate !== "") {
+      writer.uint32(34).string(message.campaignCreatedDate);
+    }
+    if (message.campaignEndDate !== "") {
+      writer.uint32(42).string(message.campaignEndDate);
+    }
+    if (message.paymentDate !== "") {
+      writer.uint32(50).string(message.paymentDate);
+    }
+    if (message.amount !== "") {
+      writer.uint32(58).string(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ProfilePayoutHistoryItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseProfilePayoutHistoryItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.campaignName = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.brandName = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.brandLogo = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.campaignCreatedDate = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.campaignEndDate = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.paymentDate = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.amount = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ProfilePayoutHistoryItem {
+    return {
+      campaignName: isSet(object.campaignName) ? globalThis.String(object.campaignName) : "",
+      brandName: isSet(object.brandName) ? globalThis.String(object.brandName) : "",
+      brandLogo: isSet(object.brandLogo) ? globalThis.String(object.brandLogo) : "",
+      campaignCreatedDate: isSet(object.campaignCreatedDate) ? globalThis.String(object.campaignCreatedDate) : "",
+      campaignEndDate: isSet(object.campaignEndDate) ? globalThis.String(object.campaignEndDate) : "",
+      paymentDate: isSet(object.paymentDate) ? globalThis.String(object.paymentDate) : "",
+      amount: isSet(object.amount) ? globalThis.String(object.amount) : "",
+    };
+  },
+
+  toJSON(message: ProfilePayoutHistoryItem): unknown {
+    const obj: any = {};
+    if (message.campaignName !== "") {
+      obj.campaignName = message.campaignName;
+    }
+    if (message.brandName !== "") {
+      obj.brandName = message.brandName;
+    }
+    if (message.brandLogo !== "") {
+      obj.brandLogo = message.brandLogo;
+    }
+    if (message.campaignCreatedDate !== "") {
+      obj.campaignCreatedDate = message.campaignCreatedDate;
+    }
+    if (message.campaignEndDate !== "") {
+      obj.campaignEndDate = message.campaignEndDate;
+    }
+    if (message.paymentDate !== "") {
+      obj.paymentDate = message.paymentDate;
+    }
+    if (message.amount !== "") {
+      obj.amount = message.amount;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ProfilePayoutHistoryItem>, I>>(base?: I): ProfilePayoutHistoryItem {
+    return ProfilePayoutHistoryItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ProfilePayoutHistoryItem>, I>>(object: I): ProfilePayoutHistoryItem {
+    const message = createBaseProfilePayoutHistoryItem();
+    message.campaignName = object.campaignName ?? "";
+    message.brandName = object.brandName ?? "";
+    message.brandLogo = object.brandLogo ?? "";
+    message.campaignCreatedDate = object.campaignCreatedDate ?? "";
+    message.campaignEndDate = object.campaignEndDate ?? "";
+    message.paymentDate = object.paymentDate ?? "";
+    message.amount = object.amount ?? "";
+    return message;
+  },
+};
+
+function createBaseGetProfilePayoutHistoryResponse(): GetProfilePayoutHistoryResponse {
+  return { items: [], totalItems: 0 };
+}
+
+export const GetProfilePayoutHistoryResponse: MessageFns<GetProfilePayoutHistoryResponse> = {
+  encode(message: GetProfilePayoutHistoryResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.items) {
+      ProfilePayoutHistoryItem.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.totalItems !== 0) {
+      writer.uint32(16).int32(message.totalItems);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetProfilePayoutHistoryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetProfilePayoutHistoryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.items.push(ProfilePayoutHistoryItem.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.totalItems = reader.int32();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetProfilePayoutHistoryResponse {
+    return {
+      items: globalThis.Array.isArray(object?.items)
+        ? object.items.map((e: any) => ProfilePayoutHistoryItem.fromJSON(e))
+        : [],
+      totalItems: isSet(object.totalItems) ? globalThis.Number(object.totalItems) : 0,
+    };
+  },
+
+  toJSON(message: GetProfilePayoutHistoryResponse): unknown {
+    const obj: any = {};
+    if (message.items?.length) {
+      obj.items = message.items.map((e) => ProfilePayoutHistoryItem.toJSON(e));
+    }
+    if (message.totalItems !== 0) {
+      obj.totalItems = Math.round(message.totalItems);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetProfilePayoutHistoryResponse>, I>>(base?: I): GetProfilePayoutHistoryResponse {
+    return GetProfilePayoutHistoryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetProfilePayoutHistoryResponse>, I>>(
+    object: I,
+  ): GetProfilePayoutHistoryResponse {
+    const message = createBaseGetProfilePayoutHistoryResponse();
+    message.items = object.items?.map((e) => ProfilePayoutHistoryItem.fromPartial(e)) || [];
+    message.totalItems = object.totalItems ?? 0;
+    return message;
+  },
+};
+
 export interface PaymentService {
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
   HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
@@ -1027,6 +1386,7 @@ export interface PaymentService {
   SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
   Health(request: Empty): Promise<SuccessResponse>;
   RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
+  GetProfilePayoutHistory(request: GetProfilePayoutHistoryRequest): Promise<GetProfilePayoutHistoryResponse>;
 }
 
 export const PaymentServiceServiceName = "payment.PaymentService";
@@ -1044,6 +1404,7 @@ export class PaymentServiceClientImpl implements PaymentService {
     this.SendPayout = this.SendPayout.bind(this);
     this.Health = this.Health.bind(this);
     this.RefundPayment = this.RefundPayment.bind(this);
+    this.GetProfilePayoutHistory = this.GetProfilePayoutHistory.bind(this);
   }
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {
     const data = CreatePaymentIntentRequest.encode(request).finish();
@@ -1091,6 +1452,12 @@ export class PaymentServiceClientImpl implements PaymentService {
     const data = RefundRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "RefundPayment", data);
     return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
+  }
+
+  GetProfilePayoutHistory(request: GetProfilePayoutHistoryRequest): Promise<GetProfilePayoutHistoryResponse> {
+    const data = GetProfilePayoutHistoryRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetProfilePayoutHistory", data);
+    return promise.then((data) => GetProfilePayoutHistoryResponse.decode(new BinaryReader(data)));
   }
 }
 

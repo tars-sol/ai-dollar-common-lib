@@ -52,6 +52,24 @@ export interface ConnectAccountResponse {
     onBoardingUrl: string;
     requiredFields: string[];
 }
+export interface GetProfilePayoutHistoryRequest {
+    profileId: string;
+    pageNumber: number;
+    pageSize: number;
+}
+export interface ProfilePayoutHistoryItem {
+    campaignName: string;
+    brandName: string;
+    brandLogo: string;
+    campaignCreatedDate: string;
+    campaignEndDate: string;
+    paymentDate: string;
+    amount: string;
+}
+export interface GetProfilePayoutHistoryResponse {
+    items: ProfilePayoutHistoryItem[];
+    totalItems: number;
+}
 export declare const PayoutRequest: MessageFns<PayoutRequest>;
 export declare const PayoutAmount: MessageFns<PayoutAmount>;
 export declare const RefundRequest: MessageFns<RefundRequest>;
@@ -63,6 +81,9 @@ export declare const PaymentRefundEvent: MessageFns<PaymentRefundEvent>;
 export declare const StripeResponse: MessageFns<StripeResponse>;
 export declare const ConnectedAccountRequest: MessageFns<ConnectedAccountRequest>;
 export declare const ConnectAccountResponse: MessageFns<ConnectAccountResponse>;
+export declare const GetProfilePayoutHistoryRequest: MessageFns<GetProfilePayoutHistoryRequest>;
+export declare const ProfilePayoutHistoryItem: MessageFns<ProfilePayoutHistoryItem>;
+export declare const GetProfilePayoutHistoryResponse: MessageFns<GetProfilePayoutHistoryResponse>;
 export interface PaymentService {
     CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
@@ -72,6 +93,7 @@ export interface PaymentService {
     SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
     RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
+    GetProfilePayoutHistory(request: GetProfilePayoutHistoryRequest): Promise<GetProfilePayoutHistoryResponse>;
 }
 export declare const PaymentServiceServiceName = "payment.PaymentService";
 export declare class PaymentServiceClientImpl implements PaymentService {
@@ -88,6 +110,7 @@ export declare class PaymentServiceClientImpl implements PaymentService {
     SendPayout(request: PayoutRequest): Promise<SuccessResponse>;
     Health(request: Empty): Promise<SuccessResponse>;
     RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
+    GetProfilePayoutHistory(request: GetProfilePayoutHistoryRequest): Promise<GetProfilePayoutHistoryResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

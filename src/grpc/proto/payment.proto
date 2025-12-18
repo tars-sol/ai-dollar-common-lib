@@ -12,6 +12,7 @@ service PaymentService {
   rpc SendPayout(PayoutRequest) returns (SuccessResponse);
   rpc Health(google.protobuf.Empty) returns (SuccessResponse);
   rpc RefundPayment(RefundRequest) returns (SuccessResponse);
+  rpc GetProfilePayoutHistory(GetProfilePayoutHistoryRequest) returns (GetProfilePayoutHistoryResponse);
 }
 message PayoutRequest {
   string brandId = 1;
@@ -67,4 +68,25 @@ message ConnectAccountResponse {
   bool isActive = 3;
   string onBoardingUrl = 4;
   repeated string requiredFields = 5;
+}
+
+message GetProfilePayoutHistoryRequest {
+  string profileId = 1;
+  int32 pageNumber = 2;
+  int32 pageSize = 3;
+}
+
+message ProfilePayoutHistoryItem {
+  string campaignName = 1;
+  string brandName = 2;
+  string brandLogo = 3;
+  string campaignCreatedDate = 4;
+  string campaignEndDate = 5;
+  string paymentDate = 6;
+  string amount = 7;
+}
+
+message GetProfilePayoutHistoryResponse {
+  repeated ProfilePayoutHistoryItem items = 1;
+  int32 totalItems = 2;
 }
