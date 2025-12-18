@@ -120,7 +120,8 @@ message SearchProfilesResponse {
 message TrendingProfilesRequest {
   int32 pageNumber = 1; 
   string role = 2;      
-  string roleId = 3;  
+  string roleId = 3; 
+  string userId = 4; 
 }
 
 message TrendingProfileItem {
@@ -129,6 +130,8 @@ message TrendingProfileItem {
   string username = 3;
   string name = 4;
   string avatarUrl = 5;
+  bool isFollowing = 6;
+  bool isSubscribed = 7;
 }
 
 message TrendingProfilesResponse {

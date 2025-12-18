@@ -117,6 +117,7 @@ export interface TrendingProfilesRequest {
   pageNumber: number;
   role: string;
   roleId: string;
+  userId: string;
 }
 
 export interface TrendingProfileItem {
@@ -125,6 +126,8 @@ export interface TrendingProfileItem {
   username: string;
   name: string;
   avatarUrl: string;
+  isFollowing: boolean;
+  isSubscribed: boolean;
 }
 
 export interface TrendingProfilesResponse {
@@ -1817,7 +1820,7 @@ export const SearchProfilesResponse: MessageFns<SearchProfilesResponse> = {
 };
 
 function createBaseTrendingProfilesRequest(): TrendingProfilesRequest {
-  return { pageNumber: 0, role: "", roleId: "" };
+  return { pageNumber: 0, role: "", roleId: "", userId: "" };
 }
 
 export const TrendingProfilesRequest: MessageFns<TrendingProfilesRequest> = {
@@ -1830,6 +1833,9 @@ export const TrendingProfilesRequest: MessageFns<TrendingProfilesRequest> = {
     }
     if (message.roleId !== "") {
       writer.uint32(26).string(message.roleId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(34).string(message.userId);
     }
     return writer;
   },
@@ -1865,6 +1871,14 @@ export const TrendingProfilesRequest: MessageFns<TrendingProfilesRequest> = {
           message.roleId = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1879,6 +1893,7 @@ export const TrendingProfilesRequest: MessageFns<TrendingProfilesRequest> = {
       pageNumber: isSet(object.pageNumber) ? globalThis.Number(object.pageNumber) : 0,
       role: isSet(object.role) ? globalThis.String(object.role) : "",
       roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
     };
   },
 
@@ -1893,6 +1908,9 @@ export const TrendingProfilesRequest: MessageFns<TrendingProfilesRequest> = {
     if (message.roleId !== "") {
       obj.roleId = message.roleId;
     }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
     return obj;
   },
 
@@ -1904,12 +1922,13 @@ export const TrendingProfilesRequest: MessageFns<TrendingProfilesRequest> = {
     message.pageNumber = object.pageNumber ?? 0;
     message.role = object.role ?? "";
     message.roleId = object.roleId ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
 
 function createBaseTrendingProfileItem(): TrendingProfileItem {
-  return { profileId: "", userId: "", username: "", name: "", avatarUrl: "" };
+  return { profileId: "", userId: "", username: "", name: "", avatarUrl: "", isFollowing: false, isSubscribed: false };
 }
 
 export const TrendingProfileItem: MessageFns<TrendingProfileItem> = {
@@ -1928,6 +1947,12 @@ export const TrendingProfileItem: MessageFns<TrendingProfileItem> = {
     }
     if (message.avatarUrl !== "") {
       writer.uint32(42).string(message.avatarUrl);
+    }
+    if (message.isFollowing !== false) {
+      writer.uint32(48).bool(message.isFollowing);
+    }
+    if (message.isSubscribed !== false) {
+      writer.uint32(56).bool(message.isSubscribed);
     }
     return writer;
   },
@@ -1979,6 +2004,22 @@ export const TrendingProfileItem: MessageFns<TrendingProfileItem> = {
           message.avatarUrl = reader.string();
           continue;
         }
+        case 6: {
+          if (tag !== 48) {
+            break;
+          }
+
+          message.isFollowing = reader.bool();
+          continue;
+        }
+        case 7: {
+          if (tag !== 56) {
+            break;
+          }
+
+          message.isSubscribed = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1995,6 +2036,8 @@ export const TrendingProfileItem: MessageFns<TrendingProfileItem> = {
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       avatarUrl: isSet(object.avatarUrl) ? globalThis.String(object.avatarUrl) : "",
+      isFollowing: isSet(object.isFollowing) ? globalThis.Boolean(object.isFollowing) : false,
+      isSubscribed: isSet(object.isSubscribed) ? globalThis.Boolean(object.isSubscribed) : false,
     };
   },
 
@@ -2015,6 +2058,12 @@ export const TrendingProfileItem: MessageFns<TrendingProfileItem> = {
     if (message.avatarUrl !== "") {
       obj.avatarUrl = message.avatarUrl;
     }
+    if (message.isFollowing !== false) {
+      obj.isFollowing = message.isFollowing;
+    }
+    if (message.isSubscribed !== false) {
+      obj.isSubscribed = message.isSubscribed;
+    }
     return obj;
   },
 
@@ -2028,6 +2077,8 @@ export const TrendingProfileItem: MessageFns<TrendingProfileItem> = {
     message.username = object.username ?? "";
     message.name = object.name ?? "";
     message.avatarUrl = object.avatarUrl ?? "";
+    message.isFollowing = object.isFollowing ?? false;
+    message.isSubscribed = object.isSubscribed ?? false;
     return message;
   },
 };

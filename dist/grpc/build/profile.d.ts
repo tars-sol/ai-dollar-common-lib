@@ -99,6 +99,7 @@ export interface TrendingProfilesRequest {
     pageNumber: number;
     role: string;
     roleId: string;
+    userId: string;
 }
 export interface TrendingProfileItem {
     profileId: string;
@@ -106,6 +107,8 @@ export interface TrendingProfileItem {
     username: string;
     name: string;
     avatarUrl: string;
+    isFollowing: boolean;
+    isSubscribed: boolean;
 }
 export interface TrendingProfilesResponse {
     profiles: TrendingProfileItem[];
