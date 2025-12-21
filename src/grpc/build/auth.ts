@@ -70,8 +70,9 @@ export interface GenerateUploadUrlResponse_FieldsEntry {
 }
 
 export interface SsoLoginRequest {
-  idToken: string;
   provider: string;
+  idToken?: string | undefined;
+  code?: string | undefined;
 }
 
 export interface WalletNonceRequest {
@@ -1053,16 +1054,19 @@ export const GenerateUploadUrlResponse_FieldsEntry: MessageFns<GenerateUploadUrl
 };
 
 function createBaseSsoLoginRequest(): SsoLoginRequest {
-  return { idToken: "", provider: "" };
+  return { provider: "", idToken: undefined, code: undefined };
 }
 
 export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
   encode(message: SsoLoginRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.idToken !== "") {
-      writer.uint32(10).string(message.idToken);
-    }
     if (message.provider !== "") {
-      writer.uint32(18).string(message.provider);
+      writer.uint32(10).string(message.provider);
+    }
+    if (message.idToken !== undefined) {
+      writer.uint32(18).string(message.idToken);
+    }
+    if (message.code !== undefined) {
+      writer.uint32(26).string(message.code);
     }
     return writer;
   },
@@ -1079,7 +1083,7 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
             break;
           }
 
-          message.idToken = reader.string();
+          message.provider = reader.string();
           continue;
         }
         case 2: {
@@ -1087,7 +1091,15 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
             break;
           }
 
-          message.provider = reader.string();
+          message.idToken = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.code = reader.string();
           continue;
         }
       }
@@ -1101,18 +1113,22 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
 
   fromJSON(object: any): SsoLoginRequest {
     return {
-      idToken: isSet(object.idToken) ? globalThis.String(object.idToken) : "",
       provider: isSet(object.provider) ? globalThis.String(object.provider) : "",
+      idToken: isSet(object.idToken) ? globalThis.String(object.idToken) : undefined,
+      code: isSet(object.code) ? globalThis.String(object.code) : undefined,
     };
   },
 
   toJSON(message: SsoLoginRequest): unknown {
     const obj: any = {};
-    if (message.idToken !== "") {
-      obj.idToken = message.idToken;
-    }
     if (message.provider !== "") {
       obj.provider = message.provider;
+    }
+    if (message.idToken !== undefined) {
+      obj.idToken = message.idToken;
+    }
+    if (message.code !== undefined) {
+      obj.code = message.code;
     }
     return obj;
   },
@@ -1122,8 +1138,9 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
   },
   fromPartial<I extends Exact<DeepPartial<SsoLoginRequest>, I>>(object: I): SsoLoginRequest {
     const message = createBaseSsoLoginRequest();
-    message.idToken = object.idToken ?? "";
     message.provider = object.provider ?? "";
+    message.idToken = object.idToken ?? undefined;
+    message.code = object.code ?? undefined;
     return message;
   },
 };

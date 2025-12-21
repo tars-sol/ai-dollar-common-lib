@@ -52,8 +52,9 @@ export interface GenerateUploadUrlResponse_FieldsEntry {
     value: string;
 }
 export interface SsoLoginRequest {
-    idToken: string;
     provider: string;
+    idToken?: string | undefined;
+    code?: string | undefined;
 }
 export interface WalletNonceRequest {
     wallet: string;

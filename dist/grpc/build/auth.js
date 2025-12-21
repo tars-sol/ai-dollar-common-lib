@@ -830,15 +830,18 @@ exports.GenerateUploadUrlResponse_FieldsEntry = {
     },
 };
 function createBaseSsoLoginRequest() {
-    return { idToken: "", provider: "" };
+    return { provider: "", idToken: undefined, code: undefined };
 }
 exports.SsoLoginRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.idToken !== "") {
-            writer.uint32(10).string(message.idToken);
-        }
         if (message.provider !== "") {
-            writer.uint32(18).string(message.provider);
+            writer.uint32(10).string(message.provider);
+        }
+        if (message.idToken !== undefined) {
+            writer.uint32(18).string(message.idToken);
+        }
+        if (message.code !== undefined) {
+            writer.uint32(26).string(message.code);
         }
         return writer;
     },
@@ -853,14 +856,21 @@ exports.SsoLoginRequest = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.idToken = reader.string();
+                    message.provider = reader.string();
                     continue;
                 }
                 case 2: {
                     if (tag !== 18) {
                         break;
                     }
-                    message.provider = reader.string();
+                    message.idToken = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.code = reader.string();
                     continue;
                 }
             }
@@ -873,17 +883,21 @@ exports.SsoLoginRequest = {
     },
     fromJSON(object) {
         return {
-            idToken: isSet(object.idToken) ? globalThis.String(object.idToken) : "",
             provider: isSet(object.provider) ? globalThis.String(object.provider) : "",
+            idToken: isSet(object.idToken) ? globalThis.String(object.idToken) : undefined,
+            code: isSet(object.code) ? globalThis.String(object.code) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.idToken !== "") {
-            obj.idToken = message.idToken;
-        }
         if (message.provider !== "") {
             obj.provider = message.provider;
+        }
+        if (message.idToken !== undefined) {
+            obj.idToken = message.idToken;
+        }
+        if (message.code !== undefined) {
+            obj.code = message.code;
         }
         return obj;
     },
@@ -892,8 +906,9 @@ exports.SsoLoginRequest = {
     },
     fromPartial(object) {
         const message = createBaseSsoLoginRequest();
-        message.idToken = object.idToken ?? "";
         message.provider = object.provider ?? "";
+        message.idToken = object.idToken ?? undefined;
+        message.code = object.code ?? undefined;
         return message;
     },
 };
