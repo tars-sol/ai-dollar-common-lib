@@ -13,6 +13,7 @@ service PaymentService {
   rpc Health(google.protobuf.Empty) returns (SuccessResponse);
   rpc RefundPayment(RefundRequest) returns (SuccessResponse);
   rpc GetProfilePayoutHistory(GetProfilePayoutHistoryRequest) returns (GetProfilePayoutHistoryResponse);
+  rpc RefundRemainingCampaignBudget(RefundRemainingCampaignBudgetRequest) returns (SuccessResponse);
 }
 message PayoutRequest {
   string brandId = 1;
@@ -89,4 +90,9 @@ message ProfilePayoutHistoryItem {
 message GetProfilePayoutHistoryResponse {
   repeated ProfilePayoutHistoryItem items = 1;
   int32 totalItems = 2;
+}
+
+message RefundRemainingCampaignBudgetRequest {
+  string brandId = 1;
+  string campaignId = 2;
 }

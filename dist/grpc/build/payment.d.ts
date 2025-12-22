@@ -70,6 +70,10 @@ export interface GetProfilePayoutHistoryResponse {
     items: ProfilePayoutHistoryItem[];
     totalItems: number;
 }
+export interface RefundRemainingCampaignBudgetRequest {
+    brandId: string;
+    campaignId: string;
+}
 export declare const PayoutRequest: MessageFns<PayoutRequest>;
 export declare const PayoutAmount: MessageFns<PayoutAmount>;
 export declare const RefundRequest: MessageFns<RefundRequest>;
@@ -84,6 +88,7 @@ export declare const ConnectAccountResponse: MessageFns<ConnectAccountResponse>;
 export declare const GetProfilePayoutHistoryRequest: MessageFns<GetProfilePayoutHistoryRequest>;
 export declare const ProfilePayoutHistoryItem: MessageFns<ProfilePayoutHistoryItem>;
 export declare const GetProfilePayoutHistoryResponse: MessageFns<GetProfilePayoutHistoryResponse>;
+export declare const RefundRemainingCampaignBudgetRequest: MessageFns<RefundRemainingCampaignBudgetRequest>;
 export interface PaymentService {
     CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
     HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
@@ -94,6 +99,7 @@ export interface PaymentService {
     Health(request: Empty): Promise<SuccessResponse>;
     RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
     GetProfilePayoutHistory(request: GetProfilePayoutHistoryRequest): Promise<GetProfilePayoutHistoryResponse>;
+    RefundRemainingCampaignBudget(request: RefundRemainingCampaignBudgetRequest): Promise<SuccessResponse>;
 }
 export declare const PaymentServiceServiceName = "payment.PaymentService";
 export declare class PaymentServiceClientImpl implements PaymentService {
@@ -111,6 +117,7 @@ export declare class PaymentServiceClientImpl implements PaymentService {
     Health(request: Empty): Promise<SuccessResponse>;
     RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
     GetProfilePayoutHistory(request: GetProfilePayoutHistoryRequest): Promise<GetProfilePayoutHistoryResponse>;
+    RefundRemainingCampaignBudget(request: RefundRemainingCampaignBudgetRequest): Promise<SuccessResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

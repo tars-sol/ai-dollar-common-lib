@@ -93,6 +93,11 @@ export interface GetProfilePayoutHistoryResponse {
   totalItems: number;
 }
 
+export interface RefundRemainingCampaignBudgetRequest {
+  brandId: string;
+  campaignId: string;
+}
+
 function createBasePayoutRequest(): PayoutRequest {
   return { brandId: "", campaignId: "", payoutAmounts: [], isEqual: false };
 }
@@ -1377,6 +1382,86 @@ export const GetProfilePayoutHistoryResponse: MessageFns<GetProfilePayoutHistory
   },
 };
 
+function createBaseRefundRemainingCampaignBudgetRequest(): RefundRemainingCampaignBudgetRequest {
+  return { brandId: "", campaignId: "" };
+}
+
+export const RefundRemainingCampaignBudgetRequest: MessageFns<RefundRemainingCampaignBudgetRequest> = {
+  encode(message: RefundRemainingCampaignBudgetRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.brandId !== "") {
+      writer.uint32(10).string(message.brandId);
+    }
+    if (message.campaignId !== "") {
+      writer.uint32(18).string(message.campaignId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RefundRemainingCampaignBudgetRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRefundRemainingCampaignBudgetRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RefundRemainingCampaignBudgetRequest {
+    return {
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+    };
+  },
+
+  toJSON(message: RefundRemainingCampaignBudgetRequest): unknown {
+    const obj: any = {};
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RefundRemainingCampaignBudgetRequest>, I>>(
+    base?: I,
+  ): RefundRemainingCampaignBudgetRequest {
+    return RefundRemainingCampaignBudgetRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RefundRemainingCampaignBudgetRequest>, I>>(
+    object: I,
+  ): RefundRemainingCampaignBudgetRequest {
+    const message = createBaseRefundRemainingCampaignBudgetRequest();
+    message.brandId = object.brandId ?? "";
+    message.campaignId = object.campaignId ?? "";
+    return message;
+  },
+};
+
 export interface PaymentService {
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse>;
   HandlePaymentIntent(request: PaymentIntentEvent): Promise<StripeResponse>;
@@ -1387,6 +1472,7 @@ export interface PaymentService {
   Health(request: Empty): Promise<SuccessResponse>;
   RefundPayment(request: RefundRequest): Promise<SuccessResponse>;
   GetProfilePayoutHistory(request: GetProfilePayoutHistoryRequest): Promise<GetProfilePayoutHistoryResponse>;
+  RefundRemainingCampaignBudget(request: RefundRemainingCampaignBudgetRequest): Promise<SuccessResponse>;
 }
 
 export const PaymentServiceServiceName = "payment.PaymentService";
@@ -1405,6 +1491,7 @@ export class PaymentServiceClientImpl implements PaymentService {
     this.Health = this.Health.bind(this);
     this.RefundPayment = this.RefundPayment.bind(this);
     this.GetProfilePayoutHistory = this.GetProfilePayoutHistory.bind(this);
+    this.RefundRemainingCampaignBudget = this.RefundRemainingCampaignBudget.bind(this);
   }
   CreatePaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {
     const data = CreatePaymentIntentRequest.encode(request).finish();
@@ -1458,6 +1545,12 @@ export class PaymentServiceClientImpl implements PaymentService {
     const data = GetProfilePayoutHistoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetProfilePayoutHistory", data);
     return promise.then((data) => GetProfilePayoutHistoryResponse.decode(new BinaryReader(data)));
+  }
+
+  RefundRemainingCampaignBudget(request: RefundRemainingCampaignBudgetRequest): Promise<SuccessResponse> {
+    const data = RefundRemainingCampaignBudgetRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "RefundRemainingCampaignBudget", data);
+    return promise.then((data) => SuccessResponse.decode(new BinaryReader(data)));
   }
 }
 
