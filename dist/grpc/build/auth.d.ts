@@ -55,6 +55,7 @@ export interface SsoLoginRequest {
     provider: string;
     idToken?: string | undefined;
     code?: string | undefined;
+    accessToken?: string | undefined;
 }
 export interface WalletNonceRequest {
     wallet: string;

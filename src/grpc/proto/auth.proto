@@ -72,6 +72,7 @@ message SsoLoginRequest {
   string provider = 1;
   optional string idToken = 2;
   optional string code = 3;
+  optional string accessToken = 4;
 }
 
 message WalletNonceRequest {

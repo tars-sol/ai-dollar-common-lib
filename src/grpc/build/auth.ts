@@ -73,6 +73,7 @@ export interface SsoLoginRequest {
   provider: string;
   idToken?: string | undefined;
   code?: string | undefined;
+  accessToken?: string | undefined;
 }
 
 export interface WalletNonceRequest {
@@ -1054,7 +1055,7 @@ export const GenerateUploadUrlResponse_FieldsEntry: MessageFns<GenerateUploadUrl
 };
 
 function createBaseSsoLoginRequest(): SsoLoginRequest {
-  return { provider: "", idToken: undefined, code: undefined };
+  return { provider: "", idToken: undefined, code: undefined, accessToken: undefined };
 }
 
 export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
@@ -1067,6 +1068,9 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
     }
     if (message.code !== undefined) {
       writer.uint32(26).string(message.code);
+    }
+    if (message.accessToken !== undefined) {
+      writer.uint32(34).string(message.accessToken);
     }
     return writer;
   },
@@ -1102,6 +1106,14 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
           message.code = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.accessToken = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1116,6 +1128,7 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
       provider: isSet(object.provider) ? globalThis.String(object.provider) : "",
       idToken: isSet(object.idToken) ? globalThis.String(object.idToken) : undefined,
       code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+      accessToken: isSet(object.accessToken) ? globalThis.String(object.accessToken) : undefined,
     };
   },
 
@@ -1130,6 +1143,9 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
     if (message.code !== undefined) {
       obj.code = message.code;
     }
+    if (message.accessToken !== undefined) {
+      obj.accessToken = message.accessToken;
+    }
     return obj;
   },
 
@@ -1141,6 +1157,7 @@ export const SsoLoginRequest: MessageFns<SsoLoginRequest> = {
     message.provider = object.provider ?? "";
     message.idToken = object.idToken ?? undefined;
     message.code = object.code ?? undefined;
+    message.accessToken = object.accessToken ?? undefined;
     return message;
   },
 };
