@@ -101,7 +101,7 @@ message CampaignResponse {
   string name = 9;
   string description = 10;
   string totalParticipants = 14;
-
+  optional string brandName = 15;
 
 }
 message CancelCampaignResponse {

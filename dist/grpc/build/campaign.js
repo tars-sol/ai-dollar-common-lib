@@ -964,6 +964,7 @@ function createBaseCampaignResponse() {
         name: "",
         description: "",
         totalParticipants: "",
+        brandName: undefined,
     };
 }
 exports.CampaignResponse = {
@@ -1003,6 +1004,9 @@ exports.CampaignResponse = {
         }
         if (message.totalParticipants !== "") {
             writer.uint32(114).string(message.totalParticipants);
+        }
+        if (message.brandName !== undefined) {
+            writer.uint32(122).string(message.brandName);
         }
         return writer;
     },
@@ -1097,6 +1101,13 @@ exports.CampaignResponse = {
                     message.totalParticipants = reader.string();
                     continue;
                 }
+                case 15: {
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.brandName = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1119,6 +1130,7 @@ exports.CampaignResponse = {
             name: isSet(object.name) ? globalThis.String(object.name) : "",
             description: isSet(object.description) ? globalThis.String(object.description) : "",
             totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
+            brandName: isSet(object.brandName) ? globalThis.String(object.brandName) : undefined,
         };
     },
     toJSON(message) {
@@ -1159,6 +1171,9 @@ exports.CampaignResponse = {
         if (message.totalParticipants !== "") {
             obj.totalParticipants = message.totalParticipants;
         }
+        if (message.brandName !== undefined) {
+            obj.brandName = message.brandName;
+        }
         return obj;
     },
     create(base) {
@@ -1178,6 +1193,7 @@ exports.CampaignResponse = {
         message.name = object.name ?? "";
         message.description = object.description ?? "";
         message.totalParticipants = object.totalParticipants ?? "";
+        message.brandName = object.brandName ?? undefined;
         return message;
     },
 };

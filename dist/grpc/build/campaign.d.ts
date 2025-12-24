@@ -73,6 +73,7 @@ export interface CampaignResponse {
     name: string;
     description: string;
     totalParticipants: string;
+    brandName?: string | undefined;
 }
 export interface CancelCampaignResponse {
     campaign: CampaignResponse | undefined;

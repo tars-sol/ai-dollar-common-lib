@@ -93,6 +93,7 @@ export interface CampaignResponse {
   name: string;
   description: string;
   totalParticipants: string;
+  brandName?: string | undefined;
 }
 
 export interface CancelCampaignResponse {
@@ -1359,6 +1360,7 @@ function createBaseCampaignResponse(): CampaignResponse {
     name: "",
     description: "",
     totalParticipants: "",
+    brandName: undefined,
   };
 }
 
@@ -1399,6 +1401,9 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     }
     if (message.totalParticipants !== "") {
       writer.uint32(114).string(message.totalParticipants);
+    }
+    if (message.brandName !== undefined) {
+      writer.uint32(122).string(message.brandName);
     }
     return writer;
   },
@@ -1506,6 +1511,14 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
           message.totalParticipants = reader.string();
           continue;
         }
+        case 15: {
+          if (tag !== 122) {
+            break;
+          }
+
+          message.brandName = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1529,6 +1542,7 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
+      brandName: isSet(object.brandName) ? globalThis.String(object.brandName) : undefined,
     };
   },
 
@@ -1570,6 +1584,9 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     if (message.totalParticipants !== "") {
       obj.totalParticipants = message.totalParticipants;
     }
+    if (message.brandName !== undefined) {
+      obj.brandName = message.brandName;
+    }
     return obj;
   },
 
@@ -1590,6 +1607,7 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.totalParticipants = object.totalParticipants ?? "";
+    message.brandName = object.brandName ?? undefined;
     return message;
   },
 };
