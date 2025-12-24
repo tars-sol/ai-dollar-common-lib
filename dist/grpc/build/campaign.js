@@ -3650,7 +3650,16 @@ exports.TrendingCampaignsRequest = {
     },
 };
 function createBaseTrendingCampaignItem() {
-    return { id: "", name: "", brandId: "", brandName: "", bannerUrl: "", totalParticipants: "", amountToInvest: 0 };
+    return {
+        id: "",
+        name: "",
+        brandId: "",
+        brandName: "",
+        bannerUrl: "",
+        totalParticipants: "",
+        amountToInvest: 0,
+        brandImage: "",
+    };
 }
 exports.TrendingCampaignItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -3674,6 +3683,9 @@ exports.TrendingCampaignItem = {
         }
         if (message.amountToInvest !== 0) {
             writer.uint32(57).double(message.amountToInvest);
+        }
+        if (message.brandImage !== "") {
+            writer.uint32(66).string(message.brandImage);
         }
         return writer;
     },
@@ -3733,6 +3745,13 @@ exports.TrendingCampaignItem = {
                     message.amountToInvest = reader.double();
                     continue;
                 }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.brandImage = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -3750,6 +3769,7 @@ exports.TrendingCampaignItem = {
             bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : "",
             totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
             amountToInvest: isSet(object.amountToInvest) ? globalThis.Number(object.amountToInvest) : 0,
+            brandImage: isSet(object.brandImage) ? globalThis.String(object.brandImage) : "",
         };
     },
     toJSON(message) {
@@ -3775,6 +3795,9 @@ exports.TrendingCampaignItem = {
         if (message.amountToInvest !== 0) {
             obj.amountToInvest = message.amountToInvest;
         }
+        if (message.brandImage !== "") {
+            obj.brandImage = message.brandImage;
+        }
         return obj;
     },
     create(base) {
@@ -3789,6 +3812,7 @@ exports.TrendingCampaignItem = {
         message.bannerUrl = object.bannerUrl ?? "";
         message.totalParticipants = object.totalParticipants ?? "";
         message.amountToInvest = object.amountToInvest ?? 0;
+        message.brandImage = object.brandImage ?? "";
         return message;
     },
 };

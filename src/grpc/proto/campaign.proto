@@ -276,6 +276,7 @@ message TrendingCampaignItem {
   string bannerUrl = 5;
   string totalParticipants = 6;
   double amountToInvest = 7;
+  string brandImage = 8;
 }
 
 message TrendingCampaignsResponse {

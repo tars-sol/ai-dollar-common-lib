@@ -237,6 +237,7 @@ export interface TrendingCampaignItem {
     bannerUrl: string;
     totalParticipants: string;
     amountToInvest: number;
+    brandImage: string;
 }
 export interface TrendingCampaignsResponse {
     campaigns: TrendingCampaignItem[];

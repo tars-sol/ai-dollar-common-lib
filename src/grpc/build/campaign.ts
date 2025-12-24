@@ -295,6 +295,7 @@ export interface TrendingCampaignItem {
   bannerUrl: string;
   totalParticipants: string;
   amountToInvest: number;
+  brandImage: string;
 }
 
 export interface TrendingCampaignsResponse {
@@ -4313,7 +4314,16 @@ export const TrendingCampaignsRequest: MessageFns<TrendingCampaignsRequest> = {
 };
 
 function createBaseTrendingCampaignItem(): TrendingCampaignItem {
-  return { id: "", name: "", brandId: "", brandName: "", bannerUrl: "", totalParticipants: "", amountToInvest: 0 };
+  return {
+    id: "",
+    name: "",
+    brandId: "",
+    brandName: "",
+    bannerUrl: "",
+    totalParticipants: "",
+    amountToInvest: 0,
+    brandImage: "",
+  };
 }
 
 export const TrendingCampaignItem: MessageFns<TrendingCampaignItem> = {
@@ -4338,6 +4348,9 @@ export const TrendingCampaignItem: MessageFns<TrendingCampaignItem> = {
     }
     if (message.amountToInvest !== 0) {
       writer.uint32(57).double(message.amountToInvest);
+    }
+    if (message.brandImage !== "") {
+      writer.uint32(66).string(message.brandImage);
     }
     return writer;
   },
@@ -4405,6 +4418,14 @@ export const TrendingCampaignItem: MessageFns<TrendingCampaignItem> = {
           message.amountToInvest = reader.double();
           continue;
         }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.brandImage = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4423,6 +4444,7 @@ export const TrendingCampaignItem: MessageFns<TrendingCampaignItem> = {
       bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : "",
       totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
       amountToInvest: isSet(object.amountToInvest) ? globalThis.Number(object.amountToInvest) : 0,
+      brandImage: isSet(object.brandImage) ? globalThis.String(object.brandImage) : "",
     };
   },
 
@@ -4449,6 +4471,9 @@ export const TrendingCampaignItem: MessageFns<TrendingCampaignItem> = {
     if (message.amountToInvest !== 0) {
       obj.amountToInvest = message.amountToInvest;
     }
+    if (message.brandImage !== "") {
+      obj.brandImage = message.brandImage;
+    }
     return obj;
   },
 
@@ -4464,6 +4489,7 @@ export const TrendingCampaignItem: MessageFns<TrendingCampaignItem> = {
     message.bannerUrl = object.bannerUrl ?? "";
     message.totalParticipants = object.totalParticipants ?? "";
     message.amountToInvest = object.amountToInvest ?? 0;
+    message.brandImage = object.brandImage ?? "";
     return message;
   },
 };
