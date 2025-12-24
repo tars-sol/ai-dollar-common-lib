@@ -65,6 +65,8 @@ export interface ProfilePayoutHistoryItem {
     campaignEndDate: string;
     paymentDate: string;
     amount: string;
+    campaignId: string;
+    brandId: string;
 }
 export interface GetProfilePayoutHistoryResponse {
     items: ProfilePayoutHistoryItem[];

@@ -86,6 +86,8 @@ export interface ProfilePayoutHistoryItem {
   campaignEndDate: string;
   paymentDate: string;
   amount: string;
+  campaignId: string;
+  brandId: string;
 }
 
 export interface GetProfilePayoutHistoryResponse {
@@ -1147,6 +1149,8 @@ function createBaseProfilePayoutHistoryItem(): ProfilePayoutHistoryItem {
     campaignEndDate: "",
     paymentDate: "",
     amount: "",
+    campaignId: "",
+    brandId: "",
   };
 }
 
@@ -1172,6 +1176,12 @@ export const ProfilePayoutHistoryItem: MessageFns<ProfilePayoutHistoryItem> = {
     }
     if (message.amount !== "") {
       writer.uint32(58).string(message.amount);
+    }
+    if (message.campaignId !== "") {
+      writer.uint32(66).string(message.campaignId);
+    }
+    if (message.brandId !== "") {
+      writer.uint32(74).string(message.brandId);
     }
     return writer;
   },
@@ -1239,6 +1249,22 @@ export const ProfilePayoutHistoryItem: MessageFns<ProfilePayoutHistoryItem> = {
           message.amount = reader.string();
           continue;
         }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.campaignId = reader.string();
+          continue;
+        }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.brandId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1257,6 +1283,8 @@ export const ProfilePayoutHistoryItem: MessageFns<ProfilePayoutHistoryItem> = {
       campaignEndDate: isSet(object.campaignEndDate) ? globalThis.String(object.campaignEndDate) : "",
       paymentDate: isSet(object.paymentDate) ? globalThis.String(object.paymentDate) : "",
       amount: isSet(object.amount) ? globalThis.String(object.amount) : "",
+      campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : "",
+      brandId: isSet(object.brandId) ? globalThis.String(object.brandId) : "",
     };
   },
 
@@ -1283,6 +1311,12 @@ export const ProfilePayoutHistoryItem: MessageFns<ProfilePayoutHistoryItem> = {
     if (message.amount !== "") {
       obj.amount = message.amount;
     }
+    if (message.campaignId !== "") {
+      obj.campaignId = message.campaignId;
+    }
+    if (message.brandId !== "") {
+      obj.brandId = message.brandId;
+    }
     return obj;
   },
 
@@ -1298,6 +1332,8 @@ export const ProfilePayoutHistoryItem: MessageFns<ProfilePayoutHistoryItem> = {
     message.campaignEndDate = object.campaignEndDate ?? "";
     message.paymentDate = object.paymentDate ?? "";
     message.amount = object.amount ?? "";
+    message.campaignId = object.campaignId ?? "";
+    message.brandId = object.brandId ?? "";
     return message;
   },
 };

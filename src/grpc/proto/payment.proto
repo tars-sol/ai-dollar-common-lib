@@ -85,6 +85,8 @@ message ProfilePayoutHistoryItem {
   string campaignEndDate = 5;
   string paymentDate = 6;
   string amount = 7;
+  string campaignId = 8;
+  string brandId = 9;
 }
 
 message GetProfilePayoutHistoryResponse {
