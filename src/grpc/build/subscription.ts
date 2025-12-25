@@ -94,6 +94,8 @@ export interface CreateCheckoutSecretRequest {
   userId: string;
   tierId: string;
   interval: string;
+  role: string;
+  roleId: string;
 }
 
 export interface CreateCheckoutSecretResponse {
@@ -114,6 +116,8 @@ export interface SubscriptionPaymentRequest {
   creatorId: string;
   tierId: string;
   interval: string;
+  role: string;
+  roleId: string;
 }
 
 export interface CancelSubscriptionRequest {
@@ -1401,7 +1405,7 @@ export const CreateCheckoutSessionResponse: MessageFns<CreateCheckoutSessionResp
 };
 
 function createBaseCreateCheckoutSecretRequest(): CreateCheckoutSecretRequest {
-  return { userId: "", tierId: "", interval: "" };
+  return { userId: "", tierId: "", interval: "", role: "", roleId: "" };
 }
 
 export const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest> = {
@@ -1414,6 +1418,12 @@ export const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest
     }
     if (message.interval !== "") {
       writer.uint32(26).string(message.interval);
+    }
+    if (message.role !== "") {
+      writer.uint32(34).string(message.role);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(42).string(message.roleId);
     }
     return writer;
   },
@@ -1449,6 +1459,22 @@ export const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest
           message.interval = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1463,6 +1489,8 @@ export const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest
       userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
       tierId: isSet(object.tierId) ? globalThis.String(object.tierId) : "",
       interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
     };
   },
 
@@ -1477,6 +1505,12 @@ export const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest
     if (message.interval !== "") {
       obj.interval = message.interval;
     }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
     return obj;
   },
 
@@ -1488,6 +1522,8 @@ export const CreateCheckoutSecretRequest: MessageFns<CreateCheckoutSecretRequest
     message.userId = object.userId ?? "";
     message.tierId = object.tierId ?? "";
     message.interval = object.interval ?? "";
+    message.role = object.role ?? "";
+    message.roleId = object.roleId ?? "";
     return message;
   },
 };
@@ -1565,6 +1601,8 @@ function createBaseSubscriptionPaymentRequest(): SubscriptionPaymentRequest {
     creatorId: "",
     tierId: "",
     interval: "",
+    role: "",
+    roleId: "",
   };
 }
 
@@ -1608,6 +1646,12 @@ export const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest> 
     }
     if (message.interval !== "") {
       writer.uint32(106).string(message.interval);
+    }
+    if (message.role !== "") {
+      writer.uint32(114).string(message.role);
+    }
+    if (message.roleId !== "") {
+      writer.uint32(122).string(message.roleId);
     }
     return writer;
   },
@@ -1723,6 +1767,22 @@ export const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest> 
           message.interval = reader.string();
           continue;
         }
+        case 14: {
+          if (tag !== 114) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+        case 15: {
+          if (tag !== 122) {
+            break;
+          }
+
+          message.roleId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1747,6 +1807,8 @@ export const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest> 
       creatorId: isSet(object.creatorId) ? globalThis.String(object.creatorId) : "",
       tierId: isSet(object.tierId) ? globalThis.String(object.tierId) : "",
       interval: isSet(object.interval) ? globalThis.String(object.interval) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+      roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
     };
   },
 
@@ -1791,6 +1853,12 @@ export const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest> 
     if (message.interval !== "") {
       obj.interval = message.interval;
     }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    if (message.roleId !== "") {
+      obj.roleId = message.roleId;
+    }
     return obj;
   },
 
@@ -1812,6 +1880,8 @@ export const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest> 
     message.creatorId = object.creatorId ?? "";
     message.tierId = object.tierId ?? "";
     message.interval = object.interval ?? "";
+    message.role = object.role ?? "";
+    message.roleId = object.roleId ?? "";
     return message;
   },
 };

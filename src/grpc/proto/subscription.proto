@@ -106,6 +106,8 @@ message CreateCheckoutSecretRequest {
   string userId = 1;
   string tierId = 2;
   string interval = 3;
+  string role = 4;
+  string roleId = 5;
 }
 
 message CreateCheckoutSecretResponse {
@@ -128,7 +130,9 @@ message SubscriptionPaymentRequest {
   string userId = 10;            
   string creatorId = 11;         
   string tierId = 12;            
-  string interval = 13;          
+  string interval = 13;     
+  string role = 14;
+  string roleId = 15;     
 }
 
 message CancelSubscriptionRequest {

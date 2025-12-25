@@ -73,6 +73,8 @@ export interface CreateCheckoutSecretRequest {
     userId: string;
     tierId: string;
     interval: string;
+    role: string;
+    roleId: string;
 }
 export interface CreateCheckoutSecretResponse {
     clientSecretKey: string;
@@ -91,6 +93,8 @@ export interface SubscriptionPaymentRequest {
     creatorId: string;
     tierId: string;
     interval: string;
+    role: string;
+    roleId: string;
 }
 export interface CancelSubscriptionRequest {
     userId: string;
