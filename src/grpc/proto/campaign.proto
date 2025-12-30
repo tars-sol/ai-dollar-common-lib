@@ -37,6 +37,7 @@ message CreateCampaignRequest {
   string description = 7;
   repeated string profileIds = 9;
   bool isPrivate = 10;
+  optional string bannerUrl = 11;
 
 }
 message SuccessResponse {
@@ -102,6 +103,7 @@ message CampaignResponse {
   string description = 10;
   string totalParticipants = 14;
   optional string brandName = 15;
+  optional string bannerUrl = 16;
 
 }
 message CancelCampaignResponse {
@@ -124,6 +126,7 @@ message CampaignByIdResponse {
   string brandUsername = 14;
   string totalParticipants = 15;
   bool isJoined = 16;
+  optional string bannerUrl = 17;
 }
 message UpdateCampaignRequest {
   string id = 1;
@@ -133,6 +136,7 @@ message UpdateCampaignRequest {
   optional string endDate = 5;
   optional string name = 9;
   optional string description = 10;
+  optional string bannerUrl = 11;
 
 }
 

@@ -21,6 +21,7 @@ export interface CreateCampaignRequest {
   description: string;
   profileIds: string[];
   isPrivate: boolean;
+  bannerUrl?: string | undefined;
 }
 
 export interface SuccessResponse {
@@ -94,6 +95,7 @@ export interface CampaignResponse {
   description: string;
   totalParticipants: string;
   brandName?: string | undefined;
+  bannerUrl?: string | undefined;
 }
 
 export interface CancelCampaignResponse {
@@ -117,6 +119,7 @@ export interface CampaignByIdResponse {
   brandUsername: string;
   totalParticipants: string;
   isJoined: boolean;
+  bannerUrl?: string | undefined;
 }
 
 export interface UpdateCampaignRequest {
@@ -127,6 +130,7 @@ export interface UpdateCampaignRequest {
   endDate?: string | undefined;
   name?: string | undefined;
   description?: string | undefined;
+  bannerUrl?: string | undefined;
 }
 
 /** Task returned in the response */
@@ -314,6 +318,7 @@ function createBaseCreateCampaignRequest(): CreateCampaignRequest {
     description: "",
     profileIds: [],
     isPrivate: false,
+    bannerUrl: undefined,
   };
 }
 
@@ -345,6 +350,9 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
     }
     if (message.isPrivate !== false) {
       writer.uint32(80).bool(message.isPrivate);
+    }
+    if (message.bannerUrl !== undefined) {
+      writer.uint32(90).string(message.bannerUrl);
     }
     return writer;
   },
@@ -428,6 +436,14 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
           message.isPrivate = reader.bool();
           continue;
         }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.bannerUrl = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -450,6 +466,7 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
         ? object.profileIds.map((e: any) => globalThis.String(e))
         : [],
       isPrivate: isSet(object.isPrivate) ? globalThis.Boolean(object.isPrivate) : false,
+      bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : undefined,
     };
   },
 
@@ -482,6 +499,9 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
     if (message.isPrivate !== false) {
       obj.isPrivate = message.isPrivate;
     }
+    if (message.bannerUrl !== undefined) {
+      obj.bannerUrl = message.bannerUrl;
+    }
     return obj;
   },
 
@@ -499,6 +519,7 @@ export const CreateCampaignRequest: MessageFns<CreateCampaignRequest> = {
     message.description = object.description ?? "";
     message.profileIds = object.profileIds?.map((e) => e) || [];
     message.isPrivate = object.isPrivate ?? false;
+    message.bannerUrl = object.bannerUrl ?? undefined;
     return message;
   },
 };
@@ -1362,6 +1383,7 @@ function createBaseCampaignResponse(): CampaignResponse {
     description: "",
     totalParticipants: "",
     brandName: undefined,
+    bannerUrl: undefined,
   };
 }
 
@@ -1405,6 +1427,9 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     }
     if (message.brandName !== undefined) {
       writer.uint32(122).string(message.brandName);
+    }
+    if (message.bannerUrl !== undefined) {
+      writer.uint32(130).string(message.bannerUrl);
     }
     return writer;
   },
@@ -1520,6 +1545,14 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
           message.brandName = reader.string();
           continue;
         }
+        case 16: {
+          if (tag !== 130) {
+            break;
+          }
+
+          message.bannerUrl = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1544,6 +1577,7 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
       brandName: isSet(object.brandName) ? globalThis.String(object.brandName) : undefined,
+      bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : undefined,
     };
   },
 
@@ -1588,6 +1622,9 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     if (message.brandName !== undefined) {
       obj.brandName = message.brandName;
     }
+    if (message.bannerUrl !== undefined) {
+      obj.bannerUrl = message.bannerUrl;
+    }
     return obj;
   },
 
@@ -1609,6 +1646,7 @@ export const CampaignResponse: MessageFns<CampaignResponse> = {
     message.description = object.description ?? "";
     message.totalParticipants = object.totalParticipants ?? "";
     message.brandName = object.brandName ?? undefined;
+    message.bannerUrl = object.bannerUrl ?? undefined;
     return message;
   },
 };
@@ -1708,6 +1746,7 @@ function createBaseCampaignByIdResponse(): CampaignByIdResponse {
     brandUsername: "",
     totalParticipants: "",
     isJoined: false,
+    bannerUrl: undefined,
   };
 }
 
@@ -1757,6 +1796,9 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
     }
     if (message.isJoined !== false) {
       writer.uint32(128).bool(message.isJoined);
+    }
+    if (message.bannerUrl !== undefined) {
+      writer.uint32(138).string(message.bannerUrl);
     }
     return writer;
   },
@@ -1888,6 +1930,14 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
           message.isJoined = reader.bool();
           continue;
         }
+        case 17: {
+          if (tag !== 138) {
+            break;
+          }
+
+          message.bannerUrl = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1914,6 +1964,7 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
       brandUsername: isSet(object.brandUsername) ? globalThis.String(object.brandUsername) : "",
       totalParticipants: isSet(object.totalParticipants) ? globalThis.String(object.totalParticipants) : "",
       isJoined: isSet(object.isJoined) ? globalThis.Boolean(object.isJoined) : false,
+      bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : undefined,
     };
   },
 
@@ -1964,6 +2015,9 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
     if (message.isJoined !== false) {
       obj.isJoined = message.isJoined;
     }
+    if (message.bannerUrl !== undefined) {
+      obj.bannerUrl = message.bannerUrl;
+    }
     return obj;
   },
 
@@ -1987,6 +2041,7 @@ export const CampaignByIdResponse: MessageFns<CampaignByIdResponse> = {
     message.brandUsername = object.brandUsername ?? "";
     message.totalParticipants = object.totalParticipants ?? "";
     message.isJoined = object.isJoined ?? false;
+    message.bannerUrl = object.bannerUrl ?? undefined;
     return message;
   },
 };
@@ -2000,6 +2055,7 @@ function createBaseUpdateCampaignRequest(): UpdateCampaignRequest {
     endDate: undefined,
     name: undefined,
     description: undefined,
+    bannerUrl: undefined,
   };
 }
 
@@ -2025,6 +2081,9 @@ export const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest> = {
     }
     if (message.description !== undefined) {
       writer.uint32(82).string(message.description);
+    }
+    if (message.bannerUrl !== undefined) {
+      writer.uint32(90).string(message.bannerUrl);
     }
     return writer;
   },
@@ -2092,6 +2151,14 @@ export const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest> = {
           message.description = reader.string();
           continue;
         }
+        case 11: {
+          if (tag !== 90) {
+            break;
+          }
+
+          message.bannerUrl = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2110,6 +2177,7 @@ export const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest> = {
       endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+      bannerUrl: isSet(object.bannerUrl) ? globalThis.String(object.bannerUrl) : undefined,
     };
   },
 
@@ -2136,6 +2204,9 @@ export const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest> = {
     if (message.description !== undefined) {
       obj.description = message.description;
     }
+    if (message.bannerUrl !== undefined) {
+      obj.bannerUrl = message.bannerUrl;
+    }
     return obj;
   },
 
@@ -2151,6 +2222,7 @@ export const UpdateCampaignRequest: MessageFns<UpdateCampaignRequest> = {
     message.endDate = object.endDate ?? undefined;
     message.name = object.name ?? undefined;
     message.description = object.description ?? undefined;
+    message.bannerUrl = object.bannerUrl ?? undefined;
     return message;
   },
 };

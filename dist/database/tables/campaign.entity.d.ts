@@ -17,6 +17,7 @@ export declare class Campaign {
     brand: Brand;
     name: string;
     description: string;
+    bannerUrl: string;
     brandId: string;
     status: CampaignStatus;
     tasks: Task[];

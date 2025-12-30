@@ -38,6 +38,10 @@ export interface GenerateUploadUrlRequest {
     userId: string;
     fileName: string;
     contentType: string;
+    role: string;
+    roleId: string;
+    uploadType: string;
+    campaignId?: string | undefined;
 }
 export interface GenerateUploadUrlResponse {
     url: string;

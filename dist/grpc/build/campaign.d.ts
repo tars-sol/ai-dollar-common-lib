@@ -12,6 +12,7 @@ export interface CreateCampaignRequest {
     description: string;
     profileIds: string[];
     isPrivate: boolean;
+    bannerUrl?: string | undefined;
 }
 export interface SuccessResponse {
     success: boolean;
@@ -74,6 +75,7 @@ export interface CampaignResponse {
     description: string;
     totalParticipants: string;
     brandName?: string | undefined;
+    bannerUrl?: string | undefined;
 }
 export interface CancelCampaignResponse {
     campaign: CampaignResponse | undefined;
@@ -95,6 +97,7 @@ export interface CampaignByIdResponse {
     brandUsername: string;
     totalParticipants: string;
     isJoined: boolean;
+    bannerUrl?: string | undefined;
 }
 export interface UpdateCampaignRequest {
     id: string;
@@ -104,6 +107,7 @@ export interface UpdateCampaignRequest {
     endDate?: string | undefined;
     name?: string | undefined;
     description?: string | undefined;
+    bannerUrl?: string | undefined;
 }
 /** Task returned in the response */
 export interface TaskResponse {

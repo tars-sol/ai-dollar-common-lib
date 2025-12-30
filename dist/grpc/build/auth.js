@@ -562,7 +562,7 @@ exports.LoginRequest = {
     },
 };
 function createBaseGenerateUploadUrlRequest() {
-    return { userId: "", fileName: "", contentType: "" };
+    return { userId: "", fileName: "", contentType: "", role: "", roleId: "", uploadType: "", campaignId: undefined };
 }
 exports.GenerateUploadUrlRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -574,6 +574,18 @@ exports.GenerateUploadUrlRequest = {
         }
         if (message.contentType !== "") {
             writer.uint32(26).string(message.contentType);
+        }
+        if (message.role !== "") {
+            writer.uint32(34).string(message.role);
+        }
+        if (message.roleId !== "") {
+            writer.uint32(42).string(message.roleId);
+        }
+        if (message.uploadType !== "") {
+            writer.uint32(50).string(message.uploadType);
+        }
+        if (message.campaignId !== undefined) {
+            writer.uint32(58).string(message.campaignId);
         }
         return writer;
     },
@@ -605,6 +617,34 @@ exports.GenerateUploadUrlRequest = {
                     message.contentType = reader.string();
                     continue;
                 }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.role = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.roleId = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.uploadType = reader.string();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.campaignId = reader.string();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -618,6 +658,10 @@ exports.GenerateUploadUrlRequest = {
             userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
             fileName: isSet(object.fileName) ? globalThis.String(object.fileName) : "",
             contentType: isSet(object.contentType) ? globalThis.String(object.contentType) : "",
+            role: isSet(object.role) ? globalThis.String(object.role) : "",
+            roleId: isSet(object.roleId) ? globalThis.String(object.roleId) : "",
+            uploadType: isSet(object.uploadType) ? globalThis.String(object.uploadType) : "",
+            campaignId: isSet(object.campaignId) ? globalThis.String(object.campaignId) : undefined,
         };
     },
     toJSON(message) {
@@ -631,6 +675,18 @@ exports.GenerateUploadUrlRequest = {
         if (message.contentType !== "") {
             obj.contentType = message.contentType;
         }
+        if (message.role !== "") {
+            obj.role = message.role;
+        }
+        if (message.roleId !== "") {
+            obj.roleId = message.roleId;
+        }
+        if (message.uploadType !== "") {
+            obj.uploadType = message.uploadType;
+        }
+        if (message.campaignId !== undefined) {
+            obj.campaignId = message.campaignId;
+        }
         return obj;
     },
     create(base) {
@@ -641,6 +697,10 @@ exports.GenerateUploadUrlRequest = {
         message.userId = object.userId ?? "";
         message.fileName = object.fileName ?? "";
         message.contentType = object.contentType ?? "";
+        message.role = object.role ?? "";
+        message.roleId = object.roleId ?? "";
+        message.uploadType = object.uploadType ?? "";
+        message.campaignId = object.campaignId ?? undefined;
         return message;
     },
 };

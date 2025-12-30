@@ -40,6 +40,8 @@ export class Campaign {
   name: string;
   @Column({ type: 'text' })
   description: string;
+  @Column({ type: 'varchar', nullable: true })
+  bannerUrl: string;
   @Column()
   brandId: string;
   @Column({

@@ -50,6 +50,10 @@ __decorate([
     __metadata("design:type", String)
 ], Campaign.prototype, "description", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
+    __metadata("design:type", String)
+], Campaign.prototype, "bannerUrl", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Campaign.prototype, "brandId", void 0);

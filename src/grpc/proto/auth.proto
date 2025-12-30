@@ -59,6 +59,10 @@ message GenerateUploadUrlRequest {
   string userId = 1;
   string fileName = 2;
   string contentType = 3;
+  string role = 4;
+  string roleId = 5;
+  string uploadType = 6;
+  optional string campaignId = 7;
 }
 
 message GenerateUploadUrlResponse {
