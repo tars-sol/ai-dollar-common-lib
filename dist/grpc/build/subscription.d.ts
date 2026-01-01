@@ -105,6 +105,24 @@ export interface ChangeSubscriptionIntervalRequest {
     creatorId: string;
     interval: string;
 }
+export interface GetUserSubscriptionsRequest {
+    userId: string;
+    onlyActive?: boolean | undefined;
+}
+export interface GetUserSubscriptionsResponse {
+    subscriptions: UserSubscriptionItem[];
+}
+export interface UserSubscriptionItem {
+    creatorName: string;
+    creatorUsername: string;
+    tierName: string;
+    subscriptionType: string;
+    subscriptionChargesCents: number;
+    currency: string;
+    status: string;
+    startedAt: string;
+    nextBillingAt: string;
+}
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const CreateTierRequest: MessageFns<CreateTierRequest>;
 export declare const UpdateTierRequest: MessageFns<UpdateTierRequest>;
@@ -122,6 +140,9 @@ export declare const CreateCheckoutSecretResponse: MessageFns<CreateCheckoutSecr
 export declare const SubscriptionPaymentRequest: MessageFns<SubscriptionPaymentRequest>;
 export declare const CancelSubscriptionRequest: MessageFns<CancelSubscriptionRequest>;
 export declare const ChangeSubscriptionIntervalRequest: MessageFns<ChangeSubscriptionIntervalRequest>;
+export declare const GetUserSubscriptionsRequest: MessageFns<GetUserSubscriptionsRequest>;
+export declare const GetUserSubscriptionsResponse: MessageFns<GetUserSubscriptionsResponse>;
+export declare const UserSubscriptionItem: MessageFns<UserSubscriptionItem>;
 export interface SubscriptionService {
     CreateTier(request: CreateTierRequest): Promise<SubscriptionTierResponse>;
     UpdateTier(request: UpdateTierRequest): Promise<SubscriptionTierResponse>;
@@ -135,6 +156,7 @@ export interface SubscriptionService {
     HandleSubscriptionPayment(request: SubscriptionPaymentRequest): Promise<SuccessResponse>;
     CancelSubscription(request: CancelSubscriptionRequest): Promise<SuccessResponse>;
     ChangeSubscriptionInterval(request: ChangeSubscriptionIntervalRequest): Promise<SuccessResponse>;
+    GetUserSubscriptions(request: GetUserSubscriptionsRequest): Promise<GetUserSubscriptionsResponse>;
 }
 export declare const SubscriptionServiceServiceName = "subscription.SubscriptionService";
 export declare class SubscriptionServiceClientImpl implements SubscriptionService {
@@ -155,6 +177,7 @@ export declare class SubscriptionServiceClientImpl implements SubscriptionServic
     HandleSubscriptionPayment(request: SubscriptionPaymentRequest): Promise<SuccessResponse>;
     CancelSubscription(request: CancelSubscriptionRequest): Promise<SuccessResponse>;
     ChangeSubscriptionInterval(request: ChangeSubscriptionIntervalRequest): Promise<SuccessResponse>;
+    GetUserSubscriptions(request: GetUserSubscriptionsRequest): Promise<GetUserSubscriptionsResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

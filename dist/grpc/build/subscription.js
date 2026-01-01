@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: subscription.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubscriptionServiceClientImpl = exports.SubscriptionServiceServiceName = exports.ChangeSubscriptionIntervalRequest = exports.CancelSubscriptionRequest = exports.SubscriptionPaymentRequest = exports.CreateCheckoutSecretResponse = exports.CreateCheckoutSecretRequest = exports.CreateCheckoutSessionResponse = exports.CreateCheckoutSessionRequest = exports.SubscriptionTierResponse = exports.DeleteTierRequest = exports.GetCreatorTiersResponse = exports.GetCreatorTiersRequest = exports.GetTierRequest = exports.ToggleTierActiveRequest = exports.UpdateTierPricesRequest = exports.UpdateTierRequest = exports.CreateTierRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
+exports.SubscriptionServiceClientImpl = exports.SubscriptionServiceServiceName = exports.UserSubscriptionItem = exports.GetUserSubscriptionsResponse = exports.GetUserSubscriptionsRequest = exports.ChangeSubscriptionIntervalRequest = exports.CancelSubscriptionRequest = exports.SubscriptionPaymentRequest = exports.CreateCheckoutSecretResponse = exports.CreateCheckoutSecretRequest = exports.CreateCheckoutSessionResponse = exports.CreateCheckoutSessionRequest = exports.SubscriptionTierResponse = exports.DeleteTierRequest = exports.GetCreatorTiersResponse = exports.GetCreatorTiersRequest = exports.GetTierRequest = exports.ToggleTierActiveRequest = exports.UpdateTierPricesRequest = exports.UpdateTierRequest = exports.CreateTierRequest = exports.SuccessResponse = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 exports.protobufPackage = "subscription";
@@ -1757,6 +1757,314 @@ exports.ChangeSubscriptionIntervalRequest = {
         return message;
     },
 };
+function createBaseGetUserSubscriptionsRequest() {
+    return { userId: "", onlyActive: undefined };
+}
+exports.GetUserSubscriptionsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.userId !== "") {
+            writer.uint32(10).string(message.userId);
+        }
+        if (message.onlyActive !== undefined) {
+            writer.uint32(16).bool(message.onlyActive);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetUserSubscriptionsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.userId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.onlyActive = reader.bool();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+            onlyActive: isSet(object.onlyActive) ? globalThis.Boolean(object.onlyActive) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.userId !== "") {
+            obj.userId = message.userId;
+        }
+        if (message.onlyActive !== undefined) {
+            obj.onlyActive = message.onlyActive;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetUserSubscriptionsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetUserSubscriptionsRequest();
+        message.userId = object.userId ?? "";
+        message.onlyActive = object.onlyActive ?? undefined;
+        return message;
+    },
+};
+function createBaseGetUserSubscriptionsResponse() {
+    return { subscriptions: [] };
+}
+exports.GetUserSubscriptionsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.subscriptions) {
+            exports.UserSubscriptionItem.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetUserSubscriptionsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.subscriptions.push(exports.UserSubscriptionItem.decode(reader, reader.uint32()));
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            subscriptions: globalThis.Array.isArray(object?.subscriptions)
+                ? object.subscriptions.map((e) => exports.UserSubscriptionItem.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.subscriptions?.length) {
+            obj.subscriptions = message.subscriptions.map((e) => exports.UserSubscriptionItem.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetUserSubscriptionsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetUserSubscriptionsResponse();
+        message.subscriptions = object.subscriptions?.map((e) => exports.UserSubscriptionItem.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseUserSubscriptionItem() {
+    return {
+        creatorName: "",
+        creatorUsername: "",
+        tierName: "",
+        subscriptionType: "",
+        subscriptionChargesCents: 0,
+        currency: "",
+        status: "",
+        startedAt: "",
+        nextBillingAt: "",
+    };
+}
+exports.UserSubscriptionItem = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.creatorName !== "") {
+            writer.uint32(10).string(message.creatorName);
+        }
+        if (message.creatorUsername !== "") {
+            writer.uint32(18).string(message.creatorUsername);
+        }
+        if (message.tierName !== "") {
+            writer.uint32(26).string(message.tierName);
+        }
+        if (message.subscriptionType !== "") {
+            writer.uint32(34).string(message.subscriptionType);
+        }
+        if (message.subscriptionChargesCents !== 0) {
+            writer.uint32(40).int32(message.subscriptionChargesCents);
+        }
+        if (message.currency !== "") {
+            writer.uint32(50).string(message.currency);
+        }
+        if (message.status !== "") {
+            writer.uint32(58).string(message.status);
+        }
+        if (message.startedAt !== "") {
+            writer.uint32(66).string(message.startedAt);
+        }
+        if (message.nextBillingAt !== "") {
+            writer.uint32(74).string(message.nextBillingAt);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUserSubscriptionItem();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.creatorName = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.creatorUsername = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.tierName = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.subscriptionType = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.subscriptionChargesCents = reader.int32();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.currency = reader.string();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.status = reader.string();
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.startedAt = reader.string();
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.nextBillingAt = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            creatorName: isSet(object.creatorName) ? globalThis.String(object.creatorName) : "",
+            creatorUsername: isSet(object.creatorUsername) ? globalThis.String(object.creatorUsername) : "",
+            tierName: isSet(object.tierName) ? globalThis.String(object.tierName) : "",
+            subscriptionType: isSet(object.subscriptionType) ? globalThis.String(object.subscriptionType) : "",
+            subscriptionChargesCents: isSet(object.subscriptionChargesCents)
+                ? globalThis.Number(object.subscriptionChargesCents)
+                : 0,
+            currency: isSet(object.currency) ? globalThis.String(object.currency) : "",
+            status: isSet(object.status) ? globalThis.String(object.status) : "",
+            startedAt: isSet(object.startedAt) ? globalThis.String(object.startedAt) : "",
+            nextBillingAt: isSet(object.nextBillingAt) ? globalThis.String(object.nextBillingAt) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.creatorName !== "") {
+            obj.creatorName = message.creatorName;
+        }
+        if (message.creatorUsername !== "") {
+            obj.creatorUsername = message.creatorUsername;
+        }
+        if (message.tierName !== "") {
+            obj.tierName = message.tierName;
+        }
+        if (message.subscriptionType !== "") {
+            obj.subscriptionType = message.subscriptionType;
+        }
+        if (message.subscriptionChargesCents !== 0) {
+            obj.subscriptionChargesCents = Math.round(message.subscriptionChargesCents);
+        }
+        if (message.currency !== "") {
+            obj.currency = message.currency;
+        }
+        if (message.status !== "") {
+            obj.status = message.status;
+        }
+        if (message.startedAt !== "") {
+            obj.startedAt = message.startedAt;
+        }
+        if (message.nextBillingAt !== "") {
+            obj.nextBillingAt = message.nextBillingAt;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UserSubscriptionItem.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUserSubscriptionItem();
+        message.creatorName = object.creatorName ?? "";
+        message.creatorUsername = object.creatorUsername ?? "";
+        message.tierName = object.tierName ?? "";
+        message.subscriptionType = object.subscriptionType ?? "";
+        message.subscriptionChargesCents = object.subscriptionChargesCents ?? 0;
+        message.currency = object.currency ?? "";
+        message.status = object.status ?? "";
+        message.startedAt = object.startedAt ?? "";
+        message.nextBillingAt = object.nextBillingAt ?? "";
+        return message;
+    },
+};
 exports.SubscriptionServiceServiceName = "subscription.SubscriptionService";
 class SubscriptionServiceClientImpl {
     constructor(rpc, opts) {
@@ -1774,6 +2082,7 @@ class SubscriptionServiceClientImpl {
         this.HandleSubscriptionPayment = this.HandleSubscriptionPayment.bind(this);
         this.CancelSubscription = this.CancelSubscription.bind(this);
         this.ChangeSubscriptionInterval = this.ChangeSubscriptionInterval.bind(this);
+        this.GetUserSubscriptions = this.GetUserSubscriptions.bind(this);
     }
     CreateTier(request) {
         const data = exports.CreateTierRequest.encode(request).finish();
@@ -1834,6 +2143,11 @@ class SubscriptionServiceClientImpl {
         const data = exports.ChangeSubscriptionIntervalRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "ChangeSubscriptionInterval", data);
         return promise.then((data) => exports.SuccessResponse.decode(new wire_1.BinaryReader(data)));
+    }
+    GetUserSubscriptions(request) {
+        const data = exports.GetUserSubscriptionsRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "GetUserSubscriptions", data);
+        return promise.then((data) => exports.GetUserSubscriptionsResponse.decode(new wire_1.BinaryReader(data)));
     }
 }
 exports.SubscriptionServiceClientImpl = SubscriptionServiceClientImpl;

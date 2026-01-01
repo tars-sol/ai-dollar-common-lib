@@ -16,6 +16,8 @@ service SubscriptionService {
 
   rpc CancelSubscription         (CancelSubscriptionRequest)         returns (SuccessResponse);
   rpc ChangeSubscriptionInterval (ChangeSubscriptionIntervalRequest) returns (SuccessResponse);
+
+  rpc GetUserSubscriptions (GetUserSubscriptionsRequest) returns (GetUserSubscriptionsResponse);
 }
 
 message SuccessResponse {
@@ -144,4 +146,25 @@ message ChangeSubscriptionIntervalRequest {
   string userId    = 1;
   string creatorId = 2;
   string interval  = 3;
+}
+
+message GetUserSubscriptionsRequest {
+  string userId = 1;
+  optional bool onlyActive = 2;
+}
+
+message GetUserSubscriptionsResponse {
+  repeated UserSubscriptionItem subscriptions = 1;
+}
+
+message UserSubscriptionItem {
+  string creatorName = 1;
+  string creatorUsername = 2;
+  string tierName = 3;
+  string subscriptionType = 4;
+  int32 subscriptionChargesCents = 5;
+  string currency = 6;
+  string status = 7;
+  string startedAt = 8;
+  string nextBillingAt = 9;
 }
