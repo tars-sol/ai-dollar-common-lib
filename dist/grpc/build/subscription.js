@@ -1882,8 +1882,10 @@ exports.GetUserSubscriptionsResponse = {
 };
 function createBaseUserSubscriptionItem() {
     return {
+        creatorId: "",
         creatorName: "",
         creatorUsername: "",
+        creatorAvatarUrl: undefined,
         tierName: "",
         subscriptionType: "",
         subscriptionChargesCents: 0,
@@ -1895,32 +1897,38 @@ function createBaseUserSubscriptionItem() {
 }
 exports.UserSubscriptionItem = {
     encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.creatorId !== "") {
+            writer.uint32(10).string(message.creatorId);
+        }
         if (message.creatorName !== "") {
-            writer.uint32(10).string(message.creatorName);
+            writer.uint32(18).string(message.creatorName);
         }
         if (message.creatorUsername !== "") {
-            writer.uint32(18).string(message.creatorUsername);
+            writer.uint32(26).string(message.creatorUsername);
+        }
+        if (message.creatorAvatarUrl !== undefined) {
+            writer.uint32(34).string(message.creatorAvatarUrl);
         }
         if (message.tierName !== "") {
-            writer.uint32(26).string(message.tierName);
+            writer.uint32(42).string(message.tierName);
         }
         if (message.subscriptionType !== "") {
-            writer.uint32(34).string(message.subscriptionType);
+            writer.uint32(50).string(message.subscriptionType);
         }
         if (message.subscriptionChargesCents !== 0) {
-            writer.uint32(40).int32(message.subscriptionChargesCents);
+            writer.uint32(56).int32(message.subscriptionChargesCents);
         }
         if (message.currency !== "") {
-            writer.uint32(50).string(message.currency);
+            writer.uint32(66).string(message.currency);
         }
         if (message.status !== "") {
-            writer.uint32(58).string(message.status);
+            writer.uint32(74).string(message.status);
         }
         if (message.startedAt !== "") {
-            writer.uint32(66).string(message.startedAt);
+            writer.uint32(82).string(message.startedAt);
         }
         if (message.nextBillingAt !== "") {
-            writer.uint32(74).string(message.nextBillingAt);
+            writer.uint32(90).string(message.nextBillingAt);
         }
         return writer;
     },
@@ -1935,60 +1943,74 @@ exports.UserSubscriptionItem = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.creatorName = reader.string();
+                    message.creatorId = reader.string();
                     continue;
                 }
                 case 2: {
                     if (tag !== 18) {
                         break;
                     }
-                    message.creatorUsername = reader.string();
+                    message.creatorName = reader.string();
                     continue;
                 }
                 case 3: {
                     if (tag !== 26) {
                         break;
                     }
-                    message.tierName = reader.string();
+                    message.creatorUsername = reader.string();
                     continue;
                 }
                 case 4: {
                     if (tag !== 34) {
                         break;
                     }
-                    message.subscriptionType = reader.string();
+                    message.creatorAvatarUrl = reader.string();
                     continue;
                 }
                 case 5: {
-                    if (tag !== 40) {
+                    if (tag !== 42) {
                         break;
                     }
-                    message.subscriptionChargesCents = reader.int32();
+                    message.tierName = reader.string();
                     continue;
                 }
                 case 6: {
                     if (tag !== 50) {
                         break;
                     }
-                    message.currency = reader.string();
+                    message.subscriptionType = reader.string();
                     continue;
                 }
                 case 7: {
-                    if (tag !== 58) {
+                    if (tag !== 56) {
                         break;
                     }
-                    message.status = reader.string();
+                    message.subscriptionChargesCents = reader.int32();
                     continue;
                 }
                 case 8: {
                     if (tag !== 66) {
                         break;
                     }
-                    message.startedAt = reader.string();
+                    message.currency = reader.string();
                     continue;
                 }
                 case 9: {
                     if (tag !== 74) {
+                        break;
+                    }
+                    message.status = reader.string();
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.startedAt = reader.string();
+                    continue;
+                }
+                case 11: {
+                    if (tag !== 90) {
                         break;
                     }
                     message.nextBillingAt = reader.string();
@@ -2004,8 +2026,10 @@ exports.UserSubscriptionItem = {
     },
     fromJSON(object) {
         return {
+            creatorId: isSet(object.creatorId) ? globalThis.String(object.creatorId) : "",
             creatorName: isSet(object.creatorName) ? globalThis.String(object.creatorName) : "",
             creatorUsername: isSet(object.creatorUsername) ? globalThis.String(object.creatorUsername) : "",
+            creatorAvatarUrl: isSet(object.creatorAvatarUrl) ? globalThis.String(object.creatorAvatarUrl) : undefined,
             tierName: isSet(object.tierName) ? globalThis.String(object.tierName) : "",
             subscriptionType: isSet(object.subscriptionType) ? globalThis.String(object.subscriptionType) : "",
             subscriptionChargesCents: isSet(object.subscriptionChargesCents)
@@ -2019,11 +2043,17 @@ exports.UserSubscriptionItem = {
     },
     toJSON(message) {
         const obj = {};
+        if (message.creatorId !== "") {
+            obj.creatorId = message.creatorId;
+        }
         if (message.creatorName !== "") {
             obj.creatorName = message.creatorName;
         }
         if (message.creatorUsername !== "") {
             obj.creatorUsername = message.creatorUsername;
+        }
+        if (message.creatorAvatarUrl !== undefined) {
+            obj.creatorAvatarUrl = message.creatorAvatarUrl;
         }
         if (message.tierName !== "") {
             obj.tierName = message.tierName;
@@ -2053,8 +2083,10 @@ exports.UserSubscriptionItem = {
     },
     fromPartial(object) {
         const message = createBaseUserSubscriptionItem();
+        message.creatorId = object.creatorId ?? "";
         message.creatorName = object.creatorName ?? "";
         message.creatorUsername = object.creatorUsername ?? "";
+        message.creatorAvatarUrl = object.creatorAvatarUrl ?? undefined;
         message.tierName = object.tierName ?? "";
         message.subscriptionType = object.subscriptionType ?? "";
         message.subscriptionChargesCents = object.subscriptionChargesCents ?? 0;

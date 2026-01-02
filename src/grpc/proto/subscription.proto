@@ -158,13 +158,17 @@ message GetUserSubscriptionsResponse {
 }
 
 message UserSubscriptionItem {
-  string creatorName = 1;
-  string creatorUsername = 2;
-  string tierName = 3;
-  string subscriptionType = 4;
-  int32 subscriptionChargesCents = 5;
-  string currency = 6;
-  string status = 7;
-  string startedAt = 8;
-  string nextBillingAt = 9;
+  string creatorId = 1;
+
+  string creatorName = 2;
+  string creatorUsername = 3;
+  optional string creatorAvatarUrl = 4;
+
+  string tierName = 5;
+  string subscriptionType = 6;
+  int32 subscriptionChargesCents = 7;
+  string currency = 8;
+  string status = 9;
+  string startedAt = 10;
+  string nextBillingAt = 11;
 }

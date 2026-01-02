@@ -113,8 +113,10 @@ export interface GetUserSubscriptionsResponse {
     subscriptions: UserSubscriptionItem[];
 }
 export interface UserSubscriptionItem {
+    creatorId: string;
     creatorName: string;
     creatorUsername: string;
+    creatorAvatarUrl?: string | undefined;
     tierName: string;
     subscriptionType: string;
     subscriptionChargesCents: number;
