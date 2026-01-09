@@ -12,4 +12,8 @@ export declare class PostDeleted {
     typesenseAttempts: number;
     typesenseLastError?: string;
     typesenseDeletedAt?: Date;
+    qdrantNeedsDelete: boolean;
+    qdrantAttempts: number;
+    qdrantLastError?: string;
+    qdrantDeletedAt?: Date;
 }

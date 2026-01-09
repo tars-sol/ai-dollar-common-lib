@@ -69,6 +69,23 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
     __metadata("design:type", Date)
 ], PostDeleted.prototype, "typesenseDeletedAt", void 0);
+__decorate([
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.Column)({ type: 'boolean', default: true }),
+    __metadata("design:type", Boolean)
+], PostDeleted.prototype, "qdrantNeedsDelete", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    __metadata("design:type", Number)
+], PostDeleted.prototype, "qdrantAttempts", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], PostDeleted.prototype, "qdrantLastError", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
+    __metadata("design:type", Date)
+], PostDeleted.prototype, "qdrantDeletedAt", void 0);
 exports.PostDeleted = PostDeleted = __decorate([
     (0, typeorm_1.Entity)('posts_deleted')
 ], PostDeleted);

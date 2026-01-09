@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Index,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity('posts_deleted')
 export class PostDeleted {
@@ -20,7 +26,7 @@ export class PostDeleted {
   hashtagsText?: string;
 
   @Column({ type: 'boolean', default: false })
-  inPortfolio: boolean; 
+  inPortfolio: boolean;
 
   @Column({ type: 'timestamptz' })
   createdAt: Date;
@@ -33,7 +39,7 @@ export class PostDeleted {
 
   @Index()
   @Column({ type: 'boolean', default: true })
-  typesenseNeedsDelete: boolean; 
+  typesenseNeedsDelete: boolean;
 
   @Column({ type: 'int', default: 0 })
   typesenseAttempts: number;
@@ -44,4 +50,16 @@ export class PostDeleted {
   @Column({ type: 'timestamptz', nullable: true })
   typesenseDeletedAt?: Date;
 
+  @Index()
+  @Column({ type: 'boolean', default: true })
+  qdrantNeedsDelete: boolean;
+
+  @Column({ type: 'int', default: 0 })
+  qdrantAttempts: number;
+
+  @Column({ type: 'text', nullable: true })
+  qdrantLastError?: string;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  qdrantDeletedAt?: Date;
 }
