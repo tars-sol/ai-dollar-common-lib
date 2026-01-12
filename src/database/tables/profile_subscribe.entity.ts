@@ -1,6 +1,13 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn,
-  Index, ManyToOne, JoinColumn, Unique
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Index,
+  ManyToOne,
+  JoinColumn,
+  Unique,
 } from 'typeorm';
 import { Profile } from './profile.entity';
 import { User } from './user.entity';
@@ -10,6 +17,11 @@ export enum SubscriptionStatus {
   ACTIVE = 'ACTIVE',
   CANCELED = 'CANCELED',
   EXPIRED = 'EXPIRED',
+}
+
+export enum SubscriptionBillingInterval {
+  MONTHLY = 'MONTHLY',
+  ANNUAL = 'ANNUAL',
 }
 
 @Entity('profile_subscriptions')
@@ -62,6 +74,26 @@ export class ProfileSubscription {
   @Column({ type: 'varchar', length: 255, nullable: true })
   @Index()
   stripeCustomerId: string | null;
+
+  @Column({
+    type: 'enum',
+    enum: SubscriptionBillingInterval,
+    nullable: true,
+  })
+  billingInterval: SubscriptionBillingInterval | null;
+
+  @Column({ type: 'integer', nullable: true })
+  billingPriceCents: number | null;
+
+  @Column({ type: 'varchar', length: 10, nullable: true })
+  billingCurrency: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Index()
+  lastInvoiceId: string | null;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  lastPaidAt: Date | null;
 
   @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() updatedAt: Date;

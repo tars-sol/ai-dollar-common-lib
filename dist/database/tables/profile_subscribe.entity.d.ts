@@ -6,6 +6,10 @@ export declare enum SubscriptionStatus {
     CANCELED = "CANCELED",
     EXPIRED = "EXPIRED"
 }
+export declare enum SubscriptionBillingInterval {
+    MONTHLY = "MONTHLY",
+    ANNUAL = "ANNUAL"
+}
 export declare class ProfileSubscription {
     id: string;
     subscriberId: string;
@@ -20,6 +24,11 @@ export declare class ProfileSubscription {
     status: SubscriptionStatus;
     stripeSubscriptionId: string | null;
     stripeCustomerId: string | null;
+    billingInterval: SubscriptionBillingInterval | null;
+    billingPriceCents: number | null;
+    billingCurrency: string | null;
+    lastInvoiceId: string | null;
+    lastPaidAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
 }

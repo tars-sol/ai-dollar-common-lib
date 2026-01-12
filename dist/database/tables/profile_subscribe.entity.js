@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProfileSubscription = exports.SubscriptionStatus = void 0;
+exports.ProfileSubscription = exports.SubscriptionBillingInterval = exports.SubscriptionStatus = void 0;
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
 const user_entity_1 = require("./user.entity");
@@ -20,6 +20,11 @@ var SubscriptionStatus;
     SubscriptionStatus["CANCELED"] = "CANCELED";
     SubscriptionStatus["EXPIRED"] = "EXPIRED";
 })(SubscriptionStatus || (exports.SubscriptionStatus = SubscriptionStatus = {}));
+var SubscriptionBillingInterval;
+(function (SubscriptionBillingInterval) {
+    SubscriptionBillingInterval["MONTHLY"] = "MONTHLY";
+    SubscriptionBillingInterval["ANNUAL"] = "ANNUAL";
+})(SubscriptionBillingInterval || (exports.SubscriptionBillingInterval = SubscriptionBillingInterval = {}));
 let ProfileSubscription = class ProfileSubscription {
 };
 exports.ProfileSubscription = ProfileSubscription;
@@ -85,6 +90,31 @@ __decorate([
     (0, typeorm_1.Index)(),
     __metadata("design:type", Object)
 ], ProfileSubscription.prototype, "stripeCustomerId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'enum',
+        enum: SubscriptionBillingInterval,
+        nullable: true,
+    }),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "billingInterval", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'integer', nullable: true }),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "billingPriceCents", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 10, nullable: true }),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "billingCurrency", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, nullable: true }),
+    (0, typeorm_1.Index)(),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "lastInvoiceId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'timestamptz', nullable: true }),
+    __metadata("design:type", Object)
+], ProfileSubscription.prototype, "lastPaidAt", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
