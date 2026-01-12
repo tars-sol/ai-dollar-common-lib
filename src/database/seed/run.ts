@@ -119,6 +119,7 @@ async function seedUserProfileAndPosts(tx: EntityManager) {
     const correlationId = randomUUID();
     const payload = buildPostCreatedPayload(post, correlationId);
     return {
+      exchange: 'aiData',
       routingKey: 'post.created',
       correlationId,
       payload,

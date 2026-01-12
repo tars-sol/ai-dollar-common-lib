@@ -110,6 +110,7 @@ async function seedUserProfileAndPosts(tx) {
         const correlationId = (0, crypto_1.randomUUID)();
         const payload = buildPostCreatedPayload(post, correlationId);
         return {
+            exchange: 'aiData',
             routingKey: 'post.created',
             correlationId,
             payload,
