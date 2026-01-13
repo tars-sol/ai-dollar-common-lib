@@ -152,6 +152,7 @@ export interface UserSubscriptionItem {
   status: string;
   startedAt: string;
   nextBillingAt: string;
+  cancelAtPeriodEnd: boolean;
 }
 
 function createBaseSuccessResponse(): SuccessResponse {
@@ -2232,6 +2233,7 @@ function createBaseUserSubscriptionItem(): UserSubscriptionItem {
     status: "",
     startedAt: "",
     nextBillingAt: "",
+    cancelAtPeriodEnd: false,
   };
 }
 
@@ -2269,6 +2271,9 @@ export const UserSubscriptionItem: MessageFns<UserSubscriptionItem> = {
     }
     if (message.nextBillingAt !== "") {
       writer.uint32(90).string(message.nextBillingAt);
+    }
+    if (message.cancelAtPeriodEnd !== false) {
+      writer.uint32(96).bool(message.cancelAtPeriodEnd);
     }
     return writer;
   },
@@ -2368,6 +2373,14 @@ export const UserSubscriptionItem: MessageFns<UserSubscriptionItem> = {
           message.nextBillingAt = reader.string();
           continue;
         }
+        case 12: {
+          if (tag !== 96) {
+            break;
+          }
+
+          message.cancelAtPeriodEnd = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2392,6 +2405,7 @@ export const UserSubscriptionItem: MessageFns<UserSubscriptionItem> = {
       status: isSet(object.status) ? globalThis.String(object.status) : "",
       startedAt: isSet(object.startedAt) ? globalThis.String(object.startedAt) : "",
       nextBillingAt: isSet(object.nextBillingAt) ? globalThis.String(object.nextBillingAt) : "",
+      cancelAtPeriodEnd: isSet(object.cancelAtPeriodEnd) ? globalThis.Boolean(object.cancelAtPeriodEnd) : false,
     };
   },
 
@@ -2430,6 +2444,9 @@ export const UserSubscriptionItem: MessageFns<UserSubscriptionItem> = {
     if (message.nextBillingAt !== "") {
       obj.nextBillingAt = message.nextBillingAt;
     }
+    if (message.cancelAtPeriodEnd !== false) {
+      obj.cancelAtPeriodEnd = message.cancelAtPeriodEnd;
+    }
     return obj;
   },
 
@@ -2449,6 +2466,7 @@ export const UserSubscriptionItem: MessageFns<UserSubscriptionItem> = {
     message.status = object.status ?? "";
     message.startedAt = object.startedAt ?? "";
     message.nextBillingAt = object.nextBillingAt ?? "";
+    message.cancelAtPeriodEnd = object.cancelAtPeriodEnd ?? false;
     return message;
   },
 };

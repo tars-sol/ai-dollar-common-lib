@@ -1893,6 +1893,7 @@ function createBaseUserSubscriptionItem() {
         status: "",
         startedAt: "",
         nextBillingAt: "",
+        cancelAtPeriodEnd: false,
     };
 }
 exports.UserSubscriptionItem = {
@@ -1929,6 +1930,9 @@ exports.UserSubscriptionItem = {
         }
         if (message.nextBillingAt !== "") {
             writer.uint32(90).string(message.nextBillingAt);
+        }
+        if (message.cancelAtPeriodEnd !== false) {
+            writer.uint32(96).bool(message.cancelAtPeriodEnd);
         }
         return writer;
     },
@@ -2016,6 +2020,13 @@ exports.UserSubscriptionItem = {
                     message.nextBillingAt = reader.string();
                     continue;
                 }
+                case 12: {
+                    if (tag !== 96) {
+                        break;
+                    }
+                    message.cancelAtPeriodEnd = reader.bool();
+                    continue;
+                }
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2039,6 +2050,7 @@ exports.UserSubscriptionItem = {
             status: isSet(object.status) ? globalThis.String(object.status) : "",
             startedAt: isSet(object.startedAt) ? globalThis.String(object.startedAt) : "",
             nextBillingAt: isSet(object.nextBillingAt) ? globalThis.String(object.nextBillingAt) : "",
+            cancelAtPeriodEnd: isSet(object.cancelAtPeriodEnd) ? globalThis.Boolean(object.cancelAtPeriodEnd) : false,
         };
     },
     toJSON(message) {
@@ -2076,6 +2088,9 @@ exports.UserSubscriptionItem = {
         if (message.nextBillingAt !== "") {
             obj.nextBillingAt = message.nextBillingAt;
         }
+        if (message.cancelAtPeriodEnd !== false) {
+            obj.cancelAtPeriodEnd = message.cancelAtPeriodEnd;
+        }
         return obj;
     },
     create(base) {
@@ -2094,6 +2109,7 @@ exports.UserSubscriptionItem = {
         message.status = object.status ?? "";
         message.startedAt = object.startedAt ?? "";
         message.nextBillingAt = object.nextBillingAt ?? "";
+        message.cancelAtPeriodEnd = object.cancelAtPeriodEnd ?? false;
         return message;
     },
 };

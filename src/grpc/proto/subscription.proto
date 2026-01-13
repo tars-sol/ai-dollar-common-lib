@@ -171,4 +171,5 @@ message UserSubscriptionItem {
   string status = 9;
   string startedAt = 10;
   string nextBillingAt = 11;
+  bool cancelAtPeriodEnd = 12;
 }

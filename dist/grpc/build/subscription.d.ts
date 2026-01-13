@@ -124,6 +124,7 @@ export interface UserSubscriptionItem {
     status: string;
     startedAt: string;
     nextBillingAt: string;
+    cancelAtPeriodEnd: boolean;
 }
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
 export declare const CreateTierRequest: MessageFns<CreateTierRequest>;
