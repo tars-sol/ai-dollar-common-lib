@@ -3,14 +3,13 @@ syntax = "proto3";
 package post;
 
 import "google/protobuf/empty.proto";
-import "google/protobuf/struct.proto";
 
 service PostService {
   rpc Create(CreatePostRequest) returns (PostResponse);
   rpc Update(UpdatePostRequest) returns (PostResponse);
   rpc GenerateUploadUrl(GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
   rpc GetFeed(GetFeedRequest) returns (GetFeedResponse);
-  rpc GetPost(GetPostRequest) returns (PostResponse);
+  rpc GetPost(GetPostRequest) returns (PostArticleResponse);
   rpc PostClicked(GetPostRequest) returns (SuccessResponse);
   rpc VoteOnPoll(VoteOnPollRequest) returns (PostResponse);
   rpc GetProfilePosts(GetProfilePostsRequest) returns (GetFeedResponse);
@@ -243,7 +242,6 @@ message PostResponse {
   optional Creator creator = 14;
   optional bool viewerLiked = 15;
   optional bool viewerDisliked = 16;
-  optional Article article = 17;
   repeated Mention mentions = 18;
 
 }
@@ -278,10 +276,15 @@ message Article {
   string title = 3;
   string status = 4;
   string language = 5;
-  google.protobuf.Struct contentJson = 6;
+  string contentJson = 6;
   string createdAt = 7;
   string updatedAt = 8;
   optional bool isViewable = 9;
+}
+
+message PostArticleResponse {
+  PostResponse post = 1;
+  optional Article article = 2;
 }
 
 message CreateArticleRequest {
@@ -292,7 +295,7 @@ message CreateArticleRequest {
   string mimeType = 5;
   string originalFileName = 6;
   string title = 7;
-  google.protobuf.Struct contentJson = 8;
+  string contentJson = 8;
   string language = 9;
   string status = 10;
 }

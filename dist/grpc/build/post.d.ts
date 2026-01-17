@@ -202,7 +202,6 @@ export interface PostResponse {
     creator?: Creator | undefined;
     viewerLiked?: boolean | undefined;
     viewerDisliked?: boolean | undefined;
-    article?: Article | undefined;
     mentions: Mention[];
 }
 export interface GetProfilePostsRequest {
@@ -232,12 +231,14 @@ export interface Article {
     title: string;
     status: string;
     language: string;
-    contentJson: {
-        [key: string]: any;
-    } | undefined;
+    contentJson: string;
     createdAt: string;
     updatedAt: string;
     isViewable?: boolean | undefined;
+}
+export interface PostArticleResponse {
+    post: PostResponse | undefined;
+    article?: Article | undefined;
 }
 export interface CreateArticleRequest {
     profileId: string;
@@ -247,9 +248,7 @@ export interface CreateArticleRequest {
     mimeType: string;
     originalFileName: string;
     title: string;
-    contentJson: {
-        [key: string]: any;
-    } | undefined;
+    contentJson: string;
     language: string;
     status: string;
 }
@@ -290,13 +289,14 @@ export declare const SearchPostsRequest: MessageFns<SearchPostsRequest>;
 export declare const PostSearchItem: MessageFns<PostSearchItem>;
 export declare const SearchPostsResponse: MessageFns<SearchPostsResponse>;
 export declare const Article: MessageFns<Article>;
+export declare const PostArticleResponse: MessageFns<PostArticleResponse>;
 export declare const CreateArticleRequest: MessageFns<CreateArticleRequest>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
-    GetPost(request: GetPostRequest): Promise<PostResponse>;
+    GetPost(request: GetPostRequest): Promise<PostArticleResponse>;
     PostClicked(request: GetPostRequest): Promise<SuccessResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
@@ -326,7 +326,7 @@ export declare class PostServiceClientImpl implements PostService {
     Update(request: UpdatePostRequest): Promise<PostResponse>;
     GenerateUploadUrl(request: GenerateUploadUrlRequest): Promise<GenerateUploadUrlResponse>;
     GetFeed(request: GetFeedRequest): Promise<GetFeedResponse>;
-    GetPost(request: GetPostRequest): Promise<PostResponse>;
+    GetPost(request: GetPostRequest): Promise<PostArticleResponse>;
     PostClicked(request: GetPostRequest): Promise<SuccessResponse>;
     VoteOnPoll(request: VoteOnPollRequest): Promise<PostResponse>;
     GetProfilePosts(request: GetProfilePostsRequest): Promise<GetFeedResponse>;
