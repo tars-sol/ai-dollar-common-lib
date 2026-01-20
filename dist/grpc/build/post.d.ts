@@ -252,6 +252,19 @@ export interface CreateArticleRequest {
     language: string;
     status: string;
 }
+export interface UpdateArticleRequest {
+    articleId: string;
+    profileId: string;
+    caption?: string | undefined;
+    accessType?: string | undefined;
+    s3Key?: string | undefined;
+    mimeType?: string | undefined;
+    originalFileName?: string | undefined;
+    title?: string | undefined;
+    contentJson?: string | undefined;
+    language?: string | undefined;
+    status?: string | undefined;
+}
 export declare const CreatePostRequest: MessageFns<CreatePostRequest>;
 export declare const DeletePostRequest: MessageFns<DeletePostRequest>;
 export declare const SuccessResponse: MessageFns<SuccessResponse>;
@@ -291,6 +304,7 @@ export declare const SearchPostsResponse: MessageFns<SearchPostsResponse>;
 export declare const Article: MessageFns<Article>;
 export declare const PostArticleResponse: MessageFns<PostArticleResponse>;
 export declare const CreateArticleRequest: MessageFns<CreateArticleRequest>;
+export declare const UpdateArticleRequest: MessageFns<UpdateArticleRequest>;
 export interface PostService {
     Create(request: CreatePostRequest): Promise<PostResponse>;
     Update(request: UpdatePostRequest): Promise<PostResponse>;
@@ -312,6 +326,7 @@ export interface PostService {
     GetTrendingHashtags(request: Empty): Promise<TrendingTagsResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
     CreateArticle(request: CreateArticleRequest): Promise<Article>;
+    UpdateArticle(request: UpdateArticleRequest): Promise<Article>;
     DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse>;
     GetPostsByHashtag(request: GetPostsByHashtagRequest): Promise<GetFeedResponse>;
 }
@@ -342,6 +357,7 @@ export declare class PostServiceClientImpl implements PostService {
     GetTrendingHashtags(request: Empty): Promise<TrendingTagsResponse>;
     SearchPosts(request: SearchPostsRequest): Promise<SearchPostsResponse>;
     CreateArticle(request: CreateArticleRequest): Promise<Article>;
+    UpdateArticle(request: UpdateArticleRequest): Promise<Article>;
     DeleteComment(request: DeleteCommentRequest): Promise<SuccessResponse>;
     GetPostsByHashtag(request: GetPostsByHashtagRequest): Promise<GetFeedResponse>;
 }

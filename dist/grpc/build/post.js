@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.CreateArticleRequest = exports.PostArticleResponse = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.UpdateCommentRequest = exports.DeleteCommentRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.TrendingTagsResponse = exports.TrendingTags = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.GetPostsByHashtagRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.UpdateArticleRequest = exports.CreateArticleRequest = exports.PostArticleResponse = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.UpdateCommentRequest = exports.DeleteCommentRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.TrendingTagsResponse = exports.TrendingTags = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.GetPostsByHashtagRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -4118,6 +4118,221 @@ exports.CreateArticleRequest = {
         return message;
     },
 };
+function createBaseUpdateArticleRequest() {
+    return {
+        articleId: "",
+        profileId: "",
+        caption: undefined,
+        accessType: undefined,
+        s3Key: undefined,
+        mimeType: undefined,
+        originalFileName: undefined,
+        title: undefined,
+        contentJson: undefined,
+        language: undefined,
+        status: undefined,
+    };
+}
+exports.UpdateArticleRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.articleId !== "") {
+            writer.uint32(10).string(message.articleId);
+        }
+        if (message.profileId !== "") {
+            writer.uint32(18).string(message.profileId);
+        }
+        if (message.caption !== undefined) {
+            writer.uint32(26).string(message.caption);
+        }
+        if (message.accessType !== undefined) {
+            writer.uint32(34).string(message.accessType);
+        }
+        if (message.s3Key !== undefined) {
+            writer.uint32(42).string(message.s3Key);
+        }
+        if (message.mimeType !== undefined) {
+            writer.uint32(50).string(message.mimeType);
+        }
+        if (message.originalFileName !== undefined) {
+            writer.uint32(58).string(message.originalFileName);
+        }
+        if (message.title !== undefined) {
+            writer.uint32(66).string(message.title);
+        }
+        if (message.contentJson !== undefined) {
+            writer.uint32(74).string(message.contentJson);
+        }
+        if (message.language !== undefined) {
+            writer.uint32(82).string(message.language);
+        }
+        if (message.status !== undefined) {
+            writer.uint32(90).string(message.status);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateArticleRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.articleId = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.profileId = reader.string();
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.caption = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.accessType = reader.string();
+                    continue;
+                }
+                case 5: {
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.s3Key = reader.string();
+                    continue;
+                }
+                case 6: {
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.mimeType = reader.string();
+                    continue;
+                }
+                case 7: {
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.originalFileName = reader.string();
+                    continue;
+                }
+                case 8: {
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                }
+                case 9: {
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.contentJson = reader.string();
+                    continue;
+                }
+                case 10: {
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.language = reader.string();
+                    continue;
+                }
+                case 11: {
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.status = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            articleId: isSet(object.articleId) ? globalThis.String(object.articleId) : "",
+            profileId: isSet(object.profileId) ? globalThis.String(object.profileId) : "",
+            caption: isSet(object.caption) ? globalThis.String(object.caption) : undefined,
+            accessType: isSet(object.accessType) ? globalThis.String(object.accessType) : undefined,
+            s3Key: isSet(object.s3Key) ? globalThis.String(object.s3Key) : undefined,
+            mimeType: isSet(object.mimeType) ? globalThis.String(object.mimeType) : undefined,
+            originalFileName: isSet(object.originalFileName) ? globalThis.String(object.originalFileName) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            contentJson: isSet(object.contentJson) ? globalThis.String(object.contentJson) : undefined,
+            language: isSet(object.language) ? globalThis.String(object.language) : undefined,
+            status: isSet(object.status) ? globalThis.String(object.status) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.articleId !== "") {
+            obj.articleId = message.articleId;
+        }
+        if (message.profileId !== "") {
+            obj.profileId = message.profileId;
+        }
+        if (message.caption !== undefined) {
+            obj.caption = message.caption;
+        }
+        if (message.accessType !== undefined) {
+            obj.accessType = message.accessType;
+        }
+        if (message.s3Key !== undefined) {
+            obj.s3Key = message.s3Key;
+        }
+        if (message.mimeType !== undefined) {
+            obj.mimeType = message.mimeType;
+        }
+        if (message.originalFileName !== undefined) {
+            obj.originalFileName = message.originalFileName;
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.contentJson !== undefined) {
+            obj.contentJson = message.contentJson;
+        }
+        if (message.language !== undefined) {
+            obj.language = message.language;
+        }
+        if (message.status !== undefined) {
+            obj.status = message.status;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateArticleRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateArticleRequest();
+        message.articleId = object.articleId ?? "";
+        message.profileId = object.profileId ?? "";
+        message.caption = object.caption ?? undefined;
+        message.accessType = object.accessType ?? undefined;
+        message.s3Key = object.s3Key ?? undefined;
+        message.mimeType = object.mimeType ?? undefined;
+        message.originalFileName = object.originalFileName ?? undefined;
+        message.title = object.title ?? undefined;
+        message.contentJson = object.contentJson ?? undefined;
+        message.language = object.language ?? undefined;
+        message.status = object.status ?? undefined;
+        return message;
+    },
+};
 exports.PostServiceServiceName = "post.PostService";
 class PostServiceClientImpl {
     constructor(rpc, opts) {
@@ -4143,6 +4358,7 @@ class PostServiceClientImpl {
         this.GetTrendingHashtags = this.GetTrendingHashtags.bind(this);
         this.SearchPosts = this.SearchPosts.bind(this);
         this.CreateArticle = this.CreateArticle.bind(this);
+        this.UpdateArticle = this.UpdateArticle.bind(this);
         this.DeleteComment = this.DeleteComment.bind(this);
         this.GetPostsByHashtag = this.GetPostsByHashtag.bind(this);
     }
@@ -4244,6 +4460,11 @@ class PostServiceClientImpl {
     CreateArticle(request) {
         const data = exports.CreateArticleRequest.encode(request).finish();
         const promise = this.rpc.request(this.service, "CreateArticle", data);
+        return promise.then((data) => exports.Article.decode(new wire_1.BinaryReader(data)));
+    }
+    UpdateArticle(request) {
+        const data = exports.UpdateArticleRequest.encode(request).finish();
+        const promise = this.rpc.request(this.service, "UpdateArticle", data);
         return promise.then((data) => exports.Article.decode(new wire_1.BinaryReader(data)));
     }
     DeleteComment(request) {

@@ -25,6 +25,7 @@ service PostService {
   rpc GetTrendingHashtags(google.protobuf.Empty) returns (TrendingTagsResponse);
   rpc SearchPosts(SearchPostsRequest) returns (SearchPostsResponse);
   rpc CreateArticle(CreateArticleRequest) returns (Article);
+  rpc UpdateArticle(UpdateArticleRequest) returns (Article);
   rpc DeleteComment(DeleteCommentRequest) returns (SuccessResponse);
   rpc GetPostsByHashtag(GetPostsByHashtagRequest) returns (GetFeedResponse);
 }
@@ -298,6 +299,20 @@ message CreateArticleRequest {
   string contentJson = 8;
   string language = 9;
   string status = 10;
+}
+
+message UpdateArticleRequest {
+  string articleId = 1;
+  string profileId = 2;
+  optional string caption = 3;
+  optional string accessType = 4;
+  optional string s3Key = 5;
+  optional string mimeType = 6;
+  optional string originalFileName = 7;
+  optional string title = 8;
+  optional string contentJson = 9;
+  optional string language = 10;
+  optional string status = 11;
 }
 
 
