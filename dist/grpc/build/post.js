@@ -5,7 +5,7 @@
 //   protoc               v3.21.12
 // source: post.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.UpdateArticleRequest = exports.CreateArticleRequest = exports.PostArticleResponse = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.UpdateCommentRequest = exports.DeleteCommentRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.TrendingTagsResponse = exports.TrendingTags = exports.GetFeedRequest = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.GetPostsByHashtagRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
+exports.PostServiceClientImpl = exports.PostServiceServiceName = exports.UpdateArticleRequest = exports.CreateArticleRequest = exports.PostArticleResponse = exports.Article = exports.SearchPostsResponse = exports.PostSearchItem = exports.SearchPostsRequest = exports.GetProfilePostsRequest = exports.PostResponse = exports.Mention = exports.CommentCreator = exports.RemoveFromPortfolioRequest = exports.AddToPortfolioRequest = exports.Creator = exports.PostReactionRequest = exports.PostPollOptionResponse = exports.PostPollResponse = exports.HealthResponse = exports.VoteOnPollRequest = exports.PostFileResponse = exports.PostMediaResponse = exports.GetCommentsResponse = exports.GetPortfolioRequest = exports.UpdateCommentRequest = exports.DeleteCommentRequest = exports.GetCommentsRequest = exports.CommentResponse = exports.CreateCommentRequest = exports.GetFeedResponse = exports.GetPostRequest = exports.TrendingTagsResponse = exports.TrendingTags = exports.GetFeedRequest = exports.GenerateUploadUrlResponse_FieldsEntry = exports.GenerateUploadUrlResponse = exports.GenerateUploadUrlRequest = exports.GetPostsByHashtagRequest = exports.UpdatePostRequest = exports.SuccessResponse = exports.DeletePostRequest = exports.CreatePostRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const empty_1 = require("./google/protobuf/empty");
@@ -655,15 +655,21 @@ exports.GenerateUploadUrlRequest = {
     },
 };
 function createBaseGenerateUploadUrlResponse() {
-    return { uploadUrl: "", key: "" };
+    return { url: "", fields: {}, key: "", maxBytes: 0 };
 }
 exports.GenerateUploadUrlResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.uploadUrl !== "") {
-            writer.uint32(10).string(message.uploadUrl);
+        if (message.url !== "") {
+            writer.uint32(10).string(message.url);
         }
+        Object.entries(message.fields).forEach(([key, value]) => {
+            exports.GenerateUploadUrlResponse_FieldsEntry.encode({ key: key, value }, writer.uint32(18).fork()).join();
+        });
         if (message.key !== "") {
-            writer.uint32(18).string(message.key);
+            writer.uint32(26).string(message.key);
+        }
+        if (message.maxBytes !== 0) {
+            writer.uint32(32).uint64(message.maxBytes);
         }
         return writer;
     },
@@ -678,14 +684,31 @@ exports.GenerateUploadUrlResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.uploadUrl = reader.string();
+                    message.url = reader.string();
                     continue;
                 }
                 case 2: {
                     if (tag !== 18) {
                         break;
                     }
+                    const entry2 = exports.GenerateUploadUrlResponse_FieldsEntry.decode(reader, reader.uint32());
+                    if (entry2.value !== undefined) {
+                        message.fields[entry2.key] = entry2.value;
+                    }
+                    continue;
+                }
+                case 3: {
+                    if (tag !== 26) {
+                        break;
+                    }
                     message.key = reader.string();
+                    continue;
+                }
+                case 4: {
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.maxBytes = longToNumber(reader.uint64());
                     continue;
                 }
             }
@@ -698,17 +721,36 @@ exports.GenerateUploadUrlResponse = {
     },
     fromJSON(object) {
         return {
-            uploadUrl: isSet(object.uploadUrl) ? globalThis.String(object.uploadUrl) : "",
+            url: isSet(object.url) ? globalThis.String(object.url) : "",
+            fields: isObject(object.fields)
+                ? Object.entries(object.fields).reduce((acc, [key, value]) => {
+                    acc[key] = String(value);
+                    return acc;
+                }, {})
+                : {},
             key: isSet(object.key) ? globalThis.String(object.key) : "",
+            maxBytes: isSet(object.maxBytes) ? globalThis.Number(object.maxBytes) : 0,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.uploadUrl !== "") {
-            obj.uploadUrl = message.uploadUrl;
+        if (message.url !== "") {
+            obj.url = message.url;
+        }
+        if (message.fields) {
+            const entries = Object.entries(message.fields);
+            if (entries.length > 0) {
+                obj.fields = {};
+                entries.forEach(([k, v]) => {
+                    obj.fields[k] = v;
+                });
+            }
         }
         if (message.key !== "") {
             obj.key = message.key;
+        }
+        if (message.maxBytes !== 0) {
+            obj.maxBytes = Math.round(message.maxBytes);
         }
         return obj;
     },
@@ -717,8 +759,83 @@ exports.GenerateUploadUrlResponse = {
     },
     fromPartial(object) {
         const message = createBaseGenerateUploadUrlResponse();
-        message.uploadUrl = object.uploadUrl ?? "";
+        message.url = object.url ?? "";
+        message.fields = Object.entries(object.fields ?? {}).reduce((acc, [key, value]) => {
+            if (value !== undefined) {
+                acc[key] = globalThis.String(value);
+            }
+            return acc;
+        }, {});
         message.key = object.key ?? "";
+        message.maxBytes = object.maxBytes ?? 0;
+        return message;
+    },
+};
+function createBaseGenerateUploadUrlResponse_FieldsEntry() {
+    return { key: "", value: "" };
+}
+exports.GenerateUploadUrlResponse_FieldsEntry = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.key !== "") {
+            writer.uint32(10).string(message.key);
+        }
+        if (message.value !== "") {
+            writer.uint32(18).string(message.value);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        const end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGenerateUploadUrlResponse_FieldsEntry();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1: {
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.key = reader.string();
+                    continue;
+                }
+                case 2: {
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.value = reader.string();
+                    continue;
+                }
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            key: isSet(object.key) ? globalThis.String(object.key) : "",
+            value: isSet(object.value) ? globalThis.String(object.value) : "",
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.key !== "") {
+            obj.key = message.key;
+        }
+        if (message.value !== "") {
+            obj.value = message.value;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GenerateUploadUrlResponse_FieldsEntry.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGenerateUploadUrlResponse_FieldsEntry();
+        message.key = object.key ?? "";
+        message.value = object.value ?? "";
         return message;
     },
 };
@@ -4479,6 +4596,19 @@ class PostServiceClientImpl {
     }
 }
 exports.PostServiceClientImpl = PostServiceClientImpl;
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
+function isObject(value) {
+    return typeof value === "object" && value !== null;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

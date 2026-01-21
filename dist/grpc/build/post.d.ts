@@ -43,8 +43,16 @@ export interface GenerateUploadUrlRequest {
     contentType: string;
 }
 export interface GenerateUploadUrlResponse {
-    uploadUrl: string;
+    url: string;
+    fields: {
+        [key: string]: string;
+    };
     key: string;
+    maxBytes: number;
+}
+export interface GenerateUploadUrlResponse_FieldsEntry {
+    key: string;
+    value: string;
 }
 export interface GetFeedRequest {
     page: number;
@@ -272,6 +280,7 @@ export declare const UpdatePostRequest: MessageFns<UpdatePostRequest>;
 export declare const GetPostsByHashtagRequest: MessageFns<GetPostsByHashtagRequest>;
 export declare const GenerateUploadUrlRequest: MessageFns<GenerateUploadUrlRequest>;
 export declare const GenerateUploadUrlResponse: MessageFns<GenerateUploadUrlResponse>;
+export declare const GenerateUploadUrlResponse_FieldsEntry: MessageFns<GenerateUploadUrlResponse_FieldsEntry>;
 export declare const GetFeedRequest: MessageFns<GetFeedRequest>;
 export declare const TrendingTags: MessageFns<TrendingTags>;
 export declare const TrendingTagsResponse: MessageFns<TrendingTagsResponse>;
